@@ -24,6 +24,7 @@ init:
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
+	go install github.com/envoyproxy/protoc-gen-validate@latest
 
 .PHONY: config
 # generate internal proto
@@ -44,6 +45,15 @@ api:
 	       --openapi_out=fq_schema_naming=true,default_response=false:. \
 	       $(API_PROTO_FILES)
 
+.PHONY: validate
+# generate validate proto
+validate:
+	protoc --proto_path=. \
+		--proto_path=./third_party \
+        --go_out=paths=source_relative:. \
+        --validate_out=paths=source_relative,lang=go:. \
+        $(API_PROTO_FILES)
+
 .PHONY: build
 # build
 build:
@@ -53,7 +63,6 @@ build:
 # generate
 generate:
 	go generate ./...
-	go run cmd/gen/gen.go -conf configs/config.yaml
 	go mod tidy
 
 .PHONY: all
@@ -81,3 +90,8 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
+.PHONY: gendb
+# generate db
+gendb:
+	go run cmd/gen/gen.go -conf configs/config.yaml

@@ -3,17 +3,15 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: Auth API
     version: 0.0.1
 paths:
-    /helloworld/{name}:
+    /v1/auth/hello/{name}:
         get:
             tags:
-                - Greeter
-                - subgroup
+                - Auth
             description: Sends a greeting
-            operationId: Greeter_SayHello
+            operationId: Auth_SayHello
             parameters:
                 - name: name
                   in: path
@@ -26,14 +24,117 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
+                                $ref: '#/components/schemas/auth.v1.HelloReply'
+    /v1/auth/login/using-password:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_LoginByPassword
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.LoginByPasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.LoginByPasswordReply'
+    /v1/auth/signup/using-email:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_SignupByEmail
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.SignupByEmailRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.SignupByEmailReply'
 components:
     schemas:
-        helloworld.v1.HelloReply:
+        auth.v1.HelloReply:
             type: object
             properties:
                 message:
                     type: string
             description: The response message containing the greetings
+        auth.v1.LoginByPasswordReply:
+            type: object
+            properties:
+                token:
+                    type: string
+            description: 密码登录响应
+        auth.v1.LoginByPasswordRequest:
+            type: object
+            properties:
+                loginId:
+                    type: string
+                password:
+                    type: string
+                captchaId:
+                    type: string
+                captchaAnswer:
+                    type: string
+            description: 密码登录请求
+        auth.v1.SignupByEmailReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/auth.v1.UserInfo'
+                token:
+                    type: string
+            description: 邮箱注册响应
+        auth.v1.SignupByEmailRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                password:
+                    type: string
+                    description: 密码最小长度5，最大长度10
+                passwordConfirm:
+                    type: string
+                verifyCode:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+            description: 邮箱注册请求
+        auth.v1.UserInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                avatar:
+                    type: string
+                bio:
+                    type: string
+                location:
+                    type: string
+                website:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+            description: 用户信息
 tags:
-    - name: Greeter
+    - name: Auth

@@ -28,10 +28,11 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 
 	tableName := _user.userDo.TableName()
 	_user.ALL = field.NewAsterisk(tableName)
-	_user.ID = field.NewInt32(tableName, "id")
-	_user.Username = field.NewString(tableName, "username")
-	_user.Password = field.NewString(tableName, "password")
+	_user.ID = field.NewInt64(tableName, "id")
+	_user.Name = field.NewString(tableName, "name")
 	_user.Email = field.NewString(tableName, "email")
+	_user.Password = field.NewString(tableName, "password")
+	_user.Phone = field.NewString(tableName, "phone")
 	_user.CreatedAt = field.NewTime(tableName, "created_at")
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
 
@@ -44,10 +45,11 @@ type user struct {
 	userDo userDo
 
 	ALL       field.Asterisk
-	ID        field.Int32
-	Username  field.String
-	Password  field.String
+	ID        field.Int64
+	Name      field.String
 	Email     field.String
+	Password  field.String
+	Phone     field.String
 	CreatedAt field.Time
 	UpdatedAt field.Time
 
@@ -66,10 +68,11 @@ func (u user) As(alias string) *user {
 
 func (u *user) updateTableName(table string) *user {
 	u.ALL = field.NewAsterisk(table)
-	u.ID = field.NewInt32(table, "id")
-	u.Username = field.NewString(table, "username")
-	u.Password = field.NewString(table, "password")
+	u.ID = field.NewInt64(table, "id")
+	u.Name = field.NewString(table, "name")
 	u.Email = field.NewString(table, "email")
+	u.Password = field.NewString(table, "password")
+	u.Phone = field.NewString(table, "phone")
 	u.CreatedAt = field.NewTime(table, "created_at")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 
@@ -96,11 +99,12 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 6)
+	u.fieldMap = make(map[string]field.Expr, 7)
 	u.fieldMap["id"] = u.ID
-	u.fieldMap["username"] = u.Username
-	u.fieldMap["password"] = u.Password
+	u.fieldMap["name"] = u.Name
 	u.fieldMap["email"] = u.Email
+	u.fieldMap["password"] = u.Password
+	u.fieldMap["phone"] = u.Phone
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
 }

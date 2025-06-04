@@ -15,7 +15,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewDB)
+var ProviderSet = wire.NewSet(NewData, NewAuthRepo, NewDB)
 
 // Data .
 type Data struct {
@@ -29,7 +29,6 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger) (*Data, func(), error
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-
 	// 为GEN生成的query代码设置数据库连接对象
 	query.SetDefault(db)
 	return &Data{query: query.Q, log: log.NewHelper(logger)}, cleanup, nil
@@ -42,5 +41,5 @@ func NewDB(cfg *conf.Data) (*gorm.DB, error) {
 	case "sqlite":
 		return gorm.Open(sqlite.Open(cfg.Database.GetSource()))
 	}
-	return nil, errors.New("connect db fail unsupported db driver")
+	return nil, errors.New("connect db fail: unsupported db driver")
 }
