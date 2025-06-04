@@ -70,7 +70,7 @@ func main() {
 		// 默认会在 OutPath 目录生成CRUD代码，并且同目录下生成 model 包
 		// 所以OutPath最终package不能设置为model，在有数据库表同步的情况下会产生冲突
 		// 若一定要使用可以通过ModelPkgPath单独指定model package的名称
-		OutPath: "../../internal/data/query",
+		OutPath: "internal/data/query",
 		/* ModelPkgPath: "dal/model"*/
 
 		// gen.WithoutContext：禁用WithContext模式

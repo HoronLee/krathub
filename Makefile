@@ -94,4 +94,4 @@ help:
 .PHONY: gendb
 # generate db
 gendb:
-	go run cmd/gen/gen.go -conf configs/config.yaml
+	go run cmd/gen/gendb.go -conf configs/config.yaml
