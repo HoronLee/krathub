@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"fmt"
 	"krathub/internal/data/model"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -10,11 +11,11 @@ import (
 // AuthRepo is a Auth repo.
 type AuthRepo interface {
 	SaveUser(context.Context, *model.User) (*model.User, error)
-	// DeleteUser(context.Context, *model.User) (*model.User, error)
-	// UpdateUser(context.Context, *model.User) (*model.User, error)
+	DeleteUser(context.Context, *model.User) (*model.User, error)
+	UpdateUser(context.Context, *model.User) (*model.User, error)
 	// ListUserByEmail(context.Context, string) ([]*model.User, error)
 	// ListUserByID(context.Context, int64) (*model.User, error)
-	// ListUserByUsername(context.Context, string) ([]*model.User, error)
+	ListUserByUserName(context.Context, string) ([]*model.User, error)
 	// ListUserByPhone(context.Context, string) ([]*model.User, error)
 }
 
@@ -32,12 +33,27 @@ func NewAuthUsecase(repo AuthRepo, logger log.Logger) *AuthUsecase {
 	}
 }
 
+// SignupByEmail 使用邮件注册
 func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*model.User, error) {
 	uc.log.WithContext(ctx).Debugf("[biz] Signing up user: %v", user)
-	// 1. 数据校验
-	// 2. 发送验证码
-	// 3. 验证验证码
-	// 4. 生成用户信息
-	// 5. 保存用户信息
+
+	// 开发模式下，只有 admin 用户可以注册
+	if user.Name == "admin" {
+		users, err := uc.repo.ListUserByUserName(ctx, user.Name)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get user: %w", err)
+		}
+		if len(users) > 0 {
+			return nil, fmt.Errorf("user %s already exists", user.Name)
+		}
+		return uc.repo.SaveUser(ctx, user)
+	} else {
+		return nil, fmt.Errorf("only admin can sign up in dev mode")
+	}
+
+	// 发送验证码
+	// 验证验证码
+	// 生成用户信息
+	// 保存用户信息
 	return uc.repo.SaveUser(ctx, user)
 }

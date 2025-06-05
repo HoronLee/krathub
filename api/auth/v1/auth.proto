@@ -30,8 +30,8 @@ message SignupByEmailRequest {
   // 密码最小长度5，最大长度10
   string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
   string password_confirm = 3 [
-    (validate.rules).string = {min_len: 5, max_len: 10} // 确认密码最小长度5，最大长度10
-  ];
+    (validate.rules).string = {min_len: 5, max_len: 10}
+  ];  // 确认密码最小长度5，最大长度10
   string verify_code = 4 [(validate.rules).string.min_len = 6]; // 验证码最小长度6
   string email = 5 [(validate.rules).string.email = true]; // 邮箱格式验证
   string phone = 6 [(validate.rules).string.len = 11]; // 手机号长度11位
@@ -56,16 +56,6 @@ message LoginByPasswordReply {
   string token = 1;
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
-}
-
 service Auth {
   rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply) {
     option (google.api.http) = {
@@ -78,13 +68,6 @@ service Auth {
     option (google.api.http) = {
       post: "/v1/auth/login/using-password"
       body: "*"
-    };
-  }
-
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {
-    option (google.api.http) = {
-      get: "/v1/auth/hello/{name}"
     };
   }
 }

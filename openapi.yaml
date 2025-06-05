@@ -6,25 +6,6 @@ info:
     title: Auth API
     version: 0.0.1
 paths:
-    /v1/auth/hello/{name}:
-        get:
-            tags:
-                - Auth
-            description: Sends a greeting
-            operationId: Auth_SayHello
-            parameters:
-                - name: name
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/auth.v1.HelloReply'
     /v1/auth/login/using-password:
         post:
             tags:
@@ -63,12 +44,6 @@ paths:
                                 $ref: '#/components/schemas/auth.v1.SignupByEmailReply'
 components:
     schemas:
-        auth.v1.HelloReply:
-            type: object
-            properties:
-                message:
-                    type: string
-            description: The response message containing the greetings
         auth.v1.LoginByPasswordReply:
             type: object
             properties:

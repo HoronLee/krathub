@@ -13,3 +13,7 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+app:
+  name: krathub
+  version: 0.1.0
+  env: dev
