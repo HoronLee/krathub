@@ -65,18 +65,6 @@ func (m *UserInfo) validate(all bool) error {
 
 	// no validation rules for Phone
 
-	// no validation rules for Avatar
-
-	// no validation rules for Bio
-
-	// no validation rules for Location
-
-	// no validation rules for Website
-
-	// no validation rules for CreatedAt
-
-	// no validation rules for UpdatedAt
-
 	if len(errors) > 0 {
 		return UserInfoMultiError(errors)
 	}
@@ -209,15 +197,16 @@ func (m *SignupByEmailRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetVerifyCode()) < 6 {
+	if utf8.RuneCountInString(m.GetVerifyCode()) != 6 {
 		err := SignupByEmailRequestValidationError{
 			field:  "VerifyCode",
-			reason: "value length must be at least 6 runes",
+			reason: "value length must be 6 runes",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
+
 	}
 
 	if err := m._validateEmail(m.GetEmail()); err != nil {
@@ -531,7 +520,16 @@ func (m *LoginByPasswordRequest) validate(all bool) error {
 
 	// no validation rules for LoginId
 
-	// no validation rules for Password
+	if l := utf8.RuneCountInString(m.GetPassword()); l < 5 || l > 10 {
+		err := LoginByPasswordRequestValidationError{
+			field:  "Password",
+			reason: "value length must be between 5 and 10 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	// no validation rules for CaptchaId
 

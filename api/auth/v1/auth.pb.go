@@ -27,15 +27,9 @@ const (
 type UserInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`         // 用户名
-	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`       // 用户邮箱
-	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`       // 用户手机号
-	Avatar        string                 `protobuf:"bytes,5,opt,name=avatar,proto3" json:"avatar,omitempty"`     // 用户头像
-	Bio           string                 `protobuf:"bytes,6,opt,name=bio,proto3" json:"bio,omitempty"`           // 用户简介
-	Location      string                 `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"` // 用户位置
-	Website       string                 `protobuf:"bytes,8,opt,name=website,proto3" json:"website,omitempty"`   // 用户个人网站
-	CreatedAt     string                 `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     string                 `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`   // 用户名
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // 用户邮箱
+	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"` // 用户手机号
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,48 +92,6 @@ func (x *UserInfo) GetPhone() string {
 	return ""
 }
 
-func (x *UserInfo) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *UserInfo) GetBio() string {
-	if x != nil {
-		return x.Bio
-	}
-	return ""
-}
-
-func (x *UserInfo) GetLocation() string {
-	if x != nil {
-		return x.Location
-	}
-	return ""
-}
-
-func (x *UserInfo) GetWebsite() string {
-	if x != nil {
-		return x.Website
-	}
-	return ""
-}
-
-func (x *UserInfo) GetCreatedAt() string {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return ""
-}
-
-func (x *UserInfo) GetUpdatedAt() string {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return ""
-}
-
 // 邮箱注册请求
 type SignupByEmailRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -147,9 +99,9 @@ type SignupByEmailRequest struct {
 	// 密码最小长度5，最大长度10
 	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"` // 确认密码最小长度5，最大长度10
-	VerifyCode      string `protobuf:"bytes,4,opt,name=verify_code,json=verifyCode,proto3" json:"verify_code,omitempty"`                // 验证码最小长度6
-	Email           string `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`                                            // 邮箱格式验证
-	Phone           string `protobuf:"bytes,6,opt,name=phone,proto3" json:"phone,omitempty"`                                            // 手机号长度11位
+	VerifyCode      string `protobuf:"bytes,4,opt,name=verify_code,json=verifyCode,proto3" json:"verify_code,omitempty"`
+	Email           string `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"` // 邮箱格式验证
+	Phone           string `protobuf:"bytes,6,opt,name=phone,proto3" json:"phone,omitempty"` // 手机号长度11位
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -397,37 +349,29 @@ var File_api_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/auth/v1/auth.proto\x12\aauth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\"\xf8\x01\n" +
+	"\x16api/auth/v1/auth.proto\x12\aauth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\"Z\n" +
 	"\bUserInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x14\n" +
-	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
-	"\x06avatar\x18\x05 \x01(\tR\x06avatar\x12\x10\n" +
-	"\x03bio\x18\x06 \x01(\tR\x03bio\x12\x1a\n" +
-	"\blocation\x18\a \x01(\tR\blocation\x12\x18\n" +
-	"\awebsite\x18\b \x01(\tR\awebsite\x12\x1d\n" +
-	"\n" +
-	"created_at\x18\t \x01(\tR\tcreatedAt\x12\x1d\n" +
-	"\n" +
-	"updated_at\x18\n" +
-	" \x01(\tR\tupdatedAt\"\xf9\x01\n" +
+	"\x05phone\x18\x04 \x01(\tR\x05phone\"\xfa\x01\n" +
 	"\x14SignupByEmailRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x05R\x04name\x12%\n" +
 	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
 	"R\bpassword\x124\n" +
 	"\x10password_confirm\x18\x03 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
-	"R\x0fpasswordConfirm\x12(\n" +
-	"\vverify_code\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x06R\n" +
+	"R\x0fpasswordConfirm\x12)\n" +
+	"\vverify_code\x18\x04 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x06R\n" +
 	"verifyCode\x12\x1d\n" +
 	"\x05email\x18\x05 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\x12\x1e\n" +
 	"\x05phone\x18\x06 \x01(\tB\b\xfaB\x05r\x03\x98\x01\vR\x05phone\"Q\n" +
 	"\x12SignupByEmailReply\x12%\n" +
 	"\x04data\x18\x01 \x01(\v2\x11.auth.v1.UserInfoR\x04data\x12\x14\n" +
-	"\x05token\x18\x02 \x01(\tR\x05token\"\x95\x01\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\"\xa0\x01\n" +
 	"\x16LoginByPasswordRequest\x12\x19\n" +
-	"\blogin_id\x18\x01 \x01(\tR\aloginId\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1d\n" +
+	"\blogin_id\x18\x01 \x01(\tR\aloginId\x12%\n" +
+	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
+	"R\bpassword\x12\x1d\n" +
 	"\n" +
 	"captcha_id\x18\x03 \x01(\tR\tcaptchaId\x12%\n" +
 	"\x0ecaptcha_answer\x18\x04 \x01(\tR\rcaptchaAnswer\",\n" +

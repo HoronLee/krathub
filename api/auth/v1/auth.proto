@@ -16,12 +16,6 @@ message UserInfo {
   string name = 2; // 用户名
   string email = 3; // 用户邮箱
   string phone = 4; // 用户手机号
-  string avatar = 5; // 用户头像
-  string bio = 6; // 用户简介
-  string location = 7; // 用户位置
-  string website = 8; // 用户个人网站
-  string created_at = 9;
-  string updated_at = 10;
 }
 
 // 邮箱注册请求
@@ -32,7 +26,7 @@ message SignupByEmailRequest {
   string password_confirm = 3 [
     (validate.rules).string = {min_len: 5, max_len: 10}
   ];  // 确认密码最小长度5，最大长度10
-  string verify_code = 4 [(validate.rules).string.min_len = 6]; // 验证码最小长度6
+  string verify_code = 4 [(validate.rules).string.len = 6];
   string email = 5 [(validate.rules).string.email = true]; // 邮箱格式验证
   string phone = 6 [(validate.rules).string.len = 11]; // 手机号长度11位
 }
@@ -46,7 +40,7 @@ message SignupByEmailReply {
 // 密码登录请求
 message LoginByPasswordRequest {
   string login_id = 1; // 可以是用户名或邮箱
-  string password = 2;
+  string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
   string captcha_id = 3;
   string captcha_answer = 4;
 }

@@ -98,18 +98,6 @@ components:
                     type: string
                 phone:
                     type: string
-                avatar:
-                    type: string
-                bio:
-                    type: string
-                location:
-                    type: string
-                website:
-                    type: string
-                createdAt:
-                    type: string
-                updatedAt:
-                    type: string
             description: 用户信息
 tags:
     - name: Auth

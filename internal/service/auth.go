@@ -6,6 +6,7 @@ import (
 	v1 "krathub/api/auth/v1"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
+	"krathub/pkg/helper"
 )
 
 // AuthService is a auth service.
@@ -38,14 +39,31 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *v1.SignupByEmailRe
 	return &v1.SignupByEmailReply{
 		Data: &v1.UserInfo{
 			Id:    user.ID,
+			Name:  user.Name,
 			Email: user.Email,
 		},
+		Token: "待实现",
 	}, nil
 }
 
 // LoginByPassword user login by password.
 func (s *AuthService) LoginByPassword(ctx context.Context, req *v1.LoginByPasswordRequest) (*v1.LoginByPasswordReply, error) {
+	// 参数校验
+	user := &model.User{}
+	if helper.IsEmail(req.LoginId) {
+		user.Email = req.LoginId
+	} else if helper.IsPhone(req.LoginId) {
+		user.Phone = &req.LoginId
+	} else {
+		return nil, fmt.Errorf("login_id must be email or phone")
+	}
+	user.Password = req.Password
 	// 调用 biz 层
-	// 拼装返回结果
-	return &v1.LoginByPasswordReply{}, nil
+	token, err := s.uc.LoginByPassword(ctx, user)
+	if err != nil {
+		return nil, fmt.Errorf("login failed: %w", err)
+	}
+	return &v1.LoginByPasswordReply{
+		Token: token,
+	}, nil
 }
