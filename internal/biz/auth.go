@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"fmt"
+	"krathub/internal/conf"
 	"krathub/internal/data/model"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -23,27 +24,30 @@ type AuthRepo interface {
 type AuthUsecase struct {
 	repo AuthRepo
 	log  *log.Helper
+	cfg  *conf.App
 }
 
 // NewAuthUsecase new an auth usecase.
-func NewAuthUsecase(repo AuthRepo, logger log.Logger) *AuthUsecase {
+func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
 	return &AuthUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
+		cfg:  cfg,
 	}
 }
 
 // SignupByEmail 使用邮件注册
 func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*model.User, error) {
-	uc.log.WithContext(ctx).Debugf("[biz] Signing up user: %v", user)
-
+	uc.log.WithContext(ctx).Debugf("\n[biz] Signing up user: %v", user)
 	// 开发模式下，只有 admin 用户可以注册
 	if user.Name == "admin" {
 		users, err := uc.repo.ListUserByUserName(ctx, user.Name)
 		if err != nil {
+			uc.log.Errorf("failed to list users by username: %v", err)
 			return nil, fmt.Errorf("failed to get user: %w", err)
 		}
 		if len(users) > 0 {
+			uc.log.Warnf("user %s already exists", user.Name)
 			return nil, fmt.Errorf("user %s already exists", user.Name)
 		}
 		return uc.repo.SaveUser(ctx, user)

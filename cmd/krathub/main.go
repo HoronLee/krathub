@@ -60,6 +60,7 @@ func main() {
 	)
 	c := config.New(
 		config.WithSource(
+			// env.NewSource("KRATHUB_"),
 			file.NewSource(flagconf),
 		),
 	)
@@ -74,7 +75,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.App, logger)
 	if err != nil {
 		panic(err)
 	}

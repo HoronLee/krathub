@@ -4,6 +4,7 @@ import (
 	"context"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
+	"krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -23,9 +24,19 @@ func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 
 // SaveUser 保存用户信息
 func (r *authRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
-	err := r.data.query.User.
+	r.log.Debugf("[data] SaveUser called: %+v", user)
+	bcryptPassword, err := hash.BcryptHash(user.Password)
+	if err != nil {
+		return nil, err
+	}
+	user.Password = bcryptPassword
+	r.log.Debugf("[data] bcryptPassword: %v", user.Password)
+	err = r.data.query.User.
 		WithContext(ctx).
 		Save(user)
+	if err != nil {
+		r.log.Errorf("SaveUser failed: %v", err)
+	}
 	return user, err
 }
 
