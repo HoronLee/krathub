@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "github.com/go-kratos/kratos/v2/errors"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -23,73 +24,81 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 用户信息
-type UserInfo struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`   // 用户名
-	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // 用户邮箱
-	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"` // 用户手机号
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
+// 错误码定义
+type ErrorReason int32
 
-func (x *UserInfo) Reset() {
-	*x = UserInfo{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+const (
+	// 用户未找到
+	ErrorReason_USER_NOT_FOUND ErrorReason = 0
+	// 用户已存在
+	ErrorReason_USER_ALREADY_EXISTS ErrorReason = 1
+	// 密码错误
+	ErrorReason_INCORRECT_PASSWORD ErrorReason = 10
+	// 错误的认证信息
+	ErrorReason_INVALID_CREDENTIALS ErrorReason = 2
+	// Token 类型错误
+	ErrorReason_INVALID_TOKEN_TYPE ErrorReason = 3
+	// Token 已过期
+	ErrorReason_TOKEN_EXPIRED ErrorReason = 4
+	// 没有 Token
+	ErrorReason_MISSING_TOKEN ErrorReason = 5
+	// Token 生成失败
+	ErrorReason_TOKEN_GENERATION_FAILED ErrorReason = 6
+	// 没有权限
+	ErrorReason_UNAUTHORIZED ErrorReason = 7
+)
 
-func (x *UserInfo) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UserInfo) ProtoMessage() {}
-
-func (x *UserInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+// Enum value maps for ErrorReason.
+var (
+	ErrorReason_name = map[int32]string{
+		0:  "USER_NOT_FOUND",
+		1:  "USER_ALREADY_EXISTS",
+		10: "INCORRECT_PASSWORD",
+		2:  "INVALID_CREDENTIALS",
+		3:  "INVALID_TOKEN_TYPE",
+		4:  "TOKEN_EXPIRED",
+		5:  "MISSING_TOKEN",
+		6:  "TOKEN_GENERATION_FAILED",
+		7:  "UNAUTHORIZED",
 	}
-	return mi.MessageOf(x)
+	ErrorReason_value = map[string]int32{
+		"USER_NOT_FOUND":          0,
+		"USER_ALREADY_EXISTS":     1,
+		"INCORRECT_PASSWORD":      10,
+		"INVALID_CREDENTIALS":     2,
+		"INVALID_TOKEN_TYPE":      3,
+		"TOKEN_EXPIRED":           4,
+		"MISSING_TOKEN":           5,
+		"TOKEN_GENERATION_FAILED": 6,
+		"UNAUTHORIZED":            7,
+	}
+)
+
+func (x ErrorReason) Enum() *ErrorReason {
+	p := new(ErrorReason)
+	*p = x
+	return p
 }
 
-// Deprecated: Use UserInfo.ProtoReflect.Descriptor instead.
-func (*UserInfo) Descriptor() ([]byte, []int) {
+func (x ErrorReason) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ErrorReason) Descriptor() protoreflect.EnumDescriptor {
+	return file_api_auth_v1_auth_proto_enumTypes[0].Descriptor()
+}
+
+func (ErrorReason) Type() protoreflect.EnumType {
+	return &file_api_auth_v1_auth_proto_enumTypes[0]
+}
+
+func (x ErrorReason) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ErrorReason.Descriptor instead.
+func (ErrorReason) EnumDescriptor() ([]byte, []int) {
 	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *UserInfo) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *UserInfo) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *UserInfo) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *UserInfo) GetPhone() string {
-	if x != nil {
-		return x.Phone
-	}
-	return ""
 }
 
 // 邮箱注册请求
@@ -99,16 +108,14 @@ type SignupByEmailRequest struct {
 	// 密码最小长度5，最大长度10
 	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"` // 确认密码最小长度5，最大长度10
-	VerifyCode      string `protobuf:"bytes,4,opt,name=verify_code,json=verifyCode,proto3" json:"verify_code,omitempty"`
-	Email           string `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"` // 邮箱格式验证
-	Phone           string `protobuf:"bytes,6,opt,name=phone,proto3" json:"phone,omitempty"` // 手机号长度11位
+	Email           string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`                                            // 邮箱格式验证
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
 func (x *SignupByEmailRequest) Reset() {
 	*x = SignupByEmailRequest{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -120,7 +127,7 @@ func (x *SignupByEmailRequest) String() string {
 func (*SignupByEmailRequest) ProtoMessage() {}
 
 func (x *SignupByEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -133,7 +140,7 @@ func (x *SignupByEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignupByEmailRequest.ProtoReflect.Descriptor instead.
 func (*SignupByEmailRequest) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{1}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SignupByEmailRequest) GetName() string {
@@ -157,13 +164,6 @@ func (x *SignupByEmailRequest) GetPasswordConfirm() string {
 	return ""
 }
 
-func (x *SignupByEmailRequest) GetVerifyCode() string {
-	if x != nil {
-		return x.VerifyCode
-	}
-	return ""
-}
-
 func (x *SignupByEmailRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
@@ -171,25 +171,20 @@ func (x *SignupByEmailRequest) GetEmail() string {
 	return ""
 }
 
-func (x *SignupByEmailRequest) GetPhone() string {
-	if x != nil {
-		return x.Phone
-	}
-	return ""
-}
-
 // 邮箱注册响应
 type SignupByEmailReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Data          *UserInfo              `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
-	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`   // 用户名
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // 用户邮箱
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // 用户角色
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SignupByEmailReply) Reset() {
 	*x = SignupByEmailReply{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -201,7 +196,7 @@ func (x *SignupByEmailReply) String() string {
 func (*SignupByEmailReply) ProtoMessage() {}
 
 func (x *SignupByEmailReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,19 +209,33 @@ func (x *SignupByEmailReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignupByEmailReply.ProtoReflect.Descriptor instead.
 func (*SignupByEmailReply) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{2}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SignupByEmailReply) GetData() *UserInfo {
+func (x *SignupByEmailReply) GetId() int64 {
 	if x != nil {
-		return x.Data
+		return x.Id
 	}
-	return nil
+	return 0
 }
 
-func (x *SignupByEmailReply) GetToken() string {
+func (x *SignupByEmailReply) GetName() string {
 	if x != nil {
-		return x.Token
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SignupByEmailReply) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *SignupByEmailReply) GetRole() string {
+	if x != nil {
+		return x.Role
 	}
 	return ""
 }
@@ -236,15 +245,13 @@ type LoginByPasswordRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	LoginId       string                 `protobuf:"bytes,1,opt,name=login_id,json=loginId,proto3" json:"login_id,omitempty"` // 可以是用户名或邮箱
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	CaptchaId     string                 `protobuf:"bytes,3,opt,name=captcha_id,json=captchaId,proto3" json:"captcha_id,omitempty"`
-	CaptchaAnswer string                 `protobuf:"bytes,4,opt,name=captcha_answer,json=captchaAnswer,proto3" json:"captcha_answer,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LoginByPasswordRequest) Reset() {
 	*x = LoginByPasswordRequest{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -256,7 +263,7 @@ func (x *LoginByPasswordRequest) String() string {
 func (*LoginByPasswordRequest) ProtoMessage() {}
 
 func (x *LoginByPasswordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -269,7 +276,7 @@ func (x *LoginByPasswordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByPasswordRequest.ProtoReflect.Descriptor instead.
 func (*LoginByPasswordRequest) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{3}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *LoginByPasswordRequest) GetLoginId() string {
@@ -286,20 +293,6 @@ func (x *LoginByPasswordRequest) GetPassword() string {
 	return ""
 }
 
-func (x *LoginByPasswordRequest) GetCaptchaId() string {
-	if x != nil {
-		return x.CaptchaId
-	}
-	return ""
-}
-
-func (x *LoginByPasswordRequest) GetCaptchaAnswer() string {
-	if x != nil {
-		return x.CaptchaAnswer
-	}
-	return ""
-}
-
 // 密码登录响应
 type LoginByPasswordReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -310,7 +303,7 @@ type LoginByPasswordReply struct {
 
 func (x *LoginByPasswordReply) Reset() {
 	*x = LoginByPasswordReply{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[4]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +315,7 @@ func (x *LoginByPasswordReply) String() string {
 func (*LoginByPasswordReply) ProtoMessage() {}
 
 func (x *LoginByPasswordReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[4]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,7 +328,7 @@ func (x *LoginByPasswordReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByPasswordReply.ProtoReflect.Descriptor instead.
 func (*LoginByPasswordReply) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{4}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *LoginByPasswordReply) GetToken() string {
@@ -345,41 +338,139 @@ func (x *LoginByPasswordReply) GetToken() string {
 	return ""
 }
 
+// The request message containing the user's name.
+type HelloRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HelloRequest) Reset() {
+	*x = HelloRequest{}
+	mi := &file_api_auth_v1_auth_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HelloRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HelloRequest) ProtoMessage() {}
+
+func (x *HelloRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_auth_v1_auth_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
+func (*HelloRequest) Descriptor() ([]byte, []int) {
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *HelloRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+// The response message containing the greetings
+type HelloReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HelloReply) Reset() {
+	*x = HelloReply{}
+	mi := &file_api_auth_v1_auth_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HelloReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HelloReply) ProtoMessage() {}
+
+func (x *HelloReply) ProtoReflect() protoreflect.Message {
+	mi := &file_api_auth_v1_auth_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HelloReply.ProtoReflect.Descriptor instead.
+func (*HelloReply) Descriptor() ([]byte, []int) {
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *HelloReply) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_api_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/auth/v1/auth.proto\x12\aauth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\"Z\n" +
-	"\bUserInfo\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x14\n" +
-	"\x05phone\x18\x04 \x01(\tR\x05phone\"\xfa\x01\n" +
+	"\x16api/auth/v1/auth.proto\x12\aauth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\"\xaf\x01\n" +
 	"\x14SignupByEmailRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x05R\x04name\x12%\n" +
 	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
 	"R\bpassword\x124\n" +
 	"\x10password_confirm\x18\x03 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
-	"R\x0fpasswordConfirm\x12)\n" +
-	"\vverify_code\x18\x04 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x06R\n" +
-	"verifyCode\x12\x1d\n" +
-	"\x05email\x18\x05 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\x12\x1e\n" +
-	"\x05phone\x18\x06 \x01(\tB\b\xfaB\x05r\x03\x98\x01\vR\x05phone\"Q\n" +
-	"\x12SignupByEmailReply\x12%\n" +
-	"\x04data\x18\x01 \x01(\v2\x11.auth.v1.UserInfoR\x04data\x12\x14\n" +
-	"\x05token\x18\x02 \x01(\tR\x05token\"\xa0\x01\n" +
+	"R\x0fpasswordConfirm\x12\x1d\n" +
+	"\x05email\x18\x04 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\"b\n" +
+	"\x12SignupByEmailReply\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\"Z\n" +
 	"\x16LoginByPasswordRequest\x12\x19\n" +
 	"\blogin_id\x18\x01 \x01(\tR\aloginId\x12%\n" +
 	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
-	"R\bpassword\x12\x1d\n" +
-	"\n" +
-	"captcha_id\x18\x03 \x01(\tR\tcaptchaId\x12%\n" +
-	"\x0ecaptcha_answer\x18\x04 \x01(\tR\rcaptchaAnswer\",\n" +
+	"R\bpassword\",\n" +
 	"\x14LoginByPasswordReply\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token2\xf8\x01\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\"\n" +
+	"\fHelloRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"&\n" +
+	"\n" +
+	"HelloReply\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage*\x94\x02\n" +
+	"\vErrorReason\x12\x18\n" +
+	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1d\n" +
+	"\x13USER_ALREADY_EXISTS\x10\x01\x1a\x04\xa8E\x90\x03\x12\x1c\n" +
+	"\x12INCORRECT_PASSWORD\x10\n" +
+	"\x1a\x04\xa8E\x91\x03\x12\x1d\n" +
+	"\x13INVALID_CREDENTIALS\x10\x02\x1a\x04\xa8E\x91\x03\x12\x1c\n" +
+	"\x12INVALID_TOKEN_TYPE\x10\x03\x1a\x04\xa8E\x90\x03\x12\x17\n" +
+	"\rTOKEN_EXPIRED\x10\x04\x1a\x04\xa8E\x91\x03\x12\x17\n" +
+	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
+	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
+	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\xc5\x02\n" +
 	"\x04Auth\x12s\n" +
 	"\rSignupByEmail\x12\x1d.auth.v1.SignupByEmailRequest\x1a\x1b.auth.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12{\n" +
-	"\x0fLoginByPassword\x12\x1f.auth.v1.LoginByPasswordRequest\x1a\x1d.auth.v1.LoginByPasswordReply\"(\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/auth/login/using-passwordB?\n" +
+	"\x0fLoginByPassword\x12\x1f.auth.v1.LoginByPasswordRequest\x1a\x1d.auth.v1.LoginByPasswordReply\"(\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/auth/login/using-password\x12K\n" +
+	"\bSayHello\x12\x15.auth.v1.HelloRequest\x1a\x13.auth.v1.HelloReply\"\x13\x82\xd3\xe4\x93\x02\r\x12\v/helloworldB?\n" +
 	"\x16dev.kratos.api.auth.v1B\vAuthProtoV1P\x01Z\x16krathub/api/auth/v1;v1b\x06proto3"
 
 var (
@@ -394,25 +485,29 @@ func file_api_auth_v1_auth_proto_rawDescGZIP() []byte {
 	return file_api_auth_v1_auth_proto_rawDescData
 }
 
-var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_api_auth_v1_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_api_auth_v1_auth_proto_goTypes = []any{
-	(*UserInfo)(nil),               // 0: auth.v1.UserInfo
+	(ErrorReason)(0),               // 0: auth.v1.ErrorReason
 	(*SignupByEmailRequest)(nil),   // 1: auth.v1.SignupByEmailRequest
 	(*SignupByEmailReply)(nil),     // 2: auth.v1.SignupByEmailReply
 	(*LoginByPasswordRequest)(nil), // 3: auth.v1.LoginByPasswordRequest
 	(*LoginByPasswordReply)(nil),   // 4: auth.v1.LoginByPasswordReply
+	(*HelloRequest)(nil),           // 5: auth.v1.HelloRequest
+	(*HelloReply)(nil),             // 6: auth.v1.HelloReply
 }
 var file_api_auth_v1_auth_proto_depIdxs = []int32{
-	0, // 0: auth.v1.SignupByEmailReply.data:type_name -> auth.v1.UserInfo
-	1, // 1: auth.v1.Auth.SignupByEmail:input_type -> auth.v1.SignupByEmailRequest
-	3, // 2: auth.v1.Auth.LoginByPassword:input_type -> auth.v1.LoginByPasswordRequest
+	1, // 0: auth.v1.Auth.SignupByEmail:input_type -> auth.v1.SignupByEmailRequest
+	3, // 1: auth.v1.Auth.LoginByPassword:input_type -> auth.v1.LoginByPasswordRequest
+	5, // 2: auth.v1.Auth.SayHello:input_type -> auth.v1.HelloRequest
 	2, // 3: auth.v1.Auth.SignupByEmail:output_type -> auth.v1.SignupByEmailReply
 	4, // 4: auth.v1.Auth.LoginByPassword:output_type -> auth.v1.LoginByPasswordReply
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	6, // 5: auth.v1.Auth.SayHello:output_type -> auth.v1.HelloReply
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_api_auth_v1_auth_proto_init() }
@@ -425,13 +520,14 @@ func file_api_auth_v1_auth_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_auth_v1_auth_proto_rawDesc), len(file_api_auth_v1_auth_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   5,
+			NumEnums:      1,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_api_auth_v1_auth_proto_goTypes,
 		DependencyIndexes: file_api_auth_v1_auth_proto_depIdxs,
+		EnumInfos:         file_api_auth_v1_auth_proto_enumTypes,
 		MessageInfos:      file_api_auth_v1_auth_proto_msgTypes,
 	}.Build()
 	File_api_auth_v1_auth_proto = out.File

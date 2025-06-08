@@ -17,6 +17,12 @@ protobuf 参数校验插件
 go install github.com/envoyproxy/protoc-gen-validate@latest
 ```
 
+protobuf 错误处理插件
+
+```bash
+go install github.com/envoyproxy/protoc-gen-validate@latest
+```
+
 ## Data层编码须知
 
 编写 data 层代码之前需要先修改configs目录下的config.yaml文件来配置数据库等相关信息。然后再通过`make gendb`来生成 orm 代码

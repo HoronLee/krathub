@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"krathub/internal/conf"
+	"krathub/internal/server/middleware"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -75,6 +76,9 @@ func main() {
 		panic(err)
 	}
 
+	// 初始化一些外部包方法
+	initComponents(&bc)
+
 	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.App, logger)
 	if err != nil {
 		panic(err)
@@ -85,4 +89,8 @@ func main() {
 	if err := app.Run(); err != nil {
 		panic(err)
 	}
+}
+
+func initComponents(bc *conf.Bootstrap) {
+	middleware.SetBootstrap(bc)
 }

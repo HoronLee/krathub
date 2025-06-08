@@ -37,6 +37,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Bio = field.NewString(tableName, "bio")
 	_user.Location = field.NewString(tableName, "location")
 	_user.Website = field.NewString(tableName, "website")
+	_user.Role = field.NewString(tableName, "role")
 	_user.CreatedAt = field.NewTime(tableName, "created_at")
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
 
@@ -58,6 +59,7 @@ type user struct {
 	Bio       field.String // 用户简介
 	Location  field.String // 用户位置
 	Website   field.String // 用户个人网站
+	Role      field.String // 用户权限角色
 	CreatedAt field.Time
 	UpdatedAt field.Time
 
@@ -85,6 +87,7 @@ func (u *user) updateTableName(table string) *user {
 	u.Bio = field.NewString(table, "bio")
 	u.Location = field.NewString(table, "location")
 	u.Website = field.NewString(table, "website")
+	u.Role = field.NewString(table, "role")
 	u.CreatedAt = field.NewTime(table, "created_at")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 
@@ -111,7 +114,7 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 11)
+	u.fieldMap = make(map[string]field.Expr, 12)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["email"] = u.Email
@@ -121,6 +124,7 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["bio"] = u.Bio
 	u.fieldMap["location"] = u.Location
 	u.fieldMap["website"] = u.Website
+	u.fieldMap["role"] = u.Role
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
 }

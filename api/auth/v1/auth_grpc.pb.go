@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Auth_SignupByEmail_FullMethodName   = "/auth.v1.Auth/SignupByEmail"
 	Auth_LoginByPassword_FullMethodName = "/auth.v1.Auth/LoginByPassword"
+	Auth_SayHello_FullMethodName        = "/auth.v1.Auth/SayHello"
 )
 
 // AuthClient is the client API for Auth service.
@@ -29,6 +30,8 @@ const (
 type AuthClient interface {
 	SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailReply, error)
 	LoginByPassword(ctx context.Context, in *LoginByPasswordRequest, opts ...grpc.CallOption) (*LoginByPasswordReply, error)
+	// Sends a greeting
+	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 }
 
 type authClient struct {
@@ -59,12 +62,24 @@ func (c *authClient) LoginByPassword(ctx context.Context, in *LoginByPasswordReq
 	return out, nil
 }
 
+func (c *authClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HelloReply)
+	err := c.cc.Invoke(ctx, Auth_SayHello_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServer is the server API for Auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
 	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
 	LoginByPassword(context.Context, *LoginByPasswordRequest) (*LoginByPasswordReply, error)
+	// Sends a greeting
+	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -80,6 +95,9 @@ func (UnimplementedAuthServer) SignupByEmail(context.Context, *SignupByEmailRequ
 }
 func (UnimplementedAuthServer) LoginByPassword(context.Context, *LoginByPasswordRequest) (*LoginByPasswordReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginByPassword not implemented")
+}
+func (UnimplementedAuthServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -138,6 +156,24 @@ func _Auth_LoginByPassword_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).SayHello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_SayHello_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).SayHello(ctx, req.(*HelloRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +188,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginByPassword",
 			Handler:    _Auth_LoginByPassword_Handler,
+		},
+		{
+			MethodName: "SayHello",
+			Handler:    _Auth_SayHello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

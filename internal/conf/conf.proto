@@ -43,4 +43,12 @@ message Data {
 
 message App {
   string env = 1; // dev test prod
+  Jwt jwt = 2; // JWT配置
+}
+
+message Jwt{
+  string secret_key = 1; // JWT密钥
+  int32 expire = 2; // JWT过期时间，单位秒
+  string issuer = 3; // JWT签发者
+  string audience = 4;
 }

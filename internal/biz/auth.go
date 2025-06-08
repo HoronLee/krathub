@@ -2,9 +2,11 @@ package biz
 
 import (
 	"context"
-	"fmt"
+	v1 "krathub/api/auth/v1"
 	"krathub/internal/conf"
 	"krathub/internal/data/model"
+	"krathub/pkg/hash"
+	jwtpkg "krathub/pkg/jwt"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -22,52 +24,105 @@ type AuthRepo interface {
 
 // AuthUsecase is a Auth usecase.
 type AuthUsecase struct {
-	repo AuthRepo
-	log  *log.Helper
-	cfg  *conf.App
+	repo            AuthRepo
+	log             *log.Helper
+	cfg             *conf.App
+	adminRegistered bool        // 是否已经注册了 admin 用户
+	jwt             *jwtpkg.JWT // 新增 jwt 字段
+
 }
 
 // NewAuthUsecase new an auth usecase.
 func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
-	return &AuthUsecase{
+	uc := &AuthUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
 		cfg:  cfg,
+		jwt:  jwtpkg.NewJWT(cfg.Jwt),
 	}
+	// 初始化 adminRegistered
+	admins, err := repo.ListUserByUserName(context.Background(), "admin")
+	if err == nil && len(admins) > 0 {
+		uc.adminRegistered = true
+	}
+	return uc
 }
 
 // SignupByEmail 使用邮件注册
 func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*model.User, error) {
 	uc.log.WithContext(ctx).Debugf("\n[biz] Signing up user: %v", user)
-	// 开发模式下，只有 admin 用户可以注册
-	if user.Name == "admin" && uc.cfg.Env == "dev" {
-		users, err := uc.repo.ListUserByUserName(ctx, user.Name)
-		if err != nil {
-			uc.log.Errorf("failed to list users by username: %v", err)
-			return nil, fmt.Errorf("failed to get user: %w", err)
+
+	// 检查 admin 用户是否已存在
+	if !uc.adminRegistered {
+		// 第一次注册，用户名必须为 admin
+		if user.Name != "admin" {
+			return nil, v1.ErrorInvalidCredentials("the first user must be named admin")
 		}
-		if len(users) > 0 {
-			uc.log.Warnf("user %s already exists", user.Name)
-			return nil, fmt.Errorf("user %s already exists", user.Name)
-		}
-		return uc.repo.SaveUser(ctx, user)
+		user.Role = "admin"
 	} else {
-		return nil, fmt.Errorf("only admin can sign up in dev mode")
+		// 后续注册，用户名可以任意，但角色为 user
+		// 检查用户名是否已存在
+		existingUsers, err := uc.repo.ListUserByUserName(ctx, user.Name)
+		if err != nil {
+			return nil, v1.ErrorUserNotFound("failed to check username: %v", err)
+		}
+		if len(existingUsers) > 0 {
+			return nil, v1.ErrorUserAlreadyExists("username already exists")
+		}
+		user.Role = "user"
 	}
 
-	// 发送验证码
-	// 验证验证码
-	// 生成用户信息
-	// 保存用户信息
-	return uc.repo.SaveUser(ctx, user)
+	createdUser, err := uc.repo.SaveUser(ctx, user)
+	if err == nil && !uc.adminRegistered && user.Name == "admin" {
+		uc.adminRegistered = true // 注册成功后更新状态
+	}
+	return createdUser, err
 }
 
-// LoginByPassword 用户密码登录
-func (uc *AuthUsecase) LoginByPassword(ctx context.Context, user *model.User) (token string, err error) {
-	uc.log.WithContext(ctx).Debugf("\n[biz] Logging in user: %v", user)
-	// TODO: Implement user password login logic
-	if uc.cfg.Env == "dev" && (user.Email == "admin@example.com" || *user.Phone == "18888888888") {
+// generateToken 签发 JWT token
+func (uc *AuthUsecase) generateToken(name, role string) (string, error) {
+	return uc.jwt.GenerateToken(name, role)
+}
+
+// LoginByEmailPassword 邮箱密码登录
+func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.User) (token string, err error) {
+	if uc.cfg.Env == "dev" && user.Email == "admin@example.com" {
+		users, err := uc.repo.ListUserByEmail(ctx, user.Email)
+		if err != nil {
+			return "", v1.ErrorUserNotFound("failed to get user: %v", err)
+		}
+		if len(users) == 0 {
+			uc.log.Warnf("user %s does not exist", user.Email)
+			return "", v1.ErrorUserNotFound("user %s does not exist", user.Email)
+		}
+		if !hash.BcryptCheck(user.Password, users[0].Password) {
+			return "", v1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
+		}
+		// 登录成功，签发 token
+		token, err := uc.generateToken(users[0].Name, users[0].Role)
+		if err != nil {
+			return "", v1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
+		}
+		return token, nil
+	}
+	return "", v1.ErrorInvalidCredentials("invalid credentials: %v", user.Password)
+}
+
+// LoginByPhonePassword 手机号密码登录
+func (uc *AuthUsecase) LoginByPhonePassword(ctx context.Context, user *model.User) (token string, err error) {
+	if uc.cfg.Env == "dev" && *user.Phone == "18888888888" {
+		users, err := uc.repo.ListUserByPhone(ctx, *user.Phone)
+		if err != nil {
+			return "", v1.ErrorUserNotFound("failed to get user: %v", err)
+		}
+		if len(users) == 0 {
+			uc.log.Warnf("user %s does not exist", *user.Phone)
+			return "", v1.ErrorUserNotFound("user %s does not exist", *user.Phone)
+		}
+		if !hash.BcryptCheck(user.Password, users[0].Password) {
+			return "", v1.ErrorIncorrectPassword("incorrect password for user: %s", *user.Phone)
+		}
 		return "TestToken", nil
 	}
-	return "", fmt.Errorf("invalid credentials")
+	return "", v1.ErrorInvalidCredentials("invalid credentials: %v", user.Password)
 }

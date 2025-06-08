@@ -25,6 +25,7 @@ init:
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
 	go install github.com/envoyproxy/protoc-gen-validate@latest
+	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
 
 .PHONY: config
 # generate internal proto
@@ -54,6 +55,15 @@ validate:
         --validate_out=paths=source_relative,lang=go:. \
         $(API_PROTO_FILES)
 
+.PHONY: errors
+# generate errors proto
+errors:
+	protoc --proto_path=. \
+         --proto_path=./third_party \
+         --go_out=paths=source_relative:. \
+         --go-errors_out=paths=source_relative:. \
+         $(API_PROTO_FILES)
+
 .PHONY: build
 # build
 build:
@@ -65,11 +75,21 @@ generate:
 	go generate ./...
 	go mod tidy
 
+.PHONY: proto
+# generate all proto related files
+proto:
+	make api
+	make validate
+	make errors
+
 .PHONY: all
 # generate all
 all:
 	make api;
 	make config;
+	make validate;
+	make errors;
+	make gendb;
 	make generate;
 
 # show help

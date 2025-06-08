@@ -9,6 +9,7 @@ CREATE TABLE `user` (
   `bio` VARCHAR(255) DEFAULT NULL COMMENT '用户简介', -- 用户简介
   `location` VARCHAR(128) DEFAULT NULL COMMENT '用户位置', -- 用户所在位置
   `website` VARCHAR(255) DEFAULT NULL COMMENT '用户个人网站', -- 用户个人网站
+  `role` VARCHAR(32) NOT NULL DEFAULT 'user' COMMENT '用户权限角色', -- 用户权限属性
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 创建时间
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

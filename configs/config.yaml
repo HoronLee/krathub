@@ -1,17 +1,21 @@
 server:
   http:
-    addr: 0.0.0.0:8000
-    timeout: 1s
+    addr: "${HADDR:0.0.0.0:8000}"
+    timeout: "${HTIMEOUT:1s}"
   grpc:
-    addr: 0.0.0.0:8001
-    timeout: 1s
+    addr: "${GADDR:0.0.0.0:8001}"
+    timeout: "${GTIMEHOUT:1s}"
 data:
   database:
-    driver: mysql
-    source: krathub:krathub114514@tcp(127.0.0.1:3306)/krathub?parseTime=True&loc=Local
+    driver: "${DB_DRIVER:mysql}"
+    source: "${DB_SOURCE:krathub:krathub114514@tcp(127.0.0.1:3306)/krathub?parseTime=True&loc=Local}"
   redis:
-    addr: 127.0.0.1:6379
-    read_timeout: 0.2s
-    write_timeout: 0.2s
+    addr: "${RADDR:127.0.0.1:6379}"
+    read_timeout: "${RREAD_TIMEOUT:0.2s}"
+    write_timeout: "${RWRITE_TIMEOUT:0.2s}"
 app:
-  env: dev
+  env: "${ENV:dev}"
+  jwt:
+    secret_key: "${JWT_SECRETK_KEY:krathub_secret}"
+    expire: "${JWT_EXPIRE:24}"
+    issuer: "${JWT_ISSUER:krathub}"

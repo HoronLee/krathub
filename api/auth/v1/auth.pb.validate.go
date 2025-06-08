@@ -35,113 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on UserInfo with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *UserInfo) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UserInfo with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in UserInfoMultiError, or nil
-// if none found.
-func (m *UserInfo) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UserInfo) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for Name
-
-	// no validation rules for Email
-
-	// no validation rules for Phone
-
-	if len(errors) > 0 {
-		return UserInfoMultiError(errors)
-	}
-
-	return nil
-}
-
-// UserInfoMultiError is an error wrapping multiple validation errors returned
-// by UserInfo.ValidateAll() if the designated constraints aren't met.
-type UserInfoMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UserInfoMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UserInfoMultiError) AllErrors() []error { return m }
-
-// UserInfoValidationError is the validation error returned by
-// UserInfo.Validate if the designated constraints aren't met.
-type UserInfoValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UserInfoValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UserInfoValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UserInfoValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UserInfoValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UserInfoValidationError) ErrorName() string { return "UserInfoValidationError" }
-
-// Error satisfies the builtin error interface
-func (e UserInfoValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUserInfo.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UserInfoValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UserInfoValidationError{}
-
 // Validate checks the field values on SignupByEmailRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -197,18 +90,6 @@ func (m *SignupByEmailRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetVerifyCode()) != 6 {
-		err := SignupByEmailRequestValidationError{
-			field:  "VerifyCode",
-			reason: "value length must be 6 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-
-	}
-
 	if err := m._validateEmail(m.GetEmail()); err != nil {
 		err = SignupByEmailRequestValidationError{
 			field:  "Email",
@@ -219,18 +100,6 @@ func (m *SignupByEmailRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	if utf8.RuneCountInString(m.GetPhone()) != 11 {
-		err := SignupByEmailRequestValidationError{
-			field:  "Phone",
-			reason: "value length must be 11 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -385,36 +254,13 @@ func (m *SignupByEmailReply) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetData()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, SignupByEmailReplyValidationError{
-					field:  "Data",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, SignupByEmailReplyValidationError{
-					field:  "Data",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return SignupByEmailReplyValidationError{
-				field:  "Data",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for Id
 
-	// no validation rules for Token
+	// no validation rules for Name
+
+	// no validation rules for Email
+
+	// no validation rules for Role
 
 	if len(errors) > 0 {
 		return SignupByEmailReplyMultiError(errors)
@@ -530,10 +376,6 @@ func (m *LoginByPasswordRequest) validate(all bool) error {
 		}
 		errors = append(errors, err)
 	}
-
-	// no validation rules for CaptchaId
-
-	// no validation rules for CaptchaAnswer
 
 	if len(errors) > 0 {
 		return LoginByPasswordRequestMultiError(errors)
@@ -718,3 +560,205 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LoginByPasswordReplyValidationError{}
+
+// Validate checks the field values on HelloRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *HelloRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HelloRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in HelloRequestMultiError, or
+// nil if none found.
+func (m *HelloRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HelloRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	if len(errors) > 0 {
+		return HelloRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// HelloRequestMultiError is an error wrapping multiple validation errors
+// returned by HelloRequest.ValidateAll() if the designated constraints aren't met.
+type HelloRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HelloRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HelloRequestMultiError) AllErrors() []error { return m }
+
+// HelloRequestValidationError is the validation error returned by
+// HelloRequest.Validate if the designated constraints aren't met.
+type HelloRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HelloRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HelloRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HelloRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HelloRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HelloRequestValidationError) ErrorName() string { return "HelloRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e HelloRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHelloRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HelloRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HelloRequestValidationError{}
+
+// Validate checks the field values on HelloReply with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *HelloReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HelloReply with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in HelloReplyMultiError, or
+// nil if none found.
+func (m *HelloReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HelloReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Message
+
+	if len(errors) > 0 {
+		return HelloReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// HelloReplyMultiError is an error wrapping multiple validation errors
+// returned by HelloReply.ValidateAll() if the designated constraints aren't met.
+type HelloReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HelloReplyMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HelloReplyMultiError) AllErrors() []error { return m }
+
+// HelloReplyValidationError is the validation error returned by
+// HelloReply.Validate if the designated constraints aren't met.
+type HelloReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HelloReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HelloReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HelloReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HelloReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HelloReplyValidationError) ErrorName() string { return "HelloReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e HelloReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHelloReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HelloReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HelloReplyValidationError{}

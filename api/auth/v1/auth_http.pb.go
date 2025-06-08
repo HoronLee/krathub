@@ -20,10 +20,13 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationAuthLoginByPassword = "/auth.v1.Auth/LoginByPassword"
+const OperationAuthSayHello = "/auth.v1.Auth/SayHello"
 const OperationAuthSignupByEmail = "/auth.v1.Auth/SignupByEmail"
 
 type AuthHTTPServer interface {
 	LoginByPassword(context.Context, *LoginByPasswordRequest) (*LoginByPasswordReply, error)
+	// SayHello Sends a greeting
+	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
 }
 
@@ -31,6 +34,7 @@ func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
 	r.POST("/v1/auth/signup/using-email", _Auth_SignupByEmail0_HTTP_Handler(srv))
 	r.POST("/v1/auth/login/using-password", _Auth_LoginByPassword0_HTTP_Handler(srv))
+	r.GET("/helloworld", _Auth_SayHello0_HTTP_Handler(srv))
 }
 
 func _Auth_SignupByEmail0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
@@ -77,8 +81,28 @@ func _Auth_LoginByPassword0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Conte
 	}
 }
 
+func _Auth_SayHello0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in HelloRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAuthSayHello)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SayHello(ctx, req.(*HelloRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*HelloReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type AuthHTTPClient interface {
 	LoginByPassword(ctx context.Context, req *LoginByPasswordRequest, opts ...http.CallOption) (rsp *LoginByPasswordReply, err error)
+	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
 	SignupByEmail(ctx context.Context, req *SignupByEmailRequest, opts ...http.CallOption) (rsp *SignupByEmailReply, err error)
 }
 
@@ -97,6 +121,19 @@ func (c *AuthHTTPClientImpl) LoginByPassword(ctx context.Context, in *LoginByPas
 	opts = append(opts, http.Operation(OperationAuthLoginByPassword))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *AuthHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
+	var out HelloReply
+	pattern := "/helloworld"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAuthSayHello))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

@@ -17,10 +17,11 @@ type User struct {
 	Email     string    `gorm:"column:email;not null" json:"email"`
 	Password  string    `gorm:"column:password;not null" json:"password"`
 	Phone     *string   `gorm:"column:phone" json:"phone"`
-	Avatar    *string   `gorm:"column:avatar;comment:用户头像" json:"avatar"`     // 用户头像
-	Bio       *string   `gorm:"column:bio;comment:用户简介" json:"bio"`           // 用户简介
-	Location  *string   `gorm:"column:location;comment:用户位置" json:"location"` // 用户位置
-	Website   *string   `gorm:"column:website;comment:用户个人网站" json:"website"` // 用户个人网站
+	Avatar    *string   `gorm:"column:avatar;comment:用户头像" json:"avatar"`                     // 用户头像
+	Bio       *string   `gorm:"column:bio;comment:用户简介" json:"bio"`                           // 用户简介
+	Location  *string   `gorm:"column:location;comment:用户位置" json:"location"`                 // 用户位置
+	Website   *string   `gorm:"column:website;comment:用户个人网站" json:"website"`                 // 用户个人网站
+	Role      string    `gorm:"column:role;not null;default:user;comment:用户权限角色" json:"role"` // 用户权限角色
 	CreatedAt time.Time `gorm:"column:created_at;not null;default:current_timestamp()" json:"created_at"`
 	UpdatedAt time.Time `gorm:"column:updated_at;not null;default:current_timestamp()" json:"updated_at"`
 }
