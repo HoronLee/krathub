@@ -26,3 +26,7 @@ go install github.com/envoyproxy/protoc-gen-validate@latest
 ## Data层编码须知
 
 编写 data 层代码之前需要先修改configs目录下的config.yaml文件来配置数据库等相关信息。然后再通过`make gendb`来生成 orm 代码
+
+## Docker Compose 部署
+
+可用的docker compose文件在项目的deployment/docker-compose目录下，首次运行请把model.sql放入initdb文件夹中，这样数据库首次运行就会导入数据。配置文件放于data/conf目录下。

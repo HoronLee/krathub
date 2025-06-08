@@ -1,0 +1,46 @@
+services:
+  krathub:
+    image: krathub:dev
+    container_name: gohub
+    environment:
+      - DB_SOURCE=krathub:dbKrathub@tcp(db:3306)/krathub?parseTime=True&loc=Local
+      - RADDR=redis:6379
+    volumes:
+      - ./data/conf:/data/conf
+    ports:
+      - "8000:8000"
+      - "8001:9000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  db:
+    image: mysql:latest
+    container_name: krathub_db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - MYSQL_ROOT_PASSWORD=dbKrathub
+      - MYSQL_DATABASE=krathub
+      - MYSQL_USER=krathub
+      - MYSQL_PASSWORD=dbKrathubUser
+    volumes:
+      - ./data/db:/var/lib/mysql
+      - ./data/initdb:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:latest
+    container_name: krathub_redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --requirepass redisKrathub
+    volumes:
+      - ./data/redis:/data

@@ -36,3 +36,11 @@ bin/
 .vscode/
 .idea/
 *.swp
+
+# 部署配置
+deployment/docker-compose/data/conf/*
+!deployment/docker-compose/data/conf/.gitkeep
+deployment/docker-compose/data/db
+deployment/docker-compose/data/initdb/*
+!deployment/docker-compose/data/initdb/.gitkeep
+deployment/docker-compose/data/redis
