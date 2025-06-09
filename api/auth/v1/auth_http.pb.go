@@ -19,12 +19,12 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAuthLoginByPassword = "/auth.v1.Auth/LoginByPassword"
+const OperationAuthLoginByEmailPassword = "/auth.v1.Auth/LoginByEmailPassword"
 const OperationAuthSayHello = "/auth.v1.Auth/SayHello"
 const OperationAuthSignupByEmail = "/auth.v1.Auth/SignupByEmail"
 
 type AuthHTTPServer interface {
-	LoginByPassword(context.Context, *LoginByPasswordRequest) (*LoginByPasswordReply, error)
+	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error)
 	// SayHello Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
@@ -32,9 +32,28 @@ type AuthHTTPServer interface {
 
 func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
-	r.POST("/v1/auth/signup/using-email", _Auth_SignupByEmail0_HTTP_Handler(srv))
-	r.POST("/v1/auth/login/using-password", _Auth_LoginByPassword0_HTTP_Handler(srv))
 	r.GET("/helloworld", _Auth_SayHello0_HTTP_Handler(srv))
+	r.POST("/v1/auth/signup/using-email", _Auth_SignupByEmail0_HTTP_Handler(srv))
+	r.POST("/v1/auth/login/using-email-password", _Auth_LoginByEmailPassword0_HTTP_Handler(srv))
+}
+
+func _Auth_SayHello0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in HelloRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAuthSayHello)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SayHello(ctx, req.(*HelloRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*HelloReply)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _Auth_SignupByEmail0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
@@ -59,49 +78,30 @@ func _Auth_SignupByEmail0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context
 	}
 }
 
-func _Auth_LoginByPassword0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
+func _Auth_LoginByEmailPassword0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in LoginByPasswordRequest
+		var in LoginByEmailPasswordRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationAuthLoginByPassword)
+		http.SetOperation(ctx, OperationAuthLoginByEmailPassword)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.LoginByPassword(ctx, req.(*LoginByPasswordRequest))
+			return srv.LoginByEmailPassword(ctx, req.(*LoginByEmailPasswordRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*LoginByPasswordReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Auth_SayHello0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in HelloRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationAuthSayHello)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.SayHello(ctx, req.(*HelloRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*HelloReply)
+		reply := out.(*LoginByEmailPasswordReply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type AuthHTTPClient interface {
-	LoginByPassword(ctx context.Context, req *LoginByPasswordRequest, opts ...http.CallOption) (rsp *LoginByPasswordReply, err error)
+	LoginByEmailPassword(ctx context.Context, req *LoginByEmailPasswordRequest, opts ...http.CallOption) (rsp *LoginByEmailPasswordReply, err error)
 	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
 	SignupByEmail(ctx context.Context, req *SignupByEmailRequest, opts ...http.CallOption) (rsp *SignupByEmailReply, err error)
 }
@@ -114,11 +114,11 @@ func NewAuthHTTPClient(client *http.Client) AuthHTTPClient {
 	return &AuthHTTPClientImpl{client}
 }
 
-func (c *AuthHTTPClientImpl) LoginByPassword(ctx context.Context, in *LoginByPasswordRequest, opts ...http.CallOption) (*LoginByPasswordReply, error) {
-	var out LoginByPasswordReply
-	pattern := "/v1/auth/login/using-password"
+func (c *AuthHTTPClientImpl) LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...http.CallOption) (*LoginByEmailPasswordReply, error) {
+	var out LoginByEmailPasswordReply
+	pattern := "/v1/auth/login/using-email-password"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationAuthLoginByPassword))
+	opts = append(opts, http.Operation(OperationAuthLoginByEmailPassword))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

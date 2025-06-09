@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"context"
-	v1 "krathub/api/auth/v1"
+	authV1 "krathub/api/auth/v1"
+	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
 	"krathub/pkg/jwt"
 	"strings"
@@ -26,14 +27,18 @@ func Auth() middleware.Middleware {
 			if tr, ok := transport.FromServerContext(ctx); ok {
 				token := tr.RequestHeader().Get("Authorization")
 				if token == "" {
-					return nil, v1.ErrorMissingToken("missing Authorization header")
+					return nil, authV1.ErrorMissingToken("missing Authorization header")
 				}
 				token = strings.TrimPrefix(token, "Bearer ")
 				userClaims, err := jwt.NewJWT(bc.App.Jwt).AnalyseToken(token)
 				if err != nil {
 					return nil, err
 				} else if userClaims.Role == "" {
-					return nil, v1.ErrorUnauthorized("don't have permission to access this resource")
+					return nil, authV1.ErrorUnauthorized("don't have permission to access this resource")
+				}
+				// 调用独立的特殊接口权限检查
+				if err := checkSpecialPermission(tr.Operation(), userClaims.Role); err != nil {
+					return nil, err
 				}
 				ctx = metadata.NewServerContext(ctx, metadata.New(map[string][]string{
 					"username": {userClaims.Name},
@@ -48,11 +53,19 @@ func Auth() middleware.Middleware {
 // AuthWhiteListMatcher returns a selector.MatchFunc for auth service whitelist.
 func AuthWhiteListMatcher() selector.MatchFunc {
 	whiteList := map[string]struct{}{
-		"/auth.v1.Auth/SignupByEmail":   {},
-		"/auth.v1.Auth/LoginByPassword": {},
+		"/auth.v1.Auth/SignupByEmail":        {},
+		"/auth.v1.Auth/LoginByEmailPassword": {},
 	}
 	return func(_ context.Context, operation string) bool {
 		_, ok := whiteList[operation]
 		return !ok
 	}
+}
+
+// 检查特殊接口权限
+func checkSpecialPermission(operation, role string) error {
+	if operation == "/user.v1.User/DeleteUser" && role != "admin" {
+		return userV1.ErrorDeleteUserFailed("only admin can delete user")
+	}
+	return nil
 }

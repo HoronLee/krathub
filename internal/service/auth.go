@@ -47,8 +47,8 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *v1.SignupByEmailRe
 	}, nil
 }
 
-// LoginByPassword user login by password.
-func (s *AuthService) LoginByPassword(ctx context.Context, req *v1.LoginByPasswordRequest) (*v1.LoginByPasswordReply, error) {
+// LoginByEmailPassword user login by email and password.
+func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error) {
 	user := &model.User{}
 	var token string
 	var err error
@@ -59,18 +59,11 @@ func (s *AuthService) LoginByPassword(ctx context.Context, req *v1.LoginByPasswo
 		if err != nil {
 			return nil, fmt.Errorf("login by email password failed: %w", err)
 		}
-	} else if helper.IsPhone(req.LoginId) {
-		user.Phone = &req.LoginId
-		user.Password = req.Password
-		token, err = s.uc.LoginByPhonePassword(ctx, user)
-		if err != nil {
-			return nil, fmt.Errorf("login by phone password failed: %w", err)
-		}
 	} else {
-		return nil, fmt.Errorf("login_id must be email or phone")
+		return nil, fmt.Errorf("login_id must be email")
 	}
 	user.Password = req.Password
-	return &v1.LoginByPasswordReply{
+	return &v1.LoginByEmailPasswordReply{
 		Token: token,
 	}, nil
 }

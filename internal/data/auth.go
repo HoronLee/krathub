@@ -55,18 +55,6 @@ func (r *authRepo) DeleteUser(ctx context.Context, user *model.User) (*model.Use
 	return user, nil
 }
 
-// UpdateUser 更新用户信息
-func (r *authRepo) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
-	_, err := r.data.query.User.
-		WithContext(ctx).
-		Where(r.data.query.User.ID.Eq(user.ID)).
-		Updates(user)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
-}
-
 // ListUserByUserName 根据用户名获取用户信息
 func (r *authRepo) ListUserByUserName(ctx context.Context, name string) ([]*model.User, error) {
 	user, err := r.data.query.User.

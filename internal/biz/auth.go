@@ -72,6 +72,15 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 		user.Role = "user"
 	}
 
+	// 检查邮箱是否已存在
+	existingEmails, err := uc.repo.ListUserByEmail(ctx, user.Email)
+	if err != nil {
+		return nil, v1.ErrorUserNotFound("failed to check email: %v", err)
+	}
+	if len(existingEmails) > 0 {
+		return nil, v1.ErrorUserAlreadyExists("email already exists")
+	}
+
 	createdUser, err := uc.repo.SaveUser(ctx, user)
 	if err == nil && !uc.adminRegistered && user.Name == "admin" {
 		uc.adminRegistered = true // 注册成功后更新状态
@@ -105,24 +114,23 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 		}
 		return token, nil
 	}
-	return "", v1.ErrorInvalidCredentials("invalid credentials: %v", user.Password)
-}
 
-// LoginByPhonePassword 手机号密码登录
-func (uc *AuthUsecase) LoginByPhonePassword(ctx context.Context, user *model.User) (token string, err error) {
-	if uc.cfg.Env == "dev" && *user.Phone == "18888888888" {
-		users, err := uc.repo.ListUserByPhone(ctx, *user.Phone)
-		if err != nil {
-			return "", v1.ErrorUserNotFound("failed to get user: %v", err)
-		}
-		if len(users) == 0 {
-			uc.log.Warnf("user %s does not exist", *user.Phone)
-			return "", v1.ErrorUserNotFound("user %s does not exist", *user.Phone)
-		}
-		if !hash.BcryptCheck(user.Password, users[0].Password) {
-			return "", v1.ErrorIncorrectPassword("incorrect password for user: %s", *user.Phone)
-		}
-		return "TestToken", nil
+	// 非 dev 模式下的正常处理逻辑
+	users, err := uc.repo.ListUserByEmail(ctx, user.Email)
+	if err != nil {
+		return "", v1.ErrorUserNotFound("failed to get user: %v", err)
 	}
-	return "", v1.ErrorInvalidCredentials("invalid credentials: %v", user.Password)
+	if len(users) == 0 {
+		uc.log.Warnf("user %s does not exist", user.Email)
+		return "", v1.ErrorUserNotFound("user %s does not exist", user.Email)
+	}
+	if !hash.BcryptCheck(user.Password, users[0].Password) {
+		return "", v1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
+	}
+	// 登录成功，签发 token
+	token, err = uc.generateToken(users[0].Name, users[0].Role)
+	if err != nil {
+		return "", v1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
+	}
+	return token, nil
 }

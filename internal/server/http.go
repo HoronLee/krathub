@@ -1,7 +1,8 @@
 package server
 
 import (
-	v1 "krathub/api/auth/v1"
+	authV1 "krathub/api/auth/v1"
+	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
 	"krathub/internal/server/middleware"
 	"krathub/internal/service"
@@ -16,7 +17,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, auth *service.AuthService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.UserService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -36,6 +37,7 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, logger log.Logger)
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterAuthHTTPServer(srv, auth)
+	authV1.RegisterAuthHTTPServer(srv, auth)
+	userV1.RegisterUserHTTPServer(srv, user)
 	return srv
 }

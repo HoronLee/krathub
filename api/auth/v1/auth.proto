@@ -5,6 +5,7 @@ package auth.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 import "errors/errors.proto";
+// import "google/api/client.proto";
 
 option go_package = "krathub/api/auth/v1;v1";
 option java_multiple_files = true;
@@ -35,6 +36,41 @@ enum ErrorReason {
   UNAUTHORIZED = 7 [(errors.code) = 403];
 }
 
+service Auth {
+
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      get: "/helloworld"
+    };
+  }
+
+  rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply) {
+    option (google.api.http) = {
+      post: "/v1/auth/signup/using-email"
+      body: "*"
+    };
+  }
+
+  rpc LoginByEmailPassword(LoginByEmailPasswordRequest) returns (LoginByEmailPasswordReply) {
+    option (google.api.http) = {
+      post: "/v1/auth/login/using-email-password"
+      body: "*"
+    };
+  }
+
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
 // 邮箱注册请求
 message SignupByEmailRequest {
   string name = 1 [(validate.rules).string.min_len =  5]; // 用户名最小长度5
@@ -55,45 +91,12 @@ message SignupByEmailReply {
 }
 
 // 密码登录请求
-message LoginByPasswordRequest {
+message LoginByEmailPasswordRequest {
   string login_id = 1; // 可以是用户名或邮箱
   string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
 }
 
 // 密码登录响应
-message LoginByPasswordReply {
+message LoginByEmailPasswordReply {
   string token = 1;
-}
-
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
-}
-
-service Auth {
-  rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply) {
-    option (google.api.http) = {
-      post: "/v1/auth/signup/using-email"
-      body: "*"
-    };
-  }
-
-  rpc LoginByPassword(LoginByPasswordRequest) returns (LoginByPasswordReply) {
-    option (google.api.http) = {
-      post: "/v1/auth/login/using-password"
-      body: "*"
-    };
-  }
-
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {
-    option (google.api.http) = {
-      get: "/helloworld"
-    };
-  }
 }

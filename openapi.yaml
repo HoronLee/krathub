@@ -3,7 +3,7 @@
 
 openapi: 3.0.3
 info:
-    title: Auth API
+    title: ""
     version: 0.0.1
 paths:
     /helloworld:
@@ -24,16 +24,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.HelloReply'
-    /v1/auth/login/using-password:
+    /v1/auth/login/using-email-password:
         post:
             tags:
                 - Auth
-            operationId: Auth_LoginByPassword
+            operationId: Auth_LoginByEmailPassword
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/auth.v1.LoginByPasswordRequest'
+                            $ref: '#/components/schemas/auth.v1.LoginByEmailPasswordRequest'
                 required: true
             responses:
                 "200":
@@ -41,7 +41,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/auth.v1.LoginByPasswordReply'
+                                $ref: '#/components/schemas/auth.v1.LoginByEmailPasswordReply'
     /v1/auth/signup/using-email:
         post:
             tags:
@@ -60,6 +60,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.SignupByEmailReply'
+    /v1/user/delete/{id}:
+        delete:
+            tags:
+                - User
+            operationId: User_DeleteUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.DeleteUserReply'
 components:
     schemas:
         auth.v1.HelloReply:
@@ -68,13 +86,13 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
-        auth.v1.LoginByPasswordReply:
+        auth.v1.LoginByEmailPasswordReply:
             type: object
             properties:
                 token:
                     type: string
             description: 密码登录响应
-        auth.v1.LoginByPasswordRequest:
+        auth.v1.LoginByEmailPasswordRequest:
             type: object
             properties:
                 loginId:
@@ -107,5 +125,11 @@ components:
                 email:
                     type: string
             description: 邮箱注册请求
+        user.v1.DeleteUserReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
 tags:
     - name: Auth
+    - name: User

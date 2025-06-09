@@ -35,8 +35,11 @@ func wireApp(confServer *conf.Server, confData *conf.Data, app *conf.App, logger
 	authRepo := data.NewAuthRepo(dataData, logger)
 	authUsecase := biz.NewAuthUsecase(authRepo, logger, app)
 	authService := service.NewAuthService(authUsecase)
-	grpcServer := server.NewGRPCServer(confServer, authService, logger)
-	httpServer := server.NewHTTPServer(confServer, authService, logger)
+	userRepo := data.NewUserRepo(dataData, logger)
+	userUsecase := biz.NewUserUsecase(userRepo, logger, app)
+	userService := service.NewUserService(userUsecase)
+	grpcServer := server.NewGRPCServer(confServer, authService, userService, logger)
+	httpServer := server.NewHTTPServer(confServer, authService, userService, logger)
 	kratosApp := newApp(logger, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup()
