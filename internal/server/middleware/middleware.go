@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"context"
-	authV1 "krathub/api/auth/v1"
-	userV1 "krathub/api/user/v1"
+	authV1 "krathub/api/v1/auth"
+	userV1 "krathub/api/v1/user"
 	"krathub/internal/conf"
 	"krathub/pkg/jwt"
 	"strings"

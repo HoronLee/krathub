@@ -2,13 +2,13 @@ package service
 
 import (
 	"context"
-	v1 "krathub/api/user/v1"
+	userv1 "krathub/api/v1/user"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
 )
 
 type UserService struct {
-	v1.UnimplementedUserServer
+	userv1.UnimplementedUserServer
 
 	uc *biz.UserUsecase
 }
@@ -16,12 +16,12 @@ type UserService struct {
 func NewUserService(uc *biz.UserUsecase) *UserService {
 	return &UserService{uc: uc}
 }
-func (s *UserService) DeleteUser(ctx context.Context, req *v1.DeleteUserRequest) (*v1.DeleteUserReply, error) {
+func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserReply, error) {
 	success, err := s.uc.DeleteUser(ctx, &model.User{
 		ID: req.Id,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &v1.DeleteUserReply{Success: success}, err
+	return &userv1.DeleteUserReply{Success: success}, err
 }

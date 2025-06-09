@@ -23,7 +23,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/auth.v1.HelloReply'
+                                $ref: '#/components/schemas/krathub.auth.v1.HelloReply'
     /v1/auth/login/using-email-password:
         post:
             tags:
@@ -33,7 +33,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/auth.v1.LoginByEmailPasswordRequest'
+                            $ref: '#/components/schemas/krathub.auth.v1.LoginByEmailPasswordRequest'
                 required: true
             responses:
                 "200":
@@ -41,7 +41,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/auth.v1.LoginByEmailPasswordReply'
+                                $ref: '#/components/schemas/krathub.auth.v1.LoginByEmailPasswordReply'
     /v1/auth/signup/using-email:
         post:
             tags:
@@ -51,7 +51,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/auth.v1.SignupByEmailRequest'
+                            $ref: '#/components/schemas/krathub.auth.v1.SignupByEmailRequest'
                 required: true
             responses:
                 "200":
@@ -59,7 +59,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/auth.v1.SignupByEmailReply'
+                                $ref: '#/components/schemas/krathub.auth.v1.SignupByEmailReply'
     /v1/user/delete/{id}:
         delete:
             tags:
@@ -77,22 +77,22 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/user.v1.DeleteUserReply'
+                                $ref: '#/components/schemas/krathub.user.v1.DeleteUserReply'
 components:
     schemas:
-        auth.v1.HelloReply:
+        krathub.auth.v1.HelloReply:
             type: object
             properties:
                 message:
                     type: string
             description: The response message containing the greetings
-        auth.v1.LoginByEmailPasswordReply:
+        krathub.auth.v1.LoginByEmailPasswordReply:
             type: object
             properties:
                 token:
                     type: string
             description: 密码登录响应
-        auth.v1.LoginByEmailPasswordRequest:
+        krathub.auth.v1.LoginByEmailPasswordRequest:
             type: object
             properties:
                 loginId:
@@ -100,7 +100,7 @@ components:
                 password:
                     type: string
             description: 密码登录请求
-        auth.v1.SignupByEmailReply:
+        krathub.auth.v1.SignupByEmailReply:
             type: object
             properties:
                 id:
@@ -112,7 +112,7 @@ components:
                 role:
                     type: string
             description: 邮箱注册响应
-        auth.v1.SignupByEmailRequest:
+        krathub.auth.v1.SignupByEmailRequest:
             type: object
             properties:
                 name:
@@ -125,7 +125,7 @@ components:
                 email:
                     type: string
             description: 邮箱注册请求
-        user.v1.DeleteUserReply:
+        krathub.user.v1.DeleteUserReply:
             type: object
             properties:
                 success:

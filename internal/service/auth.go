@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
-	v1 "krathub/api/auth/v1"
+	authv1 "krathub/api/v1/auth"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
 	"krathub/pkg/helper"
@@ -14,7 +14,7 @@ import (
 
 // AuthService is a auth service.
 type AuthService struct {
-	v1.UnimplementedAuthServer
+	authv1.UnimplementedAuthServer
 
 	uc *biz.AuthUsecase
 }
@@ -24,7 +24,7 @@ func NewAuthService(uc *biz.AuthUsecase) *AuthService {
 	return &AuthService{uc: uc}
 }
 
-func (s *AuthService) SignupByEmail(ctx context.Context, req *v1.SignupByEmailRequest) (*v1.SignupByEmailReply, error) {
+func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEmailRequest) (*authv1.SignupByEmailReply, error) {
 	// 参数校验
 	if req.Password != req.PasswordConfirm {
 		return nil, fmt.Errorf("password and confirm password do not match")
@@ -39,7 +39,7 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *v1.SignupByEmailRe
 		return nil, err
 	}
 	// 拼装返回结果
-	return &v1.SignupByEmailReply{
+	return &authv1.SignupByEmailReply{
 		Id:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
@@ -48,7 +48,7 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *v1.SignupByEmailRe
 }
 
 // LoginByEmailPassword user login by email and password.
-func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error) {
+func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.LoginByEmailPasswordRequest) (*authv1.LoginByEmailPasswordReply, error) {
 	user := &model.User{}
 	var token string
 	var err error
@@ -63,13 +63,13 @@ func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *v1.LoginByE
 		return nil, fmt.Errorf("login_id must be email")
 	}
 	user.Password = req.Password
-	return &v1.LoginByEmailPasswordReply{
+	return &authv1.LoginByEmailPasswordReply{
 		Token: token,
 	}, nil
 }
 
 // SayHello implements helloworld.GreeterServer.
-func (s *AuthService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+func (s *AuthService) SayHello(ctx context.Context, in *authv1.HelloRequest) (*authv1.HelloReply, error) {
 	var username, role string
 	if md, ok := metadata.FromServerContext(ctx); ok {
 		username = md.Get("username")
@@ -80,5 +80,5 @@ func (s *AuthService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.He
 	}
 	log.Infof("User %s with role %s is logging in", username, role)
 
-	return &v1.HelloReply{Message: "Hello World"}, nil
+	return &authv1.HelloReply{Message: "Hello World"}, nil
 }

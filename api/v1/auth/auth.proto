@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package auth.v1;
+package krathub.auth.v1;
 
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 import "errors/errors.proto";
 // import "google/api/client.proto";
 
-option go_package = "krathub/api/auth/v1;v1";
+option go_package = "krathub/api/v1/auth;authv1";
 option java_multiple_files = true;
-option java_package = "dev.kratos.api.auth.v1";
+option java_package = "dev.krathub.api.auth.v1";
 option java_outer_classname = "AuthProtoV1";
 
 // 错误码定义

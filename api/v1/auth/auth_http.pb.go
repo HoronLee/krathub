@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             v6.31.0
-// source: auth/v1/auth.proto
+// source: v1/auth/auth.proto
 
-package v1
+package authv1
 
 import (
 	context "context"
@@ -19,9 +19,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAuthLoginByEmailPassword = "/auth.v1.Auth/LoginByEmailPassword"
-const OperationAuthSayHello = "/auth.v1.Auth/SayHello"
-const OperationAuthSignupByEmail = "/auth.v1.Auth/SignupByEmail"
+const OperationAuthLoginByEmailPassword = "/krathub.auth.v1.Auth/LoginByEmailPassword"
+const OperationAuthSayHello = "/krathub.auth.v1.Auth/SayHello"
+const OperationAuthSignupByEmail = "/krathub.auth.v1.Auth/SignupByEmail"
 
 type AuthHTTPServer interface {
 	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error)

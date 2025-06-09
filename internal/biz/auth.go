@@ -2,7 +2,7 @@ package biz
 
 import (
 	"context"
-	v1 "krathub/api/auth/v1"
+	authv1 "krathub/api/v1/auth"
 	"krathub/internal/conf"
 	"krathub/internal/data/model"
 	"krathub/pkg/hash"
@@ -56,7 +56,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 	if !uc.adminRegistered {
 		// 第一次注册，用户名必须为 admin
 		if user.Name != "admin" {
-			return nil, v1.ErrorInvalidCredentials("the first user must be named admin")
+			return nil, authv1.ErrorInvalidCredentials("the first user must be named admin")
 		}
 		user.Role = "admin"
 	} else {
@@ -64,10 +64,10 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 		// 检查用户名是否已存在
 		existingUsers, err := uc.repo.ListUserByUserName(ctx, user.Name)
 		if err != nil {
-			return nil, v1.ErrorUserNotFound("failed to check username: %v", err)
+			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
 		}
 		if len(existingUsers) > 0 {
-			return nil, v1.ErrorUserAlreadyExists("username already exists")
+			return nil, authv1.ErrorUserAlreadyExists("username already exists")
 		}
 		user.Role = "user"
 	}
@@ -75,10 +75,10 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 	// 检查邮箱是否已存在
 	existingEmails, err := uc.repo.ListUserByEmail(ctx, user.Email)
 	if err != nil {
-		return nil, v1.ErrorUserNotFound("failed to check email: %v", err)
+		return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
 	}
 	if len(existingEmails) > 0 {
-		return nil, v1.ErrorUserAlreadyExists("email already exists")
+		return nil, authv1.ErrorUserAlreadyExists("email already exists")
 	}
 
 	createdUser, err := uc.repo.SaveUser(ctx, user)
@@ -98,19 +98,19 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 	if uc.cfg.Env == "dev" && user.Email == "admin@example.com" {
 		users, err := uc.repo.ListUserByEmail(ctx, user.Email)
 		if err != nil {
-			return "", v1.ErrorUserNotFound("failed to get user: %v", err)
+			return "", authv1.ErrorUserNotFound("failed to get user: %v", err)
 		}
 		if len(users) == 0 {
 			uc.log.Warnf("user %s does not exist", user.Email)
-			return "", v1.ErrorUserNotFound("user %s does not exist", user.Email)
+			return "", authv1.ErrorUserNotFound("user %s does not exist", user.Email)
 		}
 		if !hash.BcryptCheck(user.Password, users[0].Password) {
-			return "", v1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
+			return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 		}
 		// 登录成功，签发 token
 		token, err := uc.generateToken(users[0].Name, users[0].Role)
 		if err != nil {
-			return "", v1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
+			return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
 		}
 		return token, nil
 	}
@@ -118,19 +118,19 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 	// 非 dev 模式下的正常处理逻辑
 	users, err := uc.repo.ListUserByEmail(ctx, user.Email)
 	if err != nil {
-		return "", v1.ErrorUserNotFound("failed to get user: %v", err)
+		return "", authv1.ErrorUserNotFound("failed to get user: %v", err)
 	}
 	if len(users) == 0 {
 		uc.log.Warnf("user %s does not exist", user.Email)
-		return "", v1.ErrorUserNotFound("user %s does not exist", user.Email)
+		return "", authv1.ErrorUserNotFound("user %s does not exist", user.Email)
 	}
 	if !hash.BcryptCheck(user.Password, users[0].Password) {
-		return "", v1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
+		return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 	}
 	// 登录成功，签发 token
 	token, err = uc.generateToken(users[0].Name, users[0].Role)
 	if err != nil {
-		return "", v1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
+		return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
 	}
 	return token, nil
 }

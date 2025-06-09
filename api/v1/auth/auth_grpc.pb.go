@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.31.0
-// source: auth/v1/auth.proto
+// source: v1/auth/auth.proto
 
-package v1
+package authv1
 
 import (
 	context "context"
@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_SayHello_FullMethodName             = "/auth.v1.Auth/SayHello"
-	Auth_SignupByEmail_FullMethodName        = "/auth.v1.Auth/SignupByEmail"
-	Auth_LoginByEmailPassword_FullMethodName = "/auth.v1.Auth/LoginByEmailPassword"
+	Auth_SayHello_FullMethodName             = "/krathub.auth.v1.Auth/SayHello"
+	Auth_SignupByEmail_FullMethodName        = "/krathub.auth.v1.Auth/SignupByEmail"
+	Auth_LoginByEmailPassword_FullMethodName = "/krathub.auth.v1.Auth/LoginByEmailPassword"
 )
 
 // AuthClient is the client API for Auth service.
@@ -178,7 +178,7 @@ func _Auth_LoginByEmailPassword_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Auth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "auth.v1.Auth",
+	ServiceName: "krathub.auth.v1.Auth",
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -195,5 +195,5 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth/v1/auth.proto",
+	Metadata: "v1/auth/auth.proto",
 }

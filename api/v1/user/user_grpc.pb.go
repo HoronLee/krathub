@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.31.0
-// source: user/v1/user.proto
+// source: v1/user/user.proto
 
-package v1
+package userv1
 
 import (
 	context "context"
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_DeleteUser_FullMethodName = "/user.v1.User/DeleteUser"
+	User_DeleteUser_FullMethodName = "/krathub.user.v1.User/DeleteUser"
 )
 
 // UserClient is the client API for User service.
@@ -108,7 +108,7 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.v1.User",
+	ServiceName: "krathub.user.v1.User",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -117,5 +117,5 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "user/v1/user.proto",
+	Metadata: "v1/user/user.proto",
 }

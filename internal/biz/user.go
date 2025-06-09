@@ -2,7 +2,7 @@ package biz
 
 import (
 	"context"
-	v1 "krathub/api/user/v1"
+	userv1 "krathub/api/v1/user"
 	"krathub/internal/conf"
 	"krathub/internal/data/model"
 
@@ -33,7 +33,7 @@ func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App) *UserUsecas
 func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (success bool, err error) {
 	_, err = uc.repo.DeleteUser(ctx, user)
 	if err != nil {
-		return false, v1.ErrorDeleteUserFailed("failed to delete user: %v", err)
+		return false, userv1.ErrorDeleteUserFailed("failed to delete user: %v", err)
 	}
 	return true, nil
 }

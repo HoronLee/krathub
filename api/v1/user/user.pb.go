@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.0
-// source: api/user/v1/user.proto
+// source: api/v1/user/user.proto
 
-package v1
+package userv1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
@@ -57,11 +57,11 @@ func (x ErrorReason) String() string {
 }
 
 func (ErrorReason) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_user_v1_user_proto_enumTypes[0].Descriptor()
+	return file_api_v1_user_user_proto_enumTypes[0].Descriptor()
 }
 
 func (ErrorReason) Type() protoreflect.EnumType {
-	return &file_api_user_v1_user_proto_enumTypes[0]
+	return &file_api_v1_user_user_proto_enumTypes[0]
 }
 
 func (x ErrorReason) Number() protoreflect.EnumNumber {
@@ -70,7 +70,7 @@ func (x ErrorReason) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ErrorReason.Descriptor instead.
 func (ErrorReason) EnumDescriptor() ([]byte, []int) {
-	return file_api_user_v1_user_proto_rawDescGZIP(), []int{0}
+	return file_api_v1_user_user_proto_rawDescGZIP(), []int{0}
 }
 
 type DeleteUserRequest struct {
@@ -82,7 +82,7 @@ type DeleteUserRequest struct {
 
 func (x *DeleteUserRequest) Reset() {
 	*x = DeleteUserRequest{}
-	mi := &file_api_user_v1_user_proto_msgTypes[0]
+	mi := &file_api_v1_user_user_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -94,7 +94,7 @@ func (x *DeleteUserRequest) String() string {
 func (*DeleteUserRequest) ProtoMessage() {}
 
 func (x *DeleteUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_user_v1_user_proto_msgTypes[0]
+	mi := &file_api_v1_user_user_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -107,7 +107,7 @@ func (x *DeleteUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteUserRequest.ProtoReflect.Descriptor instead.
 func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
-	return file_api_user_v1_user_proto_rawDescGZIP(), []int{0}
+	return file_api_v1_user_user_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *DeleteUserRequest) GetId() int64 {
@@ -126,7 +126,7 @@ type DeleteUserReply struct {
 
 func (x *DeleteUserReply) Reset() {
 	*x = DeleteUserReply{}
-	mi := &file_api_user_v1_user_proto_msgTypes[1]
+	mi := &file_api_v1_user_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -138,7 +138,7 @@ func (x *DeleteUserReply) String() string {
 func (*DeleteUserReply) ProtoMessage() {}
 
 func (x *DeleteUserReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_user_v1_user_proto_msgTypes[1]
+	mi := &file_api_v1_user_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -151,7 +151,7 @@ func (x *DeleteUserReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteUserReply.ProtoReflect.Descriptor instead.
 func (*DeleteUserReply) Descriptor() ([]byte, []int) {
-	return file_api_user_v1_user_proto_rawDescGZIP(), []int{1}
+	return file_api_v1_user_user_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DeleteUserReply) GetSuccess() bool {
@@ -161,45 +161,45 @@ func (x *DeleteUserReply) GetSuccess() bool {
 	return false
 }
 
-var File_api_user_v1_user_proto protoreflect.FileDescriptor
+var File_api_v1_user_user_proto protoreflect.FileDescriptor
 
-const file_api_user_v1_user_proto_rawDesc = "" +
+const file_api_v1_user_user_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/user/v1/user.proto\x12\auser.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\x1a\x17google/api/client.proto\",\n" +
+	"\x16api/v1/user/user.proto\x12\x0fkrathub.user.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\x1a\x17google/api/client.proto\",\n" +
 	"\x11DeleteUserRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\"+\n" +
 	"\x0fDeleteUserReply\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess*K\n" +
 	"\vErrorReason\x12\x18\n" +
 	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1c\n" +
-	"\x12DELETE_USER_FAILED\x10\b\x1a\x04\xa8E\xf4\x03\x1a\x04\xa0E\xf4\x032m\n" +
-	"\x04User\x12e\n" +
+	"\x12DELETE_USER_FAILED\x10\b\x1a\x04\xa8E\xf4\x03\x1a\x04\xa0E\xf4\x032}\n" +
+	"\x04User\x12u\n" +
 	"\n" +
-	"DeleteUser\x12\x1a.user.v1.DeleteUserRequest\x1a\x18.user.v1.DeleteUserReply\"!\xdaA\x02id\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B?\n" +
-	"\x16dev.kratos.api.user.v1B\vUserProtoV1P\x01Z\x16krathub/api/user/v1;v1b\x06proto3"
+	"DeleteUser\x12\".krathub.user.v1.DeleteUserRequest\x1a .krathub.user.v1.DeleteUserReply\"!\xdaA\x02id\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}BD\n" +
+	"\x17dev.krathub.api.user.v1B\vUserProtoV1P\x01Z\x1akrathub/api/v1/user;userv1b\x06proto3"
 
 var (
-	file_api_user_v1_user_proto_rawDescOnce sync.Once
-	file_api_user_v1_user_proto_rawDescData []byte
+	file_api_v1_user_user_proto_rawDescOnce sync.Once
+	file_api_v1_user_user_proto_rawDescData []byte
 )
 
-func file_api_user_v1_user_proto_rawDescGZIP() []byte {
-	file_api_user_v1_user_proto_rawDescOnce.Do(func() {
-		file_api_user_v1_user_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_user_v1_user_proto_rawDesc), len(file_api_user_v1_user_proto_rawDesc)))
+func file_api_v1_user_user_proto_rawDescGZIP() []byte {
+	file_api_v1_user_user_proto_rawDescOnce.Do(func() {
+		file_api_v1_user_user_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_v1_user_user_proto_rawDesc), len(file_api_v1_user_user_proto_rawDesc)))
 	})
-	return file_api_user_v1_user_proto_rawDescData
+	return file_api_v1_user_user_proto_rawDescData
 }
 
-var file_api_user_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_api_user_v1_user_proto_goTypes = []any{
-	(ErrorReason)(0),          // 0: user.v1.ErrorReason
-	(*DeleteUserRequest)(nil), // 1: user.v1.DeleteUserRequest
-	(*DeleteUserReply)(nil),   // 2: user.v1.DeleteUserReply
+var file_api_v1_user_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_api_v1_user_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_v1_user_user_proto_goTypes = []any{
+	(ErrorReason)(0),          // 0: krathub.user.v1.ErrorReason
+	(*DeleteUserRequest)(nil), // 1: krathub.user.v1.DeleteUserRequest
+	(*DeleteUserReply)(nil),   // 2: krathub.user.v1.DeleteUserReply
 }
-var file_api_user_v1_user_proto_depIdxs = []int32{
-	1, // 0: user.v1.User.DeleteUser:input_type -> user.v1.DeleteUserRequest
-	2, // 1: user.v1.User.DeleteUser:output_type -> user.v1.DeleteUserReply
+var file_api_v1_user_user_proto_depIdxs = []int32{
+	1, // 0: krathub.user.v1.User.DeleteUser:input_type -> krathub.user.v1.DeleteUserRequest
+	2, // 1: krathub.user.v1.User.DeleteUser:output_type -> krathub.user.v1.DeleteUserReply
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -207,27 +207,27 @@ var file_api_user_v1_user_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_api_user_v1_user_proto_init() }
-func file_api_user_v1_user_proto_init() {
-	if File_api_user_v1_user_proto != nil {
+func init() { file_api_v1_user_user_proto_init() }
+func file_api_v1_user_user_proto_init() {
+	if File_api_v1_user_user_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_user_v1_user_proto_rawDesc), len(file_api_user_v1_user_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v1_user_user_proto_rawDesc), len(file_api_v1_user_user_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_user_v1_user_proto_goTypes,
-		DependencyIndexes: file_api_user_v1_user_proto_depIdxs,
-		EnumInfos:         file_api_user_v1_user_proto_enumTypes,
-		MessageInfos:      file_api_user_v1_user_proto_msgTypes,
+		GoTypes:           file_api_v1_user_user_proto_goTypes,
+		DependencyIndexes: file_api_v1_user_user_proto_depIdxs,
+		EnumInfos:         file_api_v1_user_user_proto_enumTypes,
+		MessageInfos:      file_api_v1_user_user_proto_msgTypes,
 	}.Build()
-	File_api_user_v1_user_proto = out.File
-	file_api_user_v1_user_proto_goTypes = nil
-	file_api_user_v1_user_proto_depIdxs = nil
+	File_api_v1_user_user_proto = out.File
+	file_api_v1_user_user_proto_goTypes = nil
+	file_api_v1_user_user_proto_depIdxs = nil
 }

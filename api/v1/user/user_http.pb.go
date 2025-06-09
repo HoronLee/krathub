@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             v6.31.0
-// source: user/v1/user.proto
+// source: v1/user/user.proto
 
-package v1
+package userv1
 
 import (
 	context "context"
@@ -19,7 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUserDeleteUser = "/user.v1.User/DeleteUser"
+const OperationUserDeleteUser = "/krathub.user.v1.User/DeleteUser"
 
 type UserHTTPServer interface {
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserReply, error)
