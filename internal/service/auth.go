@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
-	authv1 "krathub/api/v1/auth"
+	authv1 "krathub/api/auth/v1"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
 	"krathub/pkg/helper"

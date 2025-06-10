@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	userv1 "krathub/api/v1/user"
+	userv1 "krathub/api/user/v1"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
 )

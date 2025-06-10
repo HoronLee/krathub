@@ -3,8 +3,12 @@
 > 基于Kratos框架编写的快开框架，目前处于开发初期阶段
 
 开发顺序: api -> config -> service -> biz -> data
+功能编写完成后需要依次进行依赖注入然后wire生成代码，并且需要在internal/server中添加用法
 
 ## 项目依赖
+
+直接执行`make init`即可下载所需软件，下方仅为新增以来软件的列表
+
 项目中需要使用wire依赖注入,安装wire:
 
 ```bash

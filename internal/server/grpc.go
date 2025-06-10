@@ -1,8 +1,8 @@
 package server
 
 import (
-	authV1 "krathub/api/v1/auth"
-	userV1 "krathub/api/v1/user"
+	authV1 "krathub/api/auth/v1"
+	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
 	"krathub/internal/server/middleware"
 	"krathub/internal/service"
