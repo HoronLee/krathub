@@ -4,6 +4,7 @@ import (
 	authV1 "krathub/api/auth/v1"
 	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
+	"krathub/internal/consts"
 	"krathub/internal/server/middleware"
 	"krathub/internal/service"
 
@@ -24,7 +25,9 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 			tracing.Server(),
 			logging.Server(logger),
 			validate.Validator(),
-			selector.Server(middleware.Auth()).Match(middleware.AuthWhiteListMatcher()).Build(),
+			selector.Server(middleware.AuthWithMinRole(consts.UserRole(2))).
+				Match(middleware.AuthWhiteListMatcher()).
+				Build(),
 		),
 	}
 	if c.Http.Network != "" {

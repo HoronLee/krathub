@@ -5,13 +5,14 @@ import (
 	authV1 "krathub/api/auth/v1"
 	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
-	"krathub/pkg/jwt"
+	"krathub/internal/consts"
 	"strings"
 
 	"github.com/go-kratos/kratos/v2/metadata"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/golang-jwt/jwt"
 )
 
 var bc *conf.Bootstrap
@@ -21,30 +22,60 @@ func SetBootstrap(bootstrap *conf.Bootstrap) {
 }
 
 // Auth is a middleware for authentication service.
-func Auth() middleware.Middleware {
+func AuthWithMinRole(minRole consts.UserRole) middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req any) (reply any, err error) {
-			if tr, ok := transport.FromServerContext(ctx); ok {
-				token := tr.RequestHeader().Get("Authorization")
-				if token == "" {
-					return nil, authV1.ErrorMissingToken("missing Authorization header")
-				}
-				token = strings.TrimPrefix(token, "Bearer ")
-				userClaims, err := jwt.NewJWT(bc.App.Jwt).AnalyseToken(token)
-				if err != nil {
-					return nil, err
-				} else if userClaims.Role == "" {
-					return nil, authV1.ErrorUnauthorized("don't have permission to access this resource")
-				}
-				// 调用独立的特殊接口权限检查
-				if err := checkSpecialPermission(tr.Operation(), userClaims.Role); err != nil {
-					return nil, err
-				}
-				ctx = metadata.NewServerContext(ctx, metadata.New(map[string][]string{
-					"username": {userClaims.Name},
-					"role":     {userClaims.Role},
-				}))
+			tr, ok := transport.FromServerContext(ctx)
+			if !ok {
+				return nil, authV1.ErrorMissingToken("missing transport context")
 			}
+			authHeader := tr.RequestHeader().Get("Authorization")
+			tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+			if tokenString == "" {
+				return nil, authV1.ErrorMissingToken("missing Authorization header")
+			}
+
+			// 解析 JWT Token
+			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
+				return []byte(bc.App.Jwt.SecretKey), nil
+			})
+			if err != nil || !token.Valid {
+				return nil, authV1.ErrorUnauthorized("invalid token")
+			}
+
+			claims, ok := token.Claims.(jwt.MapClaims)
+			if !ok {
+				return nil, authV1.ErrorUnauthorized("invalid claims")
+			}
+
+			roleStr, ok := claims["role"].(string)
+			if !ok {
+				return nil, authV1.ErrorUnauthorized("role not found in token")
+			}
+
+			var userRole consts.UserRole
+			switch roleStr {
+			case "guest":
+				userRole = consts.Guest
+			case "user":
+				userRole = consts.User
+			case "admin":
+				userRole = consts.Admin
+			case "operator":
+				userRole = consts.Operator
+			default:
+				return nil, authV1.ErrorUnauthorized("unknown role")
+			}
+
+			if userRole < minRole {
+				return nil, authV1.ErrorUnauthorized("permission denied")
+			}
+
+			// 可选：将用户信息写入 metadata
+			ctx = metadata.NewServerContext(ctx, metadata.New(map[string][]string{
+				"role": {roleStr},
+			}))
+
 			return handler(ctx, req)
 		}
 	}
