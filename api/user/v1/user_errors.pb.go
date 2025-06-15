@@ -38,3 +38,17 @@ func IsDeleteUserFailed(err error) bool {
 func ErrorDeleteUserFailed(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_DELETE_USER_FAILED.String(), fmt.Sprintf(format, args...))
 }
+
+// 更新用户信息失败
+func IsUpdateUserFailed(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_UPDATE_USER_FAILED.String() && e.Code == 500
+}
+
+// 更新用户信息失败
+func ErrorUpdateUserFailed(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, ErrorReason_UPDATE_USER_FAILED.String(), fmt.Sprintf(format, args...))
+}

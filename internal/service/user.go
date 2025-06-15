@@ -2,8 +2,11 @@ package service
 
 import (
 	"context"
+	authv1 "krathub/api/auth/v1"
 	userv1 "krathub/api/user/v1"
+
 	"krathub/internal/biz"
+	"krathub/internal/consts"
 	"krathub/internal/data/model"
 )
 
@@ -26,6 +29,58 @@ func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUs
 		Id:   user.ID,
 		Name: user.Name,
 		Role: user.Role,
+	}, nil
+}
+
+// UpdateUser 更新用户信息
+func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequest) (*userv1.UpdateUserReply, error) {
+	currentUser, err := s.uc.CurrentUserInfo(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// 普通用户只能修改自己的信息，不能修改权限
+	if currentUser.Role == consts.User.String() {
+		if currentUser.ID != req.Id {
+			return nil, authv1.ErrorUnauthorized("you do not have permission to update this user")
+		}
+		if req.Role != "" && req.Role != consts.User.String() {
+			return nil, authv1.ErrorUnauthorized("you do not have permission to change your role")
+		}
+	}
+
+	// 管理员可以修改其他用户，但不能将Role提升到Admin及以上
+	if currentUser.Role == consts.Admin.String() {
+		if req.Role != "" && req.Role >= consts.Admin.String() {
+			return nil, authv1.ErrorUnauthorized("admin cannot assign role higher than admin")
+		}
+	}
+
+	// Operator可以修改所有用户，包括权限到Operator
+	if currentUser.Role == consts.Operator.String() {
+		if req.Role != "" && req.Role > consts.Operator.String() {
+			return nil, authv1.ErrorUnauthorized("operator cannot assign role higher than operator")
+		}
+	}
+
+	user := &model.User{
+		ID:       req.Id,
+		Name:     req.Name,
+		Email:    req.Email,
+		Password: req.Password,
+		Phone:    &req.Phone,
+		Avatar:   &req.Avatar,
+		Bio:      &req.Bio,
+		Location: &req.Location,
+		Website:  &req.Website,
+		Role:     req.Role,
+	}
+	_, err = s.uc.UpdateUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return &userv1.UpdateUserReply{
+		Success: "true",
 	}, nil
 }
 

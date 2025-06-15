@@ -73,6 +73,18 @@ func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*model.User, error)
 	return user, nil
 }
 
+func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
+	_, err := uc.repo.GetUserById(ctx, user.ID)
+	if err != nil {
+		return nil, userv1.ErrorUserNotFound("user not found: %v", err)
+	}
+	updatedUser, err := uc.repo.UpdateUser(ctx, user)
+	if err != nil {
+		return nil, userv1.ErrorUpdateUserFailed("failed to update user: %v", err)
+	}
+	return updatedUser, nil
+}
+
 func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (success bool, err error) {
 	_, err = uc.repo.DeleteUser(ctx, user)
 	if err != nil {

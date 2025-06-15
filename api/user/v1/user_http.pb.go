@@ -21,15 +21,18 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationUserCurrentUserInfo = "/krathub.user.v1.User/CurrentUserInfo"
 const OperationUserDeleteUser = "/krathub.user.v1.User/DeleteUser"
+const OperationUserUpdateUser = "/krathub.user.v1.User/UpdateUser"
 
 type UserHTTPServer interface {
 	CurrentUserInfo(context.Context, *CurrentUserInfoRequest) (*CurrentUserInfoReply, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserReply, error)
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserReply, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
 	r.GET("/v1/user/info", _User_CurrentUserInfo0_HTTP_Handler(srv))
+	r.POST("/v1/user/update", _User_UpdateUser0_HTTP_Handler(srv))
 	r.DELETE("/v1/user/delete/{id}", _User_DeleteUser0_HTTP_Handler(srv))
 }
 
@@ -48,6 +51,28 @@ func _User_CurrentUserInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Conte
 			return err
 		}
 		reply := out.(*CurrentUserInfoReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_UpdateUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateUserRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserUpdateUser)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateUser(ctx, req.(*UpdateUserRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UpdateUserReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -77,6 +102,7 @@ func _User_DeleteUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 type UserHTTPClient interface {
 	CurrentUserInfo(ctx context.Context, req *CurrentUserInfoRequest, opts ...http.CallOption) (rsp *CurrentUserInfoReply, err error)
 	DeleteUser(ctx context.Context, req *DeleteUserRequest, opts ...http.CallOption) (rsp *DeleteUserReply, err error)
+	UpdateUser(ctx context.Context, req *UpdateUserRequest, opts ...http.CallOption) (rsp *UpdateUserReply, err error)
 }
 
 type UserHTTPClientImpl struct {
@@ -107,6 +133,19 @@ func (c *UserHTTPClientImpl) DeleteUser(ctx context.Context, in *DeleteUserReque
 	opts = append(opts, http.Operation(OperationUserDeleteUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *UserHTTPClientImpl) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...http.CallOption) (*UpdateUserReply, error) {
+	var out UpdateUserReply
+	pattern := "/v1/user/update"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationUserUpdateUser))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

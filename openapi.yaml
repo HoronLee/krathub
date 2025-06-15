@@ -90,6 +90,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.user.v1.CurrentUserInfoReply'
+    /v1/user/update:
+        post:
+            tags:
+                - User
+            operationId: User_UpdateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.user.v1.UpdateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.user.v1.UpdateUserReply'
 components:
     schemas:
         krathub.auth.v1.HelloReply:
@@ -151,6 +169,34 @@ components:
             properties:
                 success:
                     type: boolean
+        krathub.user.v1.UpdateUserReply:
+            type: object
+            properties:
+                success:
+                    type: string
+        krathub.user.v1.UpdateUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+                phone:
+                    type: string
+                avatar:
+                    type: string
+                bio:
+                    type: string
+                location:
+                    type: string
+                website:
+                    type: string
+                role:
+                    type: string
 tags:
     - name: Auth
     - name: User

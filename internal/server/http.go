@@ -28,7 +28,7 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 			selector.Server(middleware.Auth(consts.UserRole(0))).
 				Prefix("/krathub.auth.v1.Auth/").
 				Build(),
-			selector.Server(middleware.Auth(consts.UserRole(1))).
+			selector.Server(middleware.Auth(consts.UserRole(2))).
 				Prefix("/krathub.user.v1.User/").
 				Build(),
 			selector.Server(middleware.Auth(consts.UserRole(3))).

@@ -19,8 +19,23 @@ enum ErrorReason {
   // 用户未找到
   USER_NOT_FOUND = 0 [(errors.code) = 404];
   // 删除用户失败
-  DELETE_USER_FAILED = 8 [(errors.code) = 500];
+  DELETE_USER_FAILED = 1 [(errors.code) = 500];
+  // 更新用户信息失败
+  UPDATE_USER_FAILED = 2 [(errors.code) = 500];
 }
+
+// message UserModel {
+//   int64 id = 1;
+//   string name = 2 [(validate.rules).string.min_len =  5];
+//   string email = 3 [(validate.rules).string.email = true];
+//   string password = 4 [(validate.rules).string = {min_len: 5, max_len: 10}];
+//   string phone = 5;
+//   string avatar = 6;
+//   string bio = 7;
+//   string location = 8;
+//   string website = 9;
+//   string role = 10;
+// }
 
 service User{
 
@@ -28,6 +43,14 @@ service User{
     option (google.api.method_signature) = "";
     option (google.api.http) = {
       get: "/v1/user/info"
+    };
+  }
+
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserReply) {
+    option (google.api.method_signature) = "user";
+    option (google.api.http) = {
+      post: "/v1/user/update"
+      body: "*"
     };
   }
 
@@ -56,4 +79,20 @@ message DeleteUserRequest {
 message DeleteUserReply {
     bool success = 1; // 删除是否成功
 }
-  
+
+message UpdateUserRequest {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  string phone = 5;
+  string avatar = 6;
+  string bio = 7;
+  string location = 8;
+  string website = 9;
+  string role = 10;
+}
+
+message UpdateUserReply {
+  string success = 1;
+}

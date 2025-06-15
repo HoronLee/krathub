@@ -4,6 +4,7 @@ import (
 	"context"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
+	"krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -45,6 +46,14 @@ func (r *userRepo) DeleteUser(ctx context.Context, user *model.User) (*model.Use
 
 // UpdateUser 更新用户信息
 func (r *userRepo) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
+	// 判断密码是否已加密，未加密则加密
+	if !hash.BcryptIsHashed(user.Password) {
+		bcryptPassword, err := hash.BcryptHash(user.Password)
+		if err != nil {
+			return nil, err
+		}
+		user.Password = bcryptPassword
+	}
 	_, err := r.data.query.User.
 		WithContext(ctx).
 		Where(r.data.query.User.ID.Eq(user.ID)).
