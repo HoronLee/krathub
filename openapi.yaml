@@ -78,6 +78,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.user.v1.DeleteUserReply'
+    /v1/user/info:
+        get:
+            tags:
+                - User
+            operationId: User_CurrentUserInfo
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.user.v1.CurrentUserInfoReply'
 components:
     schemas:
         krathub.auth.v1.HelloReply:
@@ -125,6 +137,15 @@ components:
                 email:
                     type: string
             description: 邮箱注册请求
+        krathub.user.v1.CurrentUserInfoReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                role:
+                    type: string
         krathub.user.v1.DeleteUserReply:
             type: object
             properties:

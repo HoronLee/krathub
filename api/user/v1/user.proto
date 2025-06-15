@@ -24,6 +24,13 @@ enum ErrorReason {
 
 service User{
 
+  rpc CurrentUserInfo(CurrentUserInfoRequest) returns (CurrentUserInfoReply) {
+    option (google.api.method_signature) = "";
+    option (google.api.http) = {
+      get: "/v1/user/info"
+    };
+  }
+
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserReply) {
     option (google.api.method_signature) = "id";
     option (google.api.http) = {
@@ -31,6 +38,15 @@ service User{
     };
   }
 
+}
+
+message CurrentUserInfoRequest {
+}
+
+message CurrentUserInfoReply {
+  int64 id = 1;
+  string name = 2;
+  string role = 3;
 }
 
 message DeleteUserRequest {

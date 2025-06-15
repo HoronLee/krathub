@@ -16,6 +16,19 @@ type UserService struct {
 func NewUserService(uc *biz.UserUsecase) *UserService {
 	return &UserService{uc: uc}
 }
+
+func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUserInfoRequest) (*userv1.CurrentUserInfoReply, error) {
+	user, err := s.uc.CurrentUserInfo(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &userv1.CurrentUserInfoReply{
+		Id:   user.ID,
+		Name: user.Name,
+		Role: user.Role,
+	}, nil
+}
+
 func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserReply, error) {
 	success, err := s.uc.DeleteUser(ctx, &model.User{
 		ID: req.Id,

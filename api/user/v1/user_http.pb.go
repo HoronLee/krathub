@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             v6.31.0
-// source: v1/user/user.proto
+// source: user/v1/user.proto
 
 package userv1
 
@@ -19,15 +19,37 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationUserCurrentUserInfo = "/krathub.user.v1.User/CurrentUserInfo"
 const OperationUserDeleteUser = "/krathub.user.v1.User/DeleteUser"
 
 type UserHTTPServer interface {
+	CurrentUserInfo(context.Context, *CurrentUserInfoRequest) (*CurrentUserInfoReply, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserReply, error)
 }
 
 func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r := s.Route("/")
+	r.GET("/v1/user/info", _User_CurrentUserInfo0_HTTP_Handler(srv))
 	r.DELETE("/v1/user/delete/{id}", _User_DeleteUser0_HTTP_Handler(srv))
+}
+
+func _User_CurrentUserInfo0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CurrentUserInfoRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserCurrentUserInfo)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CurrentUserInfo(ctx, req.(*CurrentUserInfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*CurrentUserInfoReply)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _User_DeleteUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
@@ -53,6 +75,7 @@ func _User_DeleteUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) e
 }
 
 type UserHTTPClient interface {
+	CurrentUserInfo(ctx context.Context, req *CurrentUserInfoRequest, opts ...http.CallOption) (rsp *CurrentUserInfoReply, err error)
 	DeleteUser(ctx context.Context, req *DeleteUserRequest, opts ...http.CallOption) (rsp *DeleteUserReply, err error)
 }
 
@@ -62,6 +85,19 @@ type UserHTTPClientImpl struct {
 
 func NewUserHTTPClient(client *http.Client) UserHTTPClient {
 	return &UserHTTPClientImpl{client}
+}
+
+func (c *UserHTTPClientImpl) CurrentUserInfo(ctx context.Context, in *CurrentUserInfoRequest, opts ...http.CallOption) (*CurrentUserInfoReply, error) {
+	var out CurrentUserInfoReply
+	pattern := "/v1/user/info"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationUserCurrentUserInfo))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *UserHTTPClientImpl) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...http.CallOption) (*DeleteUserReply, error) {

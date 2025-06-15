@@ -14,12 +14,8 @@ import (
 // AuthRepo is a Auth repo.
 type AuthRepo interface {
 	SaveUser(context.Context, *model.User) (*model.User, error)
-	DeleteUser(context.Context, *model.User) (*model.User, error)
-	UpdateUser(context.Context, *model.User) (*model.User, error)
 	ListUserByEmail(context.Context, string) ([]*model.User, error)
-	// ListUserByID(context.Context, int64) (*model.User, error)
 	ListUserByUserName(context.Context, string) ([]*model.User, error)
-	ListUserByPhone(context.Context, string) ([]*model.User, error)
 }
 
 // AuthUsecase is a Auth usecase.
@@ -89,8 +85,8 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 }
 
 // generateToken 签发 JWT token
-func (uc *AuthUsecase) generateToken(name, role string) (string, error) {
-	return uc.jwt.GenerateToken(name, role)
+func (uc *AuthUsecase) generateToken(id int64, name, role string) (string, error) {
+	return uc.jwt.GenerateToken(id, name, role)
 }
 
 // LoginByEmailPassword 邮箱密码登录
@@ -108,7 +104,7 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 			return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 		}
 		// 登录成功，签发 token
-		token, err := uc.generateToken(users[0].Name, users[0].Role)
+		token, err := uc.generateToken(users[0].ID, users[0].Name, users[0].Role)
 		if err != nil {
 			return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
 		}
@@ -128,7 +124,7 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 		return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 	}
 	// 登录成功，签发 token
-	token, err = uc.generateToken(users[0].Name, users[0].Role)
+	token, err = uc.generateToken(users[0].ID, users[0].Name, users[0].Role)
 	if err != nil {
 		return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
 	}

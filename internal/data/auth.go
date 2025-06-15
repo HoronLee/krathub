@@ -44,17 +44,6 @@ func (r *authRepo) SaveUser(ctx context.Context, user *model.User) (*model.User,
 	return user, err
 }
 
-// DeleteUser 删除用户信息
-func (r *authRepo) DeleteUser(ctx context.Context, user *model.User) (*model.User, error) {
-	_, err := r.data.query.User.
-		WithContext(ctx).
-		Delete(user)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
-}
-
 // ListUserByUserName 根据用户名获取用户信息
 func (r *authRepo) ListUserByUserName(ctx context.Context, name string) ([]*model.User, error) {
 	user, err := r.data.query.User.

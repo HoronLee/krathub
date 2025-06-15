@@ -6,7 +6,6 @@ import (
 	authv1 "krathub/api/auth/v1"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
-	"krathub/pkg/helper"
 
 	"github.com/fatedier/golib/log"
 	"github.com/go-kratos/kratos/v2/metadata"
@@ -49,20 +48,14 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEma
 
 // LoginByEmailPassword user login by email and password.
 func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.LoginByEmailPasswordRequest) (*authv1.LoginByEmailPasswordReply, error) {
-	user := &model.User{}
-	var token string
-	var err error
-	if helper.IsEmail(req.LoginId) {
-		user.Email = req.LoginId
-		user.Password = req.Password
-		token, err = s.uc.LoginByEmailPassword(ctx, user)
-		if err != nil {
-			return nil, fmt.Errorf("login by email password failed: %w", err)
-		}
-	} else {
-		return nil, fmt.Errorf("login_id must be email")
+	user := &model.User{
+		Email:    req.LoginId,
+		Password: req.Password,
 	}
-	user.Password = req.Password
+	token, err := s.uc.LoginByEmailPassword(ctx, user)
+	if err != nil {
+		return nil, fmt.Errorf("login by email password failed: %w", err)
+	}
 	return &authv1.LoginByEmailPasswordReply{
 		Token: token,
 	}, nil

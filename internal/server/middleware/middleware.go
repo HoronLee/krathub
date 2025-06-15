@@ -21,6 +21,7 @@ func SetBootstrap(bootstrap *conf.Bootstrap) {
 }
 
 // Auth is a middleware for authentication service.
+// 当 minRole 为 0 时，允许无 Authorization 头访问（如注册接口）
 func Auth(minRole consts.UserRole) middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req any) (reply any, err error) {
@@ -30,6 +31,12 @@ func Auth(minRole consts.UserRole) middleware.Middleware {
 			}
 			authHeader := tr.RequestHeader().Get("Authorization")
 			tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+
+			// 如果未设置 minRole（即为 0），允许无 token 访问
+			if minRole == 0 && tokenString == "" {
+				return handler(ctx, req)
+			}
+
 			if tokenString == "" {
 				return nil, authV1.ErrorMissingToken("missing Authorization header")
 			}

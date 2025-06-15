@@ -27,6 +27,7 @@ func NewJWT(cfg *conf.Jwt) *JWT {
 }
 
 type UserClaims struct {
+	ID   int64  `json:"id"`
 	Name string `json:"name"`
 	Role string `json:"role"`
 	jwt.StandardClaims
@@ -36,8 +37,9 @@ func GetMd5(s string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
 }
 
-func (j *JWT) GenerateToken(name, identity string) (string, error) {
+func (j *JWT) GenerateToken(id int64, name, identity string) (string, error) {
 	claims := &UserClaims{
+		ID:   id,
 		Name: name,
 		Role: identity,
 		StandardClaims: jwt.StandardClaims{
