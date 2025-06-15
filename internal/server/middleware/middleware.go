@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	authV1 "krathub/api/auth/v1"
-	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
 	"krathub/internal/consts"
 	"strings"
@@ -22,7 +21,7 @@ func SetBootstrap(bootstrap *conf.Bootstrap) {
 }
 
 // Auth is a middleware for authentication service.
-func AuthWithMinRole(minRole consts.UserRole) middleware.Middleware {
+func Auth(minRole consts.UserRole) middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req any) (reply any, err error) {
 			tr, ok := transport.FromServerContext(ctx)
@@ -68,7 +67,7 @@ func AuthWithMinRole(minRole consts.UserRole) middleware.Middleware {
 			}
 
 			if userRole < minRole {
-				return nil, authV1.ErrorUnauthorized("permission denied")
+				return nil, authV1.ErrorUnauthorized("permission denied, you at least need " + minRole.String() + " role")
 			}
 
 			// 可选：将用户信息写入 metadata
@@ -84,19 +83,11 @@ func AuthWithMinRole(minRole consts.UserRole) middleware.Middleware {
 // AuthWhiteListMatcher returns a selector.MatchFunc for auth service whitelist.
 func AuthWhiteListMatcher() selector.MatchFunc {
 	whiteList := map[string]struct{}{
-		"/auth.v1.Auth/SignupByEmail":        {},
-		"/auth.v1.Auth/LoginByEmailPassword": {},
+		"/krathub.auth.v1.Auth/SignupByEmail":        {},
+		"/krathub.auth.v1.Auth/LoginByEmailPassword": {},
 	}
 	return func(_ context.Context, operation string) bool {
 		_, ok := whiteList[operation]
 		return !ok
 	}
-}
-
-// 检查特殊接口权限
-func checkSpecialPermission(operation, role string) error {
-	if operation == "/user.v1.User/DeleteUser" && role != "admin" {
-		return userV1.ErrorDeleteUserFailed("only admin can delete user")
-	}
-	return nil
 }

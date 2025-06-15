@@ -25,7 +25,10 @@ func NewGRPCServer(c *conf.Server, auth *service.AuthService, user *service.User
 			tracing.Server(),
 			logging.Server(logger),
 			validate.Validator(),
-			selector.Server(middleware.AuthWithMinRole(consts.UserRole(2))).
+			selector.Server(middleware.Auth(consts.UserRole(3))).
+				Path("/krathub.user.v1.User/DeleteUser").
+				Build(),
+			selector.Server(middleware.Auth(consts.UserRole(2))).
 				Match(middleware.AuthWhiteListMatcher()).
 				Build(),
 		),
