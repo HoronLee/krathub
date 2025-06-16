@@ -101,96 +101,6 @@ func (ErrorReason) EnumDescriptor() ([]byte, []int) {
 	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{0}
 }
 
-// The request message containing the user's name.
-type HelloRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HelloRequest) Reset() {
-	*x = HelloRequest{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HelloRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HelloRequest) ProtoMessage() {}
-
-func (x *HelloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
-func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *HelloRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-// The response message containing the greetings
-type HelloReply struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HelloReply) Reset() {
-	*x = HelloReply{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HelloReply) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HelloReply) ProtoMessage() {}
-
-func (x *HelloReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HelloReply.ProtoReflect.Descriptor instead.
-func (*HelloReply) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *HelloReply) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
 // 邮箱注册请求
 type SignupByEmailRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -205,7 +115,7 @@ type SignupByEmailRequest struct {
 
 func (x *SignupByEmailRequest) Reset() {
 	*x = SignupByEmailRequest{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -217,7 +127,7 @@ func (x *SignupByEmailRequest) String() string {
 func (*SignupByEmailRequest) ProtoMessage() {}
 
 func (x *SignupByEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -230,7 +140,7 @@ func (x *SignupByEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignupByEmailRequest.ProtoReflect.Descriptor instead.
 func (*SignupByEmailRequest) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{2}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SignupByEmailRequest) GetName() string {
@@ -274,7 +184,7 @@ type SignupByEmailReply struct {
 
 func (x *SignupByEmailReply) Reset() {
 	*x = SignupByEmailReply{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -286,7 +196,7 @@ func (x *SignupByEmailReply) String() string {
 func (*SignupByEmailReply) ProtoMessage() {}
 
 func (x *SignupByEmailReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -299,7 +209,7 @@ func (x *SignupByEmailReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignupByEmailReply.ProtoReflect.Descriptor instead.
 func (*SignupByEmailReply) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{3}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *SignupByEmailReply) GetId() int64 {
@@ -341,7 +251,7 @@ type LoginByEmailPasswordRequest struct {
 
 func (x *LoginByEmailPasswordRequest) Reset() {
 	*x = LoginByEmailPasswordRequest{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[4]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -353,7 +263,7 @@ func (x *LoginByEmailPasswordRequest) String() string {
 func (*LoginByEmailPasswordRequest) ProtoMessage() {}
 
 func (x *LoginByEmailPasswordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[4]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -366,7 +276,7 @@ func (x *LoginByEmailPasswordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByEmailPasswordRequest.ProtoReflect.Descriptor instead.
 func (*LoginByEmailPasswordRequest) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{4}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *LoginByEmailPasswordRequest) GetLoginId() string {
@@ -393,7 +303,7 @@ type LoginByEmailPasswordReply struct {
 
 func (x *LoginByEmailPasswordReply) Reset() {
 	*x = LoginByEmailPasswordReply{}
-	mi := &file_api_auth_v1_auth_proto_msgTypes[5]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -405,7 +315,7 @@ func (x *LoginByEmailPasswordReply) String() string {
 func (*LoginByEmailPasswordReply) ProtoMessage() {}
 
 func (x *LoginByEmailPasswordReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_auth_proto_msgTypes[5]
+	mi := &file_api_auth_v1_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -418,7 +328,7 @@ func (x *LoginByEmailPasswordReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByEmailPasswordReply.ProtoReflect.Descriptor instead.
 func (*LoginByEmailPasswordReply) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{5}
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *LoginByEmailPasswordReply) GetToken() string {
@@ -432,12 +342,7 @@ var File_api_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/auth/v1/auth.proto\x12\x0fkrathub.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\"\"\n" +
-	"\fHelloRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"&\n" +
-	"\n" +
-	"HelloReply\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage\"\xaf\x01\n" +
+	"\x16api/auth/v1/auth.proto\x12\x0fkrathub.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\"\xaf\x01\n" +
 	"\x14SignupByEmailRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x05R\x04name\x12%\n" +
 	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
@@ -466,9 +371,8 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\rTOKEN_EXPIRED\x10\x04\x1a\x04\xa8E\x91\x03\x12\x17\n" +
 	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
 	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
-	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\x8c\x03\n" +
-	"\x04Auth\x12[\n" +
-	"\bSayHello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1b.krathub.auth.v1.HelloReply\"\x13\x82\xd3\xe4\x93\x02\r\x12\v/helloworld\x12\x83\x01\n" +
+	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\xaf\x02\n" +
+	"\x04Auth\x12\x83\x01\n" +
 	"\rSignupByEmail\x12%.krathub.auth.v1.SignupByEmailRequest\x1a#.krathub.auth.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12\xa0\x01\n" +
 	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBD\n" +
 	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z\x1akrathub/api/v1/auth;authv1b\x06proto3"
@@ -486,25 +390,21 @@ func file_api_auth_v1_auth_proto_rawDescGZIP() []byte {
 }
 
 var file_api_auth_v1_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_api_auth_v1_auth_proto_goTypes = []any{
 	(ErrorReason)(0),                    // 0: krathub.auth.v1.ErrorReason
-	(*HelloRequest)(nil),                // 1: krathub.auth.v1.HelloRequest
-	(*HelloReply)(nil),                  // 2: krathub.auth.v1.HelloReply
-	(*SignupByEmailRequest)(nil),        // 3: krathub.auth.v1.SignupByEmailRequest
-	(*SignupByEmailReply)(nil),          // 4: krathub.auth.v1.SignupByEmailReply
-	(*LoginByEmailPasswordRequest)(nil), // 5: krathub.auth.v1.LoginByEmailPasswordRequest
-	(*LoginByEmailPasswordReply)(nil),   // 6: krathub.auth.v1.LoginByEmailPasswordReply
+	(*SignupByEmailRequest)(nil),        // 1: krathub.auth.v1.SignupByEmailRequest
+	(*SignupByEmailReply)(nil),          // 2: krathub.auth.v1.SignupByEmailReply
+	(*LoginByEmailPasswordRequest)(nil), // 3: krathub.auth.v1.LoginByEmailPasswordRequest
+	(*LoginByEmailPasswordReply)(nil),   // 4: krathub.auth.v1.LoginByEmailPasswordReply
 }
 var file_api_auth_v1_auth_proto_depIdxs = []int32{
-	1, // 0: krathub.auth.v1.Auth.SayHello:input_type -> krathub.auth.v1.HelloRequest
-	3, // 1: krathub.auth.v1.Auth.SignupByEmail:input_type -> krathub.auth.v1.SignupByEmailRequest
-	5, // 2: krathub.auth.v1.Auth.LoginByEmailPassword:input_type -> krathub.auth.v1.LoginByEmailPasswordRequest
-	2, // 3: krathub.auth.v1.Auth.SayHello:output_type -> krathub.auth.v1.HelloReply
-	4, // 4: krathub.auth.v1.Auth.SignupByEmail:output_type -> krathub.auth.v1.SignupByEmailReply
-	6, // 5: krathub.auth.v1.Auth.LoginByEmailPassword:output_type -> krathub.auth.v1.LoginByEmailPasswordReply
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	1, // 0: krathub.auth.v1.Auth.SignupByEmail:input_type -> krathub.auth.v1.SignupByEmailRequest
+	3, // 1: krathub.auth.v1.Auth.LoginByEmailPassword:input_type -> krathub.auth.v1.LoginByEmailPasswordRequest
+	2, // 2: krathub.auth.v1.Auth.SignupByEmail:output_type -> krathub.auth.v1.SignupByEmailReply
+	4, // 3: krathub.auth.v1.Auth.LoginByEmailPassword:output_type -> krathub.auth.v1.LoginByEmailPasswordReply
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -521,7 +421,7 @@ func file_api_auth_v1_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_auth_v1_auth_proto_rawDesc), len(file_api_auth_v1_auth_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   6,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

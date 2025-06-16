@@ -6,24 +6,6 @@ info:
     title: ""
     version: 0.0.1
 paths:
-    /helloworld:
-        get:
-            tags:
-                - Auth
-            description: Sends a greeting
-            operationId: Auth_SayHello
-            parameters:
-                - name: name
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.auth.v1.HelloReply'
     /v1/auth/login/using-email-password:
         post:
             tags:
@@ -110,12 +92,6 @@ paths:
                                 $ref: '#/components/schemas/krathub.user.v1.UpdateUserReply'
 components:
     schemas:
-        krathub.auth.v1.HelloReply:
-            type: object
-            properties:
-                message:
-                    type: string
-            description: The response message containing the greetings
         krathub.auth.v1.LoginByEmailPasswordReply:
             type: object
             properties:

@@ -39,25 +39,19 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 		return nil, err
 	}
 
-	// 普通用户只能修改自己的信息，不能修改权限
-	if currentUser.Role == consts.User.String() {
+	switch currentUser.Role {
+	case consts.User.String():
 		if currentUser.ID != req.Id {
-			return nil, authv1.ErrorUnauthorized("you do not have permission to update this user")
+			return nil, authv1.ErrorUnauthorized("you only can update your own information")
 		}
 		if req.Role != "" && req.Role != consts.User.String() {
 			return nil, authv1.ErrorUnauthorized("you do not have permission to change your role")
 		}
-	}
-
-	// 管理员可以修改其他用户，但不能将Role提升到Admin及以上
-	if currentUser.Role == consts.Admin.String() {
+	case consts.Admin.String():
 		if req.Role != "" && req.Role >= consts.Admin.String() {
 			return nil, authv1.ErrorUnauthorized("admin cannot assign role higher than admin")
 		}
-	}
-
-	// Operator可以修改所有用户，包括权限到Operator
-	if currentUser.Role == consts.Operator.String() {
+	case consts.Operator.String():
 		if req.Role != "" && req.Role > consts.Operator.String() {
 			return nil, authv1.ErrorUnauthorized("operator cannot assign role higher than operator")
 		}

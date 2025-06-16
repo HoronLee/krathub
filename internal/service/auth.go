@@ -6,9 +6,6 @@ import (
 	authv1 "krathub/api/auth/v1"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
-
-	"github.com/fatedier/golib/log"
-	"github.com/go-kratos/kratos/v2/metadata"
 )
 
 // AuthService is a auth service.
@@ -59,19 +56,4 @@ func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.Logi
 	return &authv1.LoginByEmailPasswordReply{
 		Token: token,
 	}, nil
-}
-
-// SayHello implements helloworld.GreeterServer.
-func (s *AuthService) SayHello(ctx context.Context, in *authv1.HelloRequest) (*authv1.HelloReply, error) {
-	var username, role string
-	if md, ok := metadata.FromServerContext(ctx); ok {
-		username = md.Get("username")
-		role = md.Get("role")
-		log.Debugf("User %s with role %s is logging in", username, role)
-	} else {
-		log.Debugf("No metadata found in context")
-	}
-	log.Infof("User %s with role %s is logging in", username, role)
-
-	return &authv1.HelloReply{Message: "Hello World"}, nil
 }

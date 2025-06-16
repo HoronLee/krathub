@@ -37,14 +37,6 @@ enum ErrorReason {
 }
 
 service Auth {
-
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {
-    option (google.api.http) = {
-      get: "/helloworld"
-    };
-  }
-
   rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply) {
     option (google.api.http) = {
       post: "/v1/auth/signup/using-email"
@@ -59,16 +51,6 @@ service Auth {
     };
   }
 
-}
-
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
 }
 
 // 邮箱注册请求

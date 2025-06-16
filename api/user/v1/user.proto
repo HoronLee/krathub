@@ -38,7 +38,6 @@ enum ErrorReason {
 // }
 
 service User{
-
   rpc CurrentUserInfo(CurrentUserInfoRequest) returns (CurrentUserInfoReply) {
     option (google.api.method_signature) = "";
     option (google.api.http) = {
