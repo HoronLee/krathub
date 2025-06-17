@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	authv1 "krathub/api/auth/v1"
 	userv1 "krathub/api/user/v1"
 
@@ -78,6 +79,27 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 	}, nil
 }
 
+// SaveUser 保存用户
+func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest) (*userv1.SaveUserReply, error) {
+	user := &model.User{
+		Name:     req.Name,
+		Email:    req.Email,
+		Password: req.Password,
+		Phone:    &req.Phone,
+		Avatar:   &req.Avatar,
+		Bio:      &req.Bio,
+		Location: &req.Location,
+		Website:  &req.Website,
+		Role:     req.Role,
+	}
+	user, err := s.uc.SaveUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return &userv1.SaveUserReply{Id: fmt.Sprintf("%d", user.ID)}, nil
+}
+
+// DeleteUser 删除用户
 func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserReply, error) {
 	success, err := s.uc.DeleteUser(ctx, &model.User{
 		ID: req.Id,

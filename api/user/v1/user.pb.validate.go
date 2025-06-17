@@ -683,3 +683,301 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UpdateUserReplyValidationError{}
+
+// Validate checks the field values on SaveUserRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *SaveUserRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SaveUserRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SaveUserRequestMultiError, or nil if none found.
+func (m *SaveUserRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SaveUserRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetName()) < 5 {
+		err := SaveUserRequestValidationError{
+			field:  "Name",
+			reason: "value length must be at least 5 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if err := m._validateEmail(m.GetEmail()); err != nil {
+		err = SaveUserRequestValidationError{
+			field:  "Email",
+			reason: "value must be a valid email address",
+			cause:  err,
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetPassword()); l < 5 || l > 10 {
+		err := SaveUserRequestValidationError{
+			field:  "Password",
+			reason: "value length must be between 5 and 10 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Phone
+
+	// no validation rules for Avatar
+
+	// no validation rules for Bio
+
+	// no validation rules for Location
+
+	// no validation rules for Website
+
+	// no validation rules for Role
+
+	if len(errors) > 0 {
+		return SaveUserRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *SaveUserRequest) _validateHostname(host string) error {
+	s := strings.ToLower(strings.TrimSuffix(host, "."))
+
+	if len(host) > 253 {
+		return errors.New("hostname cannot exceed 253 characters")
+	}
+
+	for _, part := range strings.Split(s, ".") {
+		if l := len(part); l == 0 || l > 63 {
+			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
+		}
+
+		if part[0] == '-' {
+			return errors.New("hostname parts cannot begin with hyphens")
+		}
+
+		if part[len(part)-1] == '-' {
+			return errors.New("hostname parts cannot end with hyphens")
+		}
+
+		for _, r := range part {
+			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
+				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
+			}
+		}
+	}
+
+	return nil
+}
+
+func (m *SaveUserRequest) _validateEmail(addr string) error {
+	a, err := mail.ParseAddress(addr)
+	if err != nil {
+		return err
+	}
+	addr = a.Address
+
+	if len(addr) > 254 {
+		return errors.New("email addresses cannot exceed 254 characters")
+	}
+
+	parts := strings.SplitN(addr, "@", 2)
+
+	if len(parts[0]) > 64 {
+		return errors.New("email address local phrase cannot exceed 64 characters")
+	}
+
+	return m._validateHostname(parts[1])
+}
+
+// SaveUserRequestMultiError is an error wrapping multiple validation errors
+// returned by SaveUserRequest.ValidateAll() if the designated constraints
+// aren't met.
+type SaveUserRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SaveUserRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SaveUserRequestMultiError) AllErrors() []error { return m }
+
+// SaveUserRequestValidationError is the validation error returned by
+// SaveUserRequest.Validate if the designated constraints aren't met.
+type SaveUserRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SaveUserRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SaveUserRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SaveUserRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SaveUserRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SaveUserRequestValidationError) ErrorName() string { return "SaveUserRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SaveUserRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSaveUserRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SaveUserRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SaveUserRequestValidationError{}
+
+// Validate checks the field values on SaveUserReply with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SaveUserReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SaveUserReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SaveUserReplyMultiError, or
+// nil if none found.
+func (m *SaveUserReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SaveUserReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return SaveUserReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SaveUserReplyMultiError is an error wrapping multiple validation errors
+// returned by SaveUserReply.ValidateAll() if the designated constraints
+// aren't met.
+type SaveUserReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SaveUserReplyMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SaveUserReplyMultiError) AllErrors() []error { return m }
+
+// SaveUserReplyValidationError is the validation error returned by
+// SaveUserReply.Validate if the designated constraints aren't met.
+type SaveUserReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SaveUserReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SaveUserReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SaveUserReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SaveUserReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SaveUserReplyValidationError) ErrorName() string { return "SaveUserReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SaveUserReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSaveUserReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SaveUserReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SaveUserReplyValidationError{}

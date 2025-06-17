@@ -52,3 +52,17 @@ func IsUpdateUserFailed(err error) bool {
 func ErrorUpdateUserFailed(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_UPDATE_USER_FAILED.String(), fmt.Sprintf(format, args...))
 }
+
+// 保存用户信息失败
+func IsSaveUserFailed(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_SAVE_USER_FAILED.String() && e.Code == 500
+}
+
+// 保存用户信息失败
+func ErrorSaveUserFailed(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, ErrorReason_SAVE_USER_FAILED.String(), fmt.Sprintf(format, args...))
+}

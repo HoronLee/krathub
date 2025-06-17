@@ -22,20 +22,9 @@ enum ErrorReason {
   DELETE_USER_FAILED = 1 [(errors.code) = 500];
   // 更新用户信息失败
   UPDATE_USER_FAILED = 2 [(errors.code) = 500];
+  // 保存用户信息失败
+  SAVE_USER_FAILED = 3 [(errors.code) = 500];
 }
-
-// message UserModel {
-//   int64 id = 1;
-//   string name = 2 [(validate.rules).string.min_len =  5];
-//   string email = 3 [(validate.rules).string.email = true];
-//   string password = 4 [(validate.rules).string = {min_len: 5, max_len: 10}];
-//   string phone = 5;
-//   string avatar = 6;
-//   string bio = 7;
-//   string location = 8;
-//   string website = 9;
-//   string role = 10;
-// }
 
 service User{
   rpc CurrentUserInfo(CurrentUserInfoRequest) returns (CurrentUserInfoReply) {
@@ -49,6 +38,14 @@ service User{
     option (google.api.method_signature) = "user";
     option (google.api.http) = {
       post: "/v1/user/update"
+      body: "*"
+    };
+  }
+
+  rpc SaveUser(SaveUserRequest) returns (SaveUserReply) {
+    option (google.api.method_signature) = "user";
+    option (google.api.http) = {
+      post: "/v1/user/save"
       body: "*"
     };
   }
@@ -94,4 +91,19 @@ message UpdateUserRequest {
 
 message UpdateUserReply {
   string success = 1;
+}
+
+message SaveUserRequest {
+  string name = 1 [(validate.rules).string.min_len = 5];
+  string email = 2 [(validate.rules).string.email = true];
+  string password = 3 [(validate.rules).string = {min_len: 5, max_len: 10}];
+  string phone = 4;
+  string avatar = 5;
+  string bio = 6;
+  string location = 7;
+  string website = 8;
+  string role = 9;
+}
+message SaveUserReply {
+  string id = 1;
 }

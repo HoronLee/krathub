@@ -34,6 +34,8 @@ const (
 	ErrorReason_DELETE_USER_FAILED ErrorReason = 1
 	// 更新用户信息失败
 	ErrorReason_UPDATE_USER_FAILED ErrorReason = 2
+	// 保存用户信息失败
+	ErrorReason_SAVE_USER_FAILED ErrorReason = 3
 )
 
 // Enum value maps for ErrorReason.
@@ -42,11 +44,13 @@ var (
 		0: "USER_NOT_FOUND",
 		1: "DELETE_USER_FAILED",
 		2: "UPDATE_USER_FAILED",
+		3: "SAVE_USER_FAILED",
 	}
 	ErrorReason_value = map[string]int32{
 		"USER_NOT_FOUND":     0,
 		"DELETE_USER_FAILED": 1,
 		"UPDATE_USER_FAILED": 2,
+		"SAVE_USER_FAILED":   3,
 	}
 )
 
@@ -421,6 +425,158 @@ func (x *UpdateUserReply) GetSuccess() string {
 	return ""
 }
 
+type SaveUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
+	Avatar        string                 `protobuf:"bytes,5,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	Bio           string                 `protobuf:"bytes,6,opt,name=bio,proto3" json:"bio,omitempty"`
+	Location      string                 `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
+	Website       string                 `protobuf:"bytes,8,opt,name=website,proto3" json:"website,omitempty"`
+	Role          string                 `protobuf:"bytes,9,opt,name=role,proto3" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SaveUserRequest) Reset() {
+	*x = SaveUserRequest{}
+	mi := &file_api_user_v1_user_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SaveUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SaveUserRequest) ProtoMessage() {}
+
+func (x *SaveUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_user_v1_user_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SaveUserRequest.ProtoReflect.Descriptor instead.
+func (*SaveUserRequest) Descriptor() ([]byte, []int) {
+	return file_api_user_v1_user_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SaveUserRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetAvatar() string {
+	if x != nil {
+		return x.Avatar
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetBio() string {
+	if x != nil {
+		return x.Bio
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetWebsite() string {
+	if x != nil {
+		return x.Website
+	}
+	return ""
+}
+
+func (x *SaveUserRequest) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+type SaveUserReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SaveUserReply) Reset() {
+	*x = SaveUserReply{}
+	mi := &file_api_user_v1_user_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SaveUserReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SaveUserReply) ProtoMessage() {}
+
+func (x *SaveUserReply) ProtoReflect() protoreflect.Message {
+	mi := &file_api_user_v1_user_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SaveUserReply.ProtoReflect.Descriptor instead.
+func (*SaveUserReply) Descriptor() ([]byte, []int) {
+	return file_api_user_v1_user_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *SaveUserReply) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 var File_api_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_api_user_v1_user_proto_rawDesc = "" +
@@ -448,15 +604,30 @@ const file_api_user_v1_user_proto_rawDesc = "" +
 	"\x04role\x18\n" +
 	" \x01(\tR\x04role\"+\n" +
 	"\x0fUpdateUserReply\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\tR\asuccess*i\n" +
+	"\asuccess\x18\x01 \x01(\tR\asuccess\"\xfe\x01\n" +
+	"\x0fSaveUserRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x05R\x04name\x12\x1d\n" +
+	"\x05email\x18\x02 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\x12%\n" +
+	"\bpassword\x18\x03 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
+	"R\bpassword\x12\x14\n" +
+	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
+	"\x06avatar\x18\x05 \x01(\tR\x06avatar\x12\x10\n" +
+	"\x03bio\x18\x06 \x01(\tR\x03bio\x12\x1a\n" +
+	"\blocation\x18\a \x01(\tR\blocation\x12\x18\n" +
+	"\awebsite\x18\b \x01(\tR\awebsite\x12\x12\n" +
+	"\x04role\x18\t \x01(\tR\x04role\"\x1f\n" +
+	"\rSaveUserReply\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id*\x85\x01\n" +
 	"\vErrorReason\x12\x18\n" +
 	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1c\n" +
 	"\x12DELETE_USER_FAILED\x10\x01\x1a\x04\xa8E\xf4\x03\x12\x1c\n" +
-	"\x12UPDATE_USER_FAILED\x10\x02\x1a\x04\xa8E\xf4\x03\x1a\x04\xa0E\xf4\x032\xf1\x02\n" +
+	"\x12UPDATE_USER_FAILED\x10\x02\x1a\x04\xa8E\xf4\x03\x12\x1a\n" +
+	"\x10SAVE_USER_FAILED\x10\x03\x1a\x04\xa8E\xf4\x03\x1a\x04\xa0E\xf4\x032\xe0\x03\n" +
 	"\x04User\x12{\n" +
 	"\x0fCurrentUserInfo\x12'.krathub.user.v1.CurrentUserInfoRequest\x1a%.krathub.user.v1.CurrentUserInfoReply\"\x18\xdaA\x00\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/info\x12u\n" +
 	"\n" +
-	"UpdateUser\x12\".krathub.user.v1.UpdateUserRequest\x1a .krathub.user.v1.UpdateUserReply\"!\xdaA\x04user\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12u\n" +
+	"UpdateUser\x12\".krathub.user.v1.UpdateUserRequest\x1a .krathub.user.v1.UpdateUserReply\"!\xdaA\x04user\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12m\n" +
+	"\bSaveUser\x12 .krathub.user.v1.SaveUserRequest\x1a\x1e.krathub.user.v1.SaveUserReply\"\x1f\xdaA\x04user\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12u\n" +
 	"\n" +
 	"DeleteUser\x12\".krathub.user.v1.DeleteUserRequest\x1a .krathub.user.v1.DeleteUserReply\"!\xdaA\x02id\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}BD\n" +
 	"\x17dev.krathub.api.user.v1B\vUserProtoV1P\x01Z\x1akrathub/api/v1/user;userv1b\x06proto3"
@@ -474,7 +645,7 @@ func file_api_user_v1_user_proto_rawDescGZIP() []byte {
 }
 
 var file_api_user_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_api_user_v1_user_proto_goTypes = []any{
 	(ErrorReason)(0),               // 0: krathub.user.v1.ErrorReason
 	(*CurrentUserInfoRequest)(nil), // 1: krathub.user.v1.CurrentUserInfoRequest
@@ -483,16 +654,20 @@ var file_api_user_v1_user_proto_goTypes = []any{
 	(*DeleteUserReply)(nil),        // 4: krathub.user.v1.DeleteUserReply
 	(*UpdateUserRequest)(nil),      // 5: krathub.user.v1.UpdateUserRequest
 	(*UpdateUserReply)(nil),        // 6: krathub.user.v1.UpdateUserReply
+	(*SaveUserRequest)(nil),        // 7: krathub.user.v1.SaveUserRequest
+	(*SaveUserReply)(nil),          // 8: krathub.user.v1.SaveUserReply
 }
 var file_api_user_v1_user_proto_depIdxs = []int32{
 	1, // 0: krathub.user.v1.User.CurrentUserInfo:input_type -> krathub.user.v1.CurrentUserInfoRequest
 	5, // 1: krathub.user.v1.User.UpdateUser:input_type -> krathub.user.v1.UpdateUserRequest
-	3, // 2: krathub.user.v1.User.DeleteUser:input_type -> krathub.user.v1.DeleteUserRequest
-	2, // 3: krathub.user.v1.User.CurrentUserInfo:output_type -> krathub.user.v1.CurrentUserInfoReply
-	6, // 4: krathub.user.v1.User.UpdateUser:output_type -> krathub.user.v1.UpdateUserReply
-	4, // 5: krathub.user.v1.User.DeleteUser:output_type -> krathub.user.v1.DeleteUserReply
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	7, // 2: krathub.user.v1.User.SaveUser:input_type -> krathub.user.v1.SaveUserRequest
+	3, // 3: krathub.user.v1.User.DeleteUser:input_type -> krathub.user.v1.DeleteUserRequest
+	2, // 4: krathub.user.v1.User.CurrentUserInfo:output_type -> krathub.user.v1.CurrentUserInfoReply
+	6, // 5: krathub.user.v1.User.UpdateUser:output_type -> krathub.user.v1.UpdateUserReply
+	8, // 6: krathub.user.v1.User.SaveUser:output_type -> krathub.user.v1.SaveUserReply
+	4, // 7: krathub.user.v1.User.DeleteUser:output_type -> krathub.user.v1.DeleteUserReply
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -509,7 +684,7 @@ func file_api_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_user_v1_user_proto_rawDesc), len(file_api_user_v1_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

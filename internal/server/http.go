@@ -32,7 +32,7 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 				Prefix("/krathub.user.v1.User/").
 				Build(),
 			selector.Server(middleware.Auth(consts.UserRole(3))).
-				Path("/krathub.user.v1.User/DeleteUser").
+				Path("/krathub.user.v1.User/DeleteUser", "/krathub.user.v1.User/SaveUser").
 				Build(),
 		),
 	}

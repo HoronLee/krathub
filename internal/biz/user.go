@@ -14,23 +14,25 @@ import (
 )
 
 type UserRepo interface {
-	// SaveUser(context.Context, *model.User) (*model.User, error)
+	SaveUser(context.Context, *model.User) (*model.User, error)
 	GetUserById(context.Context, int64) (*model.User, error)
 	DeleteUser(context.Context, *model.User) (*model.User, error)
 	UpdateUser(context.Context, *model.User) (*model.User, error)
 }
 
 type UserUsecase struct {
-	repo UserRepo
-	log  *log.Helper
-	cfg  *conf.App
+	repo  UserRepo
+	log   *log.Helper
+	cfg   *conf.App
+	aRepo AuthRepo // 引入auth包的repo接口
 }
 
-func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App) *UserUsecase {
+func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, aRepo AuthRepo) *UserUsecase {
 	uc := &UserUsecase{
-		repo: repo,
-		log:  log.NewHelper(logger),
-		cfg:  cfg,
+		repo:  repo,
+		log:   log.NewHelper(logger),
+		cfg:   cfg,
+		aRepo: aRepo,
 	}
 	return uc
 }
@@ -78,11 +80,45 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model
 	if err != nil {
 		return nil, userv1.ErrorUserNotFound("user not found: %v", err)
 	}
+
+	existingUsers, err := uc.aRepo.ListUserByUserName(ctx, user.Name)
+	if err != nil {
+		return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
+	}
+	if len(existingUsers) > 0 {
+		return nil, authv1.ErrorUserAlreadyExists("username already exists")
+	}
+
 	updatedUser, err := uc.repo.UpdateUser(ctx, user)
 	if err != nil {
 		return nil, userv1.ErrorUpdateUserFailed("failed to update user: %v", err)
 	}
 	return updatedUser, nil
+}
+
+func (uc *UserUsecase) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
+	existingUsers, err := uc.aRepo.ListUserByUserName(ctx, user.Name)
+	if err != nil {
+		return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
+	}
+	if len(existingUsers) > 0 {
+		return nil, authv1.ErrorUserAlreadyExists("username already exists")
+	}
+
+	existingEmails, err := uc.aRepo.ListUserByEmail(ctx, user.Email)
+	if err != nil {
+		return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
+	}
+	if len(existingEmails) > 0 {
+		return nil, authv1.ErrorUserAlreadyExists("email already exists")
+	}
+
+	savedUser, err := uc.repo.SaveUser(ctx, user)
+	if err != nil {
+		return nil, userv1.ErrorSaveUserFailed("failed to save user: %v", err)
+	}
+	return savedUser, nil
+
 }
 
 func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (success bool, err error) {

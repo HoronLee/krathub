@@ -72,6 +72,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.user.v1.CurrentUserInfoReply'
+    /v1/user/save:
+        post:
+            tags:
+                - User
+            operationId: User_SaveUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.user.v1.SaveUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.user.v1.SaveUserReply'
     /v1/user/update:
         post:
             tags:
@@ -145,6 +163,32 @@ components:
             properties:
                 success:
                     type: boolean
+        krathub.user.v1.SaveUserReply:
+            type: object
+            properties:
+                id:
+                    type: string
+        krathub.user.v1.SaveUserRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+                phone:
+                    type: string
+                avatar:
+                    type: string
+                bio:
+                    type: string
+                location:
+                    type: string
+                website:
+                    type: string
+                role:
+                    type: string
         krathub.user.v1.UpdateUserReply:
             type: object
             properties:

@@ -21,6 +21,27 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	}
 }
 
+// SaveUser 保存用户信息
+func (r *userRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
+	// 判断密码是否已加密，未加密则加密
+	if !hash.BcryptIsHashed(user.Password) {
+		bcryptPassword, err := hash.BcryptHash(user.Password)
+		if err != nil {
+			return nil, err
+		}
+		user.Password = bcryptPassword
+	}
+	// 保存用户信息
+	err := r.data.query.User.
+		WithContext(ctx).
+		Create(user)
+	if err != nil {
+		return nil, err
+	}
+	// 返回保存后的用户信息
+	return user, nil
+}
+
 // GetUserById 根据用户ID获取用户信息
 func (r *userRepo) GetUserById(ctx context.Context, id int64) (*model.User, error) {
 	user, err := r.data.query.User.
