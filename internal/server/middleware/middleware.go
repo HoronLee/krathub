@@ -14,10 +14,10 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-var bc *conf.Bootstrap
+var appConf *conf.App
 
-func SetBootstrap(bootstrap *conf.Bootstrap) {
-	bc = bootstrap
+func SetAppConf(bootstrapApp *conf.App) {
+	appConf = bootstrapApp
 }
 
 // Auth is a middleware for authentication service.
@@ -43,7 +43,7 @@ func Auth(minRole consts.UserRole) middleware.Middleware {
 
 			// 解析 JWT Token
 			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
-				return []byte(bc.App.Jwt.SecretKey), nil
+				return []byte(appConf.Jwt.SecretKey), nil
 			})
 			if err != nil || !token.Valid {
 				return nil, authV1.ErrorUnauthorized("invalid token")

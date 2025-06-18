@@ -46,8 +46,6 @@ func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecas
 
 // SignupByEmail 使用邮件注册
 func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*model.User, error) {
-	uc.log.WithContext(ctx).Debugf("\n[biz] Signing up user: %v", user)
-
 	// 检查 admin 用户是否已存在
 	if !uc.adminRegistered {
 		// 第一次注册，用户名必须为 admin
@@ -91,25 +89,25 @@ func (uc *AuthUsecase) generateToken(id int64, name, role string) (string, error
 
 // LoginByEmailPassword 邮箱密码登录
 func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.User) (token string, err error) {
-	if uc.cfg.Env == "dev" && user.Email == "admin@example.com" {
-		users, err := uc.repo.ListUserByEmail(ctx, user.Email)
-		if err != nil {
-			return "", authv1.ErrorUserNotFound("failed to get user: %v", err)
-		}
-		if len(users) == 0 {
-			uc.log.Warnf("user %s does not exist", user.Email)
-			return "", authv1.ErrorUserNotFound("user %s does not exist", user.Email)
-		}
-		if !hash.BcryptCheck(user.Password, users[0].Password) {
-			return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
-		}
-		// 登录成功，签发 token
-		token, err := uc.generateToken(users[0].ID, users[0].Name, users[0].Role)
-		if err != nil {
-			return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
-		}
-		return token, nil
-	}
+	// if uc.cfg.Env == "dev" && user.Email == "admin@example.com" {
+	// 	users, err := uc.repo.ListUserByEmail(ctx, user.Email)
+	// 	if err != nil {
+	// 		return "", authv1.ErrorUserNotFound("failed to get user: %v", err)
+	// 	}
+	// 	if len(users) == 0 {
+	// 		uc.log.Warnf("user %s does not exist", user.Email)
+	// 		return "", authv1.ErrorUserNotFound("user %s does not exist", user.Email)
+	// 	}
+	// 	if !hash.BcryptCheck(user.Password, users[0].Password) {
+	// 		return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
+	// 	}
+	// 	// 登录成功，签发 token
+	// 	token, err := uc.generateToken(users[0].ID, users[0].Name, users[0].Role)
+	// 	if err != nil {
+	// 		return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
+	// 	}
+	// 	return token, nil
+	// }
 
 	// 非 dev 模式下的正常处理逻辑
 	users, err := uc.repo.ListUserByEmail(ctx, user.Email)

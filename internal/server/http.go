@@ -25,12 +25,15 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 			tracing.Server(),
 			logging.Server(logger),
 			validate.Validator(),
+			// 登录等无需鉴权接口
 			selector.Server(middleware.Auth(consts.UserRole(0))).
 				Prefix("/krathub.auth.v1.Auth/").
 				Build(),
+			// 需要User权限的接口
 			selector.Server(middleware.Auth(consts.UserRole(2))).
 				Prefix("/krathub.user.v1.User/").
 				Build(),
+			// 需要Admin权限的接口
 			selector.Server(middleware.Auth(consts.UserRole(3))).
 				Path("/krathub.user.v1.User/DeleteUser", "/krathub.user.v1.User/SaveUser").
 				Build(),
