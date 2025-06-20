@@ -115,3 +115,8 @@ help:
 # generate db
 gendb:
 	go run cmd/gen/gendb.go -conf configs/config.yaml
+
+.PHONY: run
+# run
+run:
+	kratos run

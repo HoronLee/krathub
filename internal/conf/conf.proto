@@ -44,6 +44,7 @@ message Data {
 message App {
   string env = 1; // dev test prod
   Jwt jwt = 2; // JWT配置
+  Log log = 3; // 日志配置
 }
 
 message Jwt{
@@ -51,4 +52,13 @@ message Jwt{
   int32 expire = 2; // JWT过期时间，单位秒
   string issuer = 3; // JWT签发者
   string audience = 4;
+}
+
+message Log {
+  int32 level = 1; // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
+  string filename = 2;  // 日志文件名
+  string max_size = 3; // 日志文件最大大小
+  string max_backups = 4; // 日志文件最大备份数
+  string max_age = 5; // 日志文件最大保留天数
+  bool compress = 6; // 是否压缩日志文件
 }

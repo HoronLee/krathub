@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/config/env"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
@@ -53,7 +54,7 @@ func main() {
 	flag.Parse()
 	c := config.New(
 		config.WithSource(
-			// env.NewSource("KRATHUB_"),
+			env.NewSource("KRATHUB_"),
 			file.NewSource(flagconf),
 		),
 	)

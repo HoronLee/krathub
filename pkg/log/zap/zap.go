@@ -48,11 +48,11 @@ func Logger() log.Logger {
 // 日志自动切割，采用 lumberjack 实现的
 func getLogWriter() zapcore.WriteSyncer {
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   "../../app-zap.log", //指定日志存储位置
-		MaxSize:    10,                  //日志的最大大小（M）
-		MaxBackups: 5,                   //日志的最大保存数量
-		MaxAge:     30,                  //日志文件存储最大天数
-		Compress:   false,               //是否执行压缩
+		Filename:   "../../" + pkg.AppConf.Log.Filename, //指定日志存储位置
+		MaxSize:    10,                                  //日志的最大大小（M）
+		MaxBackups: 5,                                   //日志的最大保存数量
+		MaxAge:     30,                                  //日志文件存储最大天数
+		Compress:   false,                               //是否执行压缩
 	}
 	return zapcore.AddSync(lumberJackLogger)
 }
@@ -62,7 +62,8 @@ func NewZapLogger(encoder zapcore.EncoderConfig, level zap.AtomicLevel, opts ...
 	//日志切割
 	writeSyncer := getLogWriter()
 	//设置日志级别
-	level.SetLevel(zap.InfoLevel)
+	// level.SetLevel(zap.InfoLevel)
+	level.SetLevel(zapcore.Level(pkg.AppConf.Log.Level))
 	var core zapcore.Core
 	//开发模式下打印到标准输出
 	// --根据配置文件判断输出到控制台还是日志文件--
