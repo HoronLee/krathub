@@ -97,20 +97,8 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model
 }
 
 func (uc *UserUsecase) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
-	existingUsers, err := uc.aRepo.ListUserByUserName(ctx, user.Name)
-	if err != nil {
-		return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
-	}
-	if len(existingUsers) > 0 {
-		return nil, authv1.ErrorUserAlreadyExists("username already exists")
-	}
-
-	existingEmails, err := uc.aRepo.ListUserByEmail(ctx, user.Email)
-	if err != nil {
-		return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
-	}
-	if len(existingEmails) > 0 {
-		return nil, authv1.ErrorUserAlreadyExists("email already exists")
+	if err := uc.checkUserExists(ctx, user); err != nil {
+		return nil, err
 	}
 
 	savedUser, err := uc.repo.SaveUser(ctx, user)
@@ -118,7 +106,6 @@ func (uc *UserUsecase) SaveUser(ctx context.Context, user *model.User) (*model.U
 		return nil, userv1.ErrorSaveUserFailed("failed to save user: %v", err)
 	}
 	return savedUser, nil
-
 }
 
 func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (success bool, err error) {
@@ -127,4 +114,19 @@ func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (succes
 		return false, userv1.ErrorDeleteUserFailed("failed to delete user: %v", err)
 	}
 	return true, nil
+}
+
+func (uc *UserUsecase) checkUserExists(ctx context.Context, user *model.User) error {
+	if users, err := uc.aRepo.ListUserByUserName(ctx, user.Name); err != nil {
+		return authv1.ErrorUserNotFound("failed to check username: %v", err)
+	} else if len(users) > 0 {
+		return authv1.ErrorUserAlreadyExists("username already exists")
+	}
+
+	if emails, err := uc.aRepo.ListUserByEmail(ctx, user.Email); err != nil {
+		return authv1.ErrorUserNotFound("failed to check email: %v", err)
+	} else if len(emails) > 0 {
+		return authv1.ErrorUserAlreadyExists("email already exists")
+	}
+	return nil
 }

@@ -24,9 +24,7 @@ func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 
 // SaveUser 保存用户信息
 func (r *authRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
-	if hash.BcryptIsHashed(user.Password) {
-		r.log.Debugf("[data] Password is already hashed: %v", user.Password)
-	} else {
+	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
 			return nil, err
@@ -35,11 +33,12 @@ func (r *authRepo) SaveUser(ctx context.Context, user *model.User) (*model.User,
 	}
 	err := r.data.query.User.
 		WithContext(ctx).
-		Save(user)
+		Create(user)
 	if err != nil {
 		r.log.Errorf("SaveUser failed: %v", err)
+		return nil, err
 	}
-	return user, err
+	return user, nil
 }
 
 // ListUserByUserName 根据用户名获取用户信息
