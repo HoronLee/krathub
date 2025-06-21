@@ -6,6 +6,24 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /v1/auth/HelloTest:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_SayHello
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.auth.v1.HelloRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.auth.v1.HelloResponse'
     /v1/auth/login/using-email-password:
         post:
             tags:
@@ -110,6 +128,18 @@ paths:
                                 $ref: '#/components/schemas/krathub.user.v1.UpdateUserReply'
 components:
     schemas:
+        krathub.auth.v1.HelloRequest:
+            type: object
+            properties:
+                greeting:
+                    type: string
+            description: 消息定义
+        krathub.auth.v1.HelloResponse:
+            type: object
+            properties:
+                reply:
+                    type: string
+            description: 响应消息定义
         krathub.auth.v1.LoginByEmailPasswordReply:
             type: object
             properties:

@@ -13,12 +13,19 @@ data:
     addr: "${RADDR:127.0.0.1:6379}"
     read_timeout: "${RREAD_TIMEOUT:0.2s}"
     write_timeout: "${RWRITE_TIMEOUT:0.2s}"
+  client:
+    grpc:
+     - service_name: hello
+       endpoint: grpcb.in:9000
+       enable_tls: false
+       timeout: 1s
 app:
-  env: "${ENV:test}"
+  env: "${ENV:dev}"
   jwt:
     secret_key: "${JWT_SECRETK_KEY:krathub_secret}"
     expire: "${JWT_EXPIRE:24}"
     issuer: "${JWT_ISSUER:krathub}"
+    # audience: "${JWT_AUDIENCE:krathub}"
   log:
     level: "${LOG_LEVEL:0}"  # -1debug,0info,1warn,2error,3dpanic,4panic,5fatal
     filename: "${LOG_FILENAME:krathub.log}"  # 起始于当前工作目录

@@ -22,6 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Bootstrap 配置
 type Bootstrap struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Server        *Server                `protobuf:"bytes,1,opt,name=server,proto3" json:"server,omitempty"`
@@ -82,6 +83,7 @@ func (x *Bootstrap) GetApp() *App {
 	return nil
 }
 
+// 通信服务端配置
 type Server struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Http          *Server_HTTP           `protobuf:"bytes,1,opt,name=http,proto3" json:"http,omitempty"`
@@ -134,10 +136,12 @@ func (x *Server) GetGrpc() *Server_GRPC {
 	return nil
 }
 
+// 数据源配置
 type Data struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Database      *Data_Database         `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	Redis         *Data_Redis            `protobuf:"bytes,2,opt,name=redis,proto3" json:"redis,omitempty"`
+	Client        *Data_Client           `protobuf:"bytes,3,opt,name=client,proto3" json:"client,omitempty"` // 新增
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -186,11 +190,19 @@ func (x *Data) GetRedis() *Data_Redis {
 	return nil
 }
 
+func (x *Data) GetClient() *Data_Client {
+	if x != nil {
+		return x.Client
+	}
+	return nil
+}
+
+// 应用配置
 type App struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Env           string                 `protobuf:"bytes,1,opt,name=env,proto3" json:"env,omitempty"` // dev test prod
-	Jwt           *Jwt                   `protobuf:"bytes,2,opt,name=jwt,proto3" json:"jwt,omitempty"` // JWT配置
-	Log           *Log                   `protobuf:"bytes,3,opt,name=log,proto3" json:"log,omitempty"` // 日志配置
+	Jwt           *App_Jwt               `protobuf:"bytes,2,opt,name=jwt,proto3" json:"jwt,omitempty"` // JWT配置
+	Log           *App_Log               `protobuf:"bytes,3,opt,name=log,proto3" json:"log,omitempty"` // 日志配置
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -232,170 +244,18 @@ func (x *App) GetEnv() string {
 	return ""
 }
 
-func (x *App) GetJwt() *Jwt {
+func (x *App) GetJwt() *App_Jwt {
 	if x != nil {
 		return x.Jwt
 	}
 	return nil
 }
 
-func (x *App) GetLog() *Log {
+func (x *App) GetLog() *App_Log {
 	if x != nil {
 		return x.Log
 	}
 	return nil
-}
-
-type Jwt struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SecretKey     string                 `protobuf:"bytes,1,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"` // JWT密钥
-	Expire        int32                  `protobuf:"varint,2,opt,name=expire,proto3" json:"expire,omitempty"`                       // JWT过期时间，单位秒
-	Issuer        string                 `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`                        // JWT签发者
-	Audience      string                 `protobuf:"bytes,4,opt,name=audience,proto3" json:"audience,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Jwt) Reset() {
-	*x = Jwt{}
-	mi := &file_conf_conf_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Jwt) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Jwt) ProtoMessage() {}
-
-func (x *Jwt) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Jwt.ProtoReflect.Descriptor instead.
-func (*Jwt) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *Jwt) GetSecretKey() string {
-	if x != nil {
-		return x.SecretKey
-	}
-	return ""
-}
-
-func (x *Jwt) GetExpire() int32 {
-	if x != nil {
-		return x.Expire
-	}
-	return 0
-}
-
-func (x *Jwt) GetIssuer() string {
-	if x != nil {
-		return x.Issuer
-	}
-	return ""
-}
-
-func (x *Jwt) GetAudience() string {
-	if x != nil {
-		return x.Audience
-	}
-	return ""
-}
-
-type Log struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Level         int32                  `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`                            // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
-	Filename      string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`                       // 日志文件名
-	MaxSize       string                 `protobuf:"bytes,3,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"`          // 日志文件最大大小
-	MaxBackups    string                 `protobuf:"bytes,4,opt,name=max_backups,json=maxBackups,proto3" json:"max_backups,omitempty"` // 日志文件最大备份数
-	MaxAge        string                 `protobuf:"bytes,5,opt,name=max_age,json=maxAge,proto3" json:"max_age,omitempty"`             // 日志文件最大保留天数
-	Compress      bool                   `protobuf:"varint,6,opt,name=compress,proto3" json:"compress,omitempty"`                      // 是否压缩日志文件
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Log) Reset() {
-	*x = Log{}
-	mi := &file_conf_conf_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Log) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Log) ProtoMessage() {}
-
-func (x *Log) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Log.ProtoReflect.Descriptor instead.
-func (*Log) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *Log) GetLevel() int32 {
-	if x != nil {
-		return x.Level
-	}
-	return 0
-}
-
-func (x *Log) GetFilename() string {
-	if x != nil {
-		return x.Filename
-	}
-	return ""
-}
-
-func (x *Log) GetMaxSize() string {
-	if x != nil {
-		return x.MaxSize
-	}
-	return ""
-}
-
-func (x *Log) GetMaxBackups() string {
-	if x != nil {
-		return x.MaxBackups
-	}
-	return ""
-}
-
-func (x *Log) GetMaxAge() string {
-	if x != nil {
-		return x.MaxAge
-	}
-	return ""
-}
-
-func (x *Log) GetCompress() bool {
-	if x != nil {
-		return x.Compress
-	}
-	return false
 }
 
 type Server_HTTP struct {
@@ -409,7 +269,7 @@ type Server_HTTP struct {
 
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
-	mi := &file_conf_conf_proto_msgTypes[6]
+	mi := &file_conf_conf_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -421,7 +281,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[6]
+	mi := &file_conf_conf_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -469,7 +329,7 @@ type Server_GRPC struct {
 
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
-	mi := &file_conf_conf_proto_msgTypes[7]
+	mi := &file_conf_conf_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -481,7 +341,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[7]
+	mi := &file_conf_conf_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -528,7 +388,7 @@ type Data_Database struct {
 
 func (x *Data_Database) Reset() {
 	*x = Data_Database{}
-	mi := &file_conf_conf_proto_msgTypes[8]
+	mi := &file_conf_conf_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -540,7 +400,7 @@ func (x *Data_Database) String() string {
 func (*Data_Database) ProtoMessage() {}
 
 func (x *Data_Database) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[8]
+	mi := &file_conf_conf_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -582,7 +442,7 @@ type Data_Redis struct {
 
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
-	mi := &file_conf_conf_proto_msgTypes[9]
+	mi := &file_conf_conf_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -594,7 +454,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[9]
+	mi := &file_conf_conf_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -638,6 +498,346 @@ func (x *Data_Redis) GetWriteTimeout() *durationpb.Duration {
 	return nil
 }
 
+type Data_Client struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Grpc          []*Data_Client_GRPC    `protobuf:"bytes,1,rep,name=grpc,proto3" json:"grpc,omitempty"`
+	Http          []*Data_Client_HTTP    `protobuf:"bytes,2,rep,name=http,proto3" json:"http,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Data_Client) Reset() {
+	*x = Data_Client{}
+	mi := &file_conf_conf_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Data_Client) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Data_Client) ProtoMessage() {}
+
+func (x *Data_Client) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Data_Client.ProtoReflect.Descriptor instead.
+func (*Data_Client) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{2, 2}
+}
+
+func (x *Data_Client) GetGrpc() []*Data_Client_GRPC {
+	if x != nil {
+		return x.Grpc
+	}
+	return nil
+}
+
+func (x *Data_Client) GetHttp() []*Data_Client_HTTP {
+	if x != nil {
+		return x.Http
+	}
+	return nil
+}
+
+type Data_Client_HTTP struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceName   string                 `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,2,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	EnableTls     bool                   `protobuf:"varint,3,opt,name=enable_tls,json=enableTls,proto3" json:"enable_tls,omitempty"`
+	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Data_Client_HTTP) Reset() {
+	*x = Data_Client_HTTP{}
+	mi := &file_conf_conf_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Data_Client_HTTP) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Data_Client_HTTP) ProtoMessage() {}
+
+func (x *Data_Client_HTTP) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Data_Client_HTTP.ProtoReflect.Descriptor instead.
+func (*Data_Client_HTTP) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{2, 2, 0}
+}
+
+func (x *Data_Client_HTTP) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
+func (x *Data_Client_HTTP) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *Data_Client_HTTP) GetEnableTls() bool {
+	if x != nil {
+		return x.EnableTls
+	}
+	return false
+}
+
+func (x *Data_Client_HTTP) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type Data_Client_GRPC struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceName   string                 `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,2,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	EnableTls     bool                   `protobuf:"varint,3,opt,name=enable_tls,json=enableTls,proto3" json:"enable_tls,omitempty"`
+	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Data_Client_GRPC) Reset() {
+	*x = Data_Client_GRPC{}
+	mi := &file_conf_conf_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Data_Client_GRPC) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Data_Client_GRPC) ProtoMessage() {}
+
+func (x *Data_Client_GRPC) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Data_Client_GRPC.ProtoReflect.Descriptor instead.
+func (*Data_Client_GRPC) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{2, 2, 1}
+}
+
+func (x *Data_Client_GRPC) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
+func (x *Data_Client_GRPC) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *Data_Client_GRPC) GetEnableTls() bool {
+	if x != nil {
+		return x.EnableTls
+	}
+	return false
+}
+
+func (x *Data_Client_GRPC) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type App_Jwt struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SecretKey     string                 `protobuf:"bytes,1,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"` // JWT密钥
+	Expire        int32                  `protobuf:"varint,2,opt,name=expire,proto3" json:"expire,omitempty"`                       // JWT过期时间，单位秒
+	Issuer        string                 `protobuf:"bytes,3,opt,name=issuer,proto3" json:"issuer,omitempty"`                        // JWT签发者
+	Audience      string                 `protobuf:"bytes,4,opt,name=audience,proto3" json:"audience,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *App_Jwt) Reset() {
+	*x = App_Jwt{}
+	mi := &file_conf_conf_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *App_Jwt) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*App_Jwt) ProtoMessage() {}
+
+func (x *App_Jwt) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use App_Jwt.ProtoReflect.Descriptor instead.
+func (*App_Jwt) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *App_Jwt) GetSecretKey() string {
+	if x != nil {
+		return x.SecretKey
+	}
+	return ""
+}
+
+func (x *App_Jwt) GetExpire() int32 {
+	if x != nil {
+		return x.Expire
+	}
+	return 0
+}
+
+func (x *App_Jwt) GetIssuer() string {
+	if x != nil {
+		return x.Issuer
+	}
+	return ""
+}
+
+func (x *App_Jwt) GetAudience() string {
+	if x != nil {
+		return x.Audience
+	}
+	return ""
+}
+
+type App_Log struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Level         int32                  `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`                            // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
+	Filename      string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`                       // 日志文件名
+	MaxSize       string                 `protobuf:"bytes,3,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"`          // 日志文件最大大小
+	MaxBackups    string                 `protobuf:"bytes,4,opt,name=max_backups,json=maxBackups,proto3" json:"max_backups,omitempty"` // 日志文件最大备份数
+	MaxAge        string                 `protobuf:"bytes,5,opt,name=max_age,json=maxAge,proto3" json:"max_age,omitempty"`             // 日志文件最大保留天数
+	Compress      bool                   `protobuf:"varint,6,opt,name=compress,proto3" json:"compress,omitempty"`                      // 是否压缩日志文件
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *App_Log) Reset() {
+	*x = App_Log{}
+	mi := &file_conf_conf_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *App_Log) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*App_Log) ProtoMessage() {}
+
+func (x *App_Log) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use App_Log.ProtoReflect.Descriptor instead.
+func (*App_Log) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{3, 1}
+}
+
+func (x *App_Log) GetLevel() int32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+func (x *App_Log) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *App_Log) GetMaxSize() string {
+	if x != nil {
+		return x.MaxSize
+	}
+	return ""
+}
+
+func (x *App_Log) GetMaxBackups() string {
+	if x != nil {
+		return x.MaxBackups
+	}
+	return ""
+}
+
+func (x *App_Log) GetMaxAge() string {
+	if x != nil {
+		return x.MaxAge
+	}
+	return ""
+}
+
+func (x *App_Log) GetCompress() bool {
+	if x != nil {
+		return x.Compress
+	}
+	return false
+}
+
 var File_conf_conf_proto protoreflect.FileDescriptor
 
 const file_conf_conf_proto_rawDesc = "" +
@@ -658,10 +858,11 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\x04GRPC\x12\x18\n" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x12\n" +
 	"\x04addr\x18\x02 \x01(\tR\x04addr\x123\n" +
-	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\xdd\x02\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\xb5\x06\n" +
 	"\x04Data\x125\n" +
 	"\bdatabase\x18\x01 \x01(\v2\x19.kratos.api.Data.DatabaseR\bdatabase\x12,\n" +
-	"\x05redis\x18\x02 \x01(\v2\x16.kratos.api.Data.RedisR\x05redis\x1a:\n" +
+	"\x05redis\x18\x02 \x01(\v2\x16.kratos.api.Data.RedisR\x05redis\x12/\n" +
+	"\x06client\x18\x03 \x01(\v2\x17.kratos.api.Data.ClientR\x06client\x1a:\n" +
 	"\bDatabase\x12\x16\n" +
 	"\x06driver\x18\x01 \x01(\tR\x06driver\x12\x16\n" +
 	"\x06source\x18\x02 \x01(\tR\x06source\x1a\xb3\x01\n" +
@@ -669,17 +870,32 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x12\n" +
 	"\x04addr\x18\x02 \x01(\tR\x04addr\x12<\n" +
 	"\fread_timeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
-	"\rwrite_timeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\"]\n" +
+	"\rwrite_timeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x1a\xa4\x03\n" +
+	"\x06Client\x120\n" +
+	"\x04grpc\x18\x01 \x03(\v2\x1c.kratos.api.Data.Client.GRPCR\x04grpc\x120\n" +
+	"\x04http\x18\x02 \x03(\v2\x1c.kratos.api.Data.Client.HTTPR\x04http\x1a\x99\x01\n" +
+	"\x04HTTP\x12!\n" +
+	"\fservice_name\x18\x01 \x01(\tR\vserviceName\x12\x1a\n" +
+	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x12\x1d\n" +
+	"\n" +
+	"enable_tls\x18\x03 \x01(\bR\tenableTls\x123\n" +
+	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\x99\x01\n" +
+	"\x04GRPC\x12!\n" +
+	"\fservice_name\x18\x01 \x01(\tR\vserviceName\x12\x1a\n" +
+	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x12\x1d\n" +
+	"\n" +
+	"enable_tls\x18\x03 \x01(\bR\tenableTls\x123\n" +
+	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\x82\x03\n" +
 	"\x03App\x12\x10\n" +
-	"\x03env\x18\x01 \x01(\tR\x03env\x12!\n" +
-	"\x03jwt\x18\x02 \x01(\v2\x0f.kratos.api.JwtR\x03jwt\x12!\n" +
-	"\x03log\x18\x03 \x01(\v2\x0f.kratos.api.LogR\x03log\"p\n" +
+	"\x03env\x18\x01 \x01(\tR\x03env\x12%\n" +
+	"\x03jwt\x18\x02 \x01(\v2\x13.kratos.api.App.JwtR\x03jwt\x12%\n" +
+	"\x03log\x18\x03 \x01(\v2\x13.kratos.api.App.LogR\x03log\x1ap\n" +
 	"\x03Jwt\x12\x1d\n" +
 	"\n" +
 	"secret_key\x18\x01 \x01(\tR\tsecretKey\x12\x16\n" +
 	"\x06expire\x18\x02 \x01(\x05R\x06expire\x12\x16\n" +
 	"\x06issuer\x18\x03 \x01(\tR\x06issuer\x12\x1a\n" +
-	"\baudience\x18\x04 \x01(\tR\baudience\"\xa8\x01\n" +
+	"\baudience\x18\x04 \x01(\tR\baudience\x1a\xa8\x01\n" +
 	"\x03Log\x12\x14\n" +
 	"\x05level\x18\x01 \x01(\x05R\x05level\x12\x1a\n" +
 	"\bfilename\x18\x02 \x01(\tR\bfilename\x12\x19\n" +
@@ -701,39 +917,47 @@ func file_conf_conf_proto_rawDescGZIP() []byte {
 	return file_conf_conf_proto_rawDescData
 }
 
-var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_conf_conf_proto_goTypes = []any{
 	(*Bootstrap)(nil),           // 0: kratos.api.Bootstrap
 	(*Server)(nil),              // 1: kratos.api.Server
 	(*Data)(nil),                // 2: kratos.api.Data
 	(*App)(nil),                 // 3: kratos.api.App
-	(*Jwt)(nil),                 // 4: kratos.api.Jwt
-	(*Log)(nil),                 // 5: kratos.api.Log
-	(*Server_HTTP)(nil),         // 6: kratos.api.Server.HTTP
-	(*Server_GRPC)(nil),         // 7: kratos.api.Server.GRPC
-	(*Data_Database)(nil),       // 8: kratos.api.Data.Database
-	(*Data_Redis)(nil),          // 9: kratos.api.Data.Redis
-	(*durationpb.Duration)(nil), // 10: google.protobuf.Duration
+	(*Server_HTTP)(nil),         // 4: kratos.api.Server.HTTP
+	(*Server_GRPC)(nil),         // 5: kratos.api.Server.GRPC
+	(*Data_Database)(nil),       // 6: kratos.api.Data.Database
+	(*Data_Redis)(nil),          // 7: kratos.api.Data.Redis
+	(*Data_Client)(nil),         // 8: kratos.api.Data.Client
+	(*Data_Client_HTTP)(nil),    // 9: kratos.api.Data.Client.HTTP
+	(*Data_Client_GRPC)(nil),    // 10: kratos.api.Data.Client.GRPC
+	(*App_Jwt)(nil),             // 11: kratos.api.App.Jwt
+	(*App_Log)(nil),             // 12: kratos.api.App.Log
+	(*durationpb.Duration)(nil), // 13: google.protobuf.Duration
 }
 var file_conf_conf_proto_depIdxs = []int32{
 	1,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
 	2,  // 1: kratos.api.Bootstrap.data:type_name -> kratos.api.Data
 	3,  // 2: kratos.api.Bootstrap.app:type_name -> kratos.api.App
-	6,  // 3: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
-	7,  // 4: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
-	8,  // 5: kratos.api.Data.database:type_name -> kratos.api.Data.Database
-	9,  // 6: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
-	4,  // 7: kratos.api.App.jwt:type_name -> kratos.api.Jwt
-	5,  // 8: kratos.api.App.log:type_name -> kratos.api.Log
-	10, // 9: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	10, // 10: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	10, // 11: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	10, // 12: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	4,  // 3: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
+	5,  // 4: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
+	6,  // 5: kratos.api.Data.database:type_name -> kratos.api.Data.Database
+	7,  // 6: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
+	8,  // 7: kratos.api.Data.client:type_name -> kratos.api.Data.Client
+	11, // 8: kratos.api.App.jwt:type_name -> kratos.api.App.Jwt
+	12, // 9: kratos.api.App.log:type_name -> kratos.api.App.Log
+	13, // 10: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	13, // 11: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	13, // 12: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	13, // 13: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	10, // 14: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
+	9,  // 15: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
+	13, // 16: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	13, // 17: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_conf_conf_proto_init() }
@@ -747,7 +971,7 @@ func file_conf_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_conf_proto_rawDesc), len(file_conf_conf_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

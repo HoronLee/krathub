@@ -17,7 +17,7 @@ type JWT struct {
 	issuer         string
 }
 
-func NewJWT(cfg *conf.Jwt) *JWT {
+func NewJWT(cfg *conf.App_Jwt) *JWT {
 	return &JWT{
 		secretKey:      []byte(cfg.SecretKey),
 		expirationTime: time.Duration(cfg.Expire) * time.Hour,

@@ -28,7 +28,11 @@ func wireApp(confServer *conf.Server, confData *conf.Data, app *conf.App, logger
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger)
+	helloServiceClient, err := data.NewHelloGrpcClient(confData)
+	if err != nil {
+		return nil, nil, err
+	}
+	dataData, cleanup, err := data.NewData(db, confData, logger, helloServiceClient)
 	if err != nil {
 		return nil, nil, err
 	}

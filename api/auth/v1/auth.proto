@@ -37,6 +37,13 @@ enum ErrorReason {
 }
 
 service Auth {
+  rpc SayHello(HelloRequest) returns (HelloResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/HelloTest"
+      body: "*"
+    };
+  }
+
   rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply) {
     option (google.api.http) = {
       post: "/v1/auth/signup/using-email"
@@ -81,4 +88,14 @@ message LoginByEmailPasswordRequest {
 // 密码登录响应
 message LoginByEmailPasswordReply {
   string token = 1;
+}
+
+// 消息定义
+message HelloRequest {
+  optional string greeting = 1;
+}
+
+// 响应消息定义
+message HelloResponse {
+  string reply = 1;
 }

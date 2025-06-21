@@ -5,12 +5,14 @@ option go_package = "krathub/internal/conf;conf";
 
 import "google/protobuf/duration.proto";
 
+// Bootstrap 配置
 message Bootstrap {
   Server server = 1;
   Data data = 2;
   App app = 3;
 }
 
+// 通信服务端配置
 message Server {
   message HTTP {
     string network = 1;
@@ -26,6 +28,7 @@ message Server {
   GRPC grpc = 2;
 }
 
+// 数据源配置
 message Data {
   message Database {
     string driver = 1;
@@ -37,28 +40,44 @@ message Data {
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
   }
+  message Client {
+    message HTTP {
+      string service_name = 1;
+      string endpoint = 2;
+      bool enable_tls = 3;
+      google.protobuf.Duration timeout = 4;
+    }
+    message GRPC {
+      string service_name = 1;
+      string endpoint = 2;
+      bool enable_tls = 3;
+      google.protobuf.Duration timeout = 4;
+    }
+    repeated GRPC grpc = 1;
+    repeated HTTP http = 2;
+  }
   Database database = 1;
   Redis redis = 2;
+  Client client = 3; // 新增
 }
 
+// 应用配置
 message App {
+  message Jwt {
+    string secret_key = 1; // JWT密钥
+    int32 expire = 2; // JWT过期时间，单位秒
+    string issuer = 3; // JWT签发者
+    string audience = 4;
+  }
+  message Log {
+    int32 level = 1; // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
+    string filename = 2;  // 日志文件名
+    string max_size = 3; // 日志文件最大大小
+    string max_backups = 4; // 日志文件最大备份数
+    string max_age = 5; // 日志文件最大保留天数
+    bool compress = 6; // 是否压缩日志文件
+  }
   string env = 1; // dev test prod
   Jwt jwt = 2; // JWT配置
   Log log = 3; // 日志配置
-}
-
-message Jwt{
-  string secret_key = 1; // JWT密钥
-  int32 expire = 2; // JWT过期时间，单位秒
-  string issuer = 3; // JWT签发者
-  string audience = 4;
-}
-
-message Log {
-  int32 level = 1; // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
-  string filename = 2;  // 日志文件名
-  string max_size = 3; // 日志文件最大大小
-  string max_backups = 4; // 日志文件最大备份数
-  string max_age = 5; // 日志文件最大保留天数
-  bool compress = 6; // 是否压缩日志文件
 }

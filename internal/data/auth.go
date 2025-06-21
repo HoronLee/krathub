@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	hellov1 "krathub/api/hello/v1"
 	"krathub/internal/biz"
 	"krathub/internal/data/model"
 	"krathub/pkg/hash"
@@ -75,4 +76,15 @@ func (r *authRepo) ListUserByPhone(ctx context.Context, phone string) ([]*model.
 		return nil, err
 	}
 	return user, nil
+}
+
+// SayHello 实现 biz.AuthRepo 接口的 SayHello 方法
+func (r *authRepo) SayHello(ctx context.Context, in string) (string, error) {
+	r.log.Debugf("Saying hello with greeting: %s", in)
+	ret, err := r.data.hc.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})
+	if err != nil {
+		r.log.Errorf("Failed to say hello: %v", err)
+		return "", err
+	}
+	return ret.Reply, nil
 }

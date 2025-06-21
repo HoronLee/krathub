@@ -20,17 +20,42 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationAuthLoginByEmailPassword = "/krathub.auth.v1.Auth/LoginByEmailPassword"
+const OperationAuthSayHello = "/krathub.auth.v1.Auth/SayHello"
 const OperationAuthSignupByEmail = "/krathub.auth.v1.Auth/SignupByEmail"
 
 type AuthHTTPServer interface {
 	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error)
+	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
 	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
 }
 
 func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
+	r.POST("/v1/auth/HelloTest", _Auth_SayHello0_HTTP_Handler(srv))
 	r.POST("/v1/auth/signup/using-email", _Auth_SignupByEmail0_HTTP_Handler(srv))
 	r.POST("/v1/auth/login/using-email-password", _Auth_LoginByEmailPassword0_HTTP_Handler(srv))
+}
+
+func _Auth_SayHello0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in HelloRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAuthSayHello)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SayHello(ctx, req.(*HelloRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*HelloResponse)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _Auth_SignupByEmail0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.Context) error {
@@ -79,6 +104,7 @@ func _Auth_LoginByEmailPassword0_HTTP_Handler(srv AuthHTTPServer) func(ctx http.
 
 type AuthHTTPClient interface {
 	LoginByEmailPassword(ctx context.Context, req *LoginByEmailPasswordRequest, opts ...http.CallOption) (rsp *LoginByEmailPasswordReply, err error)
+	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloResponse, err error)
 	SignupByEmail(ctx context.Context, req *SignupByEmailRequest, opts ...http.CallOption) (rsp *SignupByEmailReply, err error)
 }
 
@@ -95,6 +121,19 @@ func (c *AuthHTTPClientImpl) LoginByEmailPassword(ctx context.Context, in *Login
 	pattern := "/v1/auth/login/using-email-password"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAuthLoginByEmailPassword))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *AuthHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloResponse, error) {
+	var out HelloResponse
+	pattern := "/v1/auth/HelloTest"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAuthSayHello))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

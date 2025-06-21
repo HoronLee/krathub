@@ -1,0 +1,28 @@
+// based on https://grpc.io/docs/guides/concepts.html
+syntax = "proto3";
+
+package hello;
+
+// go 包名
+option go_package = "krathub/api/v1/hello;hellov1";
+option java_multiple_files = true;
+option java_package = "dev.krathub.api.hello.v1";
+option java_outer_classname = "HelloProtoV1";
+
+// HelloService 定义
+service HelloService {
+  rpc SayHello(HelloRequest) returns (HelloResponse);
+  rpc LotsOfReplies(HelloRequest) returns (stream HelloResponse);
+  rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
+  rpc BidiHello(stream HelloRequest) returns (stream HelloResponse);
+}
+
+// 消息定义
+message HelloRequest {
+  optional string greeting = 1;
+}
+
+// 响应消息定义
+message HelloResponse {
+  string reply = 1;
+}
