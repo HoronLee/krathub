@@ -466,9 +466,9 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\rTOKEN_EXPIRED\x10\x04\x1a\x04\xa8E\x91\x03\x12\x17\n" +
 	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
 	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
-	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\x99\x03\n" +
-	"\x04Auth\x12h\n" +
-	"\bSayHello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1e.krathub.auth.v1.HelloResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/v1/auth/HelloTest\x12\x83\x01\n" +
+	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\x96\x03\n" +
+	"\x04Auth\x12e\n" +
+	"\x05Hello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1e.krathub.auth.v1.HelloResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/v1/auth/HelloTest\x12\x83\x01\n" +
 	"\rSignupByEmail\x12%.krathub.auth.v1.SignupByEmailRequest\x1a#.krathub.auth.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12\xa0\x01\n" +
 	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBD\n" +
 	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z\x1akrathub/api/v1/auth;authv1b\x06proto3"
@@ -497,10 +497,10 @@ var file_api_auth_v1_auth_proto_goTypes = []any{
 	(*HelloResponse)(nil),               // 6: krathub.auth.v1.HelloResponse
 }
 var file_api_auth_v1_auth_proto_depIdxs = []int32{
-	5, // 0: krathub.auth.v1.Auth.SayHello:input_type -> krathub.auth.v1.HelloRequest
+	5, // 0: krathub.auth.v1.Auth.Hello:input_type -> krathub.auth.v1.HelloRequest
 	1, // 1: krathub.auth.v1.Auth.SignupByEmail:input_type -> krathub.auth.v1.SignupByEmailRequest
 	3, // 2: krathub.auth.v1.Auth.LoginByEmailPassword:input_type -> krathub.auth.v1.LoginByEmailPasswordRequest
-	6, // 3: krathub.auth.v1.Auth.SayHello:output_type -> krathub.auth.v1.HelloResponse
+	6, // 3: krathub.auth.v1.Auth.Hello:output_type -> krathub.auth.v1.HelloResponse
 	2, // 4: krathub.auth.v1.Auth.SignupByEmail:output_type -> krathub.auth.v1.SignupByEmailReply
 	4, // 5: krathub.auth.v1.Auth.LoginByEmailPassword:output_type -> krathub.auth.v1.LoginByEmailPasswordReply
 	3, // [3:6] is the sub-list for method output_type

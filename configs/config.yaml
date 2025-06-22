@@ -5,6 +5,7 @@ server:
   grpc:
     addr: "${GADDR:0.0.0.0:8001}"
     timeout: "${GTIMEHOUT:1s}"
+
 data:
   database:
     driver: "${DB_DRIVER:mysql}"
@@ -16,9 +17,7 @@ data:
   client:
     grpc:
      - service_name: hello
-       endpoint: grpcb.in:9000
-       enable_tls: false
-       timeout: 1s
+
 app:
   env: "${ENV:dev}"
   jwt:
@@ -29,3 +28,31 @@ app:
   log:
     level: "${LOG_LEVEL:0}"  # -1debug,0info,1warn,2error,3dpanic,4panic,5fatal
     filename: "${LOG_FILENAME:krathub.log}"  # 起始于当前工作目录
+
+# 注册中心配置，三选一
+registry:
+  # 使用 Consul 作为注册中心
+  consul:
+    addr: 127.0.0.1:8500
+    scheme: http
+    token: your-token
+    datacenter: dc1
+    timeout: 5s
+  
+  # 或者使用 Etcd 作为注册中心
+  # etcd:
+  #   endpoints:
+  #     - 127.0.0.1:2379
+  #     - 127.0.0.1:2380
+  #   username: root
+  #   password: password
+  #   timeout: 5s
+  
+  # 或者使用 Nacos 作为注册中心
+  # nacos:
+  #   addr: 127.0.0.1:8848
+  #   namespace: public
+  #   group: DEFAULT_GROUP
+  #   username: nacos
+  #   password: nacos
+  #   timeout: 5s

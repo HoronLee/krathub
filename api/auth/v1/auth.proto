@@ -37,7 +37,7 @@ enum ErrorReason {
 }
 
 service Auth {
-  rpc SayHello(HelloRequest) returns (HelloResponse) {
+  rpc Hello(HelloRequest) returns (HelloResponse) {
     option (google.api.http) = {
       post: "/v1/auth/HelloTest"
       body: "*"

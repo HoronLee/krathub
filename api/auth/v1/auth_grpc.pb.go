@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_SayHello_FullMethodName             = "/krathub.auth.v1.Auth/SayHello"
+	Auth_Hello_FullMethodName                = "/krathub.auth.v1.Auth/Hello"
 	Auth_SignupByEmail_FullMethodName        = "/krathub.auth.v1.Auth/SignupByEmail"
 	Auth_LoginByEmailPassword_FullMethodName = "/krathub.auth.v1.Auth/LoginByEmailPassword"
 )
@@ -28,7 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
+	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailReply, error)
 	LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*LoginByEmailPasswordReply, error)
 }
@@ -41,10 +41,10 @@ func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
 	return &authClient{cc}
 }
 
-func (c *authClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+func (c *authClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, Auth_SayHello_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Auth_Hello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (c *authClient) LoginByEmailPassword(ctx context.Context, in *LoginByEmailP
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
-	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
+	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
 	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
 	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error)
 	mustEmbedUnimplementedAuthServer()
@@ -88,8 +88,8 @@ type AuthServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServer struct{}
 
-func (UnimplementedAuthServer) SayHello(context.Context, *HelloRequest) (*HelloResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+func (UnimplementedAuthServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Hello not implemented")
 }
 func (UnimplementedAuthServer) SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignupByEmail not implemented")
@@ -118,20 +118,20 @@ func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
 	s.RegisterService(&Auth_ServiceDesc, srv)
 }
 
-func _Auth_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Auth_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServer).SayHello(ctx, in)
+		return srv.(AuthServer).Hello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Auth_SayHello_FullMethodName,
+		FullMethod: Auth_Hello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).SayHello(ctx, req.(*HelloRequest))
+		return srv.(AuthServer).Hello(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -180,8 +180,8 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _Auth_SayHello_Handler,
+			MethodName: "Hello",
+			Handler:    _Auth_Hello_Handler,
 		},
 		{
 			MethodName: "SignupByEmail",

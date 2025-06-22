@@ -1,6 +1,8 @@
 // based on https://grpc.io/docs/guides/concepts.html
 syntax = "proto3";
 
+import "google/api/annotations.proto";
+
 package hello;
 
 // go 包名
@@ -11,10 +13,13 @@ option java_outer_classname = "HelloProtoV1";
 
 // HelloService 定义
 service HelloService {
-  rpc SayHello(HelloRequest) returns (HelloResponse);
-  rpc LotsOfReplies(HelloRequest) returns (stream HelloResponse);
-  rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
-  rpc BidiHello(stream HelloRequest) returns (stream HelloResponse);
+  rpc SayHello(HelloRequest) returns (HelloResponse) {
+    option (google.api.http) = {
+      post: "/v1/hello/HelloTest"
+      body: "*"
+    };
+  }
+
 }
 
 // 消息定义

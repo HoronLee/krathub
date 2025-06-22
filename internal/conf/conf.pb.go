@@ -28,6 +28,7 @@ type Bootstrap struct {
 	Server        *Server                `protobuf:"bytes,1,opt,name=server,proto3" json:"server,omitempty"`
 	Data          *Data                  `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	App           *App                   `protobuf:"bytes,3,opt,name=app,proto3" json:"app,omitempty"`
+	Registry      *Registry              `protobuf:"bytes,4,opt,name=registry,proto3" json:"registry,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -79,6 +80,13 @@ func (x *Bootstrap) GetData() *Data {
 func (x *Bootstrap) GetApp() *App {
 	if x != nil {
 		return x.App
+	}
+	return nil
+}
+
+func (x *Bootstrap) GetRegistry() *Registry {
+	if x != nil {
+		return x.Registry
 	}
 	return nil
 }
@@ -258,6 +266,204 @@ func (x *App) GetLog() *App_Log {
 	return nil
 }
 
+// 注册中心配置
+type Registry struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Registry:
+	//
+	//	*Registry_Consul_
+	//	*Registry_Etcd_
+	//	*Registry_Nacos_
+	Registry      isRegistry_Registry `protobuf_oneof:"registry"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Registry) Reset() {
+	*x = Registry{}
+	mi := &file_conf_conf_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Registry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Registry) ProtoMessage() {}
+
+func (x *Registry) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Registry.ProtoReflect.Descriptor instead.
+func (*Registry) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Registry) GetRegistry() isRegistry_Registry {
+	if x != nil {
+		return x.Registry
+	}
+	return nil
+}
+
+func (x *Registry) GetConsul() *Registry_Consul {
+	if x != nil {
+		if x, ok := x.Registry.(*Registry_Consul_); ok {
+			return x.Consul
+		}
+	}
+	return nil
+}
+
+func (x *Registry) GetEtcd() *Registry_Etcd {
+	if x != nil {
+		if x, ok := x.Registry.(*Registry_Etcd_); ok {
+			return x.Etcd
+		}
+	}
+	return nil
+}
+
+func (x *Registry) GetNacos() *Registry_Nacos {
+	if x != nil {
+		if x, ok := x.Registry.(*Registry_Nacos_); ok {
+			return x.Nacos
+		}
+	}
+	return nil
+}
+
+type isRegistry_Registry interface {
+	isRegistry_Registry()
+}
+
+type Registry_Consul_ struct {
+	Consul *Registry_Consul `protobuf:"bytes,1,opt,name=consul,proto3,oneof"` // Consul 配置
+}
+
+type Registry_Etcd_ struct {
+	Etcd *Registry_Etcd `protobuf:"bytes,2,opt,name=etcd,proto3,oneof"` // Etcd 配置
+}
+
+type Registry_Nacos_ struct {
+	Nacos *Registry_Nacos `protobuf:"bytes,3,opt,name=nacos,proto3,oneof"` // Nacos 配置
+}
+
+func (*Registry_Consul_) isRegistry_Registry() {}
+
+func (*Registry_Etcd_) isRegistry_Registry() {}
+
+func (*Registry_Nacos_) isRegistry_Registry() {}
+
+// 服务发现配置
+type Discovery struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Discovery:
+	//
+	//	*Discovery_Consul_
+	//	*Discovery_Etcd_
+	//	*Discovery_Nacos_
+	Discovery     isDiscovery_Discovery `protobuf_oneof:"discovery"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Discovery) Reset() {
+	*x = Discovery{}
+	mi := &file_conf_conf_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Discovery) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Discovery) ProtoMessage() {}
+
+func (x *Discovery) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Discovery.ProtoReflect.Descriptor instead.
+func (*Discovery) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *Discovery) GetDiscovery() isDiscovery_Discovery {
+	if x != nil {
+		return x.Discovery
+	}
+	return nil
+}
+
+func (x *Discovery) GetConsul() *Discovery_Consul {
+	if x != nil {
+		if x, ok := x.Discovery.(*Discovery_Consul_); ok {
+			return x.Consul
+		}
+	}
+	return nil
+}
+
+func (x *Discovery) GetEtcd() *Discovery_Etcd {
+	if x != nil {
+		if x, ok := x.Discovery.(*Discovery_Etcd_); ok {
+			return x.Etcd
+		}
+	}
+	return nil
+}
+
+func (x *Discovery) GetNacos() *Discovery_Nacos {
+	if x != nil {
+		if x, ok := x.Discovery.(*Discovery_Nacos_); ok {
+			return x.Nacos
+		}
+	}
+	return nil
+}
+
+type isDiscovery_Discovery interface {
+	isDiscovery_Discovery()
+}
+
+type Discovery_Consul_ struct {
+	Consul *Discovery_Consul `protobuf:"bytes,1,opt,name=consul,proto3,oneof"` // Consul 配置
+}
+
+type Discovery_Etcd_ struct {
+	Etcd *Discovery_Etcd `protobuf:"bytes,2,opt,name=etcd,proto3,oneof"` // Etcd 配置
+}
+
+type Discovery_Nacos_ struct {
+	Nacos *Discovery_Nacos `protobuf:"bytes,3,opt,name=nacos,proto3,oneof"` // Nacos 配置
+}
+
+func (*Discovery_Consul_) isDiscovery_Discovery() {}
+
+func (*Discovery_Etcd_) isDiscovery_Discovery() {}
+
+func (*Discovery_Nacos_) isDiscovery_Discovery() {}
+
 type Server_HTTP struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Network       string                 `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
@@ -269,7 +475,7 @@ type Server_HTTP struct {
 
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
-	mi := &file_conf_conf_proto_msgTypes[4]
+	mi := &file_conf_conf_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -281,7 +487,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[4]
+	mi := &file_conf_conf_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +535,7 @@ type Server_GRPC struct {
 
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
-	mi := &file_conf_conf_proto_msgTypes[5]
+	mi := &file_conf_conf_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +547,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[5]
+	mi := &file_conf_conf_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -388,7 +594,7 @@ type Data_Database struct {
 
 func (x *Data_Database) Reset() {
 	*x = Data_Database{}
-	mi := &file_conf_conf_proto_msgTypes[6]
+	mi := &file_conf_conf_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -400,7 +606,7 @@ func (x *Data_Database) String() string {
 func (*Data_Database) ProtoMessage() {}
 
 func (x *Data_Database) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[6]
+	mi := &file_conf_conf_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -442,7 +648,7 @@ type Data_Redis struct {
 
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
-	mi := &file_conf_conf_proto_msgTypes[7]
+	mi := &file_conf_conf_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -454,7 +660,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[7]
+	mi := &file_conf_conf_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -508,7 +714,7 @@ type Data_Client struct {
 
 func (x *Data_Client) Reset() {
 	*x = Data_Client{}
-	mi := &file_conf_conf_proto_msgTypes[8]
+	mi := &file_conf_conf_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -520,7 +726,7 @@ func (x *Data_Client) String() string {
 func (*Data_Client) ProtoMessage() {}
 
 func (x *Data_Client) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[8]
+	mi := &file_conf_conf_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -562,7 +768,7 @@ type Data_Client_HTTP struct {
 
 func (x *Data_Client_HTTP) Reset() {
 	*x = Data_Client_HTTP{}
-	mi := &file_conf_conf_proto_msgTypes[9]
+	mi := &file_conf_conf_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -574,7 +780,7 @@ func (x *Data_Client_HTTP) String() string {
 func (*Data_Client_HTTP) ProtoMessage() {}
 
 func (x *Data_Client_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[9]
+	mi := &file_conf_conf_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -630,7 +836,7 @@ type Data_Client_GRPC struct {
 
 func (x *Data_Client_GRPC) Reset() {
 	*x = Data_Client_GRPC{}
-	mi := &file_conf_conf_proto_msgTypes[10]
+	mi := &file_conf_conf_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -642,7 +848,7 @@ func (x *Data_Client_GRPC) String() string {
 func (*Data_Client_GRPC) ProtoMessage() {}
 
 func (x *Data_Client_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[10]
+	mi := &file_conf_conf_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -698,7 +904,7 @@ type App_Jwt struct {
 
 func (x *App_Jwt) Reset() {
 	*x = App_Jwt{}
-	mi := &file_conf_conf_proto_msgTypes[11]
+	mi := &file_conf_conf_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -710,7 +916,7 @@ func (x *App_Jwt) String() string {
 func (*App_Jwt) ProtoMessage() {}
 
 func (x *App_Jwt) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[11]
+	mi := &file_conf_conf_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -768,7 +974,7 @@ type App_Log struct {
 
 func (x *App_Log) Reset() {
 	*x = App_Log{}
-	mi := &file_conf_conf_proto_msgTypes[12]
+	mi := &file_conf_conf_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -780,7 +986,7 @@ func (x *App_Log) String() string {
 func (*App_Log) ProtoMessage() {}
 
 func (x *App_Log) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[12]
+	mi := &file_conf_conf_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -838,16 +1044,473 @@ func (x *App_Log) GetCompress() bool {
 	return false
 }
 
+type Registry_Consul struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`             // Consul 地址
+	Scheme        string                 `protobuf:"bytes,2,opt,name=scheme,proto3" json:"scheme,omitempty"`         // 协议
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`           // 访问令牌
+	Datacenter    string                 `protobuf:"bytes,4,opt,name=datacenter,proto3" json:"datacenter,omitempty"` // 数据中心
+	Timeout       *durationpb.Duration   `protobuf:"bytes,5,opt,name=timeout,proto3" json:"timeout,omitempty"`       // 超时时间
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Registry_Consul) Reset() {
+	*x = Registry_Consul{}
+	mi := &file_conf_conf_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Registry_Consul) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Registry_Consul) ProtoMessage() {}
+
+func (x *Registry_Consul) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Registry_Consul.ProtoReflect.Descriptor instead.
+func (*Registry_Consul) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *Registry_Consul) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+func (x *Registry_Consul) GetScheme() string {
+	if x != nil {
+		return x.Scheme
+	}
+	return ""
+}
+
+func (x *Registry_Consul) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *Registry_Consul) GetDatacenter() string {
+	if x != nil {
+		return x.Datacenter
+	}
+	return ""
+}
+
+func (x *Registry_Consul) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type Registry_Etcd struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Endpoints     []string               `protobuf:"bytes,1,rep,name=endpoints,proto3" json:"endpoints,omitempty"` // Etcd 端点列表
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`   // 密码
+	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Registry_Etcd) Reset() {
+	*x = Registry_Etcd{}
+	mi := &file_conf_conf_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Registry_Etcd) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Registry_Etcd) ProtoMessage() {}
+
+func (x *Registry_Etcd) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Registry_Etcd.ProtoReflect.Descriptor instead.
+func (*Registry_Etcd) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{4, 1}
+}
+
+func (x *Registry_Etcd) GetEndpoints() []string {
+	if x != nil {
+		return x.Endpoints
+	}
+	return nil
+}
+
+func (x *Registry_Etcd) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *Registry_Etcd) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *Registry_Etcd) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type Registry_Nacos struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`           // Nacos 地址
+	Namespace     string                 `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间
+	Group         string                 `protobuf:"bytes,3,opt,name=group,proto3" json:"group,omitempty"`         // 分组
+	Username      string                 `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
+	Password      string                 `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`   // 密码
+	Timeout       *durationpb.Duration   `protobuf:"bytes,6,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Registry_Nacos) Reset() {
+	*x = Registry_Nacos{}
+	mi := &file_conf_conf_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Registry_Nacos) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Registry_Nacos) ProtoMessage() {}
+
+func (x *Registry_Nacos) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Registry_Nacos.ProtoReflect.Descriptor instead.
+func (*Registry_Nacos) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{4, 2}
+}
+
+func (x *Registry_Nacos) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+func (x *Registry_Nacos) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+func (x *Registry_Nacos) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
+func (x *Registry_Nacos) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *Registry_Nacos) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *Registry_Nacos) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type Discovery_Consul struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`             // Consul 地址
+	Scheme        string                 `protobuf:"bytes,2,opt,name=scheme,proto3" json:"scheme,omitempty"`         // 协议
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`           // 访问令牌
+	Datacenter    string                 `protobuf:"bytes,4,opt,name=datacenter,proto3" json:"datacenter,omitempty"` // 数据中心
+	Timeout       *durationpb.Duration   `protobuf:"bytes,5,opt,name=timeout,proto3" json:"timeout,omitempty"`       // 超时时间
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Discovery_Consul) Reset() {
+	*x = Discovery_Consul{}
+	mi := &file_conf_conf_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Discovery_Consul) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Discovery_Consul) ProtoMessage() {}
+
+func (x *Discovery_Consul) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Discovery_Consul.ProtoReflect.Descriptor instead.
+func (*Discovery_Consul) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{5, 0}
+}
+
+func (x *Discovery_Consul) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+func (x *Discovery_Consul) GetScheme() string {
+	if x != nil {
+		return x.Scheme
+	}
+	return ""
+}
+
+func (x *Discovery_Consul) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *Discovery_Consul) GetDatacenter() string {
+	if x != nil {
+		return x.Datacenter
+	}
+	return ""
+}
+
+func (x *Discovery_Consul) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type Discovery_Etcd struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Endpoints     []string               `protobuf:"bytes,1,rep,name=endpoints,proto3" json:"endpoints,omitempty"` // Etcd 端点列表
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`   // 密码
+	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Discovery_Etcd) Reset() {
+	*x = Discovery_Etcd{}
+	mi := &file_conf_conf_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Discovery_Etcd) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Discovery_Etcd) ProtoMessage() {}
+
+func (x *Discovery_Etcd) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Discovery_Etcd.ProtoReflect.Descriptor instead.
+func (*Discovery_Etcd) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{5, 1}
+}
+
+func (x *Discovery_Etcd) GetEndpoints() []string {
+	if x != nil {
+		return x.Endpoints
+	}
+	return nil
+}
+
+func (x *Discovery_Etcd) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *Discovery_Etcd) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *Discovery_Etcd) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+type Discovery_Nacos struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`           // Nacos 地址
+	Namespace     string                 `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间
+	Group         string                 `protobuf:"bytes,3,opt,name=group,proto3" json:"group,omitempty"`         // 分组
+	Username      string                 `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
+	Password      string                 `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`   // 密码
+	Timeout       *durationpb.Duration   `protobuf:"bytes,6,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Discovery_Nacos) Reset() {
+	*x = Discovery_Nacos{}
+	mi := &file_conf_conf_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Discovery_Nacos) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Discovery_Nacos) ProtoMessage() {}
+
+func (x *Discovery_Nacos) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_conf_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Discovery_Nacos.ProtoReflect.Descriptor instead.
+func (*Discovery_Nacos) Descriptor() ([]byte, []int) {
+	return file_conf_conf_proto_rawDescGZIP(), []int{5, 2}
+}
+
+func (x *Discovery_Nacos) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+func (x *Discovery_Nacos) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+func (x *Discovery_Nacos) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
+func (x *Discovery_Nacos) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *Discovery_Nacos) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *Discovery_Nacos) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
 var File_conf_conf_proto protoreflect.FileDescriptor
 
 const file_conf_conf_proto_rawDesc = "" +
 	"\n" +
 	"\x0fconf/conf.proto\x12\n" +
-	"kratos.api\x1a\x1egoogle/protobuf/duration.proto\"\x80\x01\n" +
+	"kratos.api\x1a\x1egoogle/protobuf/duration.proto\"\xb2\x01\n" +
 	"\tBootstrap\x12*\n" +
 	"\x06server\x18\x01 \x01(\v2\x12.kratos.api.ServerR\x06server\x12$\n" +
 	"\x04data\x18\x02 \x01(\v2\x10.kratos.api.DataR\x04data\x12!\n" +
-	"\x03app\x18\x03 \x01(\v2\x0f.kratos.api.AppR\x03app\"\xb8\x02\n" +
+	"\x03app\x18\x03 \x01(\v2\x0f.kratos.api.AppR\x03app\x120\n" +
+	"\bregistry\x18\x04 \x01(\v2\x14.kratos.api.RegistryR\bregistry\"\xb8\x02\n" +
 	"\x06Server\x12+\n" +
 	"\x04http\x18\x01 \x01(\v2\x17.kratos.api.Server.HTTPR\x04http\x12+\n" +
 	"\x04grpc\x18\x02 \x01(\v2\x17.kratos.api.Server.GRPCR\x04grpc\x1ai\n" +
@@ -903,7 +1566,58 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\vmax_backups\x18\x04 \x01(\tR\n" +
 	"maxBackups\x12\x17\n" +
 	"\amax_age\x18\x05 \x01(\tR\x06maxAge\x12\x1a\n" +
-	"\bcompress\x18\x06 \x01(\bR\bcompressB\x1cZ\x1akrathub/internal/conf;confb\x06proto3"
+	"\bcompress\x18\x06 \x01(\bR\bcompress\"\xa7\x05\n" +
+	"\bRegistry\x125\n" +
+	"\x06consul\x18\x01 \x01(\v2\x1b.kratos.api.Registry.ConsulH\x00R\x06consul\x12/\n" +
+	"\x04etcd\x18\x02 \x01(\v2\x19.kratos.api.Registry.EtcdH\x00R\x04etcd\x122\n" +
+	"\x05nacos\x18\x03 \x01(\v2\x1a.kratos.api.Registry.NacosH\x00R\x05nacos\x1a\x9f\x01\n" +
+	"\x06Consul\x12\x12\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x16\n" +
+	"\x06scheme\x18\x02 \x01(\tR\x06scheme\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12\x1e\n" +
+	"\n" +
+	"datacenter\x18\x04 \x01(\tR\n" +
+	"datacenter\x123\n" +
+	"\atimeout\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\x91\x01\n" +
+	"\x04Etcd\x12\x1c\n" +
+	"\tendpoints\x18\x01 \x03(\tR\tendpoints\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\x123\n" +
+	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xbc\x01\n" +
+	"\x05Nacos\x12\x12\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x14\n" +
+	"\x05group\x18\x03 \x01(\tR\x05group\x12\x1a\n" +
+	"\busername\x18\x04 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x05 \x01(\tR\bpassword\x123\n" +
+	"\atimeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\n" +
+	"\n" +
+	"\bregistry\"\xac\x05\n" +
+	"\tDiscovery\x126\n" +
+	"\x06consul\x18\x01 \x01(\v2\x1c.kratos.api.Discovery.ConsulH\x00R\x06consul\x120\n" +
+	"\x04etcd\x18\x02 \x01(\v2\x1a.kratos.api.Discovery.EtcdH\x00R\x04etcd\x123\n" +
+	"\x05nacos\x18\x03 \x01(\v2\x1b.kratos.api.Discovery.NacosH\x00R\x05nacos\x1a\x9f\x01\n" +
+	"\x06Consul\x12\x12\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x16\n" +
+	"\x06scheme\x18\x02 \x01(\tR\x06scheme\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12\x1e\n" +
+	"\n" +
+	"datacenter\x18\x04 \x01(\tR\n" +
+	"datacenter\x123\n" +
+	"\atimeout\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\x91\x01\n" +
+	"\x04Etcd\x12\x1c\n" +
+	"\tendpoints\x18\x01 \x03(\tR\tendpoints\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\x123\n" +
+	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xbc\x01\n" +
+	"\x05Nacos\x12\x12\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x1c\n" +
+	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x14\n" +
+	"\x05group\x18\x03 \x01(\tR\x05group\x12\x1a\n" +
+	"\busername\x18\x04 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x05 \x01(\tR\bpassword\x123\n" +
+	"\atimeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\v\n" +
+	"\tdiscoveryB\x1cZ\x1akrathub/internal/conf;confb\x06proto3"
 
 var (
 	file_conf_conf_proto_rawDescOnce sync.Once
@@ -917,47 +1631,68 @@ func file_conf_conf_proto_rawDescGZIP() []byte {
 	return file_conf_conf_proto_rawDescData
 }
 
-var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_conf_conf_proto_goTypes = []any{
 	(*Bootstrap)(nil),           // 0: kratos.api.Bootstrap
 	(*Server)(nil),              // 1: kratos.api.Server
 	(*Data)(nil),                // 2: kratos.api.Data
 	(*App)(nil),                 // 3: kratos.api.App
-	(*Server_HTTP)(nil),         // 4: kratos.api.Server.HTTP
-	(*Server_GRPC)(nil),         // 5: kratos.api.Server.GRPC
-	(*Data_Database)(nil),       // 6: kratos.api.Data.Database
-	(*Data_Redis)(nil),          // 7: kratos.api.Data.Redis
-	(*Data_Client)(nil),         // 8: kratos.api.Data.Client
-	(*Data_Client_HTTP)(nil),    // 9: kratos.api.Data.Client.HTTP
-	(*Data_Client_GRPC)(nil),    // 10: kratos.api.Data.Client.GRPC
-	(*App_Jwt)(nil),             // 11: kratos.api.App.Jwt
-	(*App_Log)(nil),             // 12: kratos.api.App.Log
-	(*durationpb.Duration)(nil), // 13: google.protobuf.Duration
+	(*Registry)(nil),            // 4: kratos.api.Registry
+	(*Discovery)(nil),           // 5: kratos.api.Discovery
+	(*Server_HTTP)(nil),         // 6: kratos.api.Server.HTTP
+	(*Server_GRPC)(nil),         // 7: kratos.api.Server.GRPC
+	(*Data_Database)(nil),       // 8: kratos.api.Data.Database
+	(*Data_Redis)(nil),          // 9: kratos.api.Data.Redis
+	(*Data_Client)(nil),         // 10: kratos.api.Data.Client
+	(*Data_Client_HTTP)(nil),    // 11: kratos.api.Data.Client.HTTP
+	(*Data_Client_GRPC)(nil),    // 12: kratos.api.Data.Client.GRPC
+	(*App_Jwt)(nil),             // 13: kratos.api.App.Jwt
+	(*App_Log)(nil),             // 14: kratos.api.App.Log
+	(*Registry_Consul)(nil),     // 15: kratos.api.Registry.Consul
+	(*Registry_Etcd)(nil),       // 16: kratos.api.Registry.Etcd
+	(*Registry_Nacos)(nil),      // 17: kratos.api.Registry.Nacos
+	(*Discovery_Consul)(nil),    // 18: kratos.api.Discovery.Consul
+	(*Discovery_Etcd)(nil),      // 19: kratos.api.Discovery.Etcd
+	(*Discovery_Nacos)(nil),     // 20: kratos.api.Discovery.Nacos
+	(*durationpb.Duration)(nil), // 21: google.protobuf.Duration
 }
 var file_conf_conf_proto_depIdxs = []int32{
 	1,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
 	2,  // 1: kratos.api.Bootstrap.data:type_name -> kratos.api.Data
 	3,  // 2: kratos.api.Bootstrap.app:type_name -> kratos.api.App
-	4,  // 3: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
-	5,  // 4: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
-	6,  // 5: kratos.api.Data.database:type_name -> kratos.api.Data.Database
-	7,  // 6: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
-	8,  // 7: kratos.api.Data.client:type_name -> kratos.api.Data.Client
-	11, // 8: kratos.api.App.jwt:type_name -> kratos.api.App.Jwt
-	12, // 9: kratos.api.App.log:type_name -> kratos.api.App.Log
-	13, // 10: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	13, // 11: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	13, // 12: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	13, // 13: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	10, // 14: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
-	9,  // 15: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
-	13, // 16: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
-	13, // 17: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	4,  // 3: kratos.api.Bootstrap.registry:type_name -> kratos.api.Registry
+	6,  // 4: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
+	7,  // 5: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
+	8,  // 6: kratos.api.Data.database:type_name -> kratos.api.Data.Database
+	9,  // 7: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
+	10, // 8: kratos.api.Data.client:type_name -> kratos.api.Data.Client
+	13, // 9: kratos.api.App.jwt:type_name -> kratos.api.App.Jwt
+	14, // 10: kratos.api.App.log:type_name -> kratos.api.App.Log
+	15, // 11: kratos.api.Registry.consul:type_name -> kratos.api.Registry.Consul
+	16, // 12: kratos.api.Registry.etcd:type_name -> kratos.api.Registry.Etcd
+	17, // 13: kratos.api.Registry.nacos:type_name -> kratos.api.Registry.Nacos
+	18, // 14: kratos.api.Discovery.consul:type_name -> kratos.api.Discovery.Consul
+	19, // 15: kratos.api.Discovery.etcd:type_name -> kratos.api.Discovery.Etcd
+	20, // 16: kratos.api.Discovery.nacos:type_name -> kratos.api.Discovery.Nacos
+	21, // 17: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	21, // 18: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	21, // 19: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	21, // 20: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	12, // 21: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
+	11, // 22: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
+	21, // 23: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	21, // 24: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	21, // 25: kratos.api.Registry.Consul.timeout:type_name -> google.protobuf.Duration
+	21, // 26: kratos.api.Registry.Etcd.timeout:type_name -> google.protobuf.Duration
+	21, // 27: kratos.api.Registry.Nacos.timeout:type_name -> google.protobuf.Duration
+	21, // 28: kratos.api.Discovery.Consul.timeout:type_name -> google.protobuf.Duration
+	21, // 29: kratos.api.Discovery.Etcd.timeout:type_name -> google.protobuf.Duration
+	21, // 30: kratos.api.Discovery.Nacos.timeout:type_name -> google.protobuf.Duration
+	31, // [31:31] is the sub-list for method output_type
+	31, // [31:31] is the sub-list for method input_type
+	31, // [31:31] is the sub-list for extension type_name
+	31, // [31:31] is the sub-list for extension extendee
+	0,  // [0:31] is the sub-list for field type_name
 }
 
 func init() { file_conf_conf_proto_init() }
@@ -965,13 +1700,23 @@ func file_conf_conf_proto_init() {
 	if File_conf_conf_proto != nil {
 		return
 	}
+	file_conf_conf_proto_msgTypes[4].OneofWrappers = []any{
+		(*Registry_Consul_)(nil),
+		(*Registry_Etcd_)(nil),
+		(*Registry_Nacos_)(nil),
+	}
+	file_conf_conf_proto_msgTypes[5].OneofWrappers = []any{
+		(*Discovery_Consul_)(nil),
+		(*Discovery_Etcd_)(nil),
+		(*Discovery_Nacos_)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_conf_proto_rawDesc), len(file_conf_conf_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

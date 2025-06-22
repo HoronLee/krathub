@@ -10,6 +10,8 @@ message Bootstrap {
   Server server = 1;
   Data data = 2;
   App app = 3;
+  Registry registry = 4;
+  Discovery discovery = 5;
 }
 
 // 通信服务端配置
@@ -80,4 +82,67 @@ message App {
   string env = 1; // dev test prod
   Jwt jwt = 2; // JWT配置
   Log log = 3; // 日志配置
+}
+
+// 注册中心配置
+message Registry {
+  message Consul {
+    string addr = 1; // Consul 地址
+    string scheme = 2; // 协议
+    string token = 3; // 访问令牌
+    string datacenter = 4; // 数据中心
+    google.protobuf.Duration timeout = 5; // 超时时间
+  }
+  
+  message Etcd {
+    repeated string endpoints = 1; // Etcd 端点列表
+    string username = 2; // 用户名
+    string password = 3; // 密码
+    google.protobuf.Duration timeout = 4; // 超时时间
+  }
+  
+  message Nacos {
+    string addr = 1; // Nacos 地址
+    string namespace = 2; // 命名空间
+    string group = 3; // 分组
+    string username = 4; // 用户名
+    string password = 5; // 密码
+    google.protobuf.Duration timeout = 6; // 超时时间
+  }
+  
+  oneof registry {
+    Consul consul = 1; // Consul 配置
+    Etcd etcd = 2; // Etcd 配置
+    Nacos nacos = 3; // Nacos 配置
+  }
+}
+
+// 服务发现配置
+message Discovery {
+  message Consul {
+    string addr = 1; // Consul 地址
+    string scheme = 2; // 协议
+    string token = 3; // 访问令牌
+    string datacenter = 4; // 数据中心
+    google.protobuf.Duration timeout = 5; // 超时时间
+  }
+  message Etcd {
+    repeated string endpoints = 1; // Etcd 端点列表
+    string username = 2; // 用户名
+    string password = 3; // 密码
+    google.protobuf.Duration timeout = 4; // 超时时间
+  }
+  message Nacos {
+    string addr = 1; // Nacos 地址
+    string namespace = 2; // 命名空间
+    string group = 3; // 分组
+    string username = 4; // 用户名
+    string password = 5; // 密码
+    google.protobuf.Duration timeout = 6; // 超时时间
+  }
+  oneof discovery {
+    Consul consul = 1; // Consul 配置
+    Etcd etcd = 2; // Etcd 配置
+    Nacos nacos = 3; // Nacos 配置
+  }
 }

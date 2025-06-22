@@ -6,11 +6,10 @@
 // 	protoc        v6.31.0
 // source: api/hello/v1/hello.proto
 
-// proto 包名
-
 package hellov1
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -119,17 +118,14 @@ var File_api_hello_v1_hello_proto protoreflect.FileDescriptor
 
 const file_api_hello_v1_hello_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/hello/v1/hello.proto\x12\x05hello\"<\n" +
+	"\x18api/hello/v1/hello.proto\x12\x05hello\x1a\x1cgoogle/api/annotations.proto\"<\n" +
 	"\fHelloRequest\x12\x1f\n" +
 	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
 	"\t_greeting\"%\n" +
 	"\rHelloResponse\x12\x14\n" +
-	"\x05reply\x18\x01 \x01(\tR\x05reply2\xff\x01\n" +
-	"\fHelloService\x125\n" +
-	"\bSayHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponse\x12<\n" +
-	"\rLotsOfReplies\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponse0\x01\x12>\n" +
-	"\x0fLotsOfGreetings\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponse(\x01\x12:\n" +
-	"\tBidiHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponse(\x010\x01BH\n" +
+	"\x05reply\x18\x01 \x01(\tR\x05reply2e\n" +
+	"\fHelloService\x12U\n" +
+	"\bSayHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/v1/hello/HelloTestBH\n" +
 	"\x18dev.krathub.api.hello.v1B\fHelloProtoV1P\x01Z\x1ckrathub/api/v1/hello;hellov1b\x06proto3"
 
 var (
@@ -151,15 +147,9 @@ var file_api_hello_v1_hello_proto_goTypes = []any{
 }
 var file_api_hello_v1_hello_proto_depIdxs = []int32{
 	0, // 0: hello.HelloService.SayHello:input_type -> hello.HelloRequest
-	0, // 1: hello.HelloService.LotsOfReplies:input_type -> hello.HelloRequest
-	0, // 2: hello.HelloService.LotsOfGreetings:input_type -> hello.HelloRequest
-	0, // 3: hello.HelloService.BidiHello:input_type -> hello.HelloRequest
-	1, // 4: hello.HelloService.SayHello:output_type -> hello.HelloResponse
-	1, // 5: hello.HelloService.LotsOfReplies:output_type -> hello.HelloResponse
-	1, // 6: hello.HelloService.LotsOfGreetings:output_type -> hello.HelloResponse
-	1, // 7: hello.HelloService.BidiHello:output_type -> hello.HelloResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	1, // 1: hello.HelloService.SayHello:output_type -> hello.HelloResponse
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

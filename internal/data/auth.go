@@ -78,9 +78,10 @@ func (r *authRepo) ListUserByPhone(ctx context.Context, phone string) ([]*model.
 	return user, nil
 }
 
-// SayHello 实现 biz.AuthRepo 接口的 SayHello 方法
-func (r *authRepo) SayHello(ctx context.Context, in string) (string, error) {
+// Hello 实现 biz.AuthRepo 接口的 Hello 方法
+func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
+	// 调用远程 gRPC 服务
 	ret, err := r.data.hc.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})
 	if err != nil {
 		r.log.Errorf("Failed to say hello: %v", err)

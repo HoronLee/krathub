@@ -61,10 +61,10 @@ func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.Logi
 }
 
 // SayHello 实现 authv1.AuthServer 接口的 SayHello 方法
-func (s *AuthService) SayHello(ctx context.Context, req *authv1.HelloRequest) (*authv1.HelloResponse, error) {
+func (s *AuthService) Hello(ctx context.Context, req *authv1.HelloRequest) (*authv1.HelloResponse, error) {
 	log.Debugf("Received SayHello request with greeting: %v", req.Greeting)
 	// 调用 biz 层
-	res, err := s.uc.SayHello(ctx, req.Greeting)
+	res, err := s.uc.Hello(ctx, req.Greeting)
 	if err != nil {
 		return nil, err
 	}

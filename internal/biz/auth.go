@@ -17,7 +17,7 @@ type AuthRepo interface {
 	ListUserByEmail(context.Context, string) ([]*model.User, error)
 	ListUserByUserName(context.Context, string) ([]*model.User, error)
 
-	SayHello(ctx context.Context, in string) (string, error)
+	Hello(ctx context.Context, in string) (string, error)
 }
 
 // AuthUsecase is a Auth usecase.
@@ -131,11 +131,11 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 	return token, nil
 }
 
-// SayHello 实现业务逻辑的 SayHello 方法
-func (uc *AuthUsecase) SayHello(ctx context.Context, in *string) (string, error) {
+// Hello 实现业务逻辑的 Hello 方法
+func (uc *AuthUsecase) Hello(ctx context.Context, in *string) (string, error) {
 	uc.log.Debugf("Saying hello with greeting: %s", *in)
 	// 调用数据层的 SayHello 方法
-	response, err := uc.repo.SayHello(ctx, *in)
+	response, err := uc.repo.Hello(ctx, *in)
 	if err != nil {
 		uc.log.Errorf("Failed to say hello: %v", err)
 		return "", err
