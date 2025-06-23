@@ -123,9 +123,9 @@ const file_api_hello_v1_hello_proto_rawDesc = "" +
 	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
 	"\t_greeting\"%\n" +
 	"\rHelloResponse\x12\x14\n" +
-	"\x05reply\x18\x01 \x01(\tR\x05reply2e\n" +
-	"\fHelloService\x12U\n" +
-	"\bSayHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/v1/hello/HelloTestBH\n" +
+	"\x05reply\x18\x01 \x01(\tR\x05reply2E\n" +
+	"\fHelloService\x125\n" +
+	"\bSayHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponseBH\n" +
 	"\x18dev.krathub.api.hello.v1B\fHelloProtoV1P\x01Z\x1ckrathub/api/v1/hello;hellov1b\x06proto3"
 
 var (

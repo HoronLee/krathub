@@ -60,24 +60,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.auth.v1.SignupByEmailReply'
-    /v1/hello/HelloTest:
-        post:
-            tags:
-                - HelloService
-            operationId: HelloService_SayHello
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/hello.HelloRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/hello.HelloResponse'
     /v1/user/delete/{id}:
         delete:
             tags:
@@ -146,18 +128,6 @@ paths:
                                 $ref: '#/components/schemas/krathub.user.v1.UpdateUserReply'
 components:
     schemas:
-        hello.HelloRequest:
-            type: object
-            properties:
-                greeting:
-                    type: string
-            description: 消息定义
-        hello.HelloResponse:
-            type: object
-            properties:
-                reply:
-                    type: string
-            description: 响应消息定义
         krathub.auth.v1.HelloRequest:
             type: object
             properties:
@@ -279,6 +249,4 @@ components:
                     type: string
 tags:
     - name: Auth
-    - name: HelloService
-      description: HelloService 定义
     - name: User

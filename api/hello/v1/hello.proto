@@ -13,13 +13,7 @@ option java_outer_classname = "HelloProtoV1";
 
 // HelloService 定义
 service HelloService {
-  rpc SayHello(HelloRequest) returns (HelloResponse) {
-    option (google.api.http) = {
-      post: "/v1/hello/HelloTest"
-      body: "*"
-    };
-  }
-
+  rpc SayHello(HelloRequest) returns (HelloResponse);
 }
 
 // 消息定义
