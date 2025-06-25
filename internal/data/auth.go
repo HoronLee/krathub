@@ -81,8 +81,16 @@ func (r *authRepo) ListUserByPhone(ctx context.Context, phone string) ([]*model.
 // Hello 实现 biz.AuthRepo 接口的 Hello 方法
 func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
+
+	// 使用客户端工厂获取 Hello 服务的客户端
+	helloClient, err := r.data.clientFactory.NewHelloClient(ctx)
+	if err != nil {
+		r.log.Errorf("Failed to create hello client: %v", err)
+		return "", err
+	}
+
 	// 调用远程 gRPC 服务
-	ret, err := r.data.hc.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})
+	ret, err := helloClient.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})
 	if err != nil {
 		r.log.Errorf("Failed to say hello: %v", err)
 		return "", err

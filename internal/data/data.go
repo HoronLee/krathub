@@ -1,10 +1,9 @@
 package data
 
 import (
-	"context"
 	"errors"
 	"fmt"
-	hellov1 "krathub/api/hello/v1"
+	"krathub/internal/client"
 	"krathub/internal/conf"
 	"krathub/internal/data/query"
 	"strings"
@@ -13,9 +12,7 @@ import (
 	"github.com/glebarez/sqlite"
 	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/google/wire"
 	"github.com/hashicorp/consul/api"
 	"gorm.io/driver/mysql"
@@ -23,23 +20,27 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewDiscovery, NewHelloGrpcClient, NewData, NewDB, NewAuthRepo, NewUserRepo)
+var ProviderSet = wire.NewSet(NewDiscovery, NewData, NewDB, NewAuthRepo, NewUserRepo)
 
 // Data .
 type Data struct {
-	query *query.Query
-	log   *log.Helper
-	hc    hellov1.HelloServiceClient
+	query         *query.Query
+	log           *log.Helper
+	clientFactory client.ClientFactory
 }
 
 // NewData .
-func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, hc hellov1.HelloServiceClient) (*Data, func(), error) {
+func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, clientFactory client.ClientFactory) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
 	// 为GEN生成的query代码设置数据库连接对象
 	query.SetDefault(db)
-	return &Data{query: query.Q, log: log.NewHelper(logger), hc: hc}, cleanup, nil
+	return &Data{
+		query:         query.Q,
+		log:           log.NewHelper(logger),
+		clientFactory: clientFactory,
+	}, cleanup, nil
 }
 
 func NewDB(cfg *conf.Data) (*gorm.DB, error) {
@@ -50,33 +51,6 @@ func NewDB(cfg *conf.Data) (*gorm.DB, error) {
 		return gorm.Open(sqlite.Open(cfg.Database.GetSource()))
 	}
 	return nil, errors.New("connect db fail: unsupported db driver")
-}
-
-// NewHelloGrpcClient 创建 Hello 服务的 gRPC 客户端
-func NewHelloGrpcClient(cfg *conf.Data, d registry.Discovery) (hellov1.HelloServiceClient, error) {
-	var serviceName string
-	for _, c := range cfg.Client.GetGrpc() {
-		if c.ServiceName == "hello" { // 这里为所需要访问的服务名
-			serviceName = c.ServiceName
-			break
-		}
-	}
-	if serviceName == "" {
-		return nil, errors.New("no grpc client config found for hello service")
-	}
-	conn, err := grpc.DialInsecure(
-		context.Background(),
-		grpc.WithEndpoint("discovery:///"+serviceName),
-		grpc.WithDiscovery(d),
-		grpc.WithTimeout(3600*time.Second),
-		grpc.WithMiddleware(
-			recovery.Recovery(),
-		),
-	)
-	if err != nil {
-		return nil, err
-	}
-	return hellov1.NewHelloServiceClient(conn), nil
 }
 
 // NewDiscovery 根据配置创建服务发现客户端

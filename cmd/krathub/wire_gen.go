@@ -10,6 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"krathub/internal/biz"
+	"krathub/internal/client"
 	"krathub/internal/conf"
 	"krathub/internal/data"
 	"krathub/internal/server"
@@ -30,11 +31,11 @@ func wireApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Da
 		return nil, nil, err
 	}
 	discovery := data.NewDiscovery(registry)
-	helloServiceClient, err := data.NewHelloGrpcClient(confData, discovery)
+	clientFactory, err := client.NewClientFactory(confData, discovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger, helloServiceClient)
+	dataData, cleanup, err := data.NewData(db, confData, logger, clientFactory)
 	if err != nil {
 		return nil, nil, err
 	}

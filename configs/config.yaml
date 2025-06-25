@@ -16,7 +16,8 @@ data:
     write_timeout: "${RWRITE_TIMEOUT:0.2s}"
   client:
     grpc:
-     - service_name: hello
+      - service_name: hello
+        timeout: 5s
 
 app:
   env: "${ENV:dev}"
