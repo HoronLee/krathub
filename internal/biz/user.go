@@ -13,7 +13,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-type UserRepo interface {
+type UserDBRepo interface {
 	SaveUser(context.Context, *model.User) (*model.User, error)
 	GetUserById(context.Context, int64) (*model.User, error)
 	DeleteUser(context.Context, *model.User) (*model.User, error)
@@ -21,18 +21,18 @@ type UserRepo interface {
 }
 
 type UserUsecase struct {
-	repo  UserRepo
-	log   *log.Helper
-	cfg   *conf.App
-	aRepo AuthRepo // 引入auth包的repo接口
+	repo    UserDBRepo
+	log     *log.Helper
+	cfg     *conf.App
+	aDBRepo AuthDBRepo // 只依赖 AuthDBRepo
 }
 
-func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, aRepo AuthRepo) *UserUsecase {
+func NewUserUsecase(repo UserDBRepo, logger log.Logger, cfg *conf.App, aDBRepo AuthDBRepo) *UserUsecase {
 	uc := &UserUsecase{
-		repo:  repo,
-		log:   log.NewHelper(logger),
-		cfg:   cfg,
-		aRepo: aRepo,
+		repo:    repo,
+		log:     log.NewHelper(logger),
+		cfg:     cfg,
+		aDBRepo: aDBRepo,
 	}
 	return uc
 }
@@ -81,7 +81,7 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model
 		return nil, userv1.ErrorUserNotFound("user not found: %v", err)
 	}
 
-	existingUsers, err := uc.aRepo.ListUserByUserName(ctx, user.Name)
+	existingUsers, err := uc.aDBRepo.ListUserByUserName(ctx, user.Name)
 	if err != nil {
 		return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
 	}
@@ -117,13 +117,13 @@ func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (succes
 }
 
 func (uc *UserUsecase) checkUserExists(ctx context.Context, user *model.User) error {
-	if users, err := uc.aRepo.ListUserByUserName(ctx, user.Name); err != nil {
+	if users, err := uc.aDBRepo.ListUserByUserName(ctx, user.Name); err != nil {
 		return authv1.ErrorUserNotFound("failed to check username: %v", err)
 	} else if len(users) > 0 {
 		return authv1.ErrorUserAlreadyExists("username already exists")
 	}
 
-	if emails, err := uc.aRepo.ListUserByEmail(ctx, user.Email); err != nil {
+	if emails, err := uc.aDBRepo.ListUserByEmail(ctx, user.Email); err != nil {
 		return authv1.ErrorUserNotFound("failed to check email: %v", err)
 	} else if len(emails) > 0 {
 		return authv1.ErrorUserAlreadyExists("email already exists")

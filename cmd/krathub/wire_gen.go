@@ -7,16 +7,17 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"krathub/internal/biz"
 	"krathub/internal/client"
 	"krathub/internal/conf"
 	"krathub/internal/data"
 	"krathub/internal/server"
 	"krathub/internal/service"
+)
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
-
+import (
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -30,19 +31,20 @@ func wireApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Da
 		return nil, nil, err
 	}
 	discovery := data.NewDiscovery(registry)
-	clientFactory, err := client.NewGrpcClientFactory(confData, discovery, logger)
+	grpcClientFactory, err := client.NewGrpcClientFactory(confData, discovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger, clientFactory)
+	dataData, cleanup, err := data.NewData(db, confData, logger, grpcClientFactory)
 	if err != nil {
 		return nil, nil, err
 	}
-	authRepo := data.NewAuthRepo(dataData, logger)
-	authUsecase := biz.NewAuthUsecase(authRepo, logger, app)
+	authDBRepo := data.NewAuthDBRepo(dataData, logger)
+	authGrpcRepo := data.NewAuthGrpcRepo(dataData, logger)
+	authUsecase := biz.NewAuthUsecase(authDBRepo, authGrpcRepo, logger, app)
 	authService := service.NewAuthService(authUsecase)
-	userRepo := data.NewUserRepo(dataData, logger)
-	userUsecase := biz.NewUserUsecase(userRepo, logger, app, authRepo)
+	userDBRepo := data.NewUserDBRepo(dataData, logger)
+	userUsecase := biz.NewUserUsecase(userDBRepo, logger, app, authDBRepo)
 	userService := service.NewUserService(userUsecase)
 	grpcServer := server.NewGRPCServer(confServer, authService, userService, logger)
 	httpServer := server.NewHTTPServer(confServer, authService, userService, logger)
