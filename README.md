@@ -2,30 +2,21 @@
 
 > 基于Kratos框架编写的快开框架，目前处于开发初期阶段
 
-开发顺序: api -> config -> service -> biz -> data
-功能编写完成后需要依次进行依赖注入然后wire生成代码，并且需要在internal/server中添加用法
+开发顺序: api -> config -> service -> biz -> data -> client
+
+功能编写完成后需要使用`make wire`来进行依赖注入，并且需要在`internal/server`中的`NewServer`方法中添加用法，注意需要手动在方法签名中添加依赖
+
+## Client层
+
+client层是本人自己新增的客户端层，目前包含了grpc客户端的工厂方法。这个层的是用于调用外部grpc服务而设计的，后续可能会添加http客户端的功能，但是考虑到微服务环境下大多还是以grpc为沟通协议，所以暂不实现。
+
+Client层编码顺序：先在`GrpcClientFactory`添加所需实现的结构，后续在`grpc_client.go`中进行实现，这样可以保持代码的整洁。
+
+随后可以在data层进行调用，首先创建一个客户端`helloClient, err := r.data.clientFactory.NewHelloClient(ctx)`，然后进行该服务的一些方法的调用`helloClient.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})`
 
 ## 项目依赖
 
-直接执行`make init`即可下载所需软件，下方仅为新增以来软件的列表
-
-项目中需要使用wire依赖注入,安装wire:
-
-```bash
-go install github.com/google/wire/cmd/wire@latest
-```
-
-protobuf 参数校验插件
-
-```bash
-go install github.com/envoyproxy/protoc-gen-validate@latest
-```
-
-protobuf 错误处理插件
-
-```bash
-go install github.com/envoyproxy/protoc-gen-validate@latest
-```
+直接执行`make init`即可下载所需软件
 
 ## Data层编码须知
 

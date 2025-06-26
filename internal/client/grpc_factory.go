@@ -12,48 +12,33 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	"github.com/google/wire"
 	ggrpc "google.golang.org/grpc"
 )
 
-// ProviderSet 是客户端工厂的依赖注入提供者集合
-var ProviderSet = wire.NewSet(
-	NewClientFactory,
-)
-
-// ClientFactory 定义客户端工厂接口
-type ClientFactory interface {
+// GrpcClientFactory 定义客户端工厂接口
+type GrpcClientFactory interface {
 	// 创建Hello服务客户端
 	NewHelloClient(ctx context.Context) (hellov1.HelloServiceClient, error)
 }
 
-// clientFactory 是ClientFactory接口的实现
-type clientFactory struct {
+// grpcClientFactory 是 GrpcClientFactory接口的实现
+type grpcClientFactory struct {
 	config    *conf.Data         // 配置信息
 	discovery registry.Discovery // 服务发现客户端
 	logger    *log.Helper        // 日志助手
 }
 
-// NewClientFactory 创建一个新的客户端工厂
-func NewClientFactory(config *conf.Data, discovery registry.Discovery, logger log.Logger) (ClientFactory, error) {
-	return &clientFactory{
+// NewGrpcClientFactory 创建一个新的 GRPC 客户端工厂
+func NewGrpcClientFactory(config *conf.Data, discovery registry.Discovery, logger log.Logger) (GrpcClientFactory, error) {
+	return &grpcClientFactory{
 		config:    config,
 		discovery: discovery,
 		logger:    log.NewHelper(logger),
 	}, nil
 }
 
-// NewHelloClient 创建Hello服务的客户端
-func (f *clientFactory) NewHelloClient(ctx context.Context) (hellov1.HelloServiceClient, error) {
-	conn, err := f.createGrpcConn(ctx, "hello")
-	if err != nil {
-		return nil, err
-	}
-	return hellov1.NewHelloServiceClient(conn), nil
-}
-
 // createGrpcConn 创建gRPC连接
-func (f *clientFactory) createGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error) {
+func (f *grpcClientFactory) createGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error) {
 	// 获取服务配置
 	var serviceConfig *conf.Data_Client_GRPC
 	for _, c := range f.config.Client.GetGrpc() {

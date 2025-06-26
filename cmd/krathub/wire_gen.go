@@ -7,17 +7,16 @@
 package main
 
 import (
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
 	"krathub/internal/biz"
 	"krathub/internal/client"
 	"krathub/internal/conf"
 	"krathub/internal/data"
 	"krathub/internal/server"
 	"krathub/internal/service"
-)
 
-import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
+
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -31,7 +30,7 @@ func wireApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Da
 		return nil, nil, err
 	}
 	discovery := data.NewDiscovery(registry)
-	clientFactory, err := client.NewClientFactory(confData, discovery, logger)
+	clientFactory, err := client.NewGrpcClientFactory(confData, discovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}

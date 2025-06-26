@@ -120,3 +120,8 @@ gendb:
 # run
 run:
 	kratos run
+
+.PHONY: wire
+# generate dependency injection code with wire
+wire:
+	cd cmd/krathub && wire
