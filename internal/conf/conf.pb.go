@@ -29,6 +29,7 @@ type Bootstrap struct {
 	Data          *Data                  `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	App           *App                   `protobuf:"bytes,3,opt,name=app,proto3" json:"app,omitempty"`
 	Registry      *Registry              `protobuf:"bytes,4,opt,name=registry,proto3" json:"registry,omitempty"`
+	Discovery     *Discovery             `protobuf:"bytes,5,opt,name=discovery,proto3" json:"discovery,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -87,6 +88,13 @@ func (x *Bootstrap) GetApp() *App {
 func (x *Bootstrap) GetRegistry() *Registry {
 	if x != nil {
 		return x.Registry
+	}
+	return nil
+}
+
+func (x *Bootstrap) GetDiscovery() *Discovery {
+	if x != nil {
+		return x.Discovery
 	}
 	return nil
 }
@@ -1191,11 +1199,12 @@ func (x *Registry_Etcd) GetTimeout() *durationpb.Duration {
 type Registry_Nacos struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`           // Nacos 地址
-	Namespace     string                 `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间
-	Group         string                 `protobuf:"bytes,3,opt,name=group,proto3" json:"group,omitempty"`         // 分组
-	Username      string                 `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
-	Password      string                 `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`   // 密码
-	Timeout       *durationpb.Duration   `protobuf:"bytes,6,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
+	Port          uint64                 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`          // Nacos 端口
+	Namespace     string                 `protobuf:"bytes,3,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间
+	Group         string                 `protobuf:"bytes,4,opt,name=group,proto3" json:"group,omitempty"`         // 分组
+	Username      string                 `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
+	Password      string                 `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`   // 密码
+	Timeout       *durationpb.Duration   `protobuf:"bytes,7,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1235,6 +1244,13 @@ func (x *Registry_Nacos) GetAddr() string {
 		return x.Addr
 	}
 	return ""
+}
+
+func (x *Registry_Nacos) GetPort() uint64 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
 }
 
 func (x *Registry_Nacos) GetNamespace() string {
@@ -1505,12 +1521,13 @@ var File_conf_conf_proto protoreflect.FileDescriptor
 const file_conf_conf_proto_rawDesc = "" +
 	"\n" +
 	"\x0fconf/conf.proto\x12\n" +
-	"kratos.api\x1a\x1egoogle/protobuf/duration.proto\"\xb2\x01\n" +
+	"kratos.api\x1a\x1egoogle/protobuf/duration.proto\"\xe7\x01\n" +
 	"\tBootstrap\x12*\n" +
 	"\x06server\x18\x01 \x01(\v2\x12.kratos.api.ServerR\x06server\x12$\n" +
 	"\x04data\x18\x02 \x01(\v2\x10.kratos.api.DataR\x04data\x12!\n" +
 	"\x03app\x18\x03 \x01(\v2\x0f.kratos.api.AppR\x03app\x120\n" +
-	"\bregistry\x18\x04 \x01(\v2\x14.kratos.api.RegistryR\bregistry\"\xb8\x02\n" +
+	"\bregistry\x18\x04 \x01(\v2\x14.kratos.api.RegistryR\bregistry\x123\n" +
+	"\tdiscovery\x18\x05 \x01(\v2\x15.kratos.api.DiscoveryR\tdiscovery\"\xb8\x02\n" +
 	"\x06Server\x12+\n" +
 	"\x04http\x18\x01 \x01(\v2\x17.kratos.api.Server.HTTPR\x04http\x12+\n" +
 	"\x04grpc\x18\x02 \x01(\v2\x17.kratos.api.Server.GRPCR\x04grpc\x1ai\n" +
@@ -1566,7 +1583,7 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\vmax_backups\x18\x04 \x01(\tR\n" +
 	"maxBackups\x12\x17\n" +
 	"\amax_age\x18\x05 \x01(\tR\x06maxAge\x12\x1a\n" +
-	"\bcompress\x18\x06 \x01(\bR\bcompress\"\xa7\x05\n" +
+	"\bcompress\x18\x06 \x01(\bR\bcompress\"\xbb\x05\n" +
 	"\bRegistry\x125\n" +
 	"\x06consul\x18\x01 \x01(\v2\x1b.kratos.api.Registry.ConsulH\x00R\x06consul\x12/\n" +
 	"\x04etcd\x18\x02 \x01(\v2\x19.kratos.api.Registry.EtcdH\x00R\x04etcd\x122\n" +
@@ -1583,14 +1600,15 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\tendpoints\x18\x01 \x03(\tR\tendpoints\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x123\n" +
-	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xbc\x01\n" +
+	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xd0\x01\n" +
 	"\x05Nacos\x12\x12\n" +
-	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x1c\n" +
-	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x14\n" +
-	"\x05group\x18\x03 \x01(\tR\x05group\x12\x1a\n" +
-	"\busername\x18\x04 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x05 \x01(\tR\bpassword\x123\n" +
-	"\atimeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x12\n" +
+	"\x04port\x18\x02 \x01(\x04R\x04port\x12\x1c\n" +
+	"\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x14\n" +
+	"\x05group\x18\x04 \x01(\tR\x05group\x12\x1a\n" +
+	"\busername\x18\x05 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x06 \x01(\tR\bpassword\x123\n" +
+	"\atimeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\n" +
 	"\n" +
 	"\bregistry\"\xac\x05\n" +
 	"\tDiscovery\x126\n" +
@@ -1661,38 +1679,39 @@ var file_conf_conf_proto_depIdxs = []int32{
 	2,  // 1: kratos.api.Bootstrap.data:type_name -> kratos.api.Data
 	3,  // 2: kratos.api.Bootstrap.app:type_name -> kratos.api.App
 	4,  // 3: kratos.api.Bootstrap.registry:type_name -> kratos.api.Registry
-	6,  // 4: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
-	7,  // 5: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
-	8,  // 6: kratos.api.Data.database:type_name -> kratos.api.Data.Database
-	9,  // 7: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
-	10, // 8: kratos.api.Data.client:type_name -> kratos.api.Data.Client
-	13, // 9: kratos.api.App.jwt:type_name -> kratos.api.App.Jwt
-	14, // 10: kratos.api.App.log:type_name -> kratos.api.App.Log
-	15, // 11: kratos.api.Registry.consul:type_name -> kratos.api.Registry.Consul
-	16, // 12: kratos.api.Registry.etcd:type_name -> kratos.api.Registry.Etcd
-	17, // 13: kratos.api.Registry.nacos:type_name -> kratos.api.Registry.Nacos
-	18, // 14: kratos.api.Discovery.consul:type_name -> kratos.api.Discovery.Consul
-	19, // 15: kratos.api.Discovery.etcd:type_name -> kratos.api.Discovery.Etcd
-	20, // 16: kratos.api.Discovery.nacos:type_name -> kratos.api.Discovery.Nacos
-	21, // 17: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	21, // 18: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	21, // 19: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	21, // 20: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	12, // 21: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
-	11, // 22: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
-	21, // 23: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
-	21, // 24: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
-	21, // 25: kratos.api.Registry.Consul.timeout:type_name -> google.protobuf.Duration
-	21, // 26: kratos.api.Registry.Etcd.timeout:type_name -> google.protobuf.Duration
-	21, // 27: kratos.api.Registry.Nacos.timeout:type_name -> google.protobuf.Duration
-	21, // 28: kratos.api.Discovery.Consul.timeout:type_name -> google.protobuf.Duration
-	21, // 29: kratos.api.Discovery.Etcd.timeout:type_name -> google.protobuf.Duration
-	21, // 30: kratos.api.Discovery.Nacos.timeout:type_name -> google.protobuf.Duration
-	31, // [31:31] is the sub-list for method output_type
-	31, // [31:31] is the sub-list for method input_type
-	31, // [31:31] is the sub-list for extension type_name
-	31, // [31:31] is the sub-list for extension extendee
-	0,  // [0:31] is the sub-list for field type_name
+	5,  // 4: kratos.api.Bootstrap.discovery:type_name -> kratos.api.Discovery
+	6,  // 5: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
+	7,  // 6: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
+	8,  // 7: kratos.api.Data.database:type_name -> kratos.api.Data.Database
+	9,  // 8: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
+	10, // 9: kratos.api.Data.client:type_name -> kratos.api.Data.Client
+	13, // 10: kratos.api.App.jwt:type_name -> kratos.api.App.Jwt
+	14, // 11: kratos.api.App.log:type_name -> kratos.api.App.Log
+	15, // 12: kratos.api.Registry.consul:type_name -> kratos.api.Registry.Consul
+	16, // 13: kratos.api.Registry.etcd:type_name -> kratos.api.Registry.Etcd
+	17, // 14: kratos.api.Registry.nacos:type_name -> kratos.api.Registry.Nacos
+	18, // 15: kratos.api.Discovery.consul:type_name -> kratos.api.Discovery.Consul
+	19, // 16: kratos.api.Discovery.etcd:type_name -> kratos.api.Discovery.Etcd
+	20, // 17: kratos.api.Discovery.nacos:type_name -> kratos.api.Discovery.Nacos
+	21, // 18: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	21, // 19: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	21, // 20: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	21, // 21: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	12, // 22: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
+	11, // 23: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
+	21, // 24: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	21, // 25: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	21, // 26: kratos.api.Registry.Consul.timeout:type_name -> google.protobuf.Duration
+	21, // 27: kratos.api.Registry.Etcd.timeout:type_name -> google.protobuf.Duration
+	21, // 28: kratos.api.Registry.Nacos.timeout:type_name -> google.protobuf.Duration
+	21, // 29: kratos.api.Discovery.Consul.timeout:type_name -> google.protobuf.Duration
+	21, // 30: kratos.api.Discovery.Etcd.timeout:type_name -> google.protobuf.Duration
+	21, // 31: kratos.api.Discovery.Nacos.timeout:type_name -> google.protobuf.Duration
+	32, // [32:32] is the sub-list for method output_type
+	32, // [32:32] is the sub-list for method input_type
+	32, // [32:32] is the sub-list for extension type_name
+	32, // [32:32] is the sub-list for extension extendee
+	0,  // [0:32] is the sub-list for field type_name
 }
 
 func init() { file_conf_conf_proto_init() }

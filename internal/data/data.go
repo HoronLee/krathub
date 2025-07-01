@@ -11,10 +11,14 @@ import (
 
 	"github.com/glebarez/sqlite"
 	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
+	"github.com/go-kratos/kratos/contrib/registry/nacos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/google/wire"
-	"github.com/hashicorp/consul/api"
+	cApi "github.com/hashicorp/consul/api"
+	"github.com/nacos-group/nacos-sdk-go/clients"
+	"github.com/nacos-group/nacos-sdk-go/common/constant"
+	"github.com/nacos-group/nacos-sdk-go/vo"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -65,8 +69,7 @@ func NewDiscovery(cfg *conf.Registry) registry.Discovery {
 		// TODO: 实现 Etcd 服务发现
 		return nil
 	case *conf.Registry_Nacos_:
-		// TODO: 实现 Nacos 服务发现
-		return nil
+		return NewNacosDiscovery(c.Nacos)
 	default:
 		return nil
 	}
@@ -78,7 +81,7 @@ func NewConsulDiscovery(c *conf.Registry_Consul) registry.Discovery {
 		return nil
 	}
 	// 创建 Consul 客户端配置
-	consulConfig := api.DefaultConfig()
+	consulConfig := cApi.DefaultConfig()
 	consulConfig.Address = c.Addr
 	if c.Scheme != "" {
 		consulConfig.Scheme = c.Scheme
@@ -95,10 +98,57 @@ func NewConsulDiscovery(c *conf.Registry_Consul) registry.Discovery {
 		consulConfig.WaitTime = 5 * time.Second // 默认超时时间
 	}
 	// 创建 Consul 客户端
-	client, err := api.NewClient(consulConfig)
+	client, err := cApi.NewClient(consulConfig)
 	if err != nil {
 		panic(fmt.Sprintf("failed to create consul client: %v", err))
 	}
 	r := consul.New(client)
+	return r
+}
+
+// NewNacosDiscovery 创建 Nacos 服务发现客户端
+func NewNacosDiscovery(c *conf.Registry_Nacos) registry.Discovery {
+	if c == nil {
+		return nil
+	}
+
+	// 创建 Nacos 客户端配置
+	sc := []constant.ServerConfig{
+		*constant.NewServerConfig(c.Addr, c.Port),
+	}
+
+	cc := constant.ClientConfig{
+		NamespaceId:         c.Namespace,
+		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
+		NotLoadCacheAtStart: true,
+		LogLevel:            "warn",
+		LogDir:              "../../logs",
+	}
+
+	// 添加认证信息
+	if c.Username != "" && c.Password != "" {
+		cc.Username = c.Username
+		cc.Password = c.Password
+	}
+
+	// 创建命名客户端
+	client, err := clients.NewNamingClient(
+		vo.NacosClientParam{
+			ClientConfig:  &cc,
+			ServerConfigs: sc,
+		},
+	)
+	if err != nil {
+		panic(fmt.Sprintf("failed to create nacos client: %v", err))
+	}
+
+	// 创建group参数，如果未设置则使用默认值
+	group := c.Group
+	if group == "" {
+		group = "DEFAULT_GROUP"
+	}
+
+	// 创建 Nacos 服务发现
+	r := nacos.New(client, nacos.WithGroup(group))
 	return r
 }
