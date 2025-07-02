@@ -23,11 +23,15 @@ func NewAuthGrpcRepo(data *Data, logger log.Logger) biz.AuthGrpcRepo {
 func (r *authGrpcRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
-	helloClient, err := r.data.clientFactory.NewHelloClient(ctx)
+	// 直接使用 CreateGrpcConn 方法获取连接
+	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello.grpc")
 	if err != nil {
-		r.log.Errorf("Failed to create hello client: %v", err)
+		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err
 	}
+
+	// 使用连接创建客户端
+	helloClient := hellov1.NewHelloServiceClient(conn)
 
 	ret, err := helloClient.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})
 	if err != nil {

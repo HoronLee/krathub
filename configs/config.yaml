@@ -15,10 +15,11 @@ data:
     read_timeout: "${RREAD_TIMEOUT:0.2s}"
     write_timeout: "${RWRITE_TIMEOUT:0.2s}"
   client:
+    # 这里可以配置第三方服务的客户端
+    # 默认不用配置，而是在代码中直接服务发现
     grpc:
-      # - service_name: hello
-      - service_name: hello.grpc  # nacos需要添加协议后缀
-        timeout: 5s
+      # - service_name: hello.grpc  # nacos需要添加协议后缀
+      #   timeout: 5s
 
 app:
   env: "${ENV:de}"

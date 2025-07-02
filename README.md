@@ -24,8 +24,6 @@
 
 client层是本人自己新增的客户端层，级别上来说比 data 层低一层，目前包含了grpc客户端的工厂方法。这个层的是用于调用外部grpc服务而设计的，后续可能会添加http客户端的功能，但是考虑到微服务环境下大多还是以grpc为沟通协议，所以暂不实现。
 
-Client层编码指南先在`grpc_factory.go` 文件的`GrpcClientFactory`接口中添加所需实现的方法定义，后续在`grpc_client.go`中进行实现(基本只需要调用`createGrpcConn`方法传入服务名即可)，这样可以保持代码的整洁。
-
 
 ## Docker Compose 部署
 

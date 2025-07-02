@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	hellov1 "krathub/api/hello/v1"
 	"krathub/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -17,8 +16,9 @@ import (
 
 // GrpcClientFactory 定义客户端工厂接口
 type GrpcClientFactory interface {
-	// 创建Hello服务客户端
-	NewHelloClient(ctx context.Context) (hellov1.HelloServiceClient, error)
+
+	// CreateGrpcConn 创建gRPC连接
+	CreateGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error)
 }
 
 // grpcClientFactory 是 GrpcClientFactory接口的实现
@@ -37,25 +37,20 @@ func NewGrpcClientFactory(config *conf.Data, discovery registry.Discovery, logge
 	}, nil
 }
 
-// createGrpcConn 创建gRPC连接
-func (f *grpcClientFactory) createGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error) {
-	// 获取服务配置
-	var serviceConfig *conf.Data_Client_GRPC
+// CreateGrpcConn 创建gRPC连接
+func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error) {
+	// 默认超时时间
+	timeout := 5 * time.Second
+
+	// 尝试获取服务特定配置（如果存在）
 	for _, c := range f.config.Client.GetGrpc() {
 		if c.ServiceName == serviceName {
-			serviceConfig = c
+			// 使用服务特定的超时设置（如果有）
+			if c.Timeout != nil {
+				timeout = c.Timeout.AsDuration()
+			}
 			break
 		}
-	}
-
-	if serviceConfig == nil {
-		return nil, fmt.Errorf("no grpc client config found for service: %s", serviceName)
-	}
-
-	// 设置默认超时时间
-	timeout := 5 * time.Second
-	if serviceConfig.Timeout != nil {
-		timeout = serviceConfig.Timeout.AsDuration()
 	}
 
 	// 创建gRPC连接
