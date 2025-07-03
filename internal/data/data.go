@@ -58,17 +58,17 @@ func NewDB(cfg *conf.Data) (*gorm.DB, error) {
 }
 
 // NewDiscovery 根据配置创建服务发现客户端
-func NewDiscovery(cfg *conf.Registry) registry.Discovery {
+func NewDiscovery(cfg *conf.Discovery) registry.Discovery {
 	if cfg == nil {
 		return nil
 	}
-	switch c := cfg.Registry.(type) {
-	case *conf.Registry_Consul_:
+	switch c := cfg.Discovery.(type) {
+	case *conf.Discovery_Consul_:
 		return NewConsulDiscovery(c.Consul)
-	case *conf.Registry_Etcd_:
+	case *conf.Discovery_Etcd_:
 		// TODO: 实现 Etcd 服务发现
 		return nil
-	case *conf.Registry_Nacos_:
+	case *conf.Discovery_Nacos_:
 		return NewNacosDiscovery(c.Nacos)
 	default:
 		return nil
@@ -76,7 +76,7 @@ func NewDiscovery(cfg *conf.Registry) registry.Discovery {
 }
 
 // NewConsulDiscovery 创建 Consul 服务发现客户端
-func NewConsulDiscovery(c *conf.Registry_Consul) registry.Discovery {
+func NewConsulDiscovery(c *conf.Discovery_Consul) registry.Discovery {
 	if c == nil {
 		return nil
 	}
@@ -107,7 +107,7 @@ func NewConsulDiscovery(c *conf.Registry_Consul) registry.Discovery {
 }
 
 // NewNacosDiscovery 创建 Nacos 服务发现客户端
-func NewNacosDiscovery(c *conf.Registry_Nacos) registry.Discovery {
+func NewNacosDiscovery(c *conf.Discovery_Nacos) registry.Discovery {
 	if c == nil {
 		return nil
 	}

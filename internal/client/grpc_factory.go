@@ -43,6 +43,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	timeout := 5 * time.Second
 
 	// 尝试获取服务特定配置（如果存在）
+	// TODO: 检测是否配置单独的endpoint，如果配置了单独的endpoint，则使用该endpoint
 	for _, c := range f.config.Client.GetGrpc() {
 		if c.ServiceName == serviceName {
 			// 使用服务特定的超时设置（如果有）

@@ -74,7 +74,7 @@ func main() {
 	// 初始化一些外部包方法
 	initComponents(&bc)
 
-	app, cleanup, err := wireApp(bc.Server, bc.Registry, bc.Data, bc.App, zapLog.Logger())
+	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, zapLog.Logger())
 	if err != nil {
 		panic(err)
 	}

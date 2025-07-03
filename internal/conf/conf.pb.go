@@ -1435,11 +1435,12 @@ func (x *Discovery_Etcd) GetTimeout() *durationpb.Duration {
 type Discovery_Nacos struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`           // Nacos 地址
-	Namespace     string                 `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间
-	Group         string                 `protobuf:"bytes,3,opt,name=group,proto3" json:"group,omitempty"`         // 分组
-	Username      string                 `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
-	Password      string                 `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`   // 密码
-	Timeout       *durationpb.Duration   `protobuf:"bytes,6,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
+	Port          uint64                 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`          // Nacos 端口
+	Namespace     string                 `protobuf:"bytes,3,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间
+	Group         string                 `protobuf:"bytes,4,opt,name=group,proto3" json:"group,omitempty"`         // 分组
+	Username      string                 `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`   // 用户名
+	Password      string                 `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`   // 密码
+	Timeout       *durationpb.Duration   `protobuf:"bytes,7,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1479,6 +1480,13 @@ func (x *Discovery_Nacos) GetAddr() string {
 		return x.Addr
 	}
 	return ""
+}
+
+func (x *Discovery_Nacos) GetPort() uint64 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
 }
 
 func (x *Discovery_Nacos) GetNamespace() string {
@@ -1610,7 +1618,7 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\bpassword\x18\x06 \x01(\tR\bpassword\x123\n" +
 	"\atimeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\n" +
 	"\n" +
-	"\bregistry\"\xac\x05\n" +
+	"\bregistry\"\xc0\x05\n" +
 	"\tDiscovery\x126\n" +
 	"\x06consul\x18\x01 \x01(\v2\x1c.kratos.api.Discovery.ConsulH\x00R\x06consul\x120\n" +
 	"\x04etcd\x18\x02 \x01(\v2\x1a.kratos.api.Discovery.EtcdH\x00R\x04etcd\x123\n" +
@@ -1627,14 +1635,15 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\tendpoints\x18\x01 \x03(\tR\tendpoints\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x123\n" +
-	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xbc\x01\n" +
+	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\xd0\x01\n" +
 	"\x05Nacos\x12\x12\n" +
-	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x1c\n" +
-	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x14\n" +
-	"\x05group\x18\x03 \x01(\tR\x05group\x12\x1a\n" +
-	"\busername\x18\x04 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x05 \x01(\tR\bpassword\x123\n" +
-	"\atimeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\v\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x12\n" +
+	"\x04port\x18\x02 \x01(\x04R\x04port\x12\x1c\n" +
+	"\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x14\n" +
+	"\x05group\x18\x04 \x01(\tR\x05group\x12\x1a\n" +
+	"\busername\x18\x05 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x06 \x01(\tR\bpassword\x123\n" +
+	"\atimeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\v\n" +
 	"\tdiscoveryB\x1cZ\x1akrathub/internal/conf;confb\x06proto3"
 
 var (
