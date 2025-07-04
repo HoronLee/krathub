@@ -13,7 +13,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
-	"github.com/go-kratos/kratos/v2/middleware/validate"
+    "github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
@@ -24,7 +24,7 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 			recovery.Recovery(),
 			tracing.Server(),
 			logging.Server(logger),
-			validate.Validator(),
+			validate.ProtoValidate(),
 			// 登录等无需鉴权接口
 			selector.Server(middleware.Auth(consts.UserRole(0))).
 				Prefix("/krathub.auth.v1.Auth/").
