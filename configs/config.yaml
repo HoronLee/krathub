@@ -12,6 +12,9 @@ data:
     source: "${DB_SOURCE:krathub:krathub114514@tcp(127.0.0.1:3306)/krathub?parseTime=True&loc=Local}"
   redis:
     addr: "${RADDR:127.0.0.1:6379}"
+    user_name: "${RUSER_NAME:}"  # Redis用户名
+    password: "${RPASSWORD:redisHoron}"  # Redis密码
+    db: "${RDB:5}"  # Redis数据库编号
     read_timeout: "${RREAD_TIMEOUT:0.2s}"
     write_timeout: "${RWRITE_TIMEOUT:0.2s}"
   client:
@@ -22,7 +25,7 @@ data:
       #   timeout: 5s
 
 app:
-  env: "${ENV:dev}"
+  env: "${ENV:de}"
   jwt:
     secret_key: "${JWT_SECRETK_KEY:krathub_secret}"
     expire: "${JWT_EXPIRE:24}"

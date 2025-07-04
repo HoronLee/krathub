@@ -12,6 +12,7 @@ message Bootstrap {
   App app = 3;
   Registry registry = 4;
   Discovery discovery = 5;
+  Config config = 6;
 }
 
 // 通信服务端配置
@@ -39,8 +40,11 @@ message Data {
   message Redis {
     string network = 1;
     string addr = 2;
-    google.protobuf.Duration read_timeout = 3;
-    google.protobuf.Duration write_timeout = 4;
+    string user_name = 3; // Redis用户名
+    string password = 4; // Redis密码
+    int32 db = 5; // Redis数据库编号
+    google.protobuf.Duration read_timeout = 6;
+    google.protobuf.Duration write_timeout = 7;
   }
   message Client {
     message HTTP {
@@ -143,6 +147,37 @@ message Discovery {
     google.protobuf.Duration timeout = 7; // 超时时间
   }
   oneof discovery {
+    Consul consul = 1; // Consul 配置
+    Etcd etcd = 2; // Etcd 配置
+    Nacos nacos = 3; // Nacos 配置
+  }
+}
+
+// 配置中心配置
+message Config {
+  message Consul {
+    string addr = 1; // Consul 地址
+    string scheme = 2; // 协议
+    string token = 3; // 访问令牌
+    string datacenter = 4; // 数据中心
+    google.protobuf.Duration timeout = 5; // 超时时间
+  }
+  message Etcd {
+    repeated string endpoints = 1; // Etcd 端点列表
+    string username = 2; // 用户名
+    string password = 3; // 密码
+    google.protobuf.Duration timeout = 4; // 超时时间
+  }
+  message Nacos {
+    string addr = 1; // Nacos 地址
+    uint64 port = 2; // Nacos 端口
+    string namespace = 3; // 命名空间
+    string group = 4; // 分组
+    string username = 5; // 用户名
+    string password = 6; // 密码
+    google.protobuf.Duration timeout = 7; // 超时时间
+  }
+  oneof config {
     Consul consul = 1; // Consul 配置
     Etcd etcd = 2; // Etcd 配置
     Nacos nacos = 3; // Nacos 配置
