@@ -81,6 +81,7 @@ proto:
 	make api
 	make validate
 	make errors
+	make config
 
 .PHONY: all
 # generate all
