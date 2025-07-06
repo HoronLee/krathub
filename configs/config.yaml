@@ -25,7 +25,7 @@ data:
       #   timeout: 5s
 
 app:
-  env: "${ENV:de}"
+  env: "${ENV:dev}"
   jwt:
     secret_key: "${JWT_SECRETK_KEY:krathub_secret}"
     expire: "${JWT_EXPIRE:24}"
@@ -57,7 +57,6 @@ registry:
 
 # 服务发现配置，一般和注册中心配置相同
 discovery:
-
   # consul:
   #   addr: 127.0.0.1:8500
   #   scheme: http
@@ -73,3 +72,15 @@ discovery:
     username: "${NACOSD_USERNAME:nacos}"
     password: "${NACOSD_PASSWORD:nacos}"
     timeout: "${NACOSD_TIMEOUT:5s}"
+
+# 配置中心配置
+config:
+  # 使用 Nacos 作为配置中心
+  nacos:
+    addr: "${NACOSC_ADDR:127.0.0.1}"
+    port: "${NACOSC_PORT:8848}"
+    namespace: "${NACOSC_NAMESPACE:public}"
+    group: "${NACOSC_GROUP:DEFAULT_GROUP}"
+    username: "${NACOSC_USERNAME:nacos}"
+    password: "${NACOSC_PASSWORD:nacos}"
+    timeout: "${NACOSC_TIMEOUT:5s}"

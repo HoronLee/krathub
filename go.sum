@@ -119,6 +119,8 @@ github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2
 github.com/go-kit/kit v0.9.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
 github.com/go-kratos/aegis v0.2.0 h1:dObzCDWn3XVjUkgxyBp6ZeWtx/do0DPZ7LY3yNSJLUQ=
 github.com/go-kratos/aegis v0.2.0/go.mod h1:v0R2m73WgEEYB3XYu6aE2WcMwsZkJ/Rzuf5eVccm7bI=
+github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:eI8Et8q8UgYDI7SGGju4EshocGoxvK9WPusydlzNefQ=
+github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:RS9yjNwq3hK1B/9VOw+0dE8B4oM1L9C4ObrLejHjMCI=
 github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:8R4XBtpXVxrTFetkbUYGZCfrZZfXULamq8MeLLsmKWY=
 github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:NRPjykSmmscIXLP6Qv42b/UFhwZgxH9bD9OLgbMXMqs=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:PVWOn77FfwOYT4veUVB1zCtWNZq2SbKcxYO47BhmgQQ=

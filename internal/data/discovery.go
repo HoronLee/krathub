@@ -76,16 +76,13 @@ func NewNacosDiscovery(c *conf.Discovery_Nacos) registry.Discovery {
 
 	cc := constant.ClientConfig{
 		NamespaceId:         c.Namespace,
+		Username:            c.Username,
+		Password:            c.Password,
 		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
 		NotLoadCacheAtStart: true,
 		LogLevel:            "warn",
 		LogDir:              "../../logs",
-	}
-
-	// 添加认证信息
-	if c.Username != "" && c.Password != "" {
-		cc.Username = c.Username
-		cc.Password = c.Password
+		CacheDir:            "../../cache",
 	}
 
 	// 创建命名客户端

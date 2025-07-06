@@ -9,6 +9,7 @@ import (
 	"krathub/pkg"
 	zapLog "krathub/pkg/log/zap"
 
+	knacos "github.com/go-kratos/kratos/contrib/config/nacos/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/env"
@@ -17,6 +18,9 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/nacos-group/nacos-sdk-go/clients"
+	"github.com/nacos-group/nacos-sdk-go/common/constant"
+	"github.com/nacos-group/nacos-sdk-go/vo"
 
 	_ "go.uber.org/automaxprocs"
 )
@@ -53,11 +57,43 @@ func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server, hs *http
 }
 
 func main() {
+
+	sc := []constant.ServerConfig{
+		*constant.NewServerConfig("127.0.0.1", 8848),
+	}
+
+	cc := &constant.ClientConfig{
+		NamespaceId:         "public",
+		Username:            "nacos",
+		Password:            "nacos",
+		TimeoutMs:           5000,
+		NotLoadCacheAtStart: true,
+		LogDir:              "../../logs",
+		CacheDir:            "../../cache",
+		LogLevel:            "debug",
+	}
+
+	client, err := clients.NewConfigClient(
+		vo.NacosClientParam{
+			ClientConfig:  cc,
+			ServerConfigs: sc,
+		},
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
 	flag.Parse()
 	c := config.New(
 		config.WithSource(
 			env.NewSource("KRATHUB_"),
 			file.NewSource(flagconf),
+			knacos.NewConfigSource(
+				client,
+				knacos.WithGroup("DEFAULT_GROUP"),
+				knacos.WithDataID("krathub.yaml"),
+			),
 		),
 	)
 	defer c.Close()
@@ -70,6 +106,7 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+	// TODO: 动态调整配置源
 
 	// 初始化一些外部包方法
 	initComponents(&bc)

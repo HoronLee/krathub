@@ -172,10 +172,11 @@ message Config {
     string addr = 1; // Nacos 地址
     uint64 port = 2; // Nacos 端口
     string namespace = 3; // 命名空间
-    string group = 4; // 分组
-    string username = 5; // 用户名
-    string password = 6; // 密码
-    google.protobuf.Duration timeout = 7; // 超时时间
+    string data_id = 4; // 数据ID
+    string group = 5; // 分组
+    string username = 6; // 用户名
+    string password = 7; // 密码
+    google.protobuf.Duration timeout = 8; // 超时时间
   }
   oneof config {
     Consul consul = 1; // Consul 配置
