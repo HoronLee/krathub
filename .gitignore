@@ -32,7 +32,6 @@ Thumbs.db
 *.log
 bin/
 logs/
-configs/
 cache/
 
 # Develop tools

@@ -81,6 +81,7 @@ config:
     port: "${NACOSC_PORT:8848}"
     namespace: "${NACOSC_NAMESPACE:public}"
     group: "${NACOSC_GROUP:DEFAULT_GROUP}"
+    data_id: "${NACOSC_DATA_ID:krathub.yaml}"
     username: "${NACOSC_USERNAME:nacos}"
     password: "${NACOSC_PASSWORD:nacos}"
     timeout: "${NACOSC_TIMEOUT:5s}"

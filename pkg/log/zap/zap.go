@@ -85,7 +85,7 @@ func NewZapLogger(encoder zapcore.EncoderConfig, level zap.AtomicLevel, opts ...
 }
 
 // Log 实现log接口
-func (l *ZapLogger) Log(level log.Level, keyvals ...interface{}) error {
+func (l *ZapLogger) Log(level log.Level, keyvals ...any) error {
 	if len(keyvals) == 0 || len(keyvals)%2 != 0 {
 		l.log.Warn(fmt.Sprint("Keyvalues must appear in pairs: ", keyvals))
 		return nil
