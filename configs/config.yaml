@@ -22,6 +22,8 @@ data:
     # 默认不用配置，而是在代码中直接服务发现
     grpc:
       # - service_name: hello.grpc  # nacos需要添加协议后缀
+      #   endpoint: "${GRPC_ENDPOINT:127.0.0.1:8003}"
+      #   enable_tls: false
       #   timeout: 5s
 
 app:
