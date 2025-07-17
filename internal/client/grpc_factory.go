@@ -28,8 +28,7 @@ type GrpcClientFactory interface {
 type grpcClientFactory struct {
 	config    *conf.Data         // 配置信息
 	discovery registry.Discovery // 服务发现客户端
-	logger    *log.Helper        // 日志助手
-	rawLogger log.Logger         // 原始日志记录器（用于中间件）
+	logger    log.Logger
 }
 
 // NewGrpcClientFactory 创建一个新的 GRPC 客户端工厂
@@ -37,8 +36,7 @@ func NewGrpcClientFactory(config *conf.Data, discovery registry.Discovery, logge
 	return &grpcClientFactory{
 		config:    config,
 		discovery: discovery,
-		logger:    log.NewHelper(logger),
-		rawLogger: logger,
+		logger:    logger,
 	}, nil
 }
 
@@ -63,7 +61,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 			if c.Endpoint != "" {
 				// 使用配置的endpoint替代服务发现
 				endpoint = c.Endpoint
-				f.logger.Infof("using configured endpoint for service %s: %s", serviceName, endpoint)
+				f.logger.Log(log.LevelInfo, "msg", "using configured endpoint", "service_name", serviceName, "endpoint", endpoint)
 
 				// 检查是否需要启用TLS
 				enableTLS = c.EnableTls
@@ -80,8 +78,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	middleware := []middleware.Middleware{
 		recovery.Recovery(),
 		tracing.Client(),
-		// 使用Logger()方法获取底层的Logger接口实现
-		logging.Client(f.rawLogger),
+		logging.Client(f.logger),
 	}
 
 	if enableTLS {
@@ -113,10 +110,10 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	}
 
 	if err != nil {
-		f.logger.Errorf("failed to create grpc client for service %s: %v", serviceName, err)
+		f.logger.Log(log.LevelError, "msg", "failed to create grpc client", "service_name", serviceName, "error", err)
 		return nil, fmt.Errorf("failed to create grpc client for service %s: %w", serviceName, err)
 	}
 
-	f.logger.Debugf("successfully created grpc client for service: %s with endpoint: %s", serviceName, endpoint)
+	f.logger.Log(log.LevelDebug, "msg", "successfully created grpc client", "service_name", serviceName, "endpoint", endpoint)
 	return conn, nil
 }
