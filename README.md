@@ -2,6 +2,15 @@
 
 > 基于Kratos框架编写的快开框架，目前处于开发初期阶段
 
+## 如何使用
+
+使用kratos layout功能快速通过krathub模板创建本地项目
+```bash
+kratos new PeojectName -r https://github.com/HoronLee/krathub.git
+```
+
+## 开发须知
+
 开发顺序: api -> config -> service -> biz -> data -> client
 
 功能编写完成后需要使用`make wire`来进行依赖注入，并且需要在`internal/server`中的`NewServer`方法中添加用法，注意需要手动在方法签名中添加依赖
