@@ -53,30 +53,30 @@ func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*model.User, error)
 }
 
 func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
-	// 先获取当前用户信息
-	currentUser, err := uc.repo.GetUserById(ctx, user.ID)
+	// 获取原始用户信息
+	origUser, err := uc.repo.GetUserById(ctx, user.ID)
 	if err != nil {
 		return nil, userv1.ErrorUserNotFound("user not found: %v", err)
 	}
 
 	// 只有当用户名发生变化时才检查重复
-	if user.Name != currentUser.Name {
-		existingUsers, err := uc.aDBRepo.ListUserByUserName(ctx, user.Name)
+	if user.Name != origUser.Name {
+		usersWithSameName, err := uc.aDBRepo.ListUserByUserName(ctx, user.Name)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
 		}
-		if len(existingUsers) > 0 {
+		if len(usersWithSameName) > 0 {
 			return nil, authv1.ErrorUserAlreadyExists("username already exists")
 		}
 	}
 
 	// 只有当邮箱发生变化时才检查重复
-	if user.Email != currentUser.Email {
-		existingEmails, err := uc.aDBRepo.ListUserByEmail(ctx, user.Email)
+	if user.Email != origUser.Email {
+		usersWithSameEmail, err := uc.aDBRepo.ListUserByEmail(ctx, user.Email)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
 		}
-		if len(existingEmails) > 0 {
+		if len(usersWithSameEmail) > 0 {
 			return nil, authv1.ErrorUserAlreadyExists("email already exists")
 		}
 	}
