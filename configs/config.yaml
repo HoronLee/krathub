@@ -40,50 +40,50 @@ app:
 # 注册中心配置
 registry:
   # 使用 Consul 作为注册中心
-  # consul:
-  #   addr: 127.0.0.1:8500
-  #   scheme: http
-  #   token: your-token
-  #   datacenter: dc1
-  #   timeout: 5s
+  consul:
+    addr: consul.r430.com:30080
+    scheme: http
+    # token: your-token
+    datacenter: dc1
+    timeout: 5s
   
   # 或者使用 Nacos 作为注册中心
-  nacos:
-    addr: "${NACOSR_ADDR:127.0.0.1}"
-    port: "${NACOSR_PORT:8848}"
-    namespace: "${NACOSR_NAMESPACE:public}"
-    group: "${NACOSR_GROUP:DEFAULT_GROUP}"
-    username: "${NACOSR_USERNAME:nacos}"
-    password: "${NACOSR_PASSWORD:nacos}"
-    timeout: "${NACOSR_TIMEOUT:5s}"
+  # nacos:
+    # addr: "${NACOSR_ADDR:127.0.0.1}"
+    # port: "${NACOSR_PORT:8848}"
+    # namespace: "${NACOSR_NAMESPACE:public}"
+    # group: "${NACOSR_GROUP:DEFAULT_GROUP}"
+    # username: "${NACOSR_USERNAME:nacos}"
+    # password: "${NACOSR_PASSWORD:nacos}"
+    # timeout: "${NACOSR_TIMEOUT:5s}"
 
 # 服务发现配置，一般和注册中心配置相同
 discovery:
-  # consul:
-  #   addr: 127.0.0.1:8500
-  #   scheme: http
-  #   token: your-token
-  #   datacenter: dc1
-  #   timeout: 5s
+  consul:
+    addr: consul.r430.com:30080
+    scheme: http
+    # token: your-token
+    datacenter: dc1
+    timeout: 5s
 
-  nacos:
-    addr: "${NACOSD_ADDR:127.0.0.1}"
-    port: "${NACOSD_PORT:8848}"
-    namespace: "${NACOSD_NAMESPACE:public}"
-    group: "${NACOSD_GROUP:DEFAULT_GROUP}"
-    username: "${NACOSD_USERNAME:nacos}"
-    password: "${NACOSD_PASSWORD:nacos}"
-    timeout: "${NACOSD_TIMEOUT:5s}"
+  # nacos:
+  #   addr: "${NACOSD_ADDR:127.0.0.1}"
+  #   port: "${NACOSD_PORT:8848}"
+  #   namespace: "${NACOSD_NAMESPACE:public}"
+  #   group: "${NACOSD_GROUP:DEFAULT_GROUP}"
+  #   username: "${NACOSD_USERNAME:nacos}"
+  #   password: "${NACOSD_PASSWORD:nacos}"
+  #   timeout: "${NACOSD_TIMEOUT:5s}"
 
 # 配置中心配置
 config:
   # 使用 Nacos 作为配置中心
-  nacos:
-    addr: "${NACOSC_ADDR:127.0.0.1}"
-    port: "${NACOSC_PORT:8848}"
-    namespace: "${NACOSC_NAMESPACE:public}"
-    group: "${NACOSC_GROUP:DEFAULT_GROUP}"
-    data_id: "${NACOSC_DATA_ID:krathub.yaml}"
-    username: "${NACOSC_USERNAME:nacos}"
-    password: "${NACOSC_PASSWORD:nacos}"
-    timeout: "${NACOSC_TIMEOUT:5s}"
+  # nacos:
+  #   addr: "${NACOSC_ADDR:127.0.0.1}"
+  #   port: "${NACOSC_PORT:8848}"
+  #   namespace: "${NACOSC_NAMESPACE:public}"
+  #   group: "${NACOSC_GROUP:DEFAULT_GROUP}"
+  #   data_id: "${NACOSC_DATA_ID:krathub.yaml}"
+  #   username: "${NACOSC_USERNAME:nacos}"
+  #   password: "${NACOSC_PASSWORD:nacos}"
+  #   timeout: "${NACOSC_TIMEOUT:5s}"

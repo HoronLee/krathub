@@ -80,7 +80,7 @@ func NewNacosDiscovery(c *conf.Discovery_Nacos) registry.Discovery {
 		Password:            c.Password,
 		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
 		NotLoadCacheAtStart: true,
-		LogLevel:            "warn",
+		LogLevel:            "debug",
 		LogDir:              "../../logs",
 		CacheDir:            "../../cache",
 	}

@@ -81,7 +81,7 @@ func NewNacosRegistry(c *conf.Registry_Nacos) registry.Registrar {
 		Password:            c.Password,
 		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
 		NotLoadCacheAtStart: true,
-		LogLevel:            "warn",
+		LogLevel:            "debug",
 		LogDir:              "../../logs",
 	}
 

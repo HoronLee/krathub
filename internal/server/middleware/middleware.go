@@ -78,6 +78,7 @@ func Auth(minRole consts.UserRole) middleware.Middleware {
 			}
 
 			// 可选：将用户信息写入 metadata
+			// TODO: 将用户的所有信息信息写入 metadata
 			ctx = metadata.NewServerContext(ctx, metadata.New(map[string][]string{
 				"role": {roleStr},
 			}))
