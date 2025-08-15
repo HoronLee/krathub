@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"crypto/md5"
+	"context"
 	"fmt"
 	"time"
 
@@ -33,10 +33,6 @@ type UserClaims struct {
 	jwt.StandardClaims
 }
 
-func GetMd5(s string) string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
-}
-
 func (j *JWT) GenerateToken(id int64, name, identity string) (string, error) {
 	claims := &UserClaims{
 		ID:   id,
@@ -65,4 +61,17 @@ func (j *JWT) AnalyseToken(tokenString string) (*UserClaims, error) {
 		return nil, fmt.Errorf("invalid token")
 	}
 	return claims, nil
+}
+
+type authKey struct{}
+
+// NewContext 将用户claims信息存入context
+func NewContext(ctx context.Context, claims *UserClaims) context.Context {
+	return context.WithValue(ctx, authKey{}, claims)
+}
+
+// FromContext 从context中提取用户claims信息
+func FromContext(ctx context.Context) (*UserClaims, bool) {
+	claims, ok := ctx.Value(authKey{}).(*UserClaims)
+	return claims, ok
 }

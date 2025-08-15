@@ -1,6 +1,8 @@
 package helper
 
-import "regexp"
+import (
+	"regexp"
+)
 
 // IsEmail 判断字符串是否为邮箱
 func IsEmail(s string) bool {

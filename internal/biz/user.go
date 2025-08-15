@@ -6,11 +6,9 @@ import (
 	userv1 "krathub/api/user/v1"
 	"krathub/internal/conf"
 	"krathub/internal/data/model"
-	"strings"
+	"krathub/pkg/jwt"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/transport"
-	"github.com/golang-jwt/jwt"
 )
 
 type UserDBRepo interface {
@@ -38,36 +36,13 @@ func NewUserUsecase(repo UserDBRepo, logger log.Logger, cfg *conf.App, aDBRepo A
 }
 
 func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*model.User, error) {
-	tr, ok := transport.FromServerContext(ctx)
+	// 从context中获取当前登录用户信息
+	claims, ok := jwt.FromContext(ctx)
 	if !ok {
-		return nil, authv1.ErrorMissingToken("missing transport context")
-	}
-	authHeader := tr.RequestHeader().Get("Authorization")
-	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
-
-	if tokenString == "" {
-		return nil, authv1.ErrorMissingToken("missing Authorization header")
+		return nil, authv1.ErrorUnauthorized("user not authenticated")
 	}
 
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
-		return []byte(uc.cfg.Jwt.SecretKey), nil
-	})
-	if err != nil || !token.Valid {
-		return nil, authv1.ErrorUnauthorized("invalid token")
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		return nil, authv1.ErrorInvalidTokenType("invalid claims")
-	}
-
-	idFloat, ok := claims["id"].(float64)
-	if !ok {
-		return nil, authv1.ErrorInvalidTokenType("id not found in token")
-	}
-	userID := int64(idFloat)
-
-	user, err := uc.repo.GetUserById(ctx, userID)
+	user, err := uc.repo.GetUserById(ctx, claims.ID)
 	if err != nil {
 		return nil, err
 	}
