@@ -1,108 +1,40 @@
 package server
 
 import (
-	"fmt"
 	"krathub/internal/conf"
-	"time"
+	"krathub/pkg/registry"
 
-	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
-	"github.com/go-kratos/kratos/contrib/registry/nacos/v2"
-	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/hashicorp/consul/api"
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/vo"
+	kratosRegistry "github.com/go-kratos/kratos/v2/registry"
 )
 
 // NewRegistrar 根据配置创建注册中心客户端
-func NewRegistrar(cfg *conf.Registry) registry.Registrar {
+func NewRegistrar(cfg *conf.Registry) kratosRegistry.Registrar {
 	if cfg == nil {
 		return nil
 	}
 	switch c := cfg.Registry.(type) {
 	case *conf.Registry_Consul_:
-		return NewConsulRegistry(c.Consul)
+		return registry.NewConsulRegistrar(&registry.ConsulConfig{
+			Addr:       c.Consul.Addr,
+			Scheme:     c.Consul.Scheme,
+			Token:      c.Consul.Token,
+			Datacenter: c.Consul.Datacenter,
+			Timeout:    c.Consul.Timeout,
+		})
 	case *conf.Registry_Etcd_:
 		// TODO: 实现 Etcd 注册中心
 		return nil
 	case *conf.Registry_Nacos_:
-		return NewNacosRegistry(c.Nacos)
+		return registry.NewNacosRegistrar(&registry.NacosConfig{
+			Addr:      c.Nacos.Addr,
+			Port:      c.Nacos.Port,
+			Namespace: c.Nacos.Namespace,
+			Username:  c.Nacos.Username,
+			Password:  c.Nacos.Password,
+			Group:     c.Nacos.Group,
+			Timeout:   c.Nacos.Timeout,
+		})
 	default:
 		return nil
 	}
-}
-
-// NewConsulRegistry 创建 Consul 注册中心客户端
-func NewConsulRegistry(c *conf.Registry_Consul) registry.Registrar {
-	if c == nil {
-		return nil
-	}
-	// 创建 Consul 客户端配置
-	cConfig := api.DefaultConfig()
-
-	// 设置基本配置项，Consul API 内部会处理空值
-	cConfig.Address = c.Addr
-	cConfig.Scheme = c.Scheme
-	cConfig.Token = c.Token
-	cConfig.Datacenter = c.Datacenter
-
-	// 超时时间仍需要设置默认值
-	if c.Timeout != nil {
-		cConfig.WaitTime = c.Timeout.AsDuration()
-	} else {
-		cConfig.WaitTime = 5 * time.Second // 默认超时时间
-	}
-
-	// 创建 Consul 客户端
-	client, err := api.NewClient(cConfig)
-	if err != nil {
-		panic(fmt.Sprintf("failed to create consul client: %v", err))
-	}
-	// 创建 Consul 注册中心，使用健康检查
-	r := consul.New(client, consul.WithHealthCheck(true))
-	return r
-}
-
-// NewNacosRegistry 创建 Nacos 注册中心客户端
-func NewNacosRegistry(c *conf.Registry_Nacos) registry.Registrar {
-	if c == nil {
-		return nil
-	}
-
-	// 创建 Nacos 服务端配置
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig(c.Addr, c.Port),
-	}
-
-	// 创建 Nacos 客户端配置
-	cc := constant.ClientConfig{
-		NamespaceId:         c.Namespace,
-		Username:            c.Username,
-		Password:            c.Password,
-		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
-		NotLoadCacheAtStart: true,
-		LogLevel:            "debug",
-		LogDir:              "../../logs",
-	}
-
-	// 创建命名客户端
-	client, err := clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		},
-	)
-	if err != nil {
-		panic(fmt.Sprintf("failed to create nacos client: %v", err))
-	}
-
-	// 创建group参数，如果未设置则使用默认值
-	group := c.Group
-	if group == "" {
-		group = "DEFAULT_GROUP"
-	}
-
-	// 创建 Nacos 注册中心
-	r := nacos.New(client, nacos.WithGroup(group))
-	return r
 }

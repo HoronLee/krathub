@@ -43,7 +43,6 @@ registry:
   consul:
     addr: consul.r430.com:30080
     scheme: http
-    # token: your-token
     datacenter: dc1
     timeout: 5s
   
@@ -62,7 +61,6 @@ discovery:
   consul:
     addr: consul.r430.com:30080
     scheme: http
-    # token: your-token
     datacenter: dc1
     timeout: 5s
 
@@ -87,3 +85,11 @@ config:
   #   username: "${NACOSC_USERNAME:nacos}"
   #   password: "${NACOSC_PASSWORD:nacos}"
   #   timeout: "${NACOSC_TIMEOUT:5s}"
+
+  # 使用 consul 作为配置中心
+  # consul:
+  #   addr: consul.r430.com:30080
+  #   scheme: http
+  #   datacenter: dc1
+  #   timeout: 5s
+  #   key: krathub/config.yaml  # 配置键名

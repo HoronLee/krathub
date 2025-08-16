@@ -1,0 +1,67 @@
+package discovery
+
+import (
+	"fmt"
+
+	"github.com/go-kratos/kratos/contrib/registry/nacos/v2"
+	"github.com/go-kratos/kratos/v2/registry"
+	"github.com/nacos-group/nacos-sdk-go/clients"
+	"github.com/nacos-group/nacos-sdk-go/common/constant"
+	"github.com/nacos-group/nacos-sdk-go/vo"
+	"google.golang.org/protobuf/types/known/durationpb"
+)
+
+// NacosConfig Nacos 服务发现配置
+type NacosConfig struct {
+	Addr      string
+	Port      uint64
+	Namespace string
+	Username  string
+	Password  string
+	Group     string
+	Timeout   *durationpb.Duration
+}
+
+// NewNacosDiscovery 创建 Nacos 服务发现客户端
+func NewNacosDiscovery(c *NacosConfig) registry.Discovery {
+	if c == nil {
+		return nil
+	}
+
+	// 创建 Nacos 客户端配置
+	sc := []constant.ServerConfig{
+		*constant.NewServerConfig(c.Addr, c.Port),
+	}
+
+	cc := constant.ClientConfig{
+		NamespaceId:         c.Namespace,
+		Username:            c.Username,
+		Password:            c.Password,
+		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
+		NotLoadCacheAtStart: true,
+		LogLevel:            "debug",
+		LogDir:              "./logs",
+		CacheDir:            "./cache",
+	}
+
+	// 创建命名客户端
+	client, err := clients.NewNamingClient(
+		vo.NacosClientParam{
+			ClientConfig:  &cc,
+			ServerConfigs: sc,
+		},
+	)
+	if err != nil {
+		panic(fmt.Sprintf("failed to create nacos client: %v", err))
+	}
+
+	// 创建group参数，如果未设置则使用默认值
+	group := c.Group
+	if group == "" {
+		group = "DEFAULT_GROUP"
+	}
+
+	// 创建 Nacos 服务发现
+	r := nacos.New(client, nacos.WithGroup(group))
+	return r
+}

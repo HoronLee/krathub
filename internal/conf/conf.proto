@@ -160,13 +160,15 @@ message Config {
     string scheme = 2; // 协议
     string token = 3; // 访问令牌
     string datacenter = 4; // 数据中心
-    google.protobuf.Duration timeout = 5; // 超时时间
+    string key = 5; // 配置键名
+    google.protobuf.Duration timeout = 6; // 超时时间
   }
   message Etcd {
     repeated string endpoints = 1; // Etcd 端点列表
     string username = 2; // 用户名
     string password = 3; // 密码
-    google.protobuf.Duration timeout = 4; // 超时时间
+    string key = 4; // 配置键名
+    google.protobuf.Duration timeout = 5; // 超时时间
   }
   message Nacos {
     string addr = 1; // Nacos 地址
