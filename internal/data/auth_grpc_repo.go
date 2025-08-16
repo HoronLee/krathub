@@ -24,8 +24,7 @@ func (r *authGrpcRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
 	// 直接使用 CreateGrpcConn 方法获取连接
-	// 只有nacos需要.grpc后缀
-	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello.grpc")
+	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello.service")
 	if err != nil {
 		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err
