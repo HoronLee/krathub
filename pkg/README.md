@@ -8,7 +8,7 @@
 pkg/
 ├── registry/        # 服务注册组件
 ├── discovery/       # 服务发现组件
-└── configcenter/    # 配置中心组件
+└── configCenter/    # 配置中心组件
 ```
 
 ## 1. 服务注册 (pkg/registry)
@@ -75,7 +75,7 @@ nacosDiscovery := discovery.NewNacosDiscovery(&discovery.NacosConfig{
 })
 ```
 
-## 3. 配置中心 (pkg/configcenter)
+## 3. 配置中心 (pkg/configCenter)
 
 ### 支持的配置中心
 - **Nacos**: 基于阿里巴巴 Nacos 的配置管理 ✅ **完整实现**
@@ -88,7 +88,7 @@ nacosDiscovery := discovery.NewNacosDiscovery(&discovery.NacosConfig{
 import "krathub/pkg/configCenter"
 
 // Nacos 配置中心
-nacosConfigSource := configcenter.NewNacosConfigSource(&configcenter.NacosConfig{
+nacosConfigSource := configCenter.NewNacosConfigSource(&configCenter.NacosConfig{
     Addr:      "127.0.0.1",
     Port:      8848,
     Namespace: "public",
@@ -100,7 +100,7 @@ nacosConfigSource := configcenter.NewNacosConfigSource(&configcenter.NacosConfig
 })
 
 // Consul 配置中心
-consulConfigSource := configcenter.NewConsulConfigSource(&configcenter.ConsulConfig{
+consulConfigSource := configCenter.NewConsulConfigSource(&configCenter.ConsulConfig{
     Addr:       "127.0.0.1:8500",
     Scheme:     "http",
     Token:      "",
@@ -110,7 +110,7 @@ consulConfigSource := configcenter.NewConsulConfigSource(&configcenter.ConsulCon
 })
 
 // Etcd 配置中心
-etcdConfigSource := configcenter.NewEtcdConfigSource(&configcenter.EtcdConfig{
+etcdConfigSource := configCenter.NewEtcdConfigSource(&configCenter.EtcdConfig{
     Endpoints: []string{"127.0.0.1:2379"},
     Username:  "",
     Password:  "",
@@ -147,7 +147,7 @@ config := config.New(
 import (
     "your-project/pkg/registry"
     "your-project/pkg/discovery"
-    "your-project/pkg/configcenter"
+    "your-project/pkg/configCenter"
 )
 ```
 
@@ -167,7 +167,7 @@ import (
 
 ### 添加新的配置中心
 
-1. 在 `pkg/configcenter/configcenter.go` 中添加新的配置结构
+1. 在 `pkg/configCenter/configCenter.go` 中添加新的配置结构
 2. 实现相应的 `NewXXXConfigSource` 函数
 3. 返回实现了 `config.Source` 接口的配置源
 
@@ -182,4 +182,4 @@ import (
 
 ## 8. 详细文档
 
-- [配置中心详细使用指南](./configcenter/README.md)
+- [配置中心详细使用指南](./configCenter/README.md)

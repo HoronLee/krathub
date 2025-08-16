@@ -34,34 +34,34 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 	if configCfg := bc.Config; configCfg != nil {
 		var configSource config.Source
 
-		switch configType := configCfg.Config.(type) {
+		switch cT := configCfg.Config.(type) {
 		case *conf.Config_Nacos_:
 			configSource = cC.NewNacosConfigSource(&cC.NacosConfig{
-				Addr:      configType.Nacos.Addr,
-				Port:      configType.Nacos.Port,
-				Namespace: configType.Nacos.Namespace,
-				Username:  configType.Nacos.Username,
-				Password:  configType.Nacos.Password,
-				Group:     configType.Nacos.Group,
-				DataId:    configType.Nacos.DataId,
-				Timeout:   configType.Nacos.Timeout,
+				Addr:      cT.Nacos.Addr,
+				Port:      cT.Nacos.Port,
+				Namespace: cT.Nacos.Namespace,
+				Username:  cT.Nacos.Username,
+				Password:  cT.Nacos.Password,
+				Group:     cT.Nacos.Group,
+				DataId:    cT.Nacos.DataId,
+				Timeout:   cT.Nacos.Timeout,
 			})
 		case *conf.Config_Consul_:
 			configSource = cC.NewConsulConfigSource(&cC.ConsulConfig{
-				Addr:       configType.Consul.Addr,
-				Scheme:     configType.Consul.Scheme,
-				Token:      configType.Consul.Token,
-				Datacenter: configType.Consul.Datacenter,
-				Key:        configType.Consul.Key,
-				Timeout:    configType.Consul.Timeout,
+				Addr:       cT.Consul.Addr,
+				Scheme:     cT.Consul.Scheme,
+				Token:      cT.Consul.Token,
+				Datacenter: cT.Consul.Datacenter,
+				Key:        cT.Consul.Key,
+				Timeout:    cT.Consul.Timeout,
 			})
 		case *conf.Config_Etcd_:
 			configSource = cC.NewEtcdConfigSource(&cC.EtcdConfig{
-				Endpoints: configType.Etcd.Endpoints,
-				Username:  configType.Etcd.Username,
-				Password:  configType.Etcd.Password,
-				Key:       configType.Etcd.Key,
-				Timeout:   configType.Etcd.Timeout,
+				Endpoints: cT.Etcd.Endpoints,
+				Username:  cT.Etcd.Username,
+				Password:  cT.Etcd.Password,
+				Key:       cT.Etcd.Key,
+				Timeout:   cT.Etcd.Timeout,
 			})
 		}
 
