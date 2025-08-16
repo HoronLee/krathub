@@ -11,22 +11,19 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-// AuthDBRepo 只负责数据库相关操作
-type AuthDBRepo interface {
+// AuthRepo 统一的认证仓库接口，包含数据库和 grpc 操作
+type AuthRepo interface {
+	// 数据库操作
 	SaveUser(context.Context, *model.User) (*model.User, error)
 	ListUserByEmail(context.Context, string) ([]*model.User, error)
 	ListUserByUserName(context.Context, string) ([]*model.User, error)
-}
-
-// AuthGrpcRepo 只负责 grpc 相关操作
-type AuthGrpcRepo interface {
+	// grpc 操作
 	Hello(ctx context.Context, in string) (string, error)
 }
 
 // AuthUsecase is a Auth usecase.
 type AuthUsecase struct {
-	dbRepo          AuthDBRepo
-	grpcRepo        AuthGrpcRepo
+	repo            AuthRepo
 	log             *log.Helper
 	cfg             *conf.App
 	adminRegistered bool        // 是否已经注册了 admin 用户
@@ -34,16 +31,15 @@ type AuthUsecase struct {
 }
 
 // NewAuthUsecase new an auth usecase.
-func NewAuthUsecase(dbRepo AuthDBRepo, grpcRepo AuthGrpcRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
+func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
 	uc := &AuthUsecase{
-		dbRepo:   dbRepo,
-		grpcRepo: grpcRepo,
-		log:      log.NewHelper(logger),
-		cfg:      cfg,
-		jwt:      jwtpkg.NewJWT(cfg.Jwt),
+		repo: repo,
+		log:  log.NewHelper(logger),
+		cfg:  cfg,
+		jwt:  jwtpkg.NewJWT(cfg.Jwt),
 	}
 	// 初始化 adminRegistered
-	admins, err := dbRepo.ListUserByUserName(context.Background(), "admin")
+	admins, err := repo.ListUserByUserName(context.Background(), "admin")
 	if err == nil && len(admins) > 0 {
 		uc.adminRegistered = true
 	}
@@ -62,7 +58,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 	} else {
 		// 后续注册，用户名可以任意，但角色为 user
 		// 检查用户名是否已存在
-		existingUsers, err := uc.dbRepo.ListUserByUserName(ctx, user.Name)
+		existingUsers, err := uc.repo.ListUserByUserName(ctx, user.Name)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
 		}
@@ -73,7 +69,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 	}
 
 	// 检查邮箱是否已存在
-	existingEmails, err := uc.dbRepo.ListUserByEmail(ctx, user.Email)
+	existingEmails, err := uc.repo.ListUserByEmail(ctx, user.Email)
 	if err != nil {
 		return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
 	}
@@ -81,7 +77,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 		return nil, authv1.ErrorUserAlreadyExists("email already exists")
 	}
 
-	createdUser, err := uc.dbRepo.SaveUser(ctx, user)
+	createdUser, err := uc.repo.SaveUser(ctx, user)
 	if err == nil && !uc.adminRegistered && user.Name == "admin" {
 		uc.adminRegistered = true // 注册成功后更新状态
 	}
@@ -95,7 +91,7 @@ func (uc *AuthUsecase) generateToken(id int64, name, role string) (string, error
 
 // LoginByEmailPassword 邮箱密码登录
 func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.User) (token string, err error) {
-	users, err := uc.dbRepo.ListUserByEmail(ctx, user.Email)
+	users, err := uc.repo.ListUserByEmail(ctx, user.Email)
 	if err != nil {
 		return "", authv1.ErrorUserNotFound("failed to get user: %v", err)
 	}
@@ -114,10 +110,10 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 	return token, nil
 }
 
-// Hello 通过 grpcRepo 实现
+// Hello 通过 repo 实现
 func (uc *AuthUsecase) Hello(ctx context.Context, in *string) (string, error) {
 	uc.log.Debugf("Saying hello with greeting: %s", *in)
-	response, err := uc.grpcRepo.Hello(ctx, *in)
+	response, err := uc.repo.Hello(ctx, *in)
 	if err != nil {
 		uc.log.Errorf("Failed to say hello: %v", err)
 		return "", err

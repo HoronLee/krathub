@@ -11,7 +11,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type UserDBRepo interface {
+type UserRepo interface {
 	SaveUser(context.Context, *model.User) (*model.User, error)
 	GetUserById(context.Context, int64) (*model.User, error)
 	DeleteUser(context.Context, *model.User) (*model.User, error)
@@ -19,18 +19,18 @@ type UserDBRepo interface {
 }
 
 type UserUsecase struct {
-	repo    UserDBRepo
-	log     *log.Helper
-	cfg     *conf.App
-	aDBRepo AuthDBRepo // 只依赖 AuthDBRepo
+	repo     UserRepo
+	log      *log.Helper
+	cfg      *conf.App
+	authRepo AuthRepo // 改为依赖 AuthRepo
 }
 
-func NewUserUsecase(repo UserDBRepo, logger log.Logger, cfg *conf.App, aDBRepo AuthDBRepo) *UserUsecase {
+func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, authRepo AuthRepo) *UserUsecase {
 	uc := &UserUsecase{
-		repo:    repo,
-		log:     log.NewHelper(logger),
-		cfg:     cfg,
-		aDBRepo: aDBRepo,
+		repo:     repo,
+		log:      log.NewHelper(logger),
+		cfg:      cfg,
+		authRepo: authRepo,
 	}
 	return uc
 }
@@ -61,7 +61,7 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model
 
 	// 只有当用户名发生变化时才检查重复
 	if user.Name != origUser.Name {
-		usersWithSameName, err := uc.aDBRepo.ListUserByUserName(ctx, user.Name)
+		usersWithSameName, err := uc.authRepo.ListUserByUserName(ctx, user.Name)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
 		}
@@ -72,7 +72,7 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model
 
 	// 只有当邮箱发生变化时才检查重复
 	if user.Email != origUser.Email {
-		usersWithSameEmail, err := uc.aDBRepo.ListUserByEmail(ctx, user.Email)
+		usersWithSameEmail, err := uc.authRepo.ListUserByEmail(ctx, user.Email)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
 		}
@@ -109,13 +109,13 @@ func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (succes
 }
 
 func (uc *UserUsecase) checkUserExists(ctx context.Context, user *model.User) error {
-	if users, err := uc.aDBRepo.ListUserByUserName(ctx, user.Name); err != nil {
+	if users, err := uc.authRepo.ListUserByUserName(ctx, user.Name); err != nil {
 		return authv1.ErrorUserNotFound("failed to check username: %v", err)
 	} else if len(users) > 0 {
 		return authv1.ErrorUserAlreadyExists("username already exists")
 	}
 
-	if emails, err := uc.aDBRepo.ListUserByEmail(ctx, user.Email); err != nil {
+	if emails, err := uc.authRepo.ListUserByEmail(ctx, user.Email); err != nil {
 		return authv1.ErrorUserNotFound("failed to check email: %v", err)
 	} else if len(emails) > 0 {
 		return authv1.ErrorUserAlreadyExists("email already exists")

@@ -9,20 +9,20 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type userDBRepo struct {
+type userRepo struct {
 	data *Data
 	log  *log.Helper
 }
 
-func NewUserDBRepo(data *Data, logger log.Logger) biz.UserDBRepo {
-	return &userDBRepo{
+func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
+	return &userRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}
 }
 
 // SaveUser 保存用户信息
-func (r *userDBRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
@@ -41,7 +41,7 @@ func (r *userDBRepo) SaveUser(ctx context.Context, user *model.User) (*model.Use
 }
 
 // GetUserById 根据用户ID获取用户信息
-func (r *userDBRepo) GetUserById(ctx context.Context, id int64) (*model.User, error) {
+func (r *userRepo) GetUserById(ctx context.Context, id int64) (*model.User, error) {
 	user, err := r.data.query.User.
 		WithContext(ctx).
 		Where(r.data.query.User.ID.Eq(id)).
@@ -53,7 +53,7 @@ func (r *userDBRepo) GetUserById(ctx context.Context, id int64) (*model.User, er
 }
 
 // DeleteUser 删除用户
-func (r *userDBRepo) DeleteUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) DeleteUser(ctx context.Context, user *model.User) (*model.User, error) {
 	_, err := r.data.query.User.
 		WithContext(ctx).
 		Delete(user)
@@ -64,7 +64,7 @@ func (r *userDBRepo) DeleteUser(ctx context.Context, user *model.User) (*model.U
 }
 
 // UpdateUser 更新用户信息
-func (r *userDBRepo) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
 	// 判断密码是否已加密，未加密则加密
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)

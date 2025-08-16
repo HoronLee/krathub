@@ -31,20 +31,19 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 		return nil, nil, err
 	}
 	registryDiscovery := data.NewDiscovery(discovery)
-	grpcClientFactory, err := client.NewGrpcClientFactory(confData, registryDiscovery, logger)
+	clientFactory, err := client.NewGrpcClientFactory(confData, registryDiscovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger, grpcClientFactory)
+	dataData, cleanup, err := data.NewData(db, confData, logger, clientFactory)
 	if err != nil {
 		return nil, nil, err
 	}
-	authDBRepo := data.NewAuthDBRepo(dataData, logger)
-	authGrpcRepo := data.NewAuthGrpcRepo(dataData, logger)
-	authUsecase := biz.NewAuthUsecase(authDBRepo, authGrpcRepo, logger, app)
+	authRepo := data.NewAuthRepo(dataData, logger)
+	authUsecase := biz.NewAuthUsecase(authRepo, logger, app)
 	authService := service.NewAuthService(authUsecase)
-	userDBRepo := data.NewUserDBRepo(dataData, logger)
-	userUsecase := biz.NewUserUsecase(userDBRepo, logger, app, authDBRepo)
+	userRepo := data.NewUserRepo(dataData, logger)
+	userUsecase := biz.NewUserUsecase(userRepo, logger, app, authRepo)
 	userService := service.NewUserService(userUsecase)
 	middlewareManager := server.NewMiddlewareManager(app)
 	grpcServer := server.NewGRPCServer(confServer, authService, userService, middlewareManager, logger)

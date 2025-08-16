@@ -15,18 +15,18 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewDiscovery, NewRedisClient, NewDB, NewData, NewAuthDBRepo, NewAuthGrpcRepo, NewUserDBRepo)
+var ProviderSet = wire.NewSet(NewDiscovery, NewRedisClient, NewDB, NewData, NewAuthRepo, NewUserRepo)
 
 // Data .
 type Data struct {
 	query         *query.Query
 	log           *log.Helper
-	clientFactory client.GrpcClientFactory
+	clientFactory client.ClientFactory
 	rc            *RedisClient
 }
 
 // NewData .
-func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, clientFactory client.GrpcClientFactory) (*Data, func(), error) {
+func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, clientFactory client.ClientFactory) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}

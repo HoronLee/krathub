@@ -17,13 +17,6 @@ import (
 	ggrpc "google.golang.org/grpc"
 )
 
-// GrpcClientFactory 定义客户端工厂接口
-type GrpcClientFactory interface {
-
-	// CreateGrpcConn 创建gRPC连接
-	CreateGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error)
-}
-
 // grpcClientFactory 是 GrpcClientFactory接口的实现
 type grpcClientFactory struct {
 	config    *conf.Data         // 配置信息
@@ -32,7 +25,7 @@ type grpcClientFactory struct {
 }
 
 // NewGrpcClientFactory 创建一个新的 GRPC 客户端工厂
-func NewGrpcClientFactory(config *conf.Data, discovery registry.Discovery, logger log.Logger) (GrpcClientFactory, error) {
+func NewGrpcClientFactory(config *conf.Data, discovery registry.Discovery, logger log.Logger) (ClientFactory, error) {
 	return &grpcClientFactory{
 		config:    config,
 		discovery: discovery,
