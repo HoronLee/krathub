@@ -1,19 +1,30 @@
+# Variables
 GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
+BUILD_TIME=$(shell date +%Y-%m-%dT%H:%M:%S)
+GIT_COMMIT=$(shell git rev-parse HEAD)
 
+# Directories
+BIN_DIR=bin
+API_DIR=api
+INTERNAL_DIR=internal
+THIRD_PARTY_DIR=third_party
+CONFIG_DIR=configs
+CMD_DIR=cmd
+
+# Proto files detection
 ifeq ($(GOHOSTOS), windows)
-	#the `find.exe` is different from `find` in bash/shell.
-	#to see https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/find.
-	#changed to use git-bash.exe to run find cli or other cli friendly, caused of every developer has a Git.
-	#Git_Bash= $(subst cmd\,bin\bash.exe,$(dir $(shell where git)))
 	Git_Bash=$(subst \,/,$(subst cmd\,bin\bash.exe,$(dir $(shell where git))))
-	INTERNAL_PROTO_FILES=$(shell $(Git_Bash) -c "find internal -name *.proto")
-	API_PROTO_FILES=$(shell $(Git_Bash) -c "find api -name *.proto")
+	INTERNAL_PROTO_FILES=$(shell $(Git_Bash) -c "find $(INTERNAL_DIR) -name *.proto")
+	API_PROTO_FILES=$(shell $(Git_Bash) -c "find $(API_DIR) -name *.proto")
 else
-	INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
-	API_PROTO_FILES=$(shell find api -name *.proto)
+	INTERNAL_PROTO_FILES=$(shell find $(INTERNAL_DIR) -name *.proto 2>/dev/null)
+	API_PROTO_FILES=$(shell find $(API_DIR) -name *.proto 2>/dev/null)
 endif
+
+# Build flags
+LDFLAGS=-X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT)
 
 .PHONY: init
 # init env
@@ -30,44 +41,57 @@ init:
 .PHONY: config
 # generate internal proto
 config:
-	protoc --proto_path=./internal \
-	       --proto_path=./third_party \
- 	       --go_out=paths=source_relative:./internal \
-	       $(INTERNAL_PROTO_FILES)
+	@if [ -n "$(INTERNAL_PROTO_FILES)" ]; then \
+		protoc --proto_path=./$(INTERNAL_DIR) \
+		       --proto_path=./$(THIRD_PARTY_DIR) \
+		       --go_out=paths=source_relative:./$(INTERNAL_DIR) \
+		       $(INTERNAL_PROTO_FILES); \
+	fi
 
 .PHONY: api
 # generate api proto
 api:
-	protoc --proto_path=./api \
-	       --proto_path=./third_party \
- 	       --go_out=paths=source_relative:./api \
- 	       --go-http_out=paths=source_relative:./api \
- 	       --go-grpc_out=paths=source_relative:./api \
-	       --openapi_out=fq_schema_naming=true,default_response=false:. \
-	       $(API_PROTO_FILES)
+	@if [ -n "$(API_PROTO_FILES)" ]; then \
+		protoc --proto_path=./$(API_DIR) \
+		       --proto_path=./$(THIRD_PARTY_DIR) \
+		       --go_out=paths=source_relative:./$(API_DIR) \
+		       --go-http_out=paths=source_relative:./$(API_DIR) \
+		       --go-grpc_out=paths=source_relative:./$(API_DIR) \
+		       --openapi_out=fq_schema_naming=true,default_response=false:. \
+		       $(API_PROTO_FILES); \
+	fi
 
 .PHONY: validate
 # generate validate proto
 validate:
-	protoc --proto_path=. \
-		--proto_path=./third_party \
-        --go_out=paths=source_relative:. \
-        --validate_out=paths=source_relative,lang=go:. \
-        $(API_PROTO_FILES)
+	@if [ -n "$(API_PROTO_FILES)" ]; then \
+		protoc --proto_path=. \
+		       --proto_path=./$(THIRD_PARTY_DIR) \
+		       --go_out=paths=source_relative:. \
+		       --validate_out=paths=source_relative,lang=go:. \
+		       $(API_PROTO_FILES); \
+	fi
 
 .PHONY: errors
 # generate errors proto
 errors:
-	protoc --proto_path=. \
-         --proto_path=./third_party \
-         --go_out=paths=source_relative:. \
-         --go-errors_out=paths=source_relative:. \
-         $(API_PROTO_FILES)
+	@if [ -n "$(API_PROTO_FILES)" ]; then \
+		protoc --proto_path=. \
+		       --proto_path=./$(THIRD_PARTY_DIR) \
+		       --go_out=paths=source_relative:. \
+		       --go-errors_out=paths=source_relative:. \
+		       $(API_PROTO_FILES); \
+	fi
 
 .PHONY: build
 # build
 build:
-	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
+	mkdir -p $(BIN_DIR) && go build -ldflags "$(LDFLAGS)" -o ./$(BIN_DIR)/ ./...
+
+.PHONY: wire
+# generate wire
+wire:
+	cd $(CMD_DIR)/server && wire
 
 .PHONY: generate
 # generate
@@ -75,23 +99,44 @@ generate:
 	go generate ./...
 	go mod tidy
 
+.PHONY: gendb
+# generate db
+gendb:
+	go run $(CMD_DIR)/gen/gendb.go -conf $(CONFIG_DIR)/config.yaml
+
 .PHONY: proto
 # generate all proto related files
-proto:
-	make api
-	make validate
-	make errors
-	make config
+proto: api validate errors config
+
+.PHONY: fmt
+# format code
+fmt:
+	go fmt ./...
+
+.PHONY: test
+# run tests
+test:
+	go test -v ./...
+
+.PHONY: clean
+# clean generated files
+clean:
+	rm -rf $(BIN_DIR)
+	find . -name "*.pb.go" -delete
+	find . -name "*_grpc.pb.go" -delete
+	find . -name "*_http.pb.go" -delete
+	find . -name "*.pb.validate.go" -delete
+	find . -name "*_errors.pb.go" -delete
+	rm -f openapi.yaml
+
+.PHONY: run
+# run
+run:
+	kratos run
 
 .PHONY: all
 # generate all
-all:
-	make api;
-	make config;
-	make validate;
-	make errors;
-	make gendb;
-	make generate;
+all: clean proto gendb wire generate build
 
 # show help
 help:
@@ -100,29 +145,14 @@ help:
 	@echo ' make [target]'
 	@echo ''
 	@echo 'Targets:'
-	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
+	@awk '/^[a-zA-Z\-_0-9]+:/ { \
 	helpMessage = match(lastLine, /^# (.*)/); \
 		if (helpMessage) { \
 			helpCommand = substr($$1, 0, index($$1, ":")); \
 			helpMessage = substr(lastLine, RSTART + 2, RLENGTH); \
-			printf "\033[36m%-22s\033[0m %s\n", helpCommand,helpMessage; \
+			printf "  %-20s %s\n", helpCommand, helpMessage; \
 		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
-
-.PHONY: gendb
-# generate db
-gendb:
-	go run cmd/gen/gendb.go -conf configs/config.yaml
-
-.PHONY: run
-# run
-run:
-	kratos run
-
-.PHONY: wire
-# generate dependency injection code with wire
-wire:
-	cd cmd/server && wire
