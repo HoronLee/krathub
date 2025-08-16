@@ -4,8 +4,6 @@ import (
 	"flag"
 	"os"
 
-	"krathub/internal/conf"
-	"krathub/internal/server/middleware"
 	"krathub/pkg/log/zap"
 
 	"github.com/go-kratos/kratos/v2"
@@ -58,9 +56,6 @@ func main() {
 	}
 	defer c.Close()
 
-	// 初始化一些外部包方法
-	initComponents(bc)
-
 	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, zap.Logger(bc.App))
 	if err != nil {
 		panic(err)
@@ -71,8 +66,4 @@ func main() {
 	if err := app.Run(); err != nil {
 		panic(err)
 	}
-}
-
-func initComponents(bc *conf.Bootstrap) {
-	middleware.SetAppConf(bc.App)
 }

@@ -1,4 +1,4 @@
-package middleware
+package server
 
 import (
 	"context"
@@ -12,15 +12,21 @@ import (
 	"github.com/go-kratos/kratos/v2/transport"
 )
 
-var appConf *conf.App
-
-func SetAppConf(bootstrapApp *conf.App) {
-	appConf = bootstrapApp
+// MiddlewareManager 中间件管理器
+type MiddlewareManager struct {
+	appConf *conf.App
 }
 
-// Auth is a middleware for authentication service.
+// NewMiddlewareManager 创建中间件管理器
+func NewMiddlewareManager(appConf *conf.App) *MiddlewareManager {
+	return &MiddlewareManager{
+		appConf: appConf,
+	}
+}
+
+// Auth 认证中间件
 // 当 minRole 为 0 时，允许无 Authorization 头访问（如注册接口）
-func Auth(minRole consts.UserRole) middleware.Middleware {
+func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req any) (reply any, err error) {
 			tr, ok := transport.FromServerContext(ctx)
@@ -40,7 +46,7 @@ func Auth(minRole consts.UserRole) middleware.Middleware {
 			}
 
 			// 创建JWT实例并解析Token
-			jwtInstance := jwt.NewJWT(appConf.Jwt)
+			jwtInstance := jwt.NewJWT(m.appConf.Jwt)
 			claims, err := jwtInstance.AnalyseToken(tokenString)
 			if err != nil {
 				return nil, authV1.ErrorUnauthorized("invalid token: " + err.Error())

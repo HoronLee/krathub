@@ -5,20 +5,19 @@ import (
 	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
 	"krathub/internal/consts"
-	"krathub/internal/server/middleware"
 	"krathub/internal/service"
 
+	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
-    "github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.UserService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.UserService, mM *MiddlewareManager, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -26,15 +25,15 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 			logging.Server(logger),
 			validate.ProtoValidate(),
 			// 登录等无需鉴权接口
-			selector.Server(middleware.Auth(consts.UserRole(0))).
+			selector.Server(mM.Auth(consts.UserRole(0))).
 				Prefix("/krathub.auth.v1.Auth/").
 				Build(),
 			// 需要User权限的接口
-			selector.Server(middleware.Auth(consts.UserRole(2))).
+			selector.Server(mM.Auth(consts.UserRole(2))).
 				Prefix("/krathub.user.v1.User/").
 				Build(),
 			// 需要Admin权限的接口
-			selector.Server(middleware.Auth(consts.UserRole(3))).
+			selector.Server(mM.Auth(consts.UserRole(3))).
 				Path("/krathub.user.v1.User/DeleteUser", "/krathub.user.v1.User/SaveUser").
 				Build(),
 		),

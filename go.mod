@@ -8,9 +8,12 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
 	github.com/fatedier/golib v0.5.1
 	github.com/glebarez/sqlite v1.11.0
+	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562
 	github.com/go-kratos/kratos/v2 v2.8.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/wire v0.6.0
+	github.com/hashicorp/consul/api v1.26.1
+	github.com/nacos-group/nacos-sdk-go v1.0.9
 	go.uber.org/automaxprocs v1.5.1
 	golang.org/x/crypto v0.38.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250313205543-e70fdf4c4cb4
@@ -25,33 +28,17 @@ require (
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250307204501-0409229c3780.1 // indirect
 	cel.dev/expr v0.22.0 // indirect
-	github.com/alibabacloud-go/darabonba-array v0.1.0 // indirect
-	github.com/alibabacloud-go/darabonba-encode-util v0.0.2 // indirect
-	github.com/alibabacloud-go/darabonba-map v0.0.2 // indirect
-	github.com/alibabacloud-go/darabonba-string v1.0.2 // indirect
-	github.com/alibabacloud-go/debug v1.0.1 // indirect
-	github.com/alibabacloud-go/openapi-util v0.1.0 // indirect
-	github.com/alibabacloud-go/tea v1.2.2 // indirect
-	github.com/alibabacloud-go/tea-utils v1.4.4 // indirect
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.7 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1800 // indirect
-	github.com/aliyun/alibabacloud-dkms-gcs-go-sdk v0.5.1 // indirect
-	github.com/aliyun/alibabacloud-dkms-transfer-go-sdk v0.1.8 // indirect
-	github.com/aliyun/aliyun-secretsmanager-client-go v1.1.5 // indirect
-	github.com/aliyun/credentials-go v1.4.3 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/bufbuild/protovalidate-go v0.9.2 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/color v1.14.1 // indirect
 	github.com/go-errors/errors v1.0.1 // indirect
-	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
+	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/cel-go v0.24.1 // indirect
-	github.com/hashicorp/consul/api v1.26.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.5.0 // indirect
@@ -69,11 +56,8 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/nacos-group/nacos-sdk-go v1.0.9 // indirect
-	github.com/orcaman/concurrent-map v0.0.0-20210501183033-44dafcb38ecc // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
-	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/toolkits/concurrent v0.0.0-20150624120057-a4371d70e3e3 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
@@ -101,9 +85,7 @@ require (
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/nacos-group/nacos-sdk-go/v2 v2.3.2
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	go.opentelemetry.io/otel v1.24.0 // indirect

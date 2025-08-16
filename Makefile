@@ -125,4 +125,4 @@ run:
 .PHONY: wire
 # generate dependency injection code with wire
 wire:
-	cd cmd/krathub && wire
+	cd cmd/server && wire
