@@ -4,11 +4,11 @@ import (
 	"krathub/internal/conf"
 	"krathub/pkg/registry"
 
-	kratosRegistry "github.com/go-kratos/kratos/v2/registry"
+	kr "github.com/go-kratos/kratos/v2/registry"
 )
 
 // NewRegistrar 根据配置创建注册中心客户端
-func NewRegistrar(cfg *conf.Registry) kratosRegistry.Registrar {
+func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 	if cfg == nil {
 		return nil
 	}
