@@ -1101,12 +1101,12 @@ func (x *App_Jwt) GetAudience() string {
 
 type App_Log struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Level         int32                  `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`                            // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
-	Filename      string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`                       // 日志文件名
-	MaxSize       string                 `protobuf:"bytes,3,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"`          // 日志文件最大大小
-	MaxBackups    string                 `protobuf:"bytes,4,opt,name=max_backups,json=maxBackups,proto3" json:"max_backups,omitempty"` // 日志文件最大备份数
-	MaxAge        string                 `protobuf:"bytes,5,opt,name=max_age,json=maxAge,proto3" json:"max_age,omitempty"`             // 日志文件最大保留天数
-	Compress      bool                   `protobuf:"varint,6,opt,name=compress,proto3" json:"compress,omitempty"`                      // 是否压缩日志文件
+	Level         int32                  `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`                             // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
+	Filename      string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`                        // 日志文件名
+	MaxSize       int32                  `protobuf:"varint,3,opt,name=max_size,json=maxSize,proto3" json:"max_size,omitempty"`          // 日志文件最大大小
+	MaxBackups    int32                  `protobuf:"varint,4,opt,name=max_backups,json=maxBackups,proto3" json:"max_backups,omitempty"` // 日志文件最大备份数
+	MaxAge        int32                  `protobuf:"varint,5,opt,name=max_age,json=maxAge,proto3" json:"max_age,omitempty"`             // 日志文件最大保留天数
+	Compress      bool                   `protobuf:"varint,6,opt,name=compress,proto3" json:"compress,omitempty"`                       // 是否压缩日志文件
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1155,25 +1155,25 @@ func (x *App_Log) GetFilename() string {
 	return ""
 }
 
-func (x *App_Log) GetMaxSize() string {
+func (x *App_Log) GetMaxSize() int32 {
 	if x != nil {
 		return x.MaxSize
 	}
-	return ""
+	return 0
 }
 
-func (x *App_Log) GetMaxBackups() string {
+func (x *App_Log) GetMaxBackups() int32 {
 	if x != nil {
 		return x.MaxBackups
 	}
-	return ""
+	return 0
 }
 
-func (x *App_Log) GetMaxAge() string {
+func (x *App_Log) GetMaxAge() int32 {
 	if x != nil {
 		return x.MaxAge
 	}
-	return ""
+	return 0
 }
 
 func (x *App_Log) GetCompress() bool {
@@ -1982,10 +1982,10 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\x03Log\x12\x14\n" +
 	"\x05level\x18\x01 \x01(\x05R\x05level\x12\x1a\n" +
 	"\bfilename\x18\x02 \x01(\tR\bfilename\x12\x19\n" +
-	"\bmax_size\x18\x03 \x01(\tR\amaxSize\x12\x1f\n" +
-	"\vmax_backups\x18\x04 \x01(\tR\n" +
+	"\bmax_size\x18\x03 \x01(\x05R\amaxSize\x12\x1f\n" +
+	"\vmax_backups\x18\x04 \x01(\x05R\n" +
 	"maxBackups\x12\x17\n" +
-	"\amax_age\x18\x05 \x01(\tR\x06maxAge\x12\x1a\n" +
+	"\amax_age\x18\x05 \x01(\x05R\x06maxAge\x12\x1a\n" +
 	"\bcompress\x18\x06 \x01(\bR\bcompress\"\xbb\x05\n" +
 	"\bRegistry\x125\n" +
 	"\x06consul\x18\x01 \x01(\v2\x1b.kratos.api.Registry.ConsulH\x00R\x06consul\x12/\n" +

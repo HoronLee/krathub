@@ -78,9 +78,9 @@ message App {
   message Log {
     int32 level = 1; // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
     string filename = 2;  // 日志文件名
-    string max_size = 3; // 日志文件最大大小
-    string max_backups = 4; // 日志文件最大备份数
-    string max_age = 5; // 日志文件最大保留天数
+    int32 max_size = 3; // 日志文件最大大小
+    int32 max_backups = 4; // 日志文件最大备份数
+    int32 max_age = 5; // 日志文件最大保留天数
     bool compress = 6; // 是否压缩日志文件
   }
   string env = 1; // dev test prod

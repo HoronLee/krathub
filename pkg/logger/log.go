@@ -23,50 +23,80 @@ type ZapLogger struct {
 
 // NewLogger 配置zap日志,将zap日志库引入
 func NewLogger(c *conf.App) log.Logger {
-	//配置zap日志库的编码器
-	encoder := zapcore.EncoderConfig{
-		TimeKey:        "time",
-		LevelKey:       "level",
-		NameKey:        "logger",
-		CallerKey:      "caller",
-		MessageKey:     "msg",
-		StacktraceKey:  "stack",
-		EncodeTime:     zapcore.ISO8601TimeEncoder,
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalLevelEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller:   zapcore.FullCallerEncoder,
+	// 设置日志级别
+	level := zap.NewAtomicLevelAt(zapcore.DebugLevel)
+	if c.Log != nil {
+		level.SetLevel(zapcore.Level(c.Log.Level))
 	}
 
-	// 日志切割，采用 lumberjack 实现的
-	writeSyncer := zapcore.AddSync(&lumberjack.Logger{
-		Filename:   "../../logs/" + c.Log.Filename, // 指定日志存储位置
-		MaxSize:    10,                             // 日志的最大大小（M）
-		MaxBackups: 5,                              // 日志的最大保存数量
-		MaxAge:     30,                             // 日志文件存储最大天数
-		Compress:   false,                          // 是否执行压缩
-	})
+	// lumberjack 日志切割
+	var lumberjackLogger *lumberjack.Logger
+	if c.Log != nil {
+		maxSize := 10
+		if c.Log.MaxSize != 0 {
+			maxSize = int(c.Log.MaxSize)
+		}
+		maxBackups := 5
+		if c.Log.MaxBackups != 0 {
+			maxBackups = int(c.Log.MaxBackups)
+		}
+		maxAge := 30
+		if c.Log.MaxAge != 0 {
+			maxAge = int(c.Log.MaxAge)
+		}
+		lumberjackLogger = &lumberjack.Logger{
+			Filename:   "../../logs/" + c.Log.Filename, // 日志文件路径
+			MaxSize:    maxSize,                        // 每个日志文件保存的最大尺寸 单位：M
+			MaxBackups: maxBackups,                     // 日志文件最多保存多少个备份
+			MaxAge:     maxAge,                         // 文件最多保存多少天
+			Compress:   c.Log.Compress,                 // 是否压缩
+		}
+	}
 
-	// 设置日志级别
-	// TODO: 这里可以根据配置文件动态设置日志级别
-	level := zap.NewAtomicLevelAt(zapcore.DebugLevel)
-	level.SetLevel(zapcore.Level(c.Log.Level))
+	// 根据不同环境设置不同的日志输出
 	var core zapcore.Core
-
-	// 根据配置文件的环境变量选择日志输出方式
 	switch c.Env {
 	case "dev":
-		core = zapcore.NewCore(
-			zapcore.NewConsoleEncoder(encoder),                      // 编码器配置
-			zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout)), // 打印到控制台
-			level, // 日志级别
-		)
+		// dev模式，终端彩色输出，不输出到文件
+		encoderConfig := zap.NewDevelopmentEncoderConfig()
+		encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder // 显式设置彩色日志级别
+		consoleEncoder := zapcore.NewConsoleEncoder(encoderConfig)
+		core = zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level)
+	case "prod":
+		// prod模式，终端非json非彩色输出，文件json非彩色输出
+		// 可以采用Unix timeStamp或ISO8601时间格式
+		prodEncoderConfig := zap.NewProductionEncoderConfig()
+		prodEncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+		consoleEncoder := zapcore.NewConsoleEncoder(prodEncoderConfig)
+		jsonEncoder := zapcore.NewJSONEncoder(prodEncoderConfig)
+		if lumberjackLogger == nil {
+			core = zapcore.NewTee(
+				zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level),
+			)
+		} else {
+			core = zapcore.NewTee(
+				zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level),
+				zapcore.NewCore(jsonEncoder, zapcore.AddSync(lumberjackLogger), level),
+			)
+		}
+	case "test":
+		// test模式，不输出日志
+		core = zapcore.NewNopCore()
 	default:
-		core = zapcore.NewCore(
-			zapcore.NewJSONEncoder(encoder),                                      // 编码器配置
-			zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), writeSyncer), // 打印到控制台和文件
-			level, // 日志级别
-		)
+		// 默认情况，使用prod模式
+		consoleEncoder := zapcore.NewConsoleEncoder(zap.NewProductionEncoderConfig())
+		jsonEncoder := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+		if lumberjackLogger == nil {
+			core = zapcore.NewTee(
+				zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level),
+			)
+		} else {
+			core = zapcore.NewTee(
+				zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level),
+				zapcore.NewCore(jsonEncoder, zapcore.AddSync(lumberjackLogger), level),
+			)
+		}
 	}
 
 	opts := []zap.Option{
