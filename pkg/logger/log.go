@@ -1,9 +1,10 @@
-package zap
+package logger
 
 import (
 	"fmt"
 	"krathub/internal/conf"
 	"os"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/natefinch/lumberjack"
@@ -11,7 +12,9 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var _ log.Logger = (*ZapLogger)(nil)
+var (
+	_ log.Logger = (*ZapLogger)(nil)
+)
 
 type ZapLogger struct {
 	log  *zap.Logger
@@ -103,4 +106,11 @@ func (l *ZapLogger) Log(level log.Level, keyvals ...any) error {
 		l.log.Fatal("", data...)
 	}
 	return nil
+}
+
+func (l *ZapLogger) GetGormLogger() GormLogger {
+	return GormLogger{
+		ZapLogger:     l.log,
+		SlowThreshold: 200 * time.Millisecond, // 慢查询阈值，单位为千分之一秒
+	}
 }

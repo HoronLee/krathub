@@ -2,9 +2,8 @@ package main
 
 import (
 	"flag"
+	"krathub/pkg/logger"
 	"os"
-
-	"krathub/pkg/log/zap"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -56,7 +55,7 @@ func main() {
 	}
 	defer c.Close()
 
-	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, zap.NewLogger(bc.App))
+	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, logger.NewLogger(bc.App))
 	if err != nil {
 		panic(err)
 	}

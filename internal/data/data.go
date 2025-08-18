@@ -5,6 +5,7 @@ import (
 	"krathub/internal/client"
 	"krathub/internal/conf"
 	"krathub/internal/data/query"
+	"krathub/pkg/logger"
 	"strings"
 
 	"github.com/glebarez/sqlite"
@@ -40,12 +41,17 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, clientFactory client.
 	}, cleanup, nil
 }
 
-func NewDB(cfg *conf.Data) (*gorm.DB, error) {
+func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
+	gormLogger := l.(*logger.ZapLogger).GetGormLogger()
 	switch strings.ToLower(cfg.Database.GetDriver()) {
 	case "mysql":
-		return gorm.Open(mysql.Open(cfg.Database.GetSource()))
+		return gorm.Open(mysql.Open(cfg.Database.GetSource()), &gorm.Config{
+			Logger: gormLogger,
+		})
 	case "sqlite":
-		return gorm.Open(sqlite.Open(cfg.Database.GetSource()))
+		return gorm.Open(sqlite.Open(cfg.Database.GetSource()), &gorm.Config{
+			Logger: gormLogger,
+		})
 	}
 	return nil, errors.New("connect db fail: unsupported db driver")
 }
