@@ -56,7 +56,7 @@ func main() {
 	}
 	defer c.Close()
 
-	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, zap.Logger(bc.App))
+	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, zap.NewLogger(bc.App))
 	if err != nil {
 		panic(err)
 	}
