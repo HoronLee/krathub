@@ -86,7 +86,7 @@ errors:
 .PHONY: build
 # build
 build:
-	mkdir -p $(BIN_DIR) && go build -ldflags "$(LDFLAGS)" -o ./$(BIN_DIR)/ ./...
+	mkdir -p $(BIN_DIR) && go build -ldflags "$(LDFLAGS)" -o ./$(BIN_DIR)/server ./$(CMD_DIR)/server
 
 .PHONY: wire
 # generate wire
@@ -148,11 +148,11 @@ help:
 	@awk '/^[a-zA-Z\-_0-9]+:/ { \
 	helpMessage = match(lastLine, /^# (.*)/); \
 		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")); \
+			helpCommand = substr($1, 0, index($1, ":")); \
 			helpMessage = substr(lastLine, RSTART + 2, RLENGTH); \
-			printf "  %-20s %s\n", helpCommand, helpMessage; \
+			printf "  %%-20s %%s\n", helpCommand, helpMessage; \
 		} \
 	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST)
+	{ lastLine = $0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help

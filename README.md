@@ -1,4 +1,6 @@
-# Krathub
+# Krathub (简体中文)
+
+[English](README.en-US.md) | 简体中文
 
 > 基于Kratos框架编写的快开框架，目前处于开发初期阶段
 
