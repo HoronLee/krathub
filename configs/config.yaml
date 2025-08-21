@@ -1,3 +1,4 @@
+
 server:
   http:
     addr: "${HADDR:0.0.0.0:8000}"
@@ -36,6 +37,9 @@ app:
   log:
     level: "${LOG_LEVEL:-1}"  # -1debug,0info,1warn,2error,3dpanic,4panic,5fatal
     filename: "${LOG_FILENAME:krathub.log}"  # 日志文件夹为根目录logs
+    max_size: "${LOG_MAX_SIZE:20}"  # 日志文件最大大小，单位MB
+    max_age: "${LOG_MAX_AGE:30}"  # 日志文件最大保存天数
+    max_backups: "${LOG_MAX_BACKUPS:10}"  # 日志文件最大备份数
 
 # 注册中心配置
 registry:
@@ -93,3 +97,5 @@ config:
   #   datacenter: dc1
   #   timeout: 5s
   #   key: krathub/config.yaml  # 配置键名
+trace:
+  endpoint: otlp.jaeger.r430.com:30080

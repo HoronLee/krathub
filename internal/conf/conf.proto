@@ -13,6 +13,7 @@ message Bootstrap {
   Registry registry = 4;
   Discovery discovery = 5;
   Config config = 6;
+  Trace trace = 7;
 }
 
 // 通信服务端配置
@@ -185,4 +186,9 @@ message Config {
     Etcd etcd = 2; // Etcd 配置
     Nacos nacos = 3; // Nacos 配置
   }
+}
+
+// 链路追踪配置
+message Trace {
+  string endpoint = 1;
 }

@@ -17,11 +17,10 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.UserService, mM *MiddlewareManager, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService, user *service.UserService, mM *MiddlewareManager, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
-			tracing.Server(),
 			logging.Server(logger),
 			validate.ProtoValidate(),
 			// 登录等无需鉴权接口
@@ -47,6 +46,12 @@ func NewHTTPServer(c *conf.Server, auth *service.AuthService, user *service.User
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
+
+	// 开启链路追踪
+	if trace != nil && trace.Endpoint != "" {
+		opts = append(opts, http.Middleware(tracing.Server()))
+	}
+
 	srv := http.NewServer(opts...)
 	authV1.RegisterAuthHTTPServer(srv, auth)
 	userV1.RegisterUserHTTPServer(srv, user)

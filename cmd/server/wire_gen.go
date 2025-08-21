@@ -24,14 +24,14 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.Registry, confData *conf.Data, app *conf.App, logger log.Logger) (*kratos.App, func(), error) {
+func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, logger log.Logger) (*kratos.App, func(), error) {
 	registrar := server.NewRegistrar(registry)
 	db, err := data.NewDB(confData, logger)
 	if err != nil {
 		return nil, nil, err
 	}
 	registryDiscovery := data.NewDiscovery(discovery)
-	clientFactory, err := client.NewGrpcClientFactory(confData, registryDiscovery, logger)
+	clientFactory, err := client.NewGrpcClientFactory(confData, trace, registryDiscovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,12 +42,12 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	authRepo := data.NewAuthRepo(dataData, logger)
 	authUsecase := biz.NewAuthUsecase(authRepo, logger, app)
 	authService := service.NewAuthService(authUsecase)
+	grpcServer := server.NewGRPCServer(confServer, trace, logger, authService)
 	userRepo := data.NewUserRepo(dataData, logger)
 	userUsecase := biz.NewUserUsecase(userRepo, logger, app, authRepo)
 	userService := service.NewUserService(userUsecase)
 	middlewareManager := server.NewMiddlewareManager(app)
-	grpcServer := server.NewGRPCServer(confServer, authService, userService, middlewareManager, logger)
-	httpServer := server.NewHTTPServer(confServer, authService, userService, middlewareManager, logger)
+	httpServer := server.NewHTTPServer(confServer, trace, authService, userService, middlewareManager, logger)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup()

@@ -19,15 +19,17 @@ import (
 
 // grpcClientFactory 是 GrpcClientFactory接口的实现
 type grpcClientFactory struct {
-	config    *conf.Data         // 配置信息
+	dataCfg   *conf.Data         // 数据配置信息
+	traceCfg  *conf.Trace        // 链路追踪配置
 	discovery registry.Discovery // 服务发现客户端
 	logger    log.Logger
 }
 
 // NewGrpcClientFactory 创建一个新的 GRPC 客户端工厂
-func NewGrpcClientFactory(config *conf.Data, discovery registry.Discovery, logger log.Logger) (ClientFactory, error) {
+func NewGrpcClientFactory(dataCfg *conf.Data, traceCfg *conf.Trace, discovery registry.Discovery, logger log.Logger) (ClientFactory, error) {
 	return &grpcClientFactory{
-		config:    config,
+		dataCfg:   dataCfg,
+		traceCfg:  traceCfg,
 		discovery: discovery,
 		logger:    logger,
 	}, nil
@@ -43,7 +45,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	enableTLS := false
 
 	// 尝试获取服务特定配置（如果存在）
-	for _, c := range f.config.Client.GetGrpc() {
+	for _, c := range f.dataCfg.Client.GetGrpc() {
 		if c.ServiceName == serviceName {
 			// 使用服务特定的超时设置（如果有）
 			if c.Timeout != nil {
@@ -70,8 +72,12 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	// 准备中间件
 	middleware := []middleware.Middleware{
 		recovery.Recovery(),
-		tracing.Client(),
 		logging.Client(f.logger),
+	}
+
+	// 如果开启了链路追踪，则添加客户端追踪中间件
+	if f.traceCfg != nil && f.traceCfg.Endpoint != "" {
+		middleware = append(middleware, tracing.Client())
 	}
 
 	if enableTLS {

@@ -1,6 +1,7 @@
 package server
 
 import (
+	authV1 "krathub/api/auth/v1"
 	"krathub/internal/conf"
 	"krathub/internal/service"
 
@@ -13,11 +14,10 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, auth *service.AuthService, user *service.UserService, mM *MiddlewareManager, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, logger log.Logger, auth *service.AuthService) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
-			tracing.Server(),
 			logging.Server(logger),
 			validate.ProtoValidate(),
 		),
@@ -31,8 +31,13 @@ func NewGRPCServer(c *conf.Server, auth *service.AuthService, user *service.User
 	if c.Grpc.Timeout != nil {
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
+
+	// 开启链路追踪
+	if trace != nil && trace.Endpoint != "" {
+		opts = append(opts, grpc.Middleware(tracing.Server()))
+	}
+
 	srv := grpc.NewServer(opts...)
-	// authV1.RegisterAuthServer(srv, auth)
-	// userV1.RegisterUserServer(srv, user)
+	authV1.RegisterAuthServer(srv, auth)
 	return srv
 }
