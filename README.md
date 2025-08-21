@@ -7,9 +7,25 @@
 ## 如何使用
 
 使用kratos layout功能快速通过krathub模板创建本地项目
+
+### Multirepo单仓模式
+
 ```bash
 kratos new PeojectName -r https://github.com/HoronLee/krathub.git
 ```
+
+### Monorepo大仓模式
+
+使用 --nomod 添加服务，共用 go.mod ，大仓模式，其中app/user可以自定义为想要的微服务结构
+
+```shell
+kratos new helloworld
+cd helloworld
+kratos new app/user --nomod -r https://github.com/HoronLee/krathub.git
+```
+
+使用大仓模式会启用远程proto仓库，如单仓下的import为`authv1 "krathub/api/auth/v1"`，但是使用大仓模式初始化的项目会变为具体的url`authv1  "github.com/ExampleUser/api/auth/v1"`
+这里提供proto仓库的示例：[krathub示例proto仓库](https://github.com/summerblue/gohubhttps://github.com/HoronLee/krathub-proto)，在以krathub新建大仓之后可以尝试替换错误的import为此示例仓库
 
 ## 开发须知
 
