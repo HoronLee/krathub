@@ -56,13 +56,8 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 				Timeout:    cT.Consul.Timeout,
 			})
 		case *conf.Config_Etcd_:
-			configSource = cC.NewEtcdConfigSource(&cC.EtcdConfig{
-				Endpoints: cT.Etcd.Endpoints,
-				Username:  cT.Etcd.Username,
-				Password:  cT.Etcd.Password,
-				Key:       cT.Etcd.Key,
-				Timeout:   cT.Etcd.Timeout,
-			})
+			// TODO: 实现 Etcd 配置中心
+			return nil, nil, nil
 		}
 
 		if configSource != nil {

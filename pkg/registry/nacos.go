@@ -40,9 +40,8 @@ func NewNacosRegistrar(c *NacosConfig) registry.Registrar {
 		Password:            c.Password,
 		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
 		NotLoadCacheAtStart: true,
-		LogLevel:            "debug",
-		LogDir:              "./logs",
-		CacheDir:            "./cache",
+		LogDir:              "/tmp/nacos/log",
+		CacheDir:            "/tmp/nacos/cache",
 	}
 
 	// 创建命名客户端

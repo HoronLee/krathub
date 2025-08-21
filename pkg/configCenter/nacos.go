@@ -39,9 +39,8 @@ func NewNacosConfigSource(c *NacosConfig) config.Source {
 		Password:            c.Password,
 		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
 		NotLoadCacheAtStart: true,
-		LogDir:              "./logs",
-		CacheDir:            "./cache",
-		LogLevel:            "debug",
+		LogDir:              "/tmp/nacos/log",
+		CacheDir:            "/tmp/nacos/cache",
 	}
 
 	client, err := clients.NewConfigClient(
