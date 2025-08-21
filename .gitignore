@@ -33,6 +33,8 @@ Thumbs.db
 bin/
 logs/
 cache/
+configs/*.yaml
+# Additional configuration files can be added here.
 
 # Develop tools
 .vscode/
