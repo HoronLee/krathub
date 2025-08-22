@@ -1,8 +1,6 @@
 // based on https://grpc.io/docs/guides/concepts.html
 syntax = "proto3";
 
-import "google/api/annotations.proto";
-
 package hello;
 
 // go 包名

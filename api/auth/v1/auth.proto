@@ -3,7 +3,7 @@ syntax = "proto3";
 package krathub.auth.v1;
 
 import "google/api/annotations.proto";
-import "validate/validate.proto";
+import "buf/validate/validate.proto";
 import "errors/errors.proto";
 // import "google/api/client.proto";
 
@@ -62,13 +62,13 @@ service Auth {
 
 // 邮箱注册请求
 message SignupByEmailRequest {
-  string name = 1 [(validate.rules).string.min_len =  5]; // 用户名最小长度5
+  string name = 1 [(buf.validate.field).string.min_len =  5]; // 用户名最小长度5
   // 密码最小长度5，最大长度10
-  string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
+  string password = 2 [(buf.validate.field).string = {min_len: 5, max_len: 10}];
   string password_confirm = 3 [
-    (validate.rules).string = {min_len: 5, max_len: 10}
+    (buf.validate.field).string = {min_len: 5, max_len: 10}
   ];  // 确认密码最小长度5，最大长度10
-  string email = 4 [(validate.rules).string.email = true]; // 邮箱格式验证
+  string email = 4 [(buf.validate.field).string.email = true]; // 邮箱格式验证
 }
 
 // 邮箱注册响应
@@ -82,7 +82,7 @@ message SignupByEmailReply {
 // 密码登录请求
 message LoginByEmailPasswordRequest {
   string login_id = 1; // 可以是用户名或邮箱
-  string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
+  string password = 2 [(buf.validate.field).string = {min_len: 5, max_len: 10}];
 }
 
 // 密码登录响应

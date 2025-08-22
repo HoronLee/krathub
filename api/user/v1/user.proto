@@ -3,7 +3,8 @@ syntax = "proto3";
 package krathub.user.v1;
 
 import "google/api/annotations.proto";
-import "validate/validate.proto";
+// import "validate/validate.proto";
+import "buf/validate/validate.proto";
 import "errors/errors.proto";
 import "google/api/client.proto";
 
@@ -69,7 +70,7 @@ message CurrentUserInfoReply {
 }
 
 message DeleteUserRequest {
-    int64 id = 1 [(validate.rules).int64.gt = 0]; // 用户ID必须大于0
+    int64 id = 1 [(buf.validate.field).int64.gt = 0]; // 用户ID必须大于0
   }
   
 message DeleteUserReply {
@@ -94,9 +95,9 @@ message UpdateUserReply {
 }
 
 message SaveUserRequest {
-  string name = 1 [(validate.rules).string.min_len = 5];
-  string email = 2 [(validate.rules).string.email = true];
-  string password = 3 [(validate.rules).string = {min_len: 5, max_len: 10}];
+  string name = 1 [(buf.validate.field).string.min_len = 5];
+  string email = 2 [(buf.validate.field).string.email = true];
+  string password = 3 [(buf.validate.field).string = {min_len: 5, max_len: 10}];
   string phone = 4;
   string avatar = 5;
   string bio = 6;

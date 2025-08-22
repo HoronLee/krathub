@@ -7,7 +7,7 @@
 package authv1
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/go-kratos/kratos/v2/errors"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -432,14 +432,14 @@ var File_api_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/auth/v1/auth.proto\x12\x0fkrathub.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\"\xaf\x01\n" +
+	"\x16api/auth/v1/auth.proto\x12\x0fkrathub.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x13errors/errors.proto\"\xaf\x01\n" +
 	"\x14SignupByEmailRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x05R\x04name\x12%\n" +
-	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x05R\x04name\x12%\n" +
+	"\bpassword\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
 	"R\bpassword\x124\n" +
-	"\x10password_confirm\x18\x03 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
+	"\x10password_confirm\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
 	"R\x0fpasswordConfirm\x12\x1d\n" +
-	"\x05email\x18\x04 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\"b\n" +
+	"\x05email\x18\x04 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\"b\n" +
 	"\x12SignupByEmailReply\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -447,7 +447,7 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\x04role\x18\x04 \x01(\tR\x04role\"_\n" +
 	"\x1bLoginByEmailPasswordRequest\x12\x19\n" +
 	"\blogin_id\x18\x01 \x01(\tR\aloginId\x12%\n" +
-	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
+	"\bpassword\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
 	"R\bpassword\"1\n" +
 	"\x19LoginByEmailPasswordReply\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\"<\n" +

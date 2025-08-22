@@ -7,7 +7,7 @@
 package userv1
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/go-kratos/kratos/v2/errors"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -581,14 +581,14 @@ var File_api_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_api_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/user/v1/user.proto\x12\x0fkrathub.user.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17validate/validate.proto\x1a\x13errors/errors.proto\x1a\x17google/api/client.proto\"\x18\n" +
+	"\x16api/user/v1/user.proto\x12\x0fkrathub.user.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x13errors/errors.proto\x1a\x17google/api/client.proto\"\x18\n" +
 	"\x16CurrentUserInfoRequest\"N\n" +
 	"\x14CurrentUserInfoReply\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
 	"\x04role\x18\x03 \x01(\tR\x04role\",\n" +
 	"\x11DeleteUserRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\"+\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"+\n" +
 	"\x0fDeleteUserReply\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xf3\x01\n" +
 	"\x11UpdateUserRequest\x12\x0e\n" +
@@ -606,9 +606,9 @@ const file_api_user_v1_user_proto_rawDesc = "" +
 	"\x0fUpdateUserReply\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\tR\asuccess\"\xfe\x01\n" +
 	"\x0fSaveUserRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x05R\x04name\x12\x1d\n" +
-	"\x05email\x18\x02 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\x12%\n" +
-	"\bpassword\x18\x03 \x01(\tB\t\xfaB\x06r\x04\x10\x05\x18\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x05R\x04name\x12\x1d\n" +
+	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12%\n" +
+	"\bpassword\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
 	"R\bpassword\x12\x14\n" +
 	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
 	"\x06avatar\x18\x05 \x01(\tR\x06avatar\x12\x10\n" +

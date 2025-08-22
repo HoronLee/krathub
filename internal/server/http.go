@@ -8,6 +8,7 @@ import (
 	"krathub/internal/service"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -23,6 +24,7 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 			recovery.Recovery(),
 			logging.Server(logger),
 			validate.ProtoValidate(),
+
 			// 登录等无需鉴权接口
 			selector.Server(mM.Auth(consts.UserRole(0))).
 				Prefix("/krathub.auth.v1.Auth/").

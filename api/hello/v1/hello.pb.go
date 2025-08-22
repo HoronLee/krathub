@@ -9,7 +9,6 @@
 package hellov1
 
 import (
-	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -118,7 +117,7 @@ var File_api_hello_v1_hello_proto protoreflect.FileDescriptor
 
 const file_api_hello_v1_hello_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/hello/v1/hello.proto\x12\x05hello\x1a\x1cgoogle/api/annotations.proto\"<\n" +
+	"\x18api/hello/v1/hello.proto\x12\x05hello\"<\n" +
 	"\fHelloRequest\x12\x1f\n" +
 	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
 	"\t_greeting\"%\n" +

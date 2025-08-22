@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.24.3
 
 require (
-	github.com/envoyproxy/protoc-gen-validate v1.2.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250307204501-0409229c3780.1
 	github.com/fatedier/golib v0.5.1
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f150c3f139
@@ -31,7 +31,6 @@ require (
 )
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250307204501-0409229c3780.1 // indirect
 	cel.dev/expr v0.23.0 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1800 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
