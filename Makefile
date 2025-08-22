@@ -35,53 +35,45 @@ init:
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
-	go install github.com/envoyproxy/protoc-gen-validate@latest
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
+	go install github.com/envoyproxy/protoc-gen-validate@latest
 
 .PHONY: config
 # generate internal proto
 config:
-	@if [ -n "$(INTERNAL_PROTO_FILES)" ]; then \
-		protoc --proto_path=./$(INTERNAL_DIR) \
-		       --proto_path=./$(THIRD_PARTY_DIR) \
-		       --go_out=paths=source_relative:./$(INTERNAL_DIR) \
-		       $(INTERNAL_PROTO_FILES); \
-	fi
+	protoc --proto_path=./$(INTERNAL_DIR) \
+	       --proto_path=./$(THIRD_PARTY_DIR) \
+	       --go_out=paths=source_relative:./$(INTERNAL_DIR) \
+	       $(INTERNAL_PROTO_FILES)
 
 .PHONY: api
 # generate api proto
 api:
-	@if [ -n "$(API_PROTO_FILES)" ]; then \
-		protoc --proto_path=./$(API_DIR) \
-		       --proto_path=./$(THIRD_PARTY_DIR) \
-		       --go_out=paths=source_relative:./$(API_DIR) \
-		       --go-http_out=paths=source_relative:./$(API_DIR) \
-		       --go-grpc_out=paths=source_relative:./$(API_DIR) \
-		       --openapi_out=fq_schema_naming=true,default_response=false:. \
-		       $(API_PROTO_FILES); \
-	fi
+	protoc --proto_path=./$(API_DIR) \
+	       --proto_path=./$(THIRD_PARTY_DIR) \
+	       --go_out=paths=source_relative:./$(API_DIR) \
+	       --go-http_out=paths=source_relative:./$(API_DIR) \
+	       --go-grpc_out=paths=source_relative:./$(API_DIR) \
+	       --openapi_out=fq_schema_naming=true,default_response=false:. \
+	       $(API_PROTO_FILES)
 
 .PHONY: validate
 # generate validate proto
 validate:
-	@if [ -n "$(API_PROTO_FILES)" ]; then \
-		protoc --proto_path=. \
-		       --proto_path=./$(THIRD_PARTY_DIR) \
-		       --go_out=paths=source_relative:. \
-		       --validate_out=paths=source_relative,lang=go:. \
-		       $(API_PROTO_FILES); \
-	fi
+	protoc --proto_path=. \
+	       --proto_path=./$(THIRD_PARTY_DIR) \
+	       --go_out=paths=source_relative:. \
+	       --validate_out=paths=source_relative,lang=go:. \
+	       $(API_PROTO_FILES)
 
 .PHONY: errors
 # generate errors proto
 errors:
-	@if [ -n "$(API_PROTO_FILES)" ]; then \
-		protoc --proto_path=. \
-		       --proto_path=./$(THIRD_PARTY_DIR) \
-		       --go_out=paths=source_relative:. \
-		       --go-errors_out=paths=source_relative:. \
-		       $(API_PROTO_FILES); \
-	fi
+	protoc --proto_path=. \
+	       --proto_path=./$(THIRD_PARTY_DIR) \
+	       --go_out=paths=source_relative:. \
+	       --go-errors_out=paths=source_relative:. \
+	       $(API_PROTO_FILES)
 
 .PHONY: build
 # build
@@ -106,7 +98,7 @@ gendb:
 
 .PHONY: proto
 # generate all proto related files
-proto: api validate errors config
+proto: api errors config
 
 .PHONY: fmt
 # format code

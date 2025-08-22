@@ -1,9 +1,8 @@
-package server
+package middleware
 
 import (
 	"context"
 	authV1 "krathub/api/auth/v1"
-	"krathub/internal/conf"
 	"krathub/internal/consts"
 	"krathub/pkg/jwt"
 	"strings"
@@ -11,18 +10,6 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport"
 )
-
-// MiddlewareManager 中间件管理器
-type MiddlewareManager struct {
-	appConf *conf.App
-}
-
-// NewMiddlewareManager 创建中间件管理器
-func NewMiddlewareManager(appConf *conf.App) *MiddlewareManager {
-	return &MiddlewareManager{
-		appConf: appConf,
-	}
-}
 
 // Auth 认证中间件
 // 当 minRole 为 0 时，允许无 Authorization 头访问（如注册接口）

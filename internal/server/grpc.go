@@ -3,9 +3,9 @@ package server
 import (
 	authV1 "krathub/api/auth/v1"
 	"krathub/internal/conf"
+	"krathub/internal/server/middleware"
 	"krathub/internal/service"
 
-	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -14,12 +14,11 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, logger log.Logger, auth *service.AuthService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *middleware.MiddlewareManager, logger log.Logger, auth *service.AuthService) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),
-			validate.ProtoValidate(),
 		),
 	}
 	if c.Grpc.Network != "" {
