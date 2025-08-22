@@ -1,7 +1,9 @@
-buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250307204501-0409229c3780.1 h1:j+l4+E1EEo83GVIxuqinfFOTyImSQUH90WfufE86xaI=
-buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250307204501-0409229c3780.1/go.mod h1:eOqrCVUfhh7SLo00urDe/XhJHljj0dWMZirS0aX7cmc=
-cel.dev/expr v0.23.0 h1:wUb94w6OYQS4uXraxo9U+wUAs9jT47Xvl4iPgAwM2ss=
-cel.dev/expr v0.23.0/go.mod h1:hLPLo1W4QUmuYdA72RBX06QTs6MXw941piREPl3Yfiw=
+buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.6-20250717165733-d22d418d82d8.1 h1:VahIvw/JagkamVOb0q87Az0zu2tmrzlqvO2IKIGOwnI=
+buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.6-20250717165733-d22d418d82d8.1/go.mod h1:avRlCjnFzl98VPaeCtJ24RrV/wwHFzB8sWXhj26+n/U=
+buf.build/go/protovalidate v0.14.0 h1:kr/rC/no+DtRyYX+8KXLDxNnI1rINz0imk5K44ZpZ3A=
+buf.build/go/protovalidate v0.14.0/go.mod h1:+F/oISho9MO7gJQNYC2VWLzcO1fTPmaTA08SDYJZncA=
+cel.dev/expr v0.23.1 h1:K4KOtPCJQjVggkARsjG9RWXP6O4R73aHeJMa/dmCQQg=
+cel.dev/expr v0.23.1/go.mod h1:hLPLo1W4QUmuYdA72RBX06QTs6MXw941piREPl3Yfiw=
 dario.cat/mergo v1.0.0 h1:AGCNq9Evsj31mOgNPcLyXc+4PNABt905YmuqPYYpBWk=
 dario.cat/mergo v1.0.0/go.mod h1:uNxQE+84aUszobStD9th8a29P2fMDhsBdgRYvZOxGmk=
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
@@ -84,8 +86,8 @@ github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f15
 github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f150c3f139/go.mod h1:bmXodVT3GSKZAfYskkDAZHCTeN3K04+vDZsho5SOPJg=
 github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:eI8Et8q8UgYDI7SGGju4EshocGoxvK9WPusydlzNefQ=
 github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:RS9yjNwq3hK1B/9VOw+0dE8B4oM1L9C4ObrLejHjMCI=
-github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:8R4XBtpXVxrTFetkbUYGZCfrZZfXULamq8MeLLsmKWY=
-github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:NRPjykSmmscIXLP6Qv42b/UFhwZgxH9bD9OLgbMXMqs=
+github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250731084034-f7f150c3f139 h1:hD1HhDYSJk+OTf2O0c6Hvga15f5VPjCHwLvzNiMutow=
+github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250731084034-f7f150c3f139/go.mod h1:NRPjykSmmscIXLP6Qv42b/UFhwZgxH9bD9OLgbMXMqs=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:PVWOn77FfwOYT4veUVB1zCtWNZq2SbKcxYO47BhmgQQ=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:I3L2JB86WBDlvBEICeJ39X/0KF0JJ4fkfbSg8LRSfRU=
 github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:cFpU7said2WWV57GjfGoXnypVaLUrrvHdfSZ7sj4cUE=
@@ -132,8 +134,8 @@ github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6
 github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/btree v1.0.1 h1:gK4Kx5IaGY9CD5sPJ36FHiBJ6ZXl0kilRiiCj+jdYp4=
 github.com/google/btree v1.0.1/go.mod h1:xXMiIv4Fb/0kKde4SpL7qlzvu5cMJDRkFDxJfI9uaxA=
-github.com/google/cel-go v0.24.1 h1:jsBCtxG8mM5wiUJDSGUqU0K7Mtr3w7Eyv00rw4DiZxI=
-github.com/google/cel-go v0.24.1/go.mod h1:Hdf9TqOaTNSFQA1ybQaRqATVoK7m/zcf7IMhGXP5zI8=
+github.com/google/cel-go v0.25.0 h1:jsFw9Fhn+3y2kBbltZR4VEz5xKkcIFRPDnuEzAGv5GY=
+github.com/google/cel-go v0.25.0/go.mod h1:hjEb6r5SuOSlhCHmFoLzu8HGCERvIsDAbxDAyNU/MmI=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
