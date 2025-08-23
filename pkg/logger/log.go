@@ -24,7 +24,7 @@ type ZapLogger struct {
 // NewLogger 配置zap日志,将zap日志库引入
 func NewLogger(c *conf.App) log.Logger {
 	// 设置日志级别
-	level := zap.NewAtomicLevelAt(zapcore.DebugLevel)
+	level := zap.NewAtomicLevelAt(zapcore.InfoLevel)
 	if c.Log != nil {
 		level.SetLevel(zapcore.Level(c.Log.Level))
 	}
