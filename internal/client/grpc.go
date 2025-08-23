@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
+	"github.com/go-kratos/kratos/v2/middleware/circuitbreaker"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
@@ -73,6 +74,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	middleware := []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Client(f.logger),
+		circuitbreaker.Client(),
 	}
 
 	// 如果开启了链路追踪，则添加客户端追踪中间件
