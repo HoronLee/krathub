@@ -14,6 +14,15 @@ message Bootstrap {
   Discovery discovery = 5;
   Config config = 6;
   Trace trace = 7;
+  Client client = 8; // 新增客户端配置
+}
+
+// 可复用的 TLS 配置
+message TLSConfig {
+  bool enable = 1;      // 开关
+  string cert_path = 2; // 证书路径
+  string key_path = 3;  // 私钥路径
+  string ca_path = 4;   // CA 证书路径
 }
 
 // 通信服务端配置
@@ -22,14 +31,26 @@ message Server {
     string network = 1;
     string addr = 2;
     google.protobuf.Duration timeout = 3;
+    TLSConfig tls = 4; // 为 HTTP 添加 TLS 配置
   }
   message GRPC {
     string network = 1;
     string addr = 2;
     google.protobuf.Duration timeout = 3;
+    TLSConfig tls = 4; // 为 gRPC 添加 TLS 配置
   }
   HTTP http = 1;
   GRPC grpc = 2;
+}
+
+// 客户端配置
+message Client {
+  message GRPC {
+    string endpoint = 1;
+    TLSConfig tls = 2;
+  }
+  // 使用 map 来管理所有下游 gRPC 服务的客户端配置
+  map<string, GRPC> grpc = 1;
 }
 
 // 数据源配置
@@ -51,21 +72,19 @@ message Data {
     message HTTP {
       string service_name = 1;
       string endpoint = 2;
-      bool enable_tls = 3;
-      google.protobuf.Duration timeout = 4;
+      google.protobuf.Duration timeout = 3;
     }
     message GRPC {
       string service_name = 1;
       string endpoint = 2;
-      bool enable_tls = 3;
-      google.protobuf.Duration timeout = 4;
+      google.protobuf.Duration timeout = 3;
     }
     repeated GRPC grpc = 1;
     repeated HTTP http = 2;
   }
   Database database = 1;
   Redis redis = 2;
-  Client client = 3; // 新增
+  Client client = 3;
 }
 
 // 应用配置

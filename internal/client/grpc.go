@@ -9,12 +9,13 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
+	"github.com/go-kratos/kratos/v2/middleware/circuitbreaker"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	ggrpc "google.golang.org/grpc"
+	gogrpc "google.golang.org/grpc"
 )
 
 // grpcClientFactory 是 GrpcClientFactory接口的实现
@@ -36,13 +37,12 @@ func NewGrpcClientFactory(dataCfg *conf.Data, traceCfg *conf.Trace, discovery re
 }
 
 // CreateGrpcConn 创建gRPC连接
-func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error) {
+func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName string) (gogrpc.ClientConnInterface, error) {
 	// 默认超时时间
 	timeout := 5 * time.Second
 
 	// 默认使用服务发现
 	endpoint := fmt.Sprintf("discovery:///%s", serviceName)
-	enableTLS := false
 
 	// 尝试获取服务特定配置（如果存在）
 	for _, c := range f.dataCfg.Client.GetGrpc() {
@@ -58,21 +58,20 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 				endpoint = c.Endpoint
 				f.logger.Log(log.LevelInfo, "msg", "using configured endpoint", "service_name", serviceName, "endpoint", endpoint)
 
-				// 检查是否需要启用TLS
-				enableTLS = c.EnableTls
 			}
 			break
 		}
 	}
 
 	// 创建gRPC连接
-	var conn *ggrpc.ClientConn
+	var conn *gogrpc.ClientConn
 	var err error
 
 	// 准备中间件
 	middleware := []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Client(f.logger),
+		circuitbreaker.Client(),
 	}
 
 	// 如果开启了链路追踪，则添加客户端追踪中间件
@@ -80,16 +79,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 		middleware = append(middleware, tracing.Client())
 	}
 
-	if enableTLS {
-		// 使用TLS连接
-		conn, err = grpc.Dial(
-			ctx,
-			grpc.WithEndpoint(endpoint),
-			grpc.WithTLSConfig(nil), // 这里可以根据需要配置TLS证书
-			grpc.WithTimeout(timeout),
-			grpc.WithMiddleware(middleware...),
-		)
-	} else if endpoint == fmt.Sprintf("discovery:///%s", serviceName) && f.discovery != nil {
+	if endpoint == fmt.Sprintf("discovery:///%s", serviceName) && f.discovery != nil {
 		// 使用服务发现
 		conn, err = grpc.DialInsecure(
 			ctx,

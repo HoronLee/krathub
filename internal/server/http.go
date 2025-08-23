@@ -1,6 +1,8 @@
 package server
 
 import (
+	"crypto/tls"
+
 	authV1 "krathub/api/auth/v1"
 	userV1 "krathub/api/user/v1"
 	"krathub/internal/conf"
@@ -53,6 +55,18 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 	}
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
+	}
+
+	// Add TLS configuration
+	if c.Http.Tls != nil && c.Http.Tls.Enable {
+		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
+			logger.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
+		}
+		cert, err := tls.LoadX509KeyPair(c.Http.Tls.CertPath, c.Http.Tls.KeyPath)
+		if err != nil {
+			logger.Log(log.LevelFatal, "msg", "Server TLS: Failed to load key pair", "error", err)
+		}
+		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}
 
 	srv := http.NewServer(opts...)

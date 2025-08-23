@@ -1,4 +1,4 @@
-# Krathub (简体中文)
+# Krathub
 
 [English](README.en-US.md) | 简体中文
 
@@ -60,9 +60,17 @@ server:
   http:
     addr: "${HADDR:0.0.0.0:8000}"
     timeout: "${HTIMEOUT:1s}"
+    tls:
+      enable: false
+      cert_path: "${HTTPS_CERT_PATH:../../manifest/certs/server.cert}"
+      key_path: "${HTTPS_KEY_PATH:../../manifest/certs/server.key}"
   grpc:
     addr: "${GADDR:0.0.0.0:8001}"
     timeout: "${GTIMEHOUT:1s}"
+    tls:
+      enable: false
+      cert_path: "${GRPCS_CERT_PATH:../../manifest/certs/server.cert}"
+      key_path: "${GRPCS_KEY_PATH:../../manifest/certs/server.key}"
 
 data:
   database:
@@ -106,7 +114,7 @@ registry:
     scheme: http
     datacenter: dc1
     timeout: 5s
-  
+
   # 或者使用 Nacos 作为注册中心
   # nacos:
     # addr: "${NACOSR_ADDR:127.0.0.1}"

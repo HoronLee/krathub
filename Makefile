@@ -91,9 +91,9 @@ generate:
 	go generate ./...
 	go mod tidy
 
-.PHONY: gendb
+.PHONY: gen.db
 # generate db
-gendb:
+gen.db:
 	go run $(CMD_DIR)/gen/gendb.go -conf $(CONFIG_DIR)/config.yaml
 
 .PHONY: proto
@@ -129,6 +129,13 @@ run:
 .PHONY: all
 # generate all
 all: clean proto gendb wire generate build
+
+.PHONY: gen.tls
+# generate tls cert and key
+gen.tls:
+	@mkdir -p manifest/certs
+	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout manifest/certs/server.key -out manifest/certs/server.cert -config manifest/certs/openssl.cnf
+	@echo "TLS certificate and key generated in manifest/certs/"
 
 # show help
 help:
