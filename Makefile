@@ -134,7 +134,7 @@ all: clean proto gendb wire generate build
 # generate tls cert and key
 gen.tls:
 	@mkdir -p manifest/certs
-	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout manifest/certs/server.key -out manifest/certs/server.crt -config manifest/certs/openssl.cnf
+	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout manifest/certs/server.key -out manifest/certs/server.cert -config manifest/certs/openssl.cnf
 	@echo "TLS certificate and key generated in manifest/certs/"
 
 # show help

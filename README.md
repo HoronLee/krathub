@@ -1,4 +1,4 @@
-# Krathub (简体中文)
+# Krathub
 
 [English](README.en-US.md) | 简体中文
 
@@ -62,14 +62,14 @@ server:
     timeout: "${HTIMEOUT:1s}"
     tls:
       enable: false
-      cert_path: "${HTTPS_CERT_PATH:../../manifest/certs/server.crt}"
+      cert_path: "${HTTPS_CERT_PATH:../../manifest/certs/server.cert}"
       key_path: "${HTTPS_KEY_PATH:../../manifest/certs/server.key}"
   grpc:
     addr: "${GADDR:0.0.0.0:8001}"
     timeout: "${GTIMEHOUT:1s}"
     tls:
       enable: false
-      cert_path: "${GRPCS_CERT_PATH:../../manifest/certs/server.crt}"
+      cert_path: "${GRPCS_CERT_PATH:../../manifest/certs/server.cert}"
       key_path: "${GRPCS_KEY_PATH:../../manifest/certs/server.key}"
 
 data:
