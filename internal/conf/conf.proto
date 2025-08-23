@@ -72,14 +72,12 @@ message Data {
     message HTTP {
       string service_name = 1;
       string endpoint = 2;
-      bool enable_tls = 3;
-      google.protobuf.Duration timeout = 4;
+      google.protobuf.Duration timeout = 3;
     }
     message GRPC {
       string service_name = 1;
       string endpoint = 2;
-      bool enable_tls = 3;
-      google.protobuf.Duration timeout = 4;
+      google.protobuf.Duration timeout = 3;
     }
     repeated GRPC grpc = 1;
     repeated HTTP http = 2;

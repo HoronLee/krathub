@@ -43,7 +43,6 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 
 	// 默认使用服务发现
 	endpoint := fmt.Sprintf("discovery:///%s", serviceName)
-	enableTLS := false
 
 	// 尝试获取服务特定配置（如果存在）
 	for _, c := range f.dataCfg.Client.GetGrpc() {
@@ -59,8 +58,6 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 				endpoint = c.Endpoint
 				f.logger.Log(log.LevelInfo, "msg", "using configured endpoint", "service_name", serviceName, "endpoint", endpoint)
 
-				// 检查是否需要启用TLS
-				enableTLS = c.EnableTls
 			}
 			break
 		}
@@ -82,16 +79,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 		middleware = append(middleware, tracing.Client())
 	}
 
-	if enableTLS {
-		// 使用TLS连接
-		conn, err = grpc.Dial(
-			ctx,
-			grpc.WithEndpoint(endpoint),
-			grpc.WithTLSConfig(nil), // 这里可以根据需要配置TLS证书
-			grpc.WithTimeout(timeout),
-			grpc.WithMiddleware(middleware...),
-		)
-	} else if endpoint == fmt.Sprintf("discovery:///%s", serviceName) && f.discovery != nil {
+	if endpoint == fmt.Sprintf("discovery:///%s", serviceName) && f.discovery != nil {
 		// 使用服务发现
 		conn, err = grpc.DialInsecure(
 			ctx,

@@ -30,8 +30,6 @@ github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
-github.com/bufbuild/protovalidate-go v0.9.2 h1:dUoPvFimovS74s3eeFNvHQOxFumRPsk390ifkzJCJ/4=
-github.com/bufbuild/protovalidate-go v0.9.2/go.mod h1:U9+WHAa6IOrLuqQEWPcxsyE4QEOTwm9fDpVbWXsR0zU=
 github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23/go.mod h1:bbYlZJ7hK1yFx9hf58LP0zeX7UjIGs20ufpu3evjr+s=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
@@ -86,8 +84,6 @@ github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f15
 github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f150c3f139/go.mod h1:bmXodVT3GSKZAfYskkDAZHCTeN3K04+vDZsho5SOPJg=
 github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:eI8Et8q8UgYDI7SGGju4EshocGoxvK9WPusydlzNefQ=
 github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:RS9yjNwq3hK1B/9VOw+0dE8B4oM1L9C4ObrLejHjMCI=
-github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250731084034-f7f150c3f139 h1:hD1HhDYSJk+OTf2O0c6Hvga15f5VPjCHwLvzNiMutow=
-github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20250731084034-f7f150c3f139/go.mod h1:NRPjykSmmscIXLP6Qv42b/UFhwZgxH9bD9OLgbMXMqs=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:PVWOn77FfwOYT4veUVB1zCtWNZq2SbKcxYO47BhmgQQ=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:I3L2JB86WBDlvBEICeJ39X/0KF0JJ4fkfbSg8LRSfRU=
 github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:cFpU7said2WWV57GjfGoXnypVaLUrrvHdfSZ7sj4cUE=

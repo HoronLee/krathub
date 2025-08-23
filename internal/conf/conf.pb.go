@@ -1143,8 +1143,7 @@ type Data_Client_HTTP struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ServiceName   string                 `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	Endpoint      string                 `protobuf:"bytes,2,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
-	EnableTls     bool                   `protobuf:"varint,3,opt,name=enable_tls,json=enableTls,proto3" json:"enable_tls,omitempty"`
-	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	Timeout       *durationpb.Duration   `protobuf:"bytes,3,opt,name=timeout,proto3" json:"timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1193,13 +1192,6 @@ func (x *Data_Client_HTTP) GetEndpoint() string {
 	return ""
 }
 
-func (x *Data_Client_HTTP) GetEnableTls() bool {
-	if x != nil {
-		return x.EnableTls
-	}
-	return false
-}
-
 func (x *Data_Client_HTTP) GetTimeout() *durationpb.Duration {
 	if x != nil {
 		return x.Timeout
@@ -1211,8 +1203,7 @@ type Data_Client_GRPC struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ServiceName   string                 `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	Endpoint      string                 `protobuf:"bytes,2,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
-	EnableTls     bool                   `protobuf:"varint,3,opt,name=enable_tls,json=enableTls,proto3" json:"enable_tls,omitempty"`
-	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	Timeout       *durationpb.Duration   `protobuf:"bytes,3,opt,name=timeout,proto3" json:"timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1259,13 +1250,6 @@ func (x *Data_Client_GRPC) GetEndpoint() string {
 		return x.Endpoint
 	}
 	return ""
-}
-
-func (x *Data_Client_GRPC) GetEnableTls() bool {
-	if x != nil {
-		return x.EnableTls
-	}
-	return false
 }
 
 func (x *Data_Client_GRPC) GetTimeout() *durationpb.Duration {
@@ -2199,7 +2183,7 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\x03tls\x18\x02 \x01(\v2\x15.kratos.api.TLSConfigR\x03tls\x1aP\n" +
 	"\tGrpcEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12-\n" +
-	"\x05value\x18\x02 \x01(\v2\x17.kratos.api.Client.GRPCR\x05value:\x028\x01\"\xfe\x06\n" +
+	"\x05value\x18\x02 \x01(\v2\x17.kratos.api.Client.GRPCR\x05value:\x028\x01\"\xbe\x06\n" +
 	"\x04Data\x125\n" +
 	"\bdatabase\x18\x01 \x01(\v2\x19.kratos.api.Data.DatabaseR\bdatabase\x12,\n" +
 	"\x05redis\x18\x02 \x01(\v2\x16.kratos.api.Data.RedisR\x05redis\x12/\n" +
@@ -2214,22 +2198,18 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\bpassword\x18\x04 \x01(\tR\bpassword\x12\x0e\n" +
 	"\x02db\x18\x05 \x01(\x05R\x02db\x12<\n" +
 	"\fread_timeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
-	"\rwrite_timeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x1a\xa4\x03\n" +
+	"\rwrite_timeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x1a\xe4\x02\n" +
 	"\x06Client\x120\n" +
 	"\x04grpc\x18\x01 \x03(\v2\x1c.kratos.api.Data.Client.GRPCR\x04grpc\x120\n" +
-	"\x04http\x18\x02 \x03(\v2\x1c.kratos.api.Data.Client.HTTPR\x04http\x1a\x99\x01\n" +
+	"\x04http\x18\x02 \x03(\v2\x1c.kratos.api.Data.Client.HTTPR\x04http\x1az\n" +
 	"\x04HTTP\x12!\n" +
 	"\fservice_name\x18\x01 \x01(\tR\vserviceName\x12\x1a\n" +
-	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x12\x1d\n" +
-	"\n" +
-	"enable_tls\x18\x03 \x01(\bR\tenableTls\x123\n" +
-	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1a\x99\x01\n" +
+	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x123\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x1az\n" +
 	"\x04GRPC\x12!\n" +
 	"\fservice_name\x18\x01 \x01(\tR\vserviceName\x12\x1a\n" +
-	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x12\x1d\n" +
-	"\n" +
-	"enable_tls\x18\x03 \x01(\bR\tenableTls\x123\n" +
-	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\x82\x03\n" +
+	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x123\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\x82\x03\n" +
 	"\x03App\x12\x10\n" +
 	"\x03env\x18\x01 \x01(\tR\x03env\x12%\n" +
 	"\x03jwt\x18\x02 \x01(\v2\x13.kratos.api.App.JwtR\x03jwt\x12%\n" +
