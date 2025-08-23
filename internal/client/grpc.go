@@ -15,7 +15,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	ggrpc "google.golang.org/grpc"
+	gogrpc "google.golang.org/grpc"
 )
 
 // grpcClientFactory 是 GrpcClientFactory接口的实现
@@ -37,7 +37,7 @@ func NewGrpcClientFactory(dataCfg *conf.Data, traceCfg *conf.Trace, discovery re
 }
 
 // CreateGrpcConn 创建gRPC连接
-func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName string) (ggrpc.ClientConnInterface, error) {
+func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName string) (gogrpc.ClientConnInterface, error) {
 	// 默认超时时间
 	timeout := 5 * time.Second
 
@@ -67,7 +67,7 @@ func (f *grpcClientFactory) CreateGrpcConn(ctx context.Context, serviceName stri
 	}
 
 	// 创建gRPC连接
-	var conn *ggrpc.ClientConn
+	var conn *gogrpc.ClientConn
 	var err error
 
 	// 准备中间件
