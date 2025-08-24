@@ -29,16 +29,9 @@ func NewConsulConfigSource(c *ConsulConfig) config.Source {
 	// 创建 Consul 客户端配置
 	consulConfig := api.DefaultConfig()
 	consulConfig.Address = c.Addr
-
-	if c.Scheme != "" {
-		consulConfig.Scheme = c.Scheme
-	}
-	if c.Token != "" {
-		consulConfig.Token = c.Token
-	}
-	if c.Datacenter != "" {
-		consulConfig.Datacenter = c.Datacenter
-	}
+	consulConfig.Scheme = c.Scheme
+	consulConfig.Token = c.Token
+	consulConfig.Datacenter = c.Datacenter
 
 	// 设置超时时间
 	if c.Timeout != nil {

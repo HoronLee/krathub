@@ -33,12 +33,17 @@ func NewNacosRegistrar(c *NacosConfig) registry.Registrar {
 		*constant.NewServerConfig(c.Addr, c.Port),
 	}
 
+	timeoutMs := uint64(5000)
+	if c.Timeout != nil && c.Timeout.AsDuration() > 0 {
+		timeoutMs = uint64(c.Timeout.AsDuration().Milliseconds())
+	}
+
 	// 创建 Nacos 客户端配置
-	cc := constant.ClientConfig{
+	cc := &constant.ClientConfig{
 		NamespaceId:         c.Namespace,
 		Username:            c.Username,
 		Password:            c.Password,
-		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
+		TimeoutMs:           timeoutMs,
 		NotLoadCacheAtStart: true,
 		LogDir:              "/tmp/nacos/log",
 		CacheDir:            "/tmp/nacos/cache",
@@ -47,7 +52,7 @@ func NewNacosRegistrar(c *NacosConfig) registry.Registrar {
 	// 创建命名客户端
 	client, err := clients.NewNamingClient(
 		vo.NacosClientParam{
-			ClientConfig:  &cc,
+			ClientConfig:  cc,
 			ServerConfigs: sc,
 		},
 	)
