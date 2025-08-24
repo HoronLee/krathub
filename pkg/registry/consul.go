@@ -26,23 +26,23 @@ func NewConsulRegistrar(c *ConsulConfig) registry.Registrar {
 	}
 
 	// 创建 Consul 客户端配置
-	cConfig := api.DefaultConfig()
+	consulConfig := api.DefaultConfig()
 
 	// 设置基本配置项，Consul API 内部会处理空值
-	cConfig.Address = c.Addr
-	cConfig.Scheme = c.Scheme
-	cConfig.Token = c.Token
-	cConfig.Datacenter = c.Datacenter
+	consulConfig.Address = c.Addr
+	consulConfig.Scheme = c.Scheme
+	consulConfig.Token = c.Token
+	consulConfig.Datacenter = c.Datacenter
 
 	// 超时时间仍需要设置默认值
 	if c.Timeout != nil {
-		cConfig.WaitTime = c.Timeout.AsDuration()
+		consulConfig.WaitTime = c.Timeout.AsDuration()
 	} else {
-		cConfig.WaitTime = 5 * time.Second // 默认超时时间
+		consulConfig.WaitTime = 5 * time.Second // 默认超时时间
 	}
 
 	// 创建 Consul 客户端
-	client, err := api.NewClient(cConfig)
+	client, err := api.NewClient(consulConfig)
 	if err != nil {
 		panic(fmt.Sprintf("failed to create consul client: %v", err))
 	}

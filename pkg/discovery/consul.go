@@ -27,16 +27,14 @@ func NewConsulDiscovery(c *ConsulConfig) registry.Discovery {
 
 	// 创建 Consul 客户端配置
 	consulConfig := api.DefaultConfig()
+
+	// 设置基本配置项，Consul API 内部会处理空值
 	consulConfig.Address = c.Addr
-	if c.Scheme != "" {
-		consulConfig.Scheme = c.Scheme
-	}
-	if c.Token != "" {
-		consulConfig.Token = c.Token
-	}
-	if c.Datacenter != "" {
-		consulConfig.Datacenter = c.Datacenter
-	}
+	consulConfig.Scheme = c.Scheme
+	consulConfig.Token = c.Token
+	consulConfig.Datacenter = c.Datacenter
+
+	// 超时时间仍需要设置默认值
 	if c.Timeout != nil {
 		consulConfig.WaitTime = c.Timeout.AsDuration()
 	} else {

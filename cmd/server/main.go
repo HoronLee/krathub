@@ -98,13 +98,25 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, logger.NewLogger(bc.App))
+	// 初始化日志
+	log := logger.NewLogger(&logger.Config{
+		Env:        bc.App.Env,
+		Level:      bc.App.Log.Level,
+		Filename:   bc.App.Log.Filename,
+		MaxSize:    bc.App.Log.MaxSize,
+		MaxBackups: bc.App.Log.MaxBackups,
+		MaxAge:     bc.App.Log.MaxAge,
+		Compress:   bc.App.Log.Compress,
+	})
+
+	// 初始化服务
+	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, log)
 	if err != nil {
 		panic(err)
 	}
 	defer cleanup()
 
-	// start and wait for stop signal
+	// 启动服务并且等待停止信号
 	if err := app.Run(); err != nil {
 		panic(err)
 	}

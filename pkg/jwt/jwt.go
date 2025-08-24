@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"krathub/internal/conf"
-
 	"github.com/golang-jwt/jwt"
 )
 
@@ -17,7 +15,14 @@ type JWT struct {
 	issuer         string
 }
 
-func NewJWT(cfg *conf.App_Jwt) *JWT {
+type Config struct {
+	SecretKey string
+	Expire    int32
+	Audience  string
+	Issuer    string
+}
+
+func NewJWT(cfg *Config) *JWT {
 	return &JWT{
 		secretKey:      []byte(cfg.SecretKey),
 		expirationTime: time.Duration(cfg.Expire) * time.Hour,
@@ -51,7 +56,7 @@ func (j *JWT) GenerateToken(id int64, name, identity string) (string, error) {
 
 func (j *JWT) AnalyseToken(tokenString string) (*UserClaims, error) {
 	claims := new(UserClaims)
-	parsedToken, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+	parsedToken, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (any, error) {
 		return j.secretKey, nil
 	})
 	if err != nil {

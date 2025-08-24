@@ -1,6 +1,7 @@
 package configCenter
 
 import (
+	"fmt"
 	nacosCfg "github.com/go-kratos/kratos/contrib/config/nacos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 
@@ -33,11 +34,16 @@ func NewNacosConfigSource(c *NacosConfig) config.Source {
 		*constant.NewServerConfig(c.Addr, c.Port),
 	}
 
+	timeoutMs := uint64(5000)
+	if c.Timeout != nil && c.Timeout.AsDuration() > 0 {
+		timeoutMs = uint64(c.Timeout.AsDuration().Milliseconds())
+	}
+
 	cc := &constant.ClientConfig{
 		NamespaceId:         c.Namespace,
 		Username:            c.Username,
 		Password:            c.Password,
-		TimeoutMs:           uint64(c.Timeout.GetSeconds() * 1000),
+		TimeoutMs:           timeoutMs,
 		NotLoadCacheAtStart: true,
 		LogDir:              "/tmp/nacos/log",
 		CacheDir:            "/tmp/nacos/cache",
@@ -51,19 +57,19 @@ func NewNacosConfigSource(c *NacosConfig) config.Source {
 	)
 
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("failed to create nacos client: %v", err))
 	}
 
 	// 从Nacos获取dataId
-	dataID := "config.yaml"
-	if c.DataId != "" {
-		dataID = c.DataId
+	dataID := c.DataId
+	if dataID == "" {
+		dataID = "config.yaml"
 	}
 
 	// 从Nacos获取group
-	group := "DEFAULT_GROUP"
-	if c.Group != "" {
-		group = c.Group
+	group := c.Group
+	if group == "" {
+		group = "DEFAULT_GROUP"
 	}
 
 	return nacosCfg.NewConfigSource(
