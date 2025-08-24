@@ -33,7 +33,12 @@ func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware 
 			}
 
 			// 创建JWT实例并解析Token
-			jwtInstance := jwt.NewJWT(m.appConf.Jwt)
+			jwtInstance := jwt.NewJWT(&jwt.Config{
+				SecretKey: m.appConf.Jwt.SecretKey,
+				Expire:    m.appConf.Jwt.Expire,
+				Audience:  m.appConf.Jwt.Audience,
+				Issuer:    m.appConf.Jwt.Issuer,
+			})
 			claims, err := jwtInstance.AnalyseToken(tokenString)
 			if err != nil {
 				return nil, authV1.ErrorUnauthorized("invalid token: " + err.Error())

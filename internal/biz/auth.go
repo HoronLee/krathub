@@ -36,7 +36,12 @@ func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecas
 		repo: repo,
 		log:  log.NewHelper(logger),
 		cfg:  cfg,
-		jwt:  jwtpkg.NewJWT(cfg.Jwt),
+		jwt: jwtpkg.NewJWT(&jwtpkg.Config{
+			SecretKey: cfg.Jwt.SecretKey,
+			Expire:    cfg.Jwt.Expire,
+			Audience:  cfg.Jwt.Audience,
+			Issuer:    cfg.Jwt.Issuer,
+		}),
 	}
 	// 初始化 adminRegistered
 	admins, err := repo.ListUserByUserName(context.Background(), "admin")

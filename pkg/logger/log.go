@@ -2,7 +2,6 @@ package logger
 
 import (
 	"fmt"
-	"krathub/internal/conf"
 	"os"
 	"time"
 
@@ -21,35 +20,45 @@ type ZapLogger struct {
 	Sync func() error
 }
 
+type Config struct {
+	Env        string
+	Level      int32
+	Filename   string
+	MaxSize    int32
+	MaxBackups int32
+	MaxAge     int32
+	Compress   bool
+}
+
 // NewLogger 配置zap日志,将zap日志库引入
-func NewLogger(c *conf.App) log.Logger {
+func NewLogger(c *Config) log.Logger {
 	// 设置日志级别
 	level := zap.NewAtomicLevelAt(zapcore.InfoLevel)
-	if c.Log != nil {
-		level.SetLevel(zapcore.Level(c.Log.Level))
+	if c != nil {
+		level.SetLevel(zapcore.Level(c.Level))
 	}
 
 	// lumberjack 日志切割
 	var lumberjackLogger *lumberjack.Logger
-	if c.Log != nil {
+	if c != nil {
 		maxSize := 10
-		if c.Log.MaxSize != 0 {
-			maxSize = int(c.Log.MaxSize)
+		if c.MaxSize != 0 {
+			maxSize = int(c.MaxSize)
 		}
 		maxBackups := 5
-		if c.Log.MaxBackups != 0 {
-			maxBackups = int(c.Log.MaxBackups)
+		if c.MaxBackups != 0 {
+			maxBackups = int(c.MaxBackups)
 		}
 		maxAge := 30
-		if c.Log.MaxAge != 0 {
-			maxAge = int(c.Log.MaxAge)
+		if c.MaxAge != 0 {
+			maxAge = int(c.MaxAge)
 		}
 		lumberjackLogger = &lumberjack.Logger{
-			Filename:   "../../logs/" + c.Log.Filename, // 日志文件路径
-			MaxSize:    maxSize,                        // 每个日志文件保存的最大尺寸 单位：M
-			MaxBackups: maxBackups,                     // 日志文件最多保存多少个备份
-			MaxAge:     maxAge,                         // 文件最多保存多少天
-			Compress:   c.Log.Compress,                 // 是否压缩
+			Filename:   "../../logs/" + c.Filename, // 日志文件路径
+			MaxSize:    maxSize,                    // 每个日志文件保存的最大尺寸 单位：M
+			MaxBackups: maxBackups,                 // 日志文件最多保存多少个备份
+			MaxAge:     maxAge,                     // 文件最多保存多少天
+			Compress:   c.Compress,                 // 是否压缩
 		}
 	}
 
