@@ -106,6 +106,7 @@ message App {
   string env = 1; // dev test prod
   Jwt jwt = 2; // JWT配置
   Log log = 3; // 日志配置
+  map<string, string> metadata = 4; // 元数据
 }
 
 // 注册中心配置
@@ -116,6 +117,7 @@ message Registry {
     string token = 3; // 访问令牌
     string datacenter = 4; // 数据中心
     google.protobuf.Duration timeout = 5; // 超时时间
+    repeated string tags = 6;              // 服务标签
   }
   
   message Etcd {

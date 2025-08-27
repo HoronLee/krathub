@@ -36,7 +36,6 @@ init:
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
-	go install github.com/envoyproxy/protoc-gen-validate@latest
 
 .PHONY: config
 # generate internal proto
@@ -57,15 +56,6 @@ api:
 	       --openapi_out=fq_schema_naming=true,default_response=false:. \
 	       $(API_PROTO_FILES)
 
-.PHONY: validate
-# generate validate proto
-validate:
-	protoc --proto_path=. \
-	       --proto_path=./$(THIRD_PARTY_DIR) \
-	       --go_out=paths=source_relative:. \
-	       --validate_out=paths=source_relative,lang=go:. \
-	       $(API_PROTO_FILES)
-
 .PHONY: errors
 # generate errors proto
 errors:
@@ -74,6 +64,10 @@ errors:
 	       --go_out=paths=source_relative:. \
 	       --go-errors_out=paths=source_relative:. \
 	       $(API_PROTO_FILES)
+
+.PHONY: proto
+# generate all proto related files
+proto: api errors config
 
 .PHONY: build
 # build
@@ -95,10 +89,6 @@ generate:
 # generate db
 gen.db:
 	go run $(CMD_DIR)/gen/gendb.go -conf $(CONFIG_DIR)/config.yaml
-
-.PHONY: proto
-# generate all proto related files
-proto: api errors config
 
 .PHONY: fmt
 # format code

@@ -114,6 +114,11 @@ registry:
     scheme: http
     datacenter: dc1
     timeout: 5s
+    # 为服务自定义 tag
+    tags:
+     - "traefik.enable=true"
+     - "traefik.http.routers.krathub-router.rule=Host(`krathub.r430.com`)"
+     - "traefik.http.services.krathub-svc.loadbalancer.server.port=8000"
 
   # 或者使用 Nacos 作为注册中心
   # nacos:
