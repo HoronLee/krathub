@@ -12,8 +12,6 @@ filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
-github.com/HoronLee/kratos/contrib/middleware/validate/v2 v2.0.0-20250827035133-d08e439f2d34 h1:5HY7q9wrDnQWAnQoVlfgM1mzavXyO98vfstRcJcA/uE=
-github.com/HoronLee/kratos/contrib/middleware/validate/v2 v2.0.0-20250827035133-d08e439f2d34/go.mod h1:49VLU0meycamtB62ovqUcJ8gUiO4Iu0K1OcrUiOOtJA=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
@@ -82,8 +80,6 @@ github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f15
 github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20250731084034-f7f150c3f139/go.mod h1:bmXodVT3GSKZAfYskkDAZHCTeN3K04+vDZsho5SOPJg=
 github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:eI8Et8q8UgYDI7SGGju4EshocGoxvK9WPusydlzNefQ=
 github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:RS9yjNwq3hK1B/9VOw+0dE8B4oM1L9C4ObrLejHjMCI=
-github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250731084034-f7f150c3f139 h1:fT/OqaunujhltzvmV4qutX4Y8D6LeCZOltCK3kXz/eI=
-github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20250731084034-f7f150c3f139/go.mod h1:I3L2JB86WBDlvBEICeJ39X/0KF0JJ4fkfbSg8LRSfRU=
 github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562 h1:cFpU7said2WWV57GjfGoXnypVaLUrrvHdfSZ7sj4cUE=
 github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562/go.mod h1:Rcf6MF5ZITDFmDqo981rw2v8kMog5gbZu8FW3yc6rpc=
 github.com/go-kratos/kratos/v2 v2.8.4 h1:eIJLE9Qq9WSoKx+Buy2uPyrahtF/lPh+Xf4MTpxhmjs=
@@ -198,6 +194,10 @@ github.com/hashicorp/memberlist v0.5.2 h1:rJoNPWZ0juJBgqn48gjy59K5H4rNgvUoM1kUD7
 github.com/hashicorp/memberlist v0.5.2/go.mod h1:Ri9p/tRShbjYnpNf4FFPXG7wxEGY4Nrcn6E7jrVa//4=
 github.com/hashicorp/serf v0.10.2 h1:m5IORhuNSjaxeljg5DeQVDlQyVkhRIjJDimbkCa8aAc=
 github.com/hashicorp/serf v0.10.2/go.mod h1:T1CmSGfSeGfnfNy/w0odXQUR1rfECGd2Qdsp84DjOiY=
+github.com/horonlee/kratos/contrib/middleware/validate/v2 v2.0.0-20250827035133-d08e439f2d34 h1:SwB3ln26NEVIRM8azAQcEzZlp2y5KcLwmeX8P+N0U20=
+github.com/horonlee/kratos/contrib/middleware/validate/v2 v2.0.0-20250827035133-d08e439f2d34/go.mod h1:49VLU0meycamtB62ovqUcJ8gUiO4Iu0K1OcrUiOOtJA=
+github.com/horonlee/kratos/contrib/registry/consul/v2 v2.0.0-20250827101110-49363c30bb0a h1:9qcHSQjl9Wi2SuBAlU3UI0nqPEO7mWZ9Ul/F3U2Z9WY=
+github.com/horonlee/kratos/contrib/registry/consul/v2 v2.0.0-20250827101110-49363c30bb0a/go.mod h1:I3L2JB86WBDlvBEICeJ39X/0KF0JJ4fkfbSg8LRSfRU=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 h1:L0QtFUgDarD7Fpv9jeVMgy/+Ec0mtnmYuImjTz6dtDA=

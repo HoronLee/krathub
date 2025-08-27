@@ -7,6 +7,8 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"krathub/internal/biz"
 	"krathub/internal/client"
 	"krathub/internal/conf"
@@ -14,10 +16,9 @@ import (
 	"krathub/internal/server"
 	"krathub/internal/server/middleware"
 	"krathub/internal/service"
+)
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
-
+import (
 	_ "go.uber.org/automaxprocs"
 )
 

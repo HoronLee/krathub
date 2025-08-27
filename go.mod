@@ -125,5 +125,7 @@ require (
 // 暂时替换为自己 fork 的版本，等待官方合并 PR
 replace (
 	// https://github.com/go-kratos/kratos/pull/3705
-	github.com/go-kratos/kratos/contrib/middleware/validate/v2 => github.com/HoronLee/kratos/contrib/middleware/validate/v2 v2.0.0-20250827035133-d08e439f2d34
+	github.com/go-kratos/kratos/contrib/middleware/validate/v2 => github.com/horonlee/kratos/contrib/middleware/validate/v2 v2.0.0-20250827035133-d08e439f2d34
+	// https://github.com/go-kratos/kratos/pull/3707
+	github.com/go-kratos/kratos/contrib/registry/consul/v2 => github.com/horonlee/kratos/contrib/registry/consul/v2 v2.0.0-20250827101110-49363c30bb0a
 )

@@ -6,6 +6,7 @@ import (
 	"krathub/internal/conf"
 	"krathub/pkg/logger"
 	"os"
+	"strings"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -30,8 +31,9 @@ var (
 	Version string = "v0.1"
 	// flagconf is the config flag.
 	flagconf string
-
-	id, _ = os.Hostname()
+	// id is the id of the instance.
+	id, _    = os.Hostname()
+	Metadata map[string]string
 )
 
 func init() {
@@ -43,12 +45,9 @@ func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server, hs *http
 		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
-		kratos.Metadata(map[string]string{}),
+		kratos.Metadata(Metadata),
 		kratos.Logger(logger),
-		kratos.Server(
-			gs,
-			hs,
-		),
+		kratos.Server(gs, hs),
 		kratos.Registrar(reg),
 	)
 }
@@ -96,6 +95,22 @@ func main() {
 	// 初始化链路追踪
 	if err := initTracerProvider(bc.Trace); err != nil {
 		panic(err)
+	}
+
+	// 设置服务实例的元信息
+	Metadata = bc.App.Metadata
+	if Metadata == nil {
+		Metadata = make(map[string]string)
+	}
+	// 从注册中心配置中提取 tags 信息（如果有）
+	if bc.Registry != nil {
+		switch r := bc.Registry.Registry.(type) {
+		case *conf.Registry_Consul_:
+			if len(r.Consul.Tags) > 0 {
+				Metadata["tags"] = strings.Join(r.Consul.Tags, ";")
+			}
+			// 如果有其他注册中心（如 Nacos）需要处理类似 tags 的逻辑，可以在这里添加 case
+		}
 	}
 
 	// 初始化日志
