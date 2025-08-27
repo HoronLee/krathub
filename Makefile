@@ -65,6 +65,10 @@ errors:
 	       --go-errors_out=paths=source_relative:. \
 	       $(API_PROTO_FILES)
 
+.PHONY: proto
+# generate all proto related files
+proto: api errors config
+
 .PHONY: build
 # build
 build:
@@ -85,10 +89,6 @@ generate:
 # generate db
 gen.db:
 	go run $(CMD_DIR)/gen/gendb.go -conf $(CONFIG_DIR)/config.yaml
-
-.PHONY: proto
-# generate all proto related files
-proto: api errors config
 
 .PHONY: fmt
 # format code
