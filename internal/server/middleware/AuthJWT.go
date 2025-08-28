@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	authV1 "krathub/api/auth/v1"
+	"krathub/internal/biz"
 	"krathub/internal/consts"
 	"krathub/pkg/jwt"
 	"strings"
@@ -33,15 +34,12 @@ func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware 
 			}
 
 			// 创建JWT实例并解析Token
-			jwtInstance := jwt.NewJWT(&jwt.Config{
+			jwtInstance := jwt.NewJWT[biz.UserClaims](&jwt.Config{
 				SecretKey: m.appConf.Jwt.SecretKey,
-				Expire:    m.appConf.Jwt.Expire,
-				Audience:  m.appConf.Jwt.Audience,
-				Issuer:    m.appConf.Jwt.Issuer,
 			})
 			claims, err := jwtInstance.AnalyseToken(tokenString)
 			if err != nil {
-				return nil, authV1.ErrorUnauthorized("invalid token: " + err.Error())
+				return nil, authV1.ErrorUnauthorized("invalid token: %v", err)
 			}
 
 			// 验证用户角色
@@ -60,11 +58,11 @@ func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware 
 			}
 
 			if userRole < minRole {
-				return nil, authV1.ErrorUnauthorized("permission denied, you at least need " + minRole.String() + " role")
+				return nil, authV1.ErrorUnauthorized("permission denied, you at least need %s role", minRole.String())
 			}
 
 			// 将用户claims存入context
-			ctx = jwt.NewContext(ctx, claims)
+			ctx = jwt.NewContext[biz.UserClaims](ctx, claims)
 
 			return handler(ctx, req)
 		}

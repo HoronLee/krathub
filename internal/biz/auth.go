@@ -2,6 +2,8 @@ package biz
 
 import (
 	"context"
+	"time"
+
 	authv1 "krathub/api/auth/v1"
 	"krathub/internal/conf"
 	"krathub/internal/data/model"
@@ -9,7 +11,17 @@ import (
 	jwtpkg "krathub/pkg/jwt"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/golang-jwt/jwt/v5"
 )
+
+// UserClaims defines the custom claims for the JWT.
+// It embeds jwt.RegisteredClaims to include standard JWT fields.
+type UserClaims struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+	Role string `json:"role"`
+	jwt.RegisteredClaims
+}
 
 // AuthRepo 统一的认证仓库接口，包含数据库和 grpc 操作
 type AuthRepo interface {
@@ -26,22 +38,22 @@ type AuthUsecase struct {
 	repo            AuthRepo
 	log             *log.Helper
 	cfg             *conf.App
-	adminRegistered bool        // 是否已经注册了 admin 用户
-	jwt             *jwtpkg.JWT // 新增 jwt 字段
+	adminRegistered bool                    // 是否已经注册了 admin 用户
+	jwt             *jwtpkg.JWT[UserClaims] // Use the generic JWT with UserClaims
 }
 
 // NewAuthUsecase new an auth usecase.
 func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
+	// Instantiate the JWT service with the specific UserClaims type.
+	jwtService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
+		SecretKey: cfg.Jwt.SecretKey,
+	})
+
 	uc := &AuthUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
 		cfg:  cfg,
-		jwt: jwtpkg.NewJWT(&jwtpkg.Config{
-			SecretKey: cfg.Jwt.SecretKey,
-			Expire:    cfg.Jwt.Expire,
-			Audience:  cfg.Jwt.Audience,
-			Issuer:    cfg.Jwt.Issuer,
-		}),
+		jwt:  jwtService,
 	}
 	// 初始化 adminRegistered
 	admins, err := repo.ListUserByUserName(context.Background(), "admin")
@@ -90,8 +102,8 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*mo
 }
 
 // generateToken 签发 JWT token
-func (uc *AuthUsecase) generateToken(id int64, name, role string) (string, error) {
-	return uc.jwt.GenerateToken(id, name, role)
+func (uc *AuthUsecase) generateToken(claims *UserClaims) (string, error) {
+	return uc.jwt.GenerateToken(claims)
 }
 
 // LoginByEmailPassword 邮箱密码登录
@@ -108,7 +120,20 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 		return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 	}
 	// 登录成功，签发 token
-	token, err = uc.generateToken(users[0].ID, users[0].Name, users[0].Role)
+	expirationTime := time.Duration(uc.cfg.Jwt.Expire) * time.Hour
+	claims := &UserClaims{
+		ID:   users[0].ID,
+		Name: users[0].Name,
+		Role: users[0].Role,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Audience:  jwt.ClaimStrings{uc.cfg.Jwt.Audience},
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expirationTime)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Issuer:    uc.cfg.Jwt.Issuer,
+		},
+	}
+
+	token, err = uc.generateToken(claims)
 	if err != nil {
 		return "", authv1.ErrorTokenGenerationFailed("failed to generate token: %v", err)
 	}

@@ -37,7 +37,7 @@ func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, authRepo Au
 
 func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*model.User, error) {
 	// 从context中获取当前登录用户信息
-	claims, ok := jwt.FromContext(ctx)
+	claims, ok := jwt.FromContext[UserClaims](ctx)
 	if !ok {
 		return nil, authv1.ErrorUnauthorized("user not authenticated")
 	}

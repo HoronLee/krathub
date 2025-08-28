@@ -12,7 +12,7 @@ require (
 	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20250527152916-d6f5f00cf562
 	github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-00010101000000-000000000000
 	github.com/go-kratos/kratos/v2 v2.8.4
-	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang-jwt/jwt/v5 v5.1.0
 	github.com/google/wire v0.6.0
 	github.com/hashicorp/consul/api v1.32.1
 	github.com/nacos-group/nacos-sdk-go v1.0.9
