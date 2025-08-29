@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"krathub/internal/data/model"
+	"github.com/horonlee/krathub/internal/data/model"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {

@@ -629,8 +629,8 @@ const file_api_user_v1_user_proto_rawDesc = "" +
 	"UpdateUser\x12\".krathub.user.v1.UpdateUserRequest\x1a .krathub.user.v1.UpdateUserReply\"!\xdaA\x04user\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12m\n" +
 	"\bSaveUser\x12 .krathub.user.v1.SaveUserRequest\x1a\x1e.krathub.user.v1.SaveUserReply\"\x1f\xdaA\x04user\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12u\n" +
 	"\n" +
-	"DeleteUser\x12\".krathub.user.v1.DeleteUserRequest\x1a .krathub.user.v1.DeleteUserReply\"!\xdaA\x02id\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}BD\n" +
-	"\x17dev.krathub.api.user.v1B\vUserProtoV1P\x01Z\x1akrathub/api/v1/user;userv1b\x06proto3"
+	"DeleteUser\x12\".krathub.user.v1.DeleteUserRequest\x1a .krathub.user.v1.DeleteUserReply\"!\xdaA\x02id\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}BX\n" +
+	"\x17dev.krathub.api.user.v1B\vUserProtoV1P\x01Z.github.com/horonlee/krathub/api/v1/user;userv1b\x06proto3"
 
 var (
 	file_api_user_v1_user_proto_rawDescOnce sync.Once

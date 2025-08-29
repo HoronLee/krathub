@@ -2,8 +2,8 @@ package server
 
 import (
 	"crypto/tls"
-	"krathub/internal/conf"
-	mw "krathub/internal/server/middleware"
+	"github.com/horonlee/krathub/internal/conf"
+	mw "github.com/horonlee/krathub/internal/server/middleware"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"

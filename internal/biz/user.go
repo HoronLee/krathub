@@ -2,11 +2,11 @@ package biz
 
 import (
 	"context"
-	authv1 "krathub/api/auth/v1"
-	userv1 "krathub/api/user/v1"
-	"krathub/internal/conf"
-	"krathub/internal/data/model"
-	"krathub/pkg/jwt"
+	authv1 "github.com/horonlee/krathub/api/auth/v1"
+	userv1 "github.com/horonlee/krathub/api/user/v1"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/data/model"
+	"github.com/horonlee/krathub/pkg/jwt"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

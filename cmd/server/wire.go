@@ -6,12 +6,12 @@
 package main
 
 import (
-	"krathub/internal/biz"
-	"krathub/internal/client"
-	"krathub/internal/conf"
-	"krathub/internal/data"
-	"krathub/internal/server"
-	"krathub/internal/service"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/client"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/data"
+	"github.com/horonlee/krathub/internal/server"
+	"github.com/horonlee/krathub/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

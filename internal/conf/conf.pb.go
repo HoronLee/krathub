@@ -2332,7 +2332,7 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\atimeout\x18\b \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\b\n" +
 	"\x06config\"#\n" +
 	"\x05Trace\x12\x1a\n" +
-	"\bendpoint\x18\x01 \x01(\tR\bendpointB\x1cZ\x1akrathub/internal/conf;confb\x06proto3"
+	"\bendpoint\x18\x01 \x01(\tR\bendpointB0Z.github.com/horonlee/krathub/internal/conf;confb\x06proto3"
 
 var (
 	file_conf_conf_proto_rawDescOnce sync.Once

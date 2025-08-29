@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"fmt"
-	authv1 "krathub/api/auth/v1"
-	"krathub/internal/biz"
-	"krathub/internal/data/model"
+	authv1 "github.com/horonlee/krathub/api/auth/v1"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/data/model"
 
 	"github.com/fatedier/golib/log"
 )

@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"context"
-	authV1 "krathub/api/auth/v1"
-	"krathub/internal/biz"
-	"krathub/internal/consts"
-	"krathub/pkg/jwt"
+	authV1 "github.com/horonlee/krathub/api/auth/v1"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/consts"
+	"github.com/horonlee/krathub/pkg/jwt"
 	"strings"
 
 	"github.com/go-kratos/kratos/v2/middleware"

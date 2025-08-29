@@ -24,7 +24,7 @@ cd helloworld
 kratos new app/user --nomod -r https://github.com/HoronLee/krathub.git
 ```
 
-使用大仓模式会启用远程proto仓库，如单仓下的import为`authv1 "krathub/api/auth/v1"`，但是使用大仓模式初始化的项目会变为具体的url`authv1  "github.com/ExampleUser/projectName/api/auth/v1"`
+使用大仓模式会启用远程proto仓库，如单仓下的import为`authv1 "github.com/horonlee/krathub/api/auth/v1"`，但是使用大仓模式初始化的项目会变为具体的url`authv1  "github.com/ExampleUser/projectName/api/auth/v1"`
 也就是说大仓模式下需要将proto文件全部放在仓库的根目录的api文件下！
 
 ## 开发须知

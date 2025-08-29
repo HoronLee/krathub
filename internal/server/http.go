@@ -3,12 +3,12 @@ package server
 import (
 	"crypto/tls"
 
-	authV1 "krathub/api/auth/v1"
-	userV1 "krathub/api/user/v1"
-	"krathub/internal/conf"
-	"krathub/internal/consts"
-	mw "krathub/internal/server/middleware"
-	"krathub/internal/service"
+	authV1 "github.com/horonlee/krathub/api/auth/v1"
+	userV1 "github.com/horonlee/krathub/api/user/v1"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/consts"
+	mw "github.com/horonlee/krathub/internal/server/middleware"
+	"github.com/horonlee/krathub/internal/service"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"

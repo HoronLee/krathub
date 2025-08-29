@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"flag"
-	"krathub/internal/conf"
-	"krathub/pkg/logger"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/pkg/logger"
 	"os"
 	"strings"
 

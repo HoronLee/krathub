@@ -2,9 +2,9 @@ package data
 
 import (
 	"context"
-	"krathub/internal/biz"
-	"krathub/internal/data/model"
-	"krathub/pkg/hash"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/data/model"
+	"github.com/horonlee/krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

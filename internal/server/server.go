@@ -1,7 +1,7 @@
 package server
 
 import (
-	"krathub/internal/server/middleware"
+	"github.com/horonlee/krathub/internal/server/middleware"
 
 	"github.com/google/wire"
 )

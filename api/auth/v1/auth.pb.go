@@ -470,8 +470,8 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\x04Auth\x12e\n" +
 	"\x05Hello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1e.krathub.auth.v1.HelloResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/v1/auth/HelloTest\x12\x83\x01\n" +
 	"\rSignupByEmail\x12%.krathub.auth.v1.SignupByEmailRequest\x1a#.krathub.auth.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12\xa0\x01\n" +
-	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBD\n" +
-	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z\x1akrathub/api/v1/auth;authv1b\x06proto3"
+	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBX\n" +
+	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z.github.com/horonlee/krathub/api/v1/auth;authv1b\x06proto3"
 
 var (
 	file_api_auth_v1_auth_proto_rawDescOnce sync.Once

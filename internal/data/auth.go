@@ -2,10 +2,10 @@ package data
 
 import (
 	"context"
-	hellov1 "krathub/api/hello/v1"
-	"krathub/internal/biz"
-	"krathub/internal/data/model"
-	"krathub/pkg/hash"
+	hellov1 "github.com/horonlee/krathub/api/hello/v1"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/data/model"
+	"github.com/horonlee/krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

@@ -1,6 +1,6 @@
 package middleware
 
-import "krathub/internal/conf"
+import "github.com/horonlee/krathub/internal/conf"
 
 // MiddlewareManager 中间件管理器
 type MiddlewareManager struct {

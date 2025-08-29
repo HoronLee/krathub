@@ -1,4 +1,4 @@
-module krathub
+module github.com/horonlee/krathub
 
 go 1.24.0
 

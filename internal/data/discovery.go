@@ -1,8 +1,8 @@
 package data
 
 import (
-	"krathub/internal/conf"
-	"krathub/pkg/discovery"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/pkg/discovery"
 
 	kratosRegistry "github.com/go-kratos/kratos/v2/registry"
 )
