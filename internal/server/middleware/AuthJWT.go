@@ -62,7 +62,7 @@ func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware 
 			}
 
 			// 将用户claims存入context
-			ctx = jwt.NewContext[biz.UserClaims](ctx, claims)
+			ctx = jwt.NewContext(ctx, claims)
 
 			return handler(ctx, req)
 		}
