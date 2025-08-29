@@ -15,6 +15,7 @@ message Bootstrap {
   Config config = 6;
   Trace trace = 7;
   Client client = 8; // 新增客户端配置
+  Metrics metrics = 9;
 }
 
 // 可复用的 TLS 配置
@@ -212,4 +213,13 @@ message Config {
 // 链路追踪配置
 message Trace {
   string endpoint = 1;
+}
+
+// Metrics 配置
+message Metrics {
+  message Prometheus {
+    string addr = 1; // Prometheus 地址
+  }
+  Prometheus prometheus = 1;
+  string meter_name = 2; // Meter 名称
 }

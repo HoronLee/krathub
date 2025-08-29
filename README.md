@@ -173,4 +173,11 @@ config:
 trace:
   # 使用 Jaeger 作为链路追踪
   endpoint: otlp.jaeger.r430.com:30080
+# 监控配置
+metrics:
+    # 当前只支持Prometheus
+    prometheus:
+        addr: ":8000"
+    meterName: "krathub"
+
 ```
