@@ -15,6 +15,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
+	"github.com/go-kratos/kratos/v2/middleware/ratelimit"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
@@ -27,6 +28,7 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(logger),
+		ratelimit.Server(),
 		validate.ProtoValidate(),
 		// 登录等无需鉴权接口
 		selector.Server(mM.Auth(consts.UserRole(0))).
