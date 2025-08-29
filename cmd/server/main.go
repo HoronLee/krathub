@@ -32,7 +32,8 @@ var (
 	// flagconf is the config flag.
 	flagconf string
 	// id is the id of the instance.
-	id, _    = os.Hostname()
+	id, _ = os.Hostname()
+	// Metadata is the service metadata.
 	Metadata map[string]string
 )
 
