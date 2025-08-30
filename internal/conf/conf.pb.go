@@ -774,7 +774,7 @@ func (x *Trace) GetEndpoint() string {
 // Metrics 配置
 type Metrics struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Prometheus    *Metrics_Prometheus    `protobuf:"bytes,1,opt,name=prometheus,proto3" json:"prometheus,omitempty"`
+	Enable        bool                   `protobuf:"varint,1,opt,name=enable,proto3" json:"enable,omitempty"`                       // 是否开启
 	MeterName     string                 `protobuf:"bytes,2,opt,name=meter_name,json=meterName,proto3" json:"meter_name,omitempty"` // Meter 名称
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -810,11 +810,11 @@ func (*Metrics) Descriptor() ([]byte, []int) {
 	return file_conf_conf_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *Metrics) GetPrometheus() *Metrics_Prometheus {
+func (x *Metrics) GetEnable() bool {
 	if x != nil {
-		return x.Prometheus
+		return x.Enable
 	}
-	return nil
+	return false
 }
 
 func (x *Metrics) GetMeterName() string {
@@ -2220,50 +2220,6 @@ func (x *Config_Nacos) GetTimeout() *durationpb.Duration {
 	return nil
 }
 
-type Metrics_Prometheus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"` // Prometheus 地址
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Metrics_Prometheus) Reset() {
-	*x = Metrics_Prometheus{}
-	mi := &file_conf_conf_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Metrics_Prometheus) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Metrics_Prometheus) ProtoMessage() {}
-
-func (x *Metrics_Prometheus) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_conf_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Metrics_Prometheus.ProtoReflect.Descriptor instead.
-func (*Metrics_Prometheus) Descriptor() ([]byte, []int) {
-	return file_conf_conf_proto_rawDescGZIP(), []int{10, 0}
-}
-
-func (x *Metrics_Prometheus) GetAddr() string {
-	if x != nil {
-		return x.Addr
-	}
-	return ""
-}
-
 var File_conf_conf_proto protoreflect.FileDescriptor
 
 const file_conf_conf_proto_rawDesc = "" +
@@ -2438,16 +2394,11 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\atimeout\x18\b \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\b\n" +
 	"\x06config\"#\n" +
 	"\x05Trace\x12\x1a\n" +
-	"\bendpoint\x18\x01 \x01(\tR\bendpoint\"\x8a\x01\n" +
-	"\aMetrics\x12>\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\"@\n" +
+	"\aMetrics\x12\x16\n" +
+	"\x06enable\x18\x01 \x01(\bR\x06enable\x12\x1d\n" +
 	"\n" +
-	"prometheus\x18\x01 \x01(\v2\x1e.kratos.api.Metrics.PrometheusR\n" +
-	"prometheus\x12\x1d\n" +
-	"\n" +
-	"meter_name\x18\x02 \x01(\tR\tmeterName\x1a \n" +
-	"\n" +
-	"Prometheus\x12\x12\n" +
-	"\x04addr\x18\x01 \x01(\tR\x04addrB0Z.github.com/horonlee/krathub/internal/conf;confb\x06proto3"
+	"meter_name\x18\x02 \x01(\tR\tmeterNameB0Z.github.com/horonlee/krathub/internal/conf;confb\x06proto3"
 
 var (
 	file_conf_conf_proto_rawDescOnce sync.Once
@@ -2461,7 +2412,7 @@ func file_conf_conf_proto_rawDescGZIP() []byte {
 	return file_conf_conf_proto_rawDescData
 }
 
-var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
+var file_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_conf_conf_proto_goTypes = []any{
 	(*Bootstrap)(nil),           // 0: kratos.api.Bootstrap
 	(*TLSConfig)(nil),           // 1: kratos.api.TLSConfig
@@ -2495,8 +2446,7 @@ var file_conf_conf_proto_goTypes = []any{
 	(*Config_Consul)(nil),       // 29: kratos.api.Config.Consul
 	(*Config_Etcd)(nil),         // 30: kratos.api.Config.Etcd
 	(*Config_Nacos)(nil),        // 31: kratos.api.Config.Nacos
-	(*Metrics_Prometheus)(nil),  // 32: kratos.api.Metrics.Prometheus
-	(*durationpb.Duration)(nil), // 33: google.protobuf.Duration
+	(*durationpb.Duration)(nil), // 32: google.protobuf.Duration
 }
 var file_conf_conf_proto_depIdxs = []int32{
 	2,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
@@ -2526,33 +2476,32 @@ var file_conf_conf_proto_depIdxs = []int32{
 	29, // 24: kratos.api.Config.consul:type_name -> kratos.api.Config.Consul
 	30, // 25: kratos.api.Config.etcd:type_name -> kratos.api.Config.Etcd
 	31, // 26: kratos.api.Config.nacos:type_name -> kratos.api.Config.Nacos
-	32, // 27: kratos.api.Metrics.prometheus:type_name -> kratos.api.Metrics.Prometheus
-	33, // 28: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	1,  // 29: kratos.api.Server.HTTP.tls:type_name -> kratos.api.TLSConfig
-	33, // 30: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	1,  // 31: kratos.api.Server.GRPC.tls:type_name -> kratos.api.TLSConfig
-	1,  // 32: kratos.api.Client.GRPC.tls:type_name -> kratos.api.TLSConfig
-	13, // 33: kratos.api.Client.GrpcEntry.value:type_name -> kratos.api.Client.GRPC
-	33, // 34: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	33, // 35: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	19, // 36: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
-	18, // 37: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
-	33, // 38: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
-	33, // 39: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
-	33, // 40: kratos.api.Registry.Consul.timeout:type_name -> google.protobuf.Duration
-	33, // 41: kratos.api.Registry.Etcd.timeout:type_name -> google.protobuf.Duration
-	33, // 42: kratos.api.Registry.Nacos.timeout:type_name -> google.protobuf.Duration
-	33, // 43: kratos.api.Discovery.Consul.timeout:type_name -> google.protobuf.Duration
-	33, // 44: kratos.api.Discovery.Etcd.timeout:type_name -> google.protobuf.Duration
-	33, // 45: kratos.api.Discovery.Nacos.timeout:type_name -> google.protobuf.Duration
-	33, // 46: kratos.api.Config.Consul.timeout:type_name -> google.protobuf.Duration
-	33, // 47: kratos.api.Config.Etcd.timeout:type_name -> google.protobuf.Duration
-	33, // 48: kratos.api.Config.Nacos.timeout:type_name -> google.protobuf.Duration
-	49, // [49:49] is the sub-list for method output_type
-	49, // [49:49] is the sub-list for method input_type
-	49, // [49:49] is the sub-list for extension type_name
-	49, // [49:49] is the sub-list for extension extendee
-	0,  // [0:49] is the sub-list for field type_name
+	32, // 27: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	1,  // 28: kratos.api.Server.HTTP.tls:type_name -> kratos.api.TLSConfig
+	32, // 29: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	1,  // 30: kratos.api.Server.GRPC.tls:type_name -> kratos.api.TLSConfig
+	1,  // 31: kratos.api.Client.GRPC.tls:type_name -> kratos.api.TLSConfig
+	13, // 32: kratos.api.Client.GrpcEntry.value:type_name -> kratos.api.Client.GRPC
+	32, // 33: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	32, // 34: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	19, // 35: kratos.api.Data.Client.grpc:type_name -> kratos.api.Data.Client.GRPC
+	18, // 36: kratos.api.Data.Client.http:type_name -> kratos.api.Data.Client.HTTP
+	32, // 37: kratos.api.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	32, // 38: kratos.api.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	32, // 39: kratos.api.Registry.Consul.timeout:type_name -> google.protobuf.Duration
+	32, // 40: kratos.api.Registry.Etcd.timeout:type_name -> google.protobuf.Duration
+	32, // 41: kratos.api.Registry.Nacos.timeout:type_name -> google.protobuf.Duration
+	32, // 42: kratos.api.Discovery.Consul.timeout:type_name -> google.protobuf.Duration
+	32, // 43: kratos.api.Discovery.Etcd.timeout:type_name -> google.protobuf.Duration
+	32, // 44: kratos.api.Discovery.Nacos.timeout:type_name -> google.protobuf.Duration
+	32, // 45: kratos.api.Config.Consul.timeout:type_name -> google.protobuf.Duration
+	32, // 46: kratos.api.Config.Etcd.timeout:type_name -> google.protobuf.Duration
+	32, // 47: kratos.api.Config.Nacos.timeout:type_name -> google.protobuf.Duration
+	48, // [48:48] is the sub-list for method output_type
+	48, // [48:48] is the sub-list for method input_type
+	48, // [48:48] is the sub-list for extension type_name
+	48, // [48:48] is the sub-list for extension extendee
+	0,  // [0:48] is the sub-list for field type_name
 }
 
 func init() { file_conf_conf_proto_init() }
@@ -2581,7 +2530,7 @@ func file_conf_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_conf_proto_rawDesc), len(file_conf_conf_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   33,
+			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

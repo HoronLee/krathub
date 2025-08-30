@@ -21,7 +21,7 @@ type Metrics struct {
 
 // NewMetrics initializes metrics.
 func NewMetrics(c *conf.Metrics, logger log.Logger) (*Metrics, error) {
-	if c == nil || c.GetPrometheus() == nil || c.GetPrometheus().GetAddr() == "" {
+	if c == nil || !c.Enable {
 		log.NewHelper(logger).Info("metrics config is empty, skip metrics init")
 		return nil, nil
 	}
