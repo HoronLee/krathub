@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"flag"
+
 	"github.com/horonlee/krathub/internal/conf"
-	
-	"github.com/horonlee/krathub/pkg/logger"
+
 	"os"
 	"strings"
+
+	"github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
