@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	hellov1 "github.com/horonlee/krathub/api/hello/v1"
 	"github.com/horonlee/krathub/internal/biz"
 	"github.com/horonlee/krathub/internal/data/model"
@@ -59,6 +60,7 @@ func (r *authRepo) ListUserByEmail(ctx context.Context, email string) ([]*model.
 
 // Grpc 操作方法
 
+// Hello 负责调用 hello 服务的 SayHello 方法
 func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
