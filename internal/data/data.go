@@ -2,11 +2,12 @@ package data
 
 import (
 	"errors"
+	"strings"
+
 	"github.com/horonlee/krathub/internal/client"
 	"github.com/horonlee/krathub/internal/conf"
 	"github.com/horonlee/krathub/internal/data/query"
 	"github.com/horonlee/krathub/pkg/logger"
-	"strings"
 
 	"github.com/glebarez/sqlite"
 	"github.com/go-kratos/kratos/v2/log"
@@ -16,14 +17,13 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewDiscovery, NewRedisClient, NewDB, NewData, NewAuthRepo, NewUserRepo)
+var ProviderSet = wire.NewSet(NewDiscovery, NewDB, NewData, NewAuthRepo, NewUserRepo)
 
 // Data .
 type Data struct {
 	query         *query.Query
 	log           *log.Helper
 	clientFactory client.ClientFactory
-	rc            *RedisClient
 }
 
 // NewData .
@@ -37,7 +37,6 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, clientFactory client.
 		query:         query.Q,
 		log:           log.NewHelper(logger),
 		clientFactory: clientFactory,
-		rc:            NewRedisClient(c),
 	}, cleanup, nil
 }
 
