@@ -104,11 +104,13 @@ func (ErrorReason) EnumDescriptor() ([]byte, []int) {
 // 邮箱注册请求
 type SignupByEmailRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // 用户名最小长度5
+	// 用户名最小长度5
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// 密码最小长度5，最大长度10
-	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"` // 确认密码最小长度5，最大长度10
-	Email           string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`                                            // 邮箱格式验证
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	// 确认密码最小长度5，最大长度10
+	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	Email           string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"` // 邮箱格式验证
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
