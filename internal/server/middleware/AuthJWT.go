@@ -2,11 +2,12 @@ package middleware
 
 import (
 	"context"
-	authV1 "krathub/api/auth/v1"
-	"krathub/internal/biz"
-	"krathub/internal/consts"
-	"krathub/pkg/jwt"
 	"strings"
+
+	authV1 "github.com/horonlee/krathub/api/auth/v1"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/consts"
+	"github.com/horonlee/krathub/pkg/jwt"
 
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport"
@@ -37,7 +38,7 @@ func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware 
 			jwtInstance := jwt.NewJWT[biz.UserClaims](&jwt.Config{
 				SecretKey: m.appConf.Jwt.SecretKey,
 			})
-			claims, err := jwtInstance.AnalyseToken(tokenString)
+			claims, err := jwtInstance.ParseToken(tokenString)
 			if err != nil {
 				return nil, authV1.ErrorUnauthorized("invalid token: %v", err)
 			}

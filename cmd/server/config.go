@@ -1,8 +1,8 @@
 package main
 
 import (
-	"krathub/internal/conf"
-	cC "krathub/pkg/configCenter"
+	"github.com/horonlee/krathub/internal/conf"
+	cC "github.com/horonlee/krathub/pkg/configCenter"
 
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/env"

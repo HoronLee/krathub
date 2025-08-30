@@ -1,8 +1,8 @@
 package server
 
 import (
-	"krathub/internal/conf"
-	"krathub/pkg/registry"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/pkg/registry"
 
 	kr "github.com/go-kratos/kratos/v2/registry"
 )

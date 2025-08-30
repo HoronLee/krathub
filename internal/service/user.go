@@ -3,12 +3,12 @@ package service
 import (
 	"context"
 	"fmt"
-	authv1 "krathub/api/auth/v1"
-	userv1 "krathub/api/user/v1"
+	authv1 "github.com/horonlee/krathub/api/auth/v1"
+	userv1 "github.com/horonlee/krathub/api/user/v1"
 
-	"krathub/internal/biz"
-	"krathub/internal/consts"
-	"krathub/internal/data/model"
+	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/consts"
+	"github.com/horonlee/krathub/internal/data/model"
 )
 
 type UserService struct {

@@ -2,12 +2,16 @@ package server
 
 import (
 	"crypto/tls"
-	"krathub/internal/conf"
-	mw "krathub/internal/server/middleware"
 
+	"github.com/horonlee/krathub/internal/conf"
+	mw "github.com/horonlee/krathub/internal/server/middleware"
+
+	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
+	"github.com/go-kratos/kratos/v2/middleware/metrics"
+	"github.com/go-kratos/kratos/v2/middleware/ratelimit"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
@@ -16,15 +20,25 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger) *grpc.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(logger),
+		ratelimit.Server(),
+		validate.ProtoValidate(),
 	}
 	// 开启链路追踪
 	if trace != nil && trace.Endpoint != "" {
 		mds = append(mds, tracing.Server())
+	}
+
+	// 开启 metrics
+	if m != nil {
+		mds = append(mds, metrics.Server(
+			metrics.WithSeconds(m.Seconds),
+			metrics.WithRequests(m.Requests),
+		))
 	}
 
 	var opts = []grpc.ServerOption{
@@ -51,5 +65,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	}
 
 	srv := grpc.NewServer(opts...)
+	// 注册服务
 	return srv
 }

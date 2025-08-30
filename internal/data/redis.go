@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/conf"
 
 	"github.com/go-redis/redis/v8"
 )

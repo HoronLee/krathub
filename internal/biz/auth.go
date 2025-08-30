@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	authv1 "krathub/api/auth/v1"
-	"krathub/internal/conf"
-	"krathub/internal/data/model"
-	"krathub/pkg/hash"
-	jwtpkg "krathub/pkg/jwt"
+	authv1 "github.com/horonlee/krathub/api/auth/v1"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/data/model"
+	"github.com/horonlee/krathub/pkg/hash"
+	jwtpkg "github.com/horonlee/krathub/pkg/jwt"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt/v5"

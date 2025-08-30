@@ -104,11 +104,13 @@ func (ErrorReason) EnumDescriptor() ([]byte, []int) {
 // 邮箱注册请求
 type SignupByEmailRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // 用户名最小长度5
+	// 用户名最小长度5
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// 密码最小长度5，最大长度10
-	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"` // 确认密码最小长度5，最大长度10
-	Email           string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`                                            // 邮箱格式验证
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	// 确认密码最小长度5，最大长度10
+	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	Email           string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"` // 邮箱格式验证
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -470,8 +472,8 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\x04Auth\x12e\n" +
 	"\x05Hello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1e.krathub.auth.v1.HelloResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/v1/auth/HelloTest\x12\x83\x01\n" +
 	"\rSignupByEmail\x12%.krathub.auth.v1.SignupByEmailRequest\x1a#.krathub.auth.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12\xa0\x01\n" +
-	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBD\n" +
-	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z\x1akrathub/api/v1/auth;authv1b\x06proto3"
+	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBX\n" +
+	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z.github.com/horonlee/krathub/api/v1/auth;authv1b\x06proto3"
 
 var (
 	file_api_auth_v1_auth_proto_rawDescOnce sync.Once

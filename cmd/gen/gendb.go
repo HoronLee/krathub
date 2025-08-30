@@ -4,7 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/conf"
 	"strings"
 
 	"github.com/glebarez/sqlite"

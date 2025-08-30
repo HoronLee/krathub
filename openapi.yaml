@@ -171,11 +171,13 @@ components:
             properties:
                 name:
                     type: string
+                    description: 用户名最小长度5
                 password:
                     type: string
                     description: 密码最小长度5，最大长度10
                 passwordConfirm:
                     type: string
+                    description: 确认密码最小长度5，最大长度10
                 email:
                     type: string
             description: 邮箱注册请求

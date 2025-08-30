@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"flag"
-	"krathub/internal/conf"
-	"krathub/pkg/logger"
+	"github.com/horonlee/krathub/internal/conf"
+	
+	"github.com/horonlee/krathub/pkg/logger"
 	"os"
 	"strings"
 
@@ -93,6 +94,17 @@ func main() {
 	}
 	defer c.Close()
 
+	// 初始化日志
+	log := logger.NewLogger(&logger.Config{
+		Env:        bc.App.Env,
+		Level:      bc.App.Log.Level,
+		Filename:   bc.App.Log.Filename,
+		MaxSize:    bc.App.Log.MaxSize,
+		MaxBackups: bc.App.Log.MaxBackups,
+		MaxAge:     bc.App.Log.MaxAge,
+		Compress:   bc.App.Log.Compress,
+	})
+
 	// 初始化链路追踪
 	if err := initTracerProvider(bc.Trace); err != nil {
 		panic(err)
@@ -114,19 +126,8 @@ func main() {
 		}
 	}
 
-	// 初始化日志
-	log := logger.NewLogger(&logger.Config{
-		Env:        bc.App.Env,
-		Level:      bc.App.Log.Level,
-		Filename:   bc.App.Log.Filename,
-		MaxSize:    bc.App.Log.MaxSize,
-		MaxBackups: bc.App.Log.MaxBackups,
-		MaxAge:     bc.App.Log.MaxAge,
-		Compress:   bc.App.Log.Compress,
-	})
-
 	// 初始化服务
-	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, log)
+	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, bc.Metrics, log)
 	if err != nil {
 		panic(err)
 	}

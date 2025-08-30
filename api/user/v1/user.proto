@@ -7,7 +7,7 @@ import "buf/validate/validate.proto";
 import "errors/errors.proto";
 import "google/api/client.proto";
 
-option go_package = "krathub/api/v1/user;userv1";
+option go_package = "github.com/horonlee/krathub/api/v1/user;userv1";
 option java_multiple_files = true;
 option java_package = "dev.krathub.api.user.v1";
 option java_outer_classname = "UserProtoV1";

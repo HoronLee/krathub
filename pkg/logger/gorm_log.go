@@ -3,7 +3,7 @@ package logger
 import (
 	"context"
 	"errors"
-	"krathub/pkg/helpers"
+	"github.com/horonlee/krathub/pkg/helpers"
 	"path/filepath"
 	"runtime"
 	"strings"

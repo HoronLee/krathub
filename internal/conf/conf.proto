@@ -1,7 +1,7 @@
 syntax = "proto3";
 package kratos.api;
 
-option go_package = "krathub/internal/conf;conf";
+option go_package = "github.com/horonlee/krathub/internal/conf;conf";
 
 import "google/protobuf/duration.proto";
 
@@ -15,6 +15,7 @@ message Bootstrap {
   Config config = 6;
   Trace trace = 7;
   Client client = 8; // 新增客户端配置
+  Metrics metrics = 9;
 }
 
 // 可复用的 TLS 配置
@@ -212,4 +213,10 @@ message Config {
 // 链路追踪配置
 message Trace {
   string endpoint = 1;
+}
+
+// Metrics 配置
+message Metrics {
+  bool enable = 1; // 是否开启
+  string meter_name = 2; // Meter 名称
 }

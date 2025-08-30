@@ -2,10 +2,10 @@ package data
 
 import (
 	"errors"
-	"krathub/internal/client"
-	"krathub/internal/conf"
-	"krathub/internal/data/query"
-	"krathub/pkg/logger"
+	"github.com/horonlee/krathub/internal/client"
+	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/internal/data/query"
+	"github.com/horonlee/krathub/pkg/logger"
 	"strings"
 
 	"github.com/glebarez/sqlite"
