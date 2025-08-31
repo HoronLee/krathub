@@ -31,7 +31,7 @@ type AuthHTTPServer interface {
 
 func RegisterAuthHTTPServer(s *http.Server, srv AuthHTTPServer) {
 	r := s.Route("/")
-	r.POST("/v1/auth/HelloTest", _Auth_Hello0_HTTP_Handler(srv))
+	r.POST("/CallHello/Hello", _Auth_Hello0_HTTP_Handler(srv))
 	r.POST("/v1/auth/signup/using-email", _Auth_SignupByEmail0_HTTP_Handler(srv))
 	r.POST("/v1/auth/login/using-email-password", _Auth_LoginByEmailPassword0_HTTP_Handler(srv))
 }
@@ -118,7 +118,7 @@ func NewAuthHTTPClient(client *http.Client) AuthHTTPClient {
 
 func (c *AuthHTTPClientImpl) Hello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloResponse, error) {
 	var out HelloResponse
-	pattern := "/v1/auth/HelloTest"
+	pattern := "/CallHello/Hello"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAuthHello))
 	opts = append(opts, http.PathTemplate(pattern))

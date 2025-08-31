@@ -4,9 +4,9 @@
 // versions:
 // 	protoc-gen-go v1.36.8
 // 	protoc        v6.32.0
-// source: api/hello/v1/hello.proto
+// source: api/sayhello/v1/sayhello.proto
 
-package hellov1
+package sayhellov1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 消息定义
+// HelloRequest 是 Hello 服务的请求消息
 type HelloRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Greeting      *string                `protobuf:"bytes,1,opt,name=greeting,proto3,oneof" json:"greeting,omitempty"`
@@ -33,7 +33,7 @@ type HelloRequest struct {
 
 func (x *HelloRequest) Reset() {
 	*x = HelloRequest{}
-	mi := &file_api_hello_v1_hello_proto_msgTypes[0]
+	mi := &file_api_sayhello_v1_sayhello_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *HelloRequest) String() string {
 func (*HelloRequest) ProtoMessage() {}
 
 func (x *HelloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_hello_v1_hello_proto_msgTypes[0]
+	mi := &file_api_sayhello_v1_sayhello_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
 func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return file_api_hello_v1_hello_proto_rawDescGZIP(), []int{0}
+	return file_api_sayhello_v1_sayhello_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *HelloRequest) GetGreeting() string {
@@ -68,7 +68,7 @@ func (x *HelloRequest) GetGreeting() string {
 	return ""
 }
 
-// 响应消息定义
+// HelloResponse 是 Hello 服务的响应消息
 type HelloResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Reply         string                 `protobuf:"bytes,1,opt,name=reply,proto3" json:"reply,omitempty"`
@@ -78,7 +78,7 @@ type HelloResponse struct {
 
 func (x *HelloResponse) Reset() {
 	*x = HelloResponse{}
-	mi := &file_api_hello_v1_hello_proto_msgTypes[1]
+	mi := &file_api_sayhello_v1_sayhello_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -90,7 +90,7 @@ func (x *HelloResponse) String() string {
 func (*HelloResponse) ProtoMessage() {}
 
 func (x *HelloResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_hello_v1_hello_proto_msgTypes[1]
+	mi := &file_api_sayhello_v1_sayhello_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -103,7 +103,7 @@ func (x *HelloResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloResponse.ProtoReflect.Descriptor instead.
 func (*HelloResponse) Descriptor() ([]byte, []int) {
-	return file_api_hello_v1_hello_proto_rawDescGZIP(), []int{1}
+	return file_api_sayhello_v1_sayhello_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *HelloResponse) GetReply() string {
@@ -113,40 +113,40 @@ func (x *HelloResponse) GetReply() string {
 	return ""
 }
 
-var File_api_hello_v1_hello_proto protoreflect.FileDescriptor
+var File_api_sayhello_v1_sayhello_proto protoreflect.FileDescriptor
 
-const file_api_hello_v1_hello_proto_rawDesc = "" +
+const file_api_sayhello_v1_sayhello_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/hello/v1/hello.proto\x12\x05hello\"<\n" +
+	"\x1eapi/sayhello/v1/sayhello.proto\x12\bsayhello\"<\n" +
 	"\fHelloRequest\x12\x1f\n" +
 	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
 	"\t_greeting\"%\n" +
 	"\rHelloResponse\x12\x14\n" +
-	"\x05reply\x18\x01 \x01(\tR\x05reply2E\n" +
-	"\fHelloService\x125\n" +
-	"\bSayHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponseB\\\n" +
-	"\x18dev.krathub.api.hello.v1B\fHelloProtoV1P\x01Z0github.com/horonlee/krathub/api/v1/hello;hellov1b\x06proto3"
+	"\x05reply\x18\x01 \x01(\tR\x05reply2D\n" +
+	"\bSayHello\x128\n" +
+	"\x05Hello\x12\x16.sayhello.HelloRequest\x1a\x17.sayhello.HelloResponseBh\n" +
+	"\x1bdev.krathub.api.sayhello.v1B\x0fSayHelloProtoV1P\x01Z6github.com/horonlee/krathub/api/v1/sayhello;sayhellov1b\x06proto3"
 
 var (
-	file_api_hello_v1_hello_proto_rawDescOnce sync.Once
-	file_api_hello_v1_hello_proto_rawDescData []byte
+	file_api_sayhello_v1_sayhello_proto_rawDescOnce sync.Once
+	file_api_sayhello_v1_sayhello_proto_rawDescData []byte
 )
 
-func file_api_hello_v1_hello_proto_rawDescGZIP() []byte {
-	file_api_hello_v1_hello_proto_rawDescOnce.Do(func() {
-		file_api_hello_v1_hello_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_hello_v1_hello_proto_rawDesc), len(file_api_hello_v1_hello_proto_rawDesc)))
+func file_api_sayhello_v1_sayhello_proto_rawDescGZIP() []byte {
+	file_api_sayhello_v1_sayhello_proto_rawDescOnce.Do(func() {
+		file_api_sayhello_v1_sayhello_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_sayhello_v1_sayhello_proto_rawDesc), len(file_api_sayhello_v1_sayhello_proto_rawDesc)))
 	})
-	return file_api_hello_v1_hello_proto_rawDescData
+	return file_api_sayhello_v1_sayhello_proto_rawDescData
 }
 
-var file_api_hello_v1_hello_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_api_hello_v1_hello_proto_goTypes = []any{
-	(*HelloRequest)(nil),  // 0: hello.HelloRequest
-	(*HelloResponse)(nil), // 1: hello.HelloResponse
+var file_api_sayhello_v1_sayhello_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_sayhello_v1_sayhello_proto_goTypes = []any{
+	(*HelloRequest)(nil),  // 0: sayhello.HelloRequest
+	(*HelloResponse)(nil), // 1: sayhello.HelloResponse
 }
-var file_api_hello_v1_hello_proto_depIdxs = []int32{
-	0, // 0: hello.HelloService.SayHello:input_type -> hello.HelloRequest
-	1, // 1: hello.HelloService.SayHello:output_type -> hello.HelloResponse
+var file_api_sayhello_v1_sayhello_proto_depIdxs = []int32{
+	0, // 0: sayhello.SayHello.Hello:input_type -> sayhello.HelloRequest
+	1, // 1: sayhello.SayHello.Hello:output_type -> sayhello.HelloResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -154,27 +154,27 @@ var file_api_hello_v1_hello_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_api_hello_v1_hello_proto_init() }
-func file_api_hello_v1_hello_proto_init() {
-	if File_api_hello_v1_hello_proto != nil {
+func init() { file_api_sayhello_v1_sayhello_proto_init() }
+func file_api_sayhello_v1_sayhello_proto_init() {
+	if File_api_sayhello_v1_sayhello_proto != nil {
 		return
 	}
-	file_api_hello_v1_hello_proto_msgTypes[0].OneofWrappers = []any{}
+	file_api_sayhello_v1_sayhello_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_hello_v1_hello_proto_rawDesc), len(file_api_hello_v1_hello_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_sayhello_v1_sayhello_proto_rawDesc), len(file_api_sayhello_v1_sayhello_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_hello_v1_hello_proto_goTypes,
-		DependencyIndexes: file_api_hello_v1_hello_proto_depIdxs,
-		MessageInfos:      file_api_hello_v1_hello_proto_msgTypes,
+		GoTypes:           file_api_sayhello_v1_sayhello_proto_goTypes,
+		DependencyIndexes: file_api_sayhello_v1_sayhello_proto_depIdxs,
+		MessageInfos:      file_api_sayhello_v1_sayhello_proto_msgTypes,
 	}.Build()
-	File_api_hello_v1_hello_proto = out.File
-	file_api_hello_v1_hello_proto_goTypes = nil
-	file_api_hello_v1_hello_proto_depIdxs = nil
+	File_api_sayhello_v1_sayhello_proto = out.File
+	file_api_sayhello_v1_sayhello_proto_goTypes = nil
+	file_api_sayhello_v1_sayhello_proto_depIdxs = nil
 }

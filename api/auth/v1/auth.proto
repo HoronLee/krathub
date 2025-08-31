@@ -38,7 +38,7 @@ enum ErrorReason {
 service Auth {
   rpc Hello(HelloRequest) returns (HelloResponse) {
     option (google.api.http) = {
-      post: "/v1/auth/HelloTest"
+      post: "/CallHello/Hello"
       body: "*"
     };
   }
@@ -92,12 +92,12 @@ message LoginByEmailPasswordReply {
   string token = 1;
 }
 
-// 消息定义
+// HelloRequest 是 Hello 服务的请求消息
 message HelloRequest {
-  optional string greeting = 1;
+  optional string req = 1;
 }
 
-// 响应消息定义
+// HelloResponse 是 Hello 服务的响应消息
 message HelloResponse {
-  string reply = 1;
+  string rep = 1;
 }

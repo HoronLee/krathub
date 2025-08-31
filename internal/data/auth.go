@@ -3,7 +3,7 @@ package data
 import (
 	"context"
 
-	hellov1 "github.com/horonlee/krathub/api/hello/v1"
+	sayhellov1 "github.com/horonlee/krathub/api/sayhello/v1"
 	"github.com/horonlee/krathub/internal/biz"
 	"github.com/horonlee/krathub/internal/data/model"
 	"github.com/horonlee/krathub/pkg/hash"
@@ -65,16 +65,16 @@ func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
 	// 直接使用 CreateGrpcConn 方法获取连接
-	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello.service")
+	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello")
 	if err != nil {
 		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err
 	}
 
 	// 使用连接创建客户端
-	helloClient := hellov1.NewHelloServiceClient(conn)
+	helloClient := sayhellov1.NewSayHelloClient(conn)
 
-	ret, err := helloClient.SayHello(ctx, &hellov1.HelloRequest{Greeting: &in})
+	ret, err := helloClient.Hello(ctx, &sayhellov1.HelloRequest{Greeting: &in})
 	if err != nil {
 		r.log.Errorf("Failed to say hello: %v", err)
 		return "", err

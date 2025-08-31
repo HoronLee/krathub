@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+
 	authv1 "github.com/horonlee/krathub/api/auth/v1"
 	"github.com/horonlee/krathub/internal/biz"
 	"github.com/horonlee/krathub/internal/data/model"
@@ -62,14 +63,14 @@ func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.Logi
 
 // SayHello 实现 authv1.AuthServer 接口的 SayHello 方法
 func (s *AuthService) Hello(ctx context.Context, req *authv1.HelloRequest) (*authv1.HelloResponse, error) {
-	log.Debugf("Received SayHello request with greeting: %v", req.Greeting)
+	log.Debugf("Received SayHello request with greeting: %v", req.Req)
 	// 调用 biz 层
-	res, err := s.uc.Hello(ctx, req.Greeting)
+	res, err := s.uc.Hello(ctx, req.Req)
 	if err != nil {
 		return nil, err
 	}
 	// 拼装返回响应
 	return &authv1.HelloResponse{
-		Reply: res,
+		Rep: res,
 	}, nil
 }

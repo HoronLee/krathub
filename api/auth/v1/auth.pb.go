@@ -177,9 +177,9 @@ func (x *SignupByEmailRequest) GetEmail() string {
 type SignupByEmailReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`   // 用户名
-	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // 用户邮箱
-	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // 用户角色
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -244,9 +244,10 @@ func (x *SignupByEmailReply) GetRole() string {
 
 // 密码登录请求
 type LoginByEmailPasswordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	LoginId       string                 `protobuf:"bytes,1,opt,name=login_id,json=loginId,proto3" json:"login_id,omitempty"` // 可以是用户名或邮箱
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 可以是用户名或邮箱
+	LoginId       string `protobuf:"bytes,1,opt,name=login_id,json=loginId,proto3" json:"login_id,omitempty"`
+	Password      string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -340,10 +341,10 @@ func (x *LoginByEmailPasswordReply) GetToken() string {
 	return ""
 }
 
-// 消息定义
+// HelloRequest 是 Hello 服务的请求消息
 type HelloRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Greeting      *string                `protobuf:"bytes,1,opt,name=greeting,proto3,oneof" json:"greeting,omitempty"`
+	Req           *string                `protobuf:"bytes,1,opt,name=req,proto3,oneof" json:"req,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -378,17 +379,17 @@ func (*HelloRequest) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *HelloRequest) GetGreeting() string {
-	if x != nil && x.Greeting != nil {
-		return *x.Greeting
+func (x *HelloRequest) GetReq() string {
+	if x != nil && x.Req != nil {
+		return *x.Req
 	}
 	return ""
 }
 
-// 响应消息定义
+// HelloResponse 是 Hello 服务的响应消息
 type HelloResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reply         string                 `protobuf:"bytes,1,opt,name=reply,proto3" json:"reply,omitempty"`
+	Rep           string                 `protobuf:"bytes,1,opt,name=rep,proto3" json:"rep,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -423,9 +424,9 @@ func (*HelloResponse) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *HelloResponse) GetReply() string {
+func (x *HelloResponse) GetRep() string {
 	if x != nil {
-		return x.Reply
+		return x.Rep
 	}
 	return ""
 }
@@ -452,12 +453,12 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
 	"R\bpassword\"1\n" +
 	"\x19LoginByEmailPasswordReply\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"<\n" +
-	"\fHelloRequest\x12\x1f\n" +
-	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
-	"\t_greeting\"%\n" +
-	"\rHelloResponse\x12\x14\n" +
-	"\x05reply\x18\x01 \x01(\tR\x05reply*\x94\x02\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"-\n" +
+	"\fHelloRequest\x12\x15\n" +
+	"\x03req\x18\x01 \x01(\tH\x00R\x03req\x88\x01\x01B\x06\n" +
+	"\x04_req\"!\n" +
+	"\rHelloResponse\x12\x10\n" +
+	"\x03rep\x18\x01 \x01(\tR\x03rep*\x94\x02\n" +
 	"\vErrorReason\x12\x18\n" +
 	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1d\n" +
 	"\x13USER_ALREADY_EXISTS\x10\x01\x1a\x04\xa8E\x90\x03\x12\x1c\n" +
@@ -468,9 +469,9 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\rTOKEN_EXPIRED\x10\x04\x1a\x04\xa8E\x91\x03\x12\x17\n" +
 	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
 	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
-	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\x96\x03\n" +
-	"\x04Auth\x12e\n" +
-	"\x05Hello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1e.krathub.auth.v1.HelloResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/v1/auth/HelloTest\x12\x83\x01\n" +
+	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032\x94\x03\n" +
+	"\x04Auth\x12c\n" +
+	"\x05Hello\x12\x1d.krathub.auth.v1.HelloRequest\x1a\x1e.krathub.auth.v1.HelloResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/CallHello/Hello\x12\x83\x01\n" +
 	"\rSignupByEmail\x12%.krathub.auth.v1.SignupByEmailRequest\x1a#.krathub.auth.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12\xa0\x01\n" +
 	"\x14LoginByEmailPassword\x12,.krathub.auth.v1.LoginByEmailPasswordRequest\x1a*.krathub.auth.v1.LoginByEmailPasswordReply\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/auth/login/using-email-passwordBX\n" +
 	"\x17dev.krathub.api.auth.v1B\vAuthProtoV1P\x01Z.github.com/horonlee/krathub/api/v1/auth;authv1b\x06proto3"
