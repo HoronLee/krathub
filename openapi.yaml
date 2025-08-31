@@ -3,19 +3,20 @@
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: CallHello API
+    description: CallHello 定义一个简单的 Hello 服务
     version: 0.0.1
 paths:
-    /v1/auth/HelloTest:
+    /CallHello/Hello:
         post:
             tags:
-                - Auth
-            operationId: Auth_Hello
+                - CallHello
+            operationId: CallHello_Hello
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/krathub.auth.v1.HelloRequest'
+                            $ref: '#/components/schemas/krathub.hello.v1.HelloRequest'
                 required: true
             responses:
                 "200":
@@ -23,232 +24,20 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/krathub.auth.v1.HelloResponse'
-    /v1/auth/login/using-email-password:
-        post:
-            tags:
-                - Auth
-            operationId: Auth_LoginByEmailPassword
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/krathub.auth.v1.LoginByEmailPasswordRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.auth.v1.LoginByEmailPasswordReply'
-    /v1/auth/signup/using-email:
-        post:
-            tags:
-                - Auth
-            operationId: Auth_SignupByEmail
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/krathub.auth.v1.SignupByEmailRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.auth.v1.SignupByEmailReply'
-    /v1/user/delete/{id}:
-        delete:
-            tags:
-                - User
-            operationId: User_DeleteUser
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.user.v1.DeleteUserReply'
-    /v1/user/info:
-        get:
-            tags:
-                - User
-            operationId: User_CurrentUserInfo
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.user.v1.CurrentUserInfoReply'
-    /v1/user/save:
-        post:
-            tags:
-                - User
-            operationId: User_SaveUser
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/krathub.user.v1.SaveUserRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.user.v1.SaveUserReply'
-    /v1/user/update:
-        post:
-            tags:
-                - User
-            operationId: User_UpdateUser
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/krathub.user.v1.UpdateUserRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/krathub.user.v1.UpdateUserReply'
+                                $ref: '#/components/schemas/krathub.hello.v1.HelloResponse'
 components:
     schemas:
-        krathub.auth.v1.HelloRequest:
+        krathub.hello.v1.HelloRequest:
             type: object
             properties:
-                greeting:
+                req:
                     type: string
-            description: 消息定义
-        krathub.auth.v1.HelloResponse:
+            description: HelloRequest 是 Hello 服务的请求消息
+        krathub.hello.v1.HelloResponse:
             type: object
             properties:
-                reply:
+                rep:
                     type: string
-            description: 响应消息定义
-        krathub.auth.v1.LoginByEmailPasswordReply:
-            type: object
-            properties:
-                token:
-                    type: string
-            description: 密码登录响应
-        krathub.auth.v1.LoginByEmailPasswordRequest:
-            type: object
-            properties:
-                loginId:
-                    type: string
-                password:
-                    type: string
-            description: 密码登录请求
-        krathub.auth.v1.SignupByEmailReply:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                email:
-                    type: string
-                role:
-                    type: string
-            description: 邮箱注册响应
-        krathub.auth.v1.SignupByEmailRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                    description: 用户名最小长度5
-                password:
-                    type: string
-                    description: 密码最小长度5，最大长度10
-                passwordConfirm:
-                    type: string
-                    description: 确认密码最小长度5，最大长度10
-                email:
-                    type: string
-            description: 邮箱注册请求
-        krathub.user.v1.CurrentUserInfoReply:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                role:
-                    type: string
-        krathub.user.v1.DeleteUserReply:
-            type: object
-            properties:
-                success:
-                    type: boolean
-        krathub.user.v1.SaveUserReply:
-            type: object
-            properties:
-                id:
-                    type: string
-        krathub.user.v1.SaveUserRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                email:
-                    type: string
-                password:
-                    type: string
-                phone:
-                    type: string
-                avatar:
-                    type: string
-                bio:
-                    type: string
-                location:
-                    type: string
-                website:
-                    type: string
-                role:
-                    type: string
-        krathub.user.v1.UpdateUserReply:
-            type: object
-            properties:
-                success:
-                    type: string
-        krathub.user.v1.UpdateUserRequest:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                email:
-                    type: string
-                password:
-                    type: string
-                phone:
-                    type: string
-                avatar:
-                    type: string
-                bio:
-                    type: string
-                location:
-                    type: string
-                website:
-                    type: string
-                role:
-                    type: string
+            description: HelloResponse 是 Hello 服务的响应消息
 tags:
-    - name: Auth
-    - name: User
+    - name: CallHello

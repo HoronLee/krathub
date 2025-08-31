@@ -9,17 +9,17 @@ option java_multiple_files = true;
 option java_package = "dev.krathub.api.hello.v1";
 option java_outer_classname = "HelloProtoV1";
 
-// HelloService 定义
-service HelloService {
-  rpc SayHello(HelloRequest) returns (HelloResponse);
+// SayHello 定义一个简单的 Hello 服务
+service SayHello {
+  rpc Hello(HelloRequest) returns (HelloResponse);
 }
 
-// 消息定义
+// HelloRequest 是 Hello 服务的请求消息
 message HelloRequest {
   optional string greeting = 1;
 }
 
-// 响应消息定义
+// HelloResponse 是 Hello 服务的响应消息
 message HelloResponse {
   string reply = 1;
 }

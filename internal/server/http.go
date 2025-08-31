@@ -3,10 +3,8 @@ package server
 import (
 	"crypto/tls"
 
-	authV1 "github.com/horonlee/krathub/api/auth/v1"
-	userV1 "github.com/horonlee/krathub/api/user/v1"
+	helloV1 "github.com/horonlee/krathub/api/auth/v1"
 	"github.com/horonlee/krathub/internal/conf"
-	"github.com/horonlee/krathub/internal/consts"
 	mw "github.com/horonlee/krathub/internal/server/middleware"
 	"github.com/horonlee/krathub/internal/service"
 
@@ -17,31 +15,18 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	"github.com/go-kratos/kratos/v2/middleware/ratelimit"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService, user *service.UserService, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.HelloService) *http.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(logger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
-		// 登录等无需鉴权接口
-		selector.Server(mM.Auth(consts.UserRole(0))).
-			Prefix("/krathub.auth.v1.Auth/").
-			Build(),
-		// 需要User权限的接口
-		selector.Server(mM.Auth(consts.UserRole(2))).
-			Prefix("/krathub.user.v1.User/").
-			Build(),
-		// 需要Admin权限的接口
-		selector.Server(mM.Auth(consts.UserRole(3))).
-			Path("/krathub.user.v1.User/DeleteUser", "/krathub.user.v1.User/SaveUser").
-			Build(),
 	}
 	// 开启链路追踪
 	if trace != nil && trace.Endpoint != "" {
@@ -87,7 +72,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 		srv.Handle("/metrics", m.Handler)
 	}
 	// 注册服务
-	authV1.RegisterAuthHTTPServer(srv, auth)
-	userV1.RegisterUserHTTPServer(srv, user)
+	helloV1.RegisterCallHelloHTTPServer(srv, hello)
 	return srv
 }

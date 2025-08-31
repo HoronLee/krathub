@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 消息定义
+// HelloRequest 是 Hello 服务的请求消息
 type HelloRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Greeting      *string                `protobuf:"bytes,1,opt,name=greeting,proto3,oneof" json:"greeting,omitempty"`
@@ -68,7 +68,7 @@ func (x *HelloRequest) GetGreeting() string {
 	return ""
 }
 
-// 响应消息定义
+// HelloResponse 是 Hello 服务的响应消息
 type HelloResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Reply         string                 `protobuf:"bytes,1,opt,name=reply,proto3" json:"reply,omitempty"`
@@ -122,9 +122,9 @@ const file_api_hello_v1_hello_proto_rawDesc = "" +
 	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
 	"\t_greeting\"%\n" +
 	"\rHelloResponse\x12\x14\n" +
-	"\x05reply\x18\x01 \x01(\tR\x05reply2E\n" +
-	"\fHelloService\x125\n" +
-	"\bSayHello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponseB\\\n" +
+	"\x05reply\x18\x01 \x01(\tR\x05reply2>\n" +
+	"\bSayHello\x122\n" +
+	"\x05Hello\x12\x13.hello.HelloRequest\x1a\x14.hello.HelloResponseB\\\n" +
 	"\x18dev.krathub.api.hello.v1B\fHelloProtoV1P\x01Z0github.com/horonlee/krathub/api/v1/hello;hellov1b\x06proto3"
 
 var (
@@ -145,8 +145,8 @@ var file_api_hello_v1_hello_proto_goTypes = []any{
 	(*HelloResponse)(nil), // 1: hello.HelloResponse
 }
 var file_api_hello_v1_hello_proto_depIdxs = []int32{
-	0, // 0: hello.HelloService.SayHello:input_type -> hello.HelloRequest
-	1, // 1: hello.HelloService.SayHello:output_type -> hello.HelloResponse
+	0, // 0: hello.SayHello.Hello:input_type -> hello.HelloRequest
+	1, // 1: hello.SayHello.Hello:output_type -> hello.HelloResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
