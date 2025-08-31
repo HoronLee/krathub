@@ -4,9 +4,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.32.0
-// source: hello/v1/hello.proto
+// source: sayhello/v1/sayhello.proto
 
-package hellov1
+package sayhellov1
 
 import (
 	context "context"
@@ -21,7 +21,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SayHello_Hello_FullMethodName = "/hello.SayHello/Hello"
+	SayHello_Hello_FullMethodName = "/sayhello.SayHello/Hello"
 )
 
 // SayHelloClient is the client API for SayHello service.
@@ -114,7 +114,7 @@ func _SayHello_Hello_Handler(srv interface{}, ctx context.Context, dec func(inte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SayHello_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "hello.SayHello",
+	ServiceName: "sayhello.SayHello",
 	HandlerType: (*SayHelloServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -123,5 +123,5 @@ var SayHello_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "hello/v1/hello.proto",
+	Metadata: "sayhello/v1/sayhello.proto",
 }

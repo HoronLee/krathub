@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
-	hellov1 "github.com/horonlee/krathub/api/hello/v1"
+	sayhellov1 "github.com/horonlee/krathub/api/sayhello/v1"
 	"github.com/horonlee/krathub/internal/biz"
 )
 
@@ -35,9 +35,9 @@ func (r *authRepo) CallHello(ctx context.Context, in string) (string, error) {
 	}
 
 	// 使用连接创建客户端
-	helloClient := hellov1.NewSayHelloClient(conn)
+	helloClient := sayhellov1.NewSayHelloClient(conn)
 
-	ret, err := helloClient.Hello(ctx, &hellov1.HelloRequest{Greeting: &in})
+	ret, err := helloClient.Hello(ctx, &sayhellov1.HelloRequest{Greeting: &in})
 	if err != nil {
 		r.log.Errorf("Failed to say hello: %v", err)
 		return "", err
