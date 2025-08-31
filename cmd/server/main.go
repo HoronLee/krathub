@@ -29,9 +29,9 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string = "krathub.service"
+	Name string
 	// Version is the version of the compiled software.
-	Version string = "v0.1"
+	Version string
 	// flagconf is the config flag.
 	flagconf string
 	// id is the id of the instance.
@@ -57,7 +57,7 @@ func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server, hs *http
 }
 
 // 设置全局trace
-func initTracerProvider(c *conf.Trace) error {
+func initTracerProvider(c *conf.Trace, env string) error {
 	if c == nil || c.Endpoint == "" {
 		return nil
 	}
@@ -79,7 +79,7 @@ func initTracerProvider(c *conf.Trace) error {
 		tracesdk.WithResource(resource.NewSchemaless(
 			semconv.ServiceNameKey.String(Name),
 			attribute.String("exporter", "otlp"),
-			attribute.String("env", "dev"),
+			attribute.String("env", env),
 		)),
 	)
 	otel.SetTracerProvider(tp)
@@ -96,6 +96,16 @@ func main() {
 	}
 	defer c.Close()
 
+	// 初始化服务名称和版本
+	Name = bc.App.Name
+	Version = bc.App.Version
+	if Name == "" {
+		Name = "krathub.service"
+	}
+	if Version == "" {
+		Version = "v0.1"
+	}
+
 	// 初始化日志
 	log := logger.NewLogger(&logger.Config{
 		Env:        bc.App.Env,
@@ -108,7 +118,7 @@ func main() {
 	})
 
 	// 初始化链路追踪
-	if err := initTracerProvider(bc.Trace); err != nil {
+	if err := initTracerProvider(bc.Trace, bc.App.Env); err != nil {
 		panic(err)
 	}
 

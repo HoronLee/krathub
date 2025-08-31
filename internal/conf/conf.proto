@@ -108,6 +108,8 @@ message App {
   Jwt jwt = 2; // JWT配置
   Log log = 3; // 日志配置
   map<string, string> metadata = 4; // 元数据
+  string name = 5;
+  string version = 6;
 }
 
 // 注册中心配置

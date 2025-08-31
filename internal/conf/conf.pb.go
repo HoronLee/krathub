@@ -367,6 +367,8 @@ type App struct {
 	Jwt           *App_Jwt               `protobuf:"bytes,2,opt,name=jwt,proto3" json:"jwt,omitempty"`                                                                                     // JWT配置
 	Log           *App_Log               `protobuf:"bytes,3,opt,name=log,proto3" json:"log,omitempty"`                                                                                     // 日志配置
 	Metadata      map[string]string      `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // 元数据
+	Name          string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
+	Version       string                 `protobuf:"bytes,6,opt,name=version,proto3" json:"version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -427,6 +429,20 @@ func (x *App) GetMetadata() map[string]string {
 		return x.Metadata
 	}
 	return nil
+}
+
+func (x *App) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *App) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
 }
 
 // 注册中心配置
@@ -2287,12 +2303,14 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\x04GRPC\x12!\n" +
 	"\fservice_name\x18\x01 \x01(\tR\vserviceName\x12\x1a\n" +
 	"\bendpoint\x18\x02 \x01(\tR\bendpoint\x123\n" +
-	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\xfa\x03\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\xa8\x04\n" +
 	"\x03App\x12\x10\n" +
 	"\x03env\x18\x01 \x01(\tR\x03env\x12%\n" +
 	"\x03jwt\x18\x02 \x01(\v2\x13.kratos.api.App.JwtR\x03jwt\x12%\n" +
 	"\x03log\x18\x03 \x01(\v2\x13.kratos.api.App.LogR\x03log\x129\n" +
-	"\bmetadata\x18\x04 \x03(\v2\x1d.kratos.api.App.MetadataEntryR\bmetadata\x1ap\n" +
+	"\bmetadata\x18\x04 \x03(\v2\x1d.kratos.api.App.MetadataEntryR\bmetadata\x12\x12\n" +
+	"\x04name\x18\x05 \x01(\tR\x04name\x12\x18\n" +
+	"\aversion\x18\x06 \x01(\tR\aversion\x1ap\n" +
 	"\x03Jwt\x12\x1d\n" +
 	"\n" +
 	"secret_key\x18\x01 \x01(\tR\tsecretKey\x12\x16\n" +
