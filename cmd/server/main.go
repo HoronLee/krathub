@@ -6,7 +6,6 @@ import (
 
 	"github.com/horonlee/krathub/internal/conf"
 
-	"os"
 	"strings"
 
 	"github.com/horonlee/krathub/pkg/logger"
@@ -35,7 +34,7 @@ var (
 	// flagconf is the config flag.
 	flagconf string
 	// id is the id of the instance.
-	id, _ = os.Hostname()
+	id = "1a1b4c5d1e4f"
 	// Metadata is the service metadata.
 	Metadata map[string]string
 )
