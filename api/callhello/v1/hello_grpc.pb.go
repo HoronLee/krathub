@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.32.0
-// source: auth/v1/hello.proto
+// source: callhello/v1/hello.proto
 
-package hellov1
+package callhellov1
 
 import (
 	context "context"
@@ -121,5 +121,5 @@ var CallHello_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth/v1/hello.proto",
+	Metadata: "callhello/v1/hello.proto",
 }

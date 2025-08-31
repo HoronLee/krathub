@@ -14,7 +14,7 @@ type authRepo struct {
 	log  *log.Helper
 }
 
-func NewAuthRepo(data *Data, logger log.Logger) biz.HelloRepo {
+func NewAuthRepo(data *Data, logger log.Logger) biz.CallHelloRepo {
 	return &authRepo{
 		data: data,
 		log:  log.NewHelper(logger),
@@ -23,8 +23,8 @@ func NewAuthRepo(data *Data, logger log.Logger) biz.HelloRepo {
 
 // Grpc 操作示例实现
 
-// Hello 负责调用 hello 服务的 SayHello 方法
-func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
+// CallHello 负责调用 hello 服务的 SayHello 方法
+func (r *authRepo) CallHello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
 	// 直接使用 CreateGrpcConn 方法获取连接

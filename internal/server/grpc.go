@@ -3,6 +3,7 @@ package server
 import (
 	"crypto/tls"
 
+	callhellov1 "github.com/horonlee/krathub/api/callhello/v1"
 	"github.com/horonlee/krathub/internal/conf"
 	mw "github.com/horonlee/krathub/internal/server/middleware"
 	"github.com/horonlee/krathub/internal/service"
@@ -16,13 +17,12 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	helloV1 "github.com/horonlee/krathub/api/auth/v1"
 	gogrpc "google.golang.org/grpc" // 引入官方 gRPC 包并重命名
 	"google.golang.org/grpc/credentials"
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.HelloService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.CallHelloService) *grpc.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
@@ -68,6 +68,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 
 	srv := grpc.NewServer(opts...)
 	// 注册服务
-	helloV1.RegisterCallHelloServer(srv, hello)
+	callhellov1.RegisterCallHelloServer(srv, hello)
 	return srv
 }

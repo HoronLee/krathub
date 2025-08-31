@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.8
 // 	protoc        v6.32.0
-// source: api/auth/v1/hello.proto
+// source: api/callhello/v1/hello.proto
 
-package hellov1
+package callhellov1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -85,11 +85,11 @@ func (x ErrorReason) String() string {
 }
 
 func (ErrorReason) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_auth_v1_hello_proto_enumTypes[0].Descriptor()
+	return file_api_callhello_v1_hello_proto_enumTypes[0].Descriptor()
 }
 
 func (ErrorReason) Type() protoreflect.EnumType {
-	return &file_api_auth_v1_hello_proto_enumTypes[0]
+	return &file_api_callhello_v1_hello_proto_enumTypes[0]
 }
 
 func (x ErrorReason) Number() protoreflect.EnumNumber {
@@ -98,7 +98,7 @@ func (x ErrorReason) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ErrorReason.Descriptor instead.
 func (ErrorReason) EnumDescriptor() ([]byte, []int) {
-	return file_api_auth_v1_hello_proto_rawDescGZIP(), []int{0}
+	return file_api_callhello_v1_hello_proto_rawDescGZIP(), []int{0}
 }
 
 // HelloRequest 是 Hello 服务的请求消息
@@ -111,7 +111,7 @@ type HelloRequest struct {
 
 func (x *HelloRequest) Reset() {
 	*x = HelloRequest{}
-	mi := &file_api_auth_v1_hello_proto_msgTypes[0]
+	mi := &file_api_callhello_v1_hello_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -123,7 +123,7 @@ func (x *HelloRequest) String() string {
 func (*HelloRequest) ProtoMessage() {}
 
 func (x *HelloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_hello_proto_msgTypes[0]
+	mi := &file_api_callhello_v1_hello_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -136,7 +136,7 @@ func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
 func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_hello_proto_rawDescGZIP(), []int{0}
+	return file_api_callhello_v1_hello_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *HelloRequest) GetReq() string {
@@ -156,7 +156,7 @@ type HelloResponse struct {
 
 func (x *HelloResponse) Reset() {
 	*x = HelloResponse{}
-	mi := &file_api_auth_v1_hello_proto_msgTypes[1]
+	mi := &file_api_callhello_v1_hello_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -168,7 +168,7 @@ func (x *HelloResponse) String() string {
 func (*HelloResponse) ProtoMessage() {}
 
 func (x *HelloResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_auth_v1_hello_proto_msgTypes[1]
+	mi := &file_api_callhello_v1_hello_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -181,7 +181,7 @@ func (x *HelloResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloResponse.ProtoReflect.Descriptor instead.
 func (*HelloResponse) Descriptor() ([]byte, []int) {
-	return file_api_auth_v1_hello_proto_rawDescGZIP(), []int{1}
+	return file_api_callhello_v1_hello_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *HelloResponse) GetRep() string {
@@ -191,11 +191,11 @@ func (x *HelloResponse) GetRep() string {
 	return ""
 }
 
-var File_api_auth_v1_hello_proto protoreflect.FileDescriptor
+var File_api_callhello_v1_hello_proto protoreflect.FileDescriptor
 
-const file_api_auth_v1_hello_proto_rawDesc = "" +
+const file_api_callhello_v1_hello_proto_rawDesc = "" +
 	"\n" +
-	"\x17api/auth/v1/hello.proto\x12\x10krathub.hello.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x13errors/errors.proto\"-\n" +
+	"\x1capi/callhello/v1/hello.proto\x12\x10krathub.hello.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bbuf/validate/validate.proto\x1a\x13errors/errors.proto\"-\n" +
 	"\fHelloRequest\x12\x15\n" +
 	"\x03req\x18\x01 \x01(\tH\x00R\x03req\x88\x01\x01B\x06\n" +
 	"\x04_req\"!\n" +
@@ -213,29 +213,29 @@ const file_api_auth_v1_hello_proto_rawDesc = "" +
 	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
 	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x1a\x04\xa0E\xf4\x032r\n" +
 	"\tCallHello\x12e\n" +
-	"\x05Hello\x12\x1e.krathub.hello.v1.HelloRequest\x1a\x1f.krathub.hello.v1.HelloResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/CallHello/HelloB\\\n" +
-	"\x18dev.krathub.api.hello.v1B\fHelloProtoV1P\x01Z0github.com/horonlee/krathub/api/v1/hello;hellov1b\x06proto3"
+	"\x05Hello\x12\x1e.krathub.hello.v1.HelloRequest\x1a\x1f.krathub.hello.v1.HelloResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/CallHello/HelloBd\n" +
+	"\x18dev.krathub.api.hello.v1B\fHelloProtoV1P\x01Z8github.com/horonlee/krathub/api/v1/callhello;callhellov1b\x06proto3"
 
 var (
-	file_api_auth_v1_hello_proto_rawDescOnce sync.Once
-	file_api_auth_v1_hello_proto_rawDescData []byte
+	file_api_callhello_v1_hello_proto_rawDescOnce sync.Once
+	file_api_callhello_v1_hello_proto_rawDescData []byte
 )
 
-func file_api_auth_v1_hello_proto_rawDescGZIP() []byte {
-	file_api_auth_v1_hello_proto_rawDescOnce.Do(func() {
-		file_api_auth_v1_hello_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_auth_v1_hello_proto_rawDesc), len(file_api_auth_v1_hello_proto_rawDesc)))
+func file_api_callhello_v1_hello_proto_rawDescGZIP() []byte {
+	file_api_callhello_v1_hello_proto_rawDescOnce.Do(func() {
+		file_api_callhello_v1_hello_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_callhello_v1_hello_proto_rawDesc), len(file_api_callhello_v1_hello_proto_rawDesc)))
 	})
-	return file_api_auth_v1_hello_proto_rawDescData
+	return file_api_callhello_v1_hello_proto_rawDescData
 }
 
-var file_api_auth_v1_hello_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_auth_v1_hello_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_api_auth_v1_hello_proto_goTypes = []any{
+var file_api_callhello_v1_hello_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_api_callhello_v1_hello_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_callhello_v1_hello_proto_goTypes = []any{
 	(ErrorReason)(0),      // 0: krathub.hello.v1.ErrorReason
 	(*HelloRequest)(nil),  // 1: krathub.hello.v1.HelloRequest
 	(*HelloResponse)(nil), // 2: krathub.hello.v1.HelloResponse
 }
-var file_api_auth_v1_hello_proto_depIdxs = []int32{
+var file_api_callhello_v1_hello_proto_depIdxs = []int32{
 	1, // 0: krathub.hello.v1.CallHello.Hello:input_type -> krathub.hello.v1.HelloRequest
 	2, // 1: krathub.hello.v1.CallHello.Hello:output_type -> krathub.hello.v1.HelloResponse
 	1, // [1:2] is the sub-list for method output_type
@@ -245,28 +245,28 @@ var file_api_auth_v1_hello_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_api_auth_v1_hello_proto_init() }
-func file_api_auth_v1_hello_proto_init() {
-	if File_api_auth_v1_hello_proto != nil {
+func init() { file_api_callhello_v1_hello_proto_init() }
+func file_api_callhello_v1_hello_proto_init() {
+	if File_api_callhello_v1_hello_proto != nil {
 		return
 	}
-	file_api_auth_v1_hello_proto_msgTypes[0].OneofWrappers = []any{}
+	file_api_callhello_v1_hello_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_auth_v1_hello_proto_rawDesc), len(file_api_auth_v1_hello_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_callhello_v1_hello_proto_rawDesc), len(file_api_callhello_v1_hello_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_auth_v1_hello_proto_goTypes,
-		DependencyIndexes: file_api_auth_v1_hello_proto_depIdxs,
-		EnumInfos:         file_api_auth_v1_hello_proto_enumTypes,
-		MessageInfos:      file_api_auth_v1_hello_proto_msgTypes,
+		GoTypes:           file_api_callhello_v1_hello_proto_goTypes,
+		DependencyIndexes: file_api_callhello_v1_hello_proto_depIdxs,
+		EnumInfos:         file_api_callhello_v1_hello_proto_enumTypes,
+		MessageInfos:      file_api_callhello_v1_hello_proto_msgTypes,
 	}.Build()
-	File_api_auth_v1_hello_proto = out.File
-	file_api_auth_v1_hello_proto_goTypes = nil
-	file_api_auth_v1_hello_proto_depIdxs = nil
+	File_api_callhello_v1_hello_proto = out.File
+	file_api_callhello_v1_hello_proto_goTypes = nil
+	file_api_callhello_v1_hello_proto_depIdxs = nil
 }

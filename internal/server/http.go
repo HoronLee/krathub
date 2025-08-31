@@ -3,7 +3,6 @@ package server
 import (
 	"crypto/tls"
 
-	helloV1 "github.com/horonlee/krathub/api/auth/v1"
 	"github.com/horonlee/krathub/internal/conf"
 	mw "github.com/horonlee/krathub/internal/server/middleware"
 	"github.com/horonlee/krathub/internal/service"
@@ -17,10 +16,11 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	callhellov1 "github.com/horonlee/krathub/api/callhello/v1"
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.HelloService) *http.Server {
+func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.CallHelloService) *http.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
@@ -72,6 +72,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 		srv.Handle("/metrics", m.Handler)
 	}
 	// 注册服务
-	helloV1.RegisterCallHelloHTTPServer(srv, hello)
+	callhellov1.RegisterCallHelloHTTPServer(srv, hello)
 	return srv
 }

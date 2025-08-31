@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 import "buf/validate/validate.proto";
 import "errors/errors.proto";
 
-option go_package = "github.com/horonlee/krathub/api/v1/hello;hellov1";
+option go_package = "github.com/horonlee/krathub/api/v1/callhello;callhellov1";
 option java_multiple_files = true;
 option java_package = "dev.krathub.api.hello.v1";
 option java_outer_classname = "HelloProtoV1";

@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             v6.32.0
-// source: auth/v1/hello.proto
+// source: callhello/v1/hello.proto
 
-package hellov1
+package callhellov1
 
 import (
 	context "context"

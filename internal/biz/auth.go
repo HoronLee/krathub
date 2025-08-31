@@ -17,10 +17,10 @@ import (
 // jwt.RegisteredClaims
 // }
 
-// HelloRepo 统一的认证仓库接口，包含数据库和 grpc 操作
-type HelloRepo interface {
+// CallHelloRepo 统一的认证仓库接口，包含数据库和 grpc 操作
+type CallHelloRepo interface {
 	// grpc 操作
-	Hello(ctx context.Context, in string) (string, error)
+	CallHello(ctx context.Context, in string) (string, error)
 
 	// 数据库操作示例
 	// SaveUser(context.Context, *model.User) (*model.User, error)
@@ -28,21 +28,21 @@ type HelloRepo interface {
 	// ListUserByUserName(context.Context, string) ([]*model.User, error)
 }
 
-// HelloUsecase is a Auth usecase.
-type HelloUsecase struct {
-	repo HelloRepo
+// CallHelloUsecase is a Auth usecase.
+type CallHelloUsecase struct {
+	repo CallHelloRepo
 	log  *log.Helper
 	cfg  *conf.App
 	// jwt             *jwtpkg.JWT[UserClaims] // Use the generic JWT with UserClaims
 }
 
 // NewAuthUsecase new an auth usecase.
-func NewAuthUsecase(repo HelloRepo, logger log.Logger, cfg *conf.App) *HelloUsecase {
+func NewAuthUsecase(repo CallHelloRepo, logger log.Logger, cfg *conf.App) *CallHelloUsecase {
 	// JWT中间件使用示例
 	// jwtService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
 	// 	SecretKey: cfg.Jwt.SecretKey,
 	// })
-	uc := &HelloUsecase{
+	uc := &CallHelloUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
 		cfg:  cfg,
@@ -57,9 +57,9 @@ func NewAuthUsecase(repo HelloRepo, logger log.Logger, cfg *conf.App) *HelloUsec
 }
 
 // Hello 通过 repo 实现
-func (uc *HelloUsecase) Hello(ctx context.Context, in *string) (string, error) {
+func (uc *CallHelloUsecase) Hello(ctx context.Context, in *string) (string, error) {
 	uc.log.Debugf("Saying hello with greeting: %s", *in)
-	response, err := uc.repo.Hello(ctx, *in)
+	response, err := uc.repo.CallHello(ctx, *in)
 	if err != nil {
 		uc.log.Errorf("Failed to say hello: %v", err)
 		return "", err
