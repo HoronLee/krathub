@@ -32,24 +32,20 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	if err != nil {
 		return nil, nil, err
 	}
-	db, err := data.NewDB(confData, logger)
-	if err != nil {
-		return nil, nil, err
-	}
 	registryDiscovery := data.NewDiscovery(discovery)
 	clientFactory, err := client.NewGrpcClientFactory(confData, trace, registryDiscovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger, clientFactory)
+	dataData, cleanup, err := data.NewData(confData, logger, clientFactory)
 	if err != nil {
 		return nil, nil, err
 	}
-	helloRepo := data.NewAuthRepo(dataData, logger)
-	helloUsecase := biz.NewAuthUsecase(helloRepo, logger, app)
-	helloService := service.NewHelloService(helloUsecase)
-	grpcServer := server.NewGRPCServer(confServer, trace, middlewareManager, serverMetrics, logger, helloService)
-	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger, helloService)
+	sayHelloRepo := data.NewSayHelloRepo(dataData, logger)
+	sayHelloUsecase := biz.NewSayHelloUsecase(sayHelloRepo, logger, app)
+	sayHelloService := service.NewSayHelloService(sayHelloUsecase)
+	grpcServer := server.NewGRPCServer(confServer, trace, middlewareManager, serverMetrics, logger, sayHelloService)
+	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup()

@@ -3,7 +3,7 @@ package server
 import (
 	"crypto/tls"
 
-	callhellov1 "github.com/horonlee/krathub/api/callhello/v1"
+	sayhellov1 "github.com/horonlee/krathub/api/sayhello/v1"
 	"github.com/horonlee/krathub/internal/conf"
 	mw "github.com/horonlee/krathub/internal/server/middleware"
 	"github.com/horonlee/krathub/internal/service"
@@ -22,7 +22,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.CallHelloService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, hello *service.SayHelloService) *grpc.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
@@ -68,6 +68,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 
 	srv := grpc.NewServer(opts...)
 	// 注册服务
-	callhellov1.RegisterCallHelloServer(srv, hello)
+	sayhellov1.RegisterSayHelloServer(srv, hello)
 	return srv
 }
