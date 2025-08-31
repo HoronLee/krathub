@@ -8,14 +8,14 @@ import (
 	"github.com/horonlee/krathub/internal/biz"
 )
 
-// authRepo 统一的认证仓库实现，同时包含数据库和 grpc 操作
-type authRepo struct {
+// callHelloRepo 统一的认证仓库实现，同时包含数据库和 grpc 操作
+type callHelloRepo struct {
 	data *Data
 	log  *log.Helper
 }
 
 func NewAuthRepo(data *Data, logger log.Logger) biz.CallHelloRepo {
-	return &authRepo{
+	return &callHelloRepo{
 		data: data,
 		log:  log.NewHelper(logger),
 	}
@@ -24,11 +24,11 @@ func NewAuthRepo(data *Data, logger log.Logger) biz.CallHelloRepo {
 // Grpc 操作示例实现
 
 // CallHello 负责调用 hello 服务的 SayHello 方法
-func (r *authRepo) CallHello(ctx context.Context, in string) (string, error) {
-	r.log.Debugf("Saying hello with greeting: %s", in)
+func (r *callHelloRepo) CallHello(ctx context.Context, in string) (string, error) {
+	r.log.Debugf("[data] Saying hello with greeting: %s", in)
 
 	// 直接使用 CreateGrpcConn 方法获取连接
-	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello.service")
+	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello")
 	if err != nil {
 		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err

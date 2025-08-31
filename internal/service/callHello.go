@@ -23,7 +23,7 @@ func NewHelloService(uc *biz.CallHelloUsecase) *CallHelloService {
 
 // SayHello 实现 authv1.AuthServer 接口的 SayHello 方法
 func (s *CallHelloService) Hello(ctx context.Context, req *callhellov1.HelloRequest) (*callhellov1.HelloResponse, error) {
-	log.Debugf("Received SayHello request with greeting: %v", req.Req)
+	log.Debugf("[service] Received SayHello request with greeting: %v", req.Req)
 	// 调用 biz 层
 	res, err := s.uc.Hello(ctx, req.Req)
 	if err != nil {

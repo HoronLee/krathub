@@ -45,11 +45,11 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	if err != nil {
 		return nil, nil, err
 	}
-	helloRepo := data.NewAuthRepo(dataData, logger)
-	helloUsecase := biz.NewAuthUsecase(helloRepo, logger, app)
-	helloService := service.NewHelloService(helloUsecase)
-	grpcServer := server.NewGRPCServer(confServer, trace, middlewareManager, serverMetrics, logger, helloService)
-	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger, helloService)
+	callHelloRepo := data.NewAuthRepo(dataData, logger)
+	callHelloUsecase := biz.NewAuthUsecase(callHelloRepo, logger, app)
+	callHelloService := service.NewHelloService(callHelloUsecase)
+	grpcServer := server.NewGRPCServer(confServer, trace, middlewareManager, serverMetrics, logger, callHelloService)
+	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger, callHelloService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup()

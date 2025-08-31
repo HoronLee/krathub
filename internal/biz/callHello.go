@@ -58,7 +58,7 @@ func NewAuthUsecase(repo CallHelloRepo, logger log.Logger, cfg *conf.App) *CallH
 
 // Hello 通过 repo 实现
 func (uc *CallHelloUsecase) Hello(ctx context.Context, in *string) (string, error) {
-	uc.log.Debugf("Saying hello with greeting: %s", *in)
+	uc.log.Debugf("[biz] Saying hello with greeting: %s", *in)
 	response, err := uc.repo.CallHello(ctx, *in)
 	if err != nil {
 		uc.log.Errorf("Failed to say hello: %v", err)
