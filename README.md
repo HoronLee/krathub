@@ -130,13 +130,6 @@ data:
   database:
     driver: "${DB_DRIVER:mysql}"
     source: "${DB_SOURCE:projectName:123456@tcp(127.0.0.1:3306)/projectName?parseTime=True&loc=Local}"
-  redis:
-    addr: "${RADDR:127.0.0.1:6379}"
-    user_name: "${RUSER_NAME:}"  # Redis用户名
-    password: "${RPASSWORD:redisHoron}"  # Redis密码
-    db: "${RDB:5}"  # Redis数据库编号
-    read_timeout: "${RREAD_TIMEOUT:0.2s}"
-    write_timeout: "${RWRITE_TIMEOUT:0.2s}"
   client:
     # 这里可以配置第三方服务的客户端
     # 默认不用配置，而是在代码中直接服务发现
