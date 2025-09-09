@@ -17,6 +17,7 @@ type ConsulConfig struct {
 	Token      string
 	Datacenter string
 	Timeout    *durationpb.Duration
+	Tags       []string
 }
 
 // NewConsulRegistrar 创建 Consul 注册中心客户端
@@ -47,7 +48,15 @@ func NewConsulRegistrar(c *ConsulConfig) registry.Registrar {
 		panic(fmt.Sprintf("failed to create consul client: %v", err))
 	}
 
-	// 创建 Consul 注册中心，使用健康检查
-	r := consul.New(client, consul.WithHealthCheck(true))
+	// 定义 Consul 注册中心的选项
+	opts := []consul.Option{
+		consul.WithHealthCheck(true),
+	}
+	if len(c.Tags) > 0 {
+		opts = append(opts, consul.WithTags(c.Tags))
+	}
+
+	// 创建 Consul 注册中心
+	r := consul.New(client, opts...)
 	return r
 }

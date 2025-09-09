@@ -7,7 +7,6 @@ import (
 	"github.com/horonlee/krathub/internal/conf"
 
 	"os"
-	"strings"
 
 	"github.com/horonlee/krathub/pkg/logger"
 
@@ -126,16 +125,6 @@ func main() {
 	Metadata = bc.App.Metadata
 	if Metadata == nil {
 		Metadata = make(map[string]string)
-	}
-	// 从注册中心配置中提取 tags 信息（如果有）
-	if bc.Registry != nil {
-		switch r := bc.Registry.Registry.(type) {
-		case *conf.Registry_Consul_:
-			if len(r.Consul.Tags) > 0 {
-				Metadata["tags"] = strings.Join(r.Consul.Tags, ";")
-			}
-			// 如果有其他注册中心（如 Nacos）需要处理类似 tags 的逻辑，可以在这里添加 case
-		}
 	}
 
 	// 初始化服务

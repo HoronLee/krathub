@@ -147,7 +147,11 @@ data:
       #   timeout: 5s
 
 app:
+  name: krathub
+  version: v1.0.0
   env: "${ENV:dev}" # dev, test, prod
+  metadata:
+      key: value
   jwt:
     secret_key: "${JWT_SECRETK_KEY:projectName_secret}"
     expire: "${JWT_EXPIRE:24}"

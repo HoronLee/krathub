@@ -20,6 +20,7 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 			Token:      c.Consul.Token,
 			Datacenter: c.Consul.Datacenter,
 			Timeout:    c.Consul.Timeout,
+			Tags:       c.Consul.Tags,
 		})
 	case *conf.Registry_Etcd_:
 		// TODO: 实现 Etcd 注册中心
