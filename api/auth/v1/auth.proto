@@ -68,7 +68,7 @@ message SignupByEmailRequest {
   // 确认密码最小长度5，最大长度10
   string password_confirm = 3 [
     (buf.validate.field).string = {min_len: 5, max_len: 10}
-  ];  
+  ];
   string email = 4 [(buf.validate.field).string.email = true]; // 邮箱格式验证
 }
 

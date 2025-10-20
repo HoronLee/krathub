@@ -35,7 +35,7 @@ bin/
 logs/
 cache/
 configs/*.yaml
-# Additional configuration files can be added here.
+GEMINI.md
 
 # Develop tools
 .vscode/

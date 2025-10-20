@@ -71,7 +71,7 @@ message CurrentUserInfoReply {
 message DeleteUserRequest {
     int64 id = 1 [(buf.validate.field).int64.gt = 0]; // 用户ID必须大于0
   }
-  
+
 message DeleteUserReply {
     bool success = 1; // 删除是否成功
 }

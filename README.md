@@ -27,31 +27,36 @@ Krathub 是一个基于 Go Kratos 框架的微服务项目模板。它集成了�
 
 请确保您已安装 Go、Docker 以及 `make` 工具。
 
-1.  **克隆项目**
+1. **克隆项目**
+
     ```bash
     git clone https://github.com/HoronLee/krathub.git
     cd krathub
     ```
 
-2.  **安装依赖工具**
+2. **安装依赖工具**
     此命令将安装 `protoc` 插件、`kratos` 工具、`wire` 等开发依赖。
+
     ```bash
     make init
     ```
 
-3.  **生成所有代码**
+3. **生成所有代码**
     此命令会清理旧文件、生成 `proto`、数据库模型、`wire` 依赖注入代码等。
+
     ```bash
     make all
     ```
 
-4.  **配置项目**
+4. **配置项目**
     - 根据您的环境修改 `configs/config.yaml` 中的数据库、Redis、Consul/Nacos 等配置。
 
-5.  **运行项目**
+5. **运行项目**
+
     ```bash
     make run
     ```
+
     服务启动后，HTTP 服务将监听在 `0.0.0.0:8000`，gRPC 服务将监听在 `0.0.0.0:8001` (以默认配置为例)。
 
 ## 📁 项目结构
@@ -92,14 +97,14 @@ Krathub 是一个基于 Go Kratos 框架的微服务项目模板。它集成了�
 
 推荐的开发顺序如下，以确保依赖关系正确：
 
-1.  **API 定义 (`api/`)**: 在 `.proto` 文件中定义 gRPC 服务和消息体。
-2.  **生成代码 (`make proto`)**: 运行命令生成 gRPC、HTTP、Errors 的桩代码。
-3.  **业务逻辑 (`internal/biz/`)**: 定义业务逻辑的接口和实现，这是不依赖任何框架的核心。
-4.  **数据访问 (`internal/data/`)**: 实现 `biz` 层定义的接口，负责与数据库、缓存等交互。
-5.  **服务实现 (`internal/service/`)**: 实现 `api` 层定义的 gRPC 服务接口，它会调用 `biz` 层的逻辑。
-6.  **依赖注入 (`cmd/server/wire.go`)**: 将新的 `service`, `biz`, `data` 组件注入到 `wire.go` 中。
-7.  **运行 `make wire`**: 生成最终的依赖注入代码。
-8.  **启动与测试**: 运行 `make run` 并进行测试。
+1. **API 定义 (`api/`)**: 在 `.proto` 文件中定义 gRPC 服务和消息体。
+2. **生成代码 (`make proto`)**: 运行命令生成 gRPC、HTTP、Errors 的桩代码。
+3. **业务逻辑 (`internal/biz/`)**: 定义业务逻辑的接口和实现，这是不依赖任何框架的核心。
+4. **数据访问 (`internal/data/`)**: 实现 `biz` 层定义的接口，负责与数据库、缓存等交互。
+5. **服务实现 (`internal/service/`)**: 实现 `api` 层定义的 gRPC 服务接口，它会调用 `biz` 层的逻辑。
+6. **依赖注入 (`cmd/server/wire.go`)**: 将新的 `service`, `biz`, `data` 组件注入到 `wire.go` 中。
+7. **运行 `make wire`**: 生成最终的依赖注入代码。
+8. **启动与测试**: 运行 `make run` 并进行测试。
 
 ## 📞 客户端层 (Client)
 
@@ -242,3 +247,4 @@ metrics:
 ## 📄 许可协议
 
 本项目遵循 [LICENSE](LICENSE) 文件中的许可协议。
+
