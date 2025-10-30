@@ -35,8 +35,13 @@ Krathub 是一个基于 Go Kratos 框架的微服务项目模板。它集成了�
     ```
 
 2. **安装依赖工具**
-    此命令将安装 `protoc` 插件、`kratos` 工具、`wire` 等开发依赖。
+    推荐使用新的一键设置命令，它将安装 `protoc` 插件、`kratos` 工具、`wire`、`golangci-lint` 等所有开发依赖。
 
+    ```bash
+    make setup
+    ```
+
+    或者使用传统命令：
     ```bash
     make init
     ```
@@ -47,6 +52,8 @@ Krathub 是一个基于 Go Kratos 框架的微服务项目模板。它集成了�
     ```bash
     make all
     ```
+
+    **提示**: 运行 `make check` 可以确保代码质量符合标准。
 
 4. **配置项目**
     - 根据您的环境修改 `configs/config.yaml` 中的数据库、Redis、Consul/Nacos 等配置。
@@ -81,17 +88,76 @@ Krathub 是一个基于 Go Kratos 框架的微服务项目模板。它集成了�
 
 ## 🛠️ 常用命令
 
-项目通过 `Makefile` 提供了丰富的命令来简化开发流程。
+项目通过优化的 `Makefile` 提供了丰富的命令来简化开发流程，所有命令都支持彩色输出和进度提示。
 
-- `make help`: 显示所有可用的 make 命令。
-- `make init`: 初始化开发环境，安装所需工具。
+### 🚀 快速开始命令
+
+- `make help`: 显示所有可用的 make 命令（分组显示，带详细说明）。
+- `make setup`: 完整的开发环境设置（推荐新开发者使用）。
+- `make install-dev`: 安装所有开发依赖工具。
+- `make check-tools`: 检查必需工具是否已安装。
+
+### 🏗️ 代码生成
+
 - `make proto`: 生成所有 Protobuf 相关代码 (api, errors, config)。
+- `make api`: 仅生成 API protobuf 文件。
+- `make config`: 仅生成内部 protobuf 文件。
+- `make errors`: 仅生成错误 protobuf 文件。
+- `make wire`: 生成依赖注入代码。
 - `make gen.db`: 根据 `configs/config.yaml` 中的数据库配置生成 GORM 模型。
-- `make wire`: 在 `cmd/server/` 目录下运行 `wire` 生成依赖注入代码。
-- `make all`: 清理并执行所有代码生成和构建任务。
+- `make gen.tls`: 生成 TLS 证书。
+- `make generate`: 运行所有代码生成任务。
+
+### 🔨 构建和运行
+
+- `make build`: 构建应用程序。
+- `make build-release`: 构建优化版本（用于生产环境）。
+- `make build-all`: 为多个平台构建（Linux、macOS、Windows）。
 - `make run`: 启动服务。
-- `make build`: 编译和构建二进制文件到 `bin/` 目录。
-- `make clean`: 清理所有生成的文件和构建产物。
+- `make run-debug`: 以调试模式启动服务。
+- `make all`: 从头开始构建所有内容。
+
+### 🧪 测试和质量检查
+
+- `make test`: 运行所有测试。
+- `make test-cover`: 运行测试并生成覆盖率报告。
+- `make test-integration`: 运行集成测试。
+- `make benchmark`: 运行基准测试。
+- `make race`: 运行带竞态检测的测试。
+- `make lint`: 运行静态代码分析。
+- `make fmt`: 格式化代码。
+- `make check`: 运行所有质量检查（格式化 + 静态分析 + 测试）。
+- `make security`: 运行安全扫描。
+
+### 📦 依赖管理
+
+- `make mod-update`: 更新 Go 依赖。
+- `make mod-tidy`: 清理无用的 Go 依赖。
+- `make mod-verify`: 验证依赖完整性。
+- `make deps`: 下载所有依赖。
+
+### 🐳 Docker 支持
+
+- `make docker-build`: 构建 Docker 镜像。
+- `make docker-run`: 运行 Docker 容器。
+- `make docker-push`: 推送 Docker 镜像。
+- `make docker-clean`: 清理 Docker 资源。
+
+### 🧹 清理命令
+
+- `make clean`: 清理生成的文件。
+- `make clean-all`: 清理所有文件和缓存。
+- `make clean-deps`: 清理并重新安装依赖。
+
+### ℹ️ 其他命令
+
+- `make version`: 显示项目版本信息。
+- `make info`: 显示项目信息（同 version）。
+
+### 🔄 兼容性说明
+
+所有原有命令都保持向后兼容，包括：
+- `make init`: 初始化开发环境（现在是 `install-dev` 的别名）。
 
 ## 📝 开发流程
 
@@ -247,4 +313,3 @@ metrics:
 ## 📄 许可协议
 
 本项目遵循 [LICENSE](LICENSE) 文件中的许可协议。
-

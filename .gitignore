@@ -41,3 +41,9 @@ GEMINI.md
 .vscode/
 .idea/
 *.swp
+
+# AI tools
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+openspec/
