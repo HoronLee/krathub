@@ -35,7 +35,7 @@ bin/
 logs/
 cache/
 configs/*.yaml
-GEMINI.md
+data.db
 
 # Develop tools
 .vscode/
