@@ -338,7 +338,7 @@ build-all:
 ## Run the application (Building)
 run:
 	$(call print_step,Starting $(BINARY_NAME)...)
-	kratos run
+	cd cmd/server && go run .
 
 .PHONY: run-debug
 ## Run the application in debug mode (Building)
