@@ -105,6 +105,12 @@ func main() {
 		Version = "v0.1"
 	}
 
+	// 设置服务实例的元信息
+	Metadata = bc.App.Metadata
+	if Metadata == nil {
+		Metadata = make(map[string]string)
+	}
+
 	// 初始化日志
 	log := logger.NewLogger(&logger.Config{
 		Env:        bc.App.Env,
@@ -119,12 +125,6 @@ func main() {
 	// 初始化链路追踪
 	if err := initTracerProvider(bc.Trace, bc.App.Env); err != nil {
 		panic(err)
-	}
-
-	// 设置服务实例的元信息
-	Metadata = bc.App.Metadata
-	if Metadata == nil {
-		Metadata = make(map[string]string)
 	}
 
 	// 初始化服务
