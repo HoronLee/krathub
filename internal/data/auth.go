@@ -5,10 +5,12 @@ import (
 
 	sayhellov1 "github.com/horonlee/krathub/api/sayhello/v1"
 	"github.com/horonlee/krathub/internal/biz"
+	"github.com/horonlee/krathub/internal/client"
 	"github.com/horonlee/krathub/internal/data/model"
 	"github.com/horonlee/krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
+	gogrpc "google.golang.org/grpc"
 )
 
 // authRepo 统一的认证仓库实现，同时包含数据库和 grpc 操作
@@ -64,12 +66,15 @@ func (r *authRepo) ListUserByEmail(ctx context.Context, email string) ([]*model.
 func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
-	// 直接使用 CreateGrpcConn 方法获取连接
-	conn, err := r.data.clientFactory.CreateGrpcConn(ctx, "hello")
+	// 使用新的 CreateConn 方法获取连接
+	connWrapper, err := r.data.client.CreateConn(ctx, client.GRPC, "hello")
 	if err != nil {
 		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err
 	}
+
+	// 获取原始gRPC连接
+	conn := connWrapper.Value().(gogrpc.ClientConnInterface)
 
 	// 使用连接创建客户端
 	helloClient := sayhellov1.NewSayHelloClient(conn)

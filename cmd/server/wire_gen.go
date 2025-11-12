@@ -38,11 +38,11 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 		return nil, nil, err
 	}
 	registryDiscovery := data.NewDiscovery(discovery)
-	clientFactory, err := client.NewGrpcClientFactory(confData, trace, registryDiscovery, logger)
+	clientClient, err := client.NewClient(confData, trace, registryDiscovery, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger, clientFactory)
+	dataData, cleanup, err := data.NewData(db, confData, logger, clientClient)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -21,22 +21,22 @@ var ProviderSet = wire.NewSet(NewDiscovery, NewDB, NewData, NewAuthRepo, NewUser
 
 // Data .
 type Data struct {
-	query         *query.Query
-	log           *log.Helper
-	clientFactory client.ClientFactory
+	query  *query.Query
+	log    *log.Helper
+	client client.Client
 }
 
 // NewData .
-func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, clientFactory client.ClientFactory) (*Data, func(), error) {
+func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, client client.Client) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
 	// 为GEN生成的query代码设置数据库连接对象
 	query.SetDefault(db)
 	return &Data{
-		query:         query.Q,
-		log:           log.NewHelper(logger),
-		clientFactory: clientFactory,
+		query:  query.Q,
+		log:    log.NewHelper(logger),
+		client: client,
 	}, cleanup, nil
 }
 
