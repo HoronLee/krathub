@@ -13,6 +13,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -49,6 +50,10 @@ func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
 		})
 	case "sqlite":
 		return gorm.Open(sqlite.Open(cfg.Database.GetSource()), &gorm.Config{
+			Logger: gormLogger,
+		})
+	case "postgres", "postgresql":
+		return gorm.Open(postgres.Open(cfg.Database.GetSource()), &gorm.Config{
 			Logger: gormLogger,
 		})
 	}

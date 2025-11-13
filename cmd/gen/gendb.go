@@ -4,13 +4,15 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/horonlee/krathub/internal/conf"
 	"strings"
+
+	"github.com/horonlee/krathub/internal/conf"
 
 	"github.com/glebarez/sqlite"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
 	"gorm.io/gen"
@@ -37,6 +39,12 @@ func connectDB(cfg *conf.Data_Database) *gorm.DB {
 		return db
 	case "sqlite":
 		db, err := gorm.Open(sqlite.Open(cfg.GetSource()))
+		if err != nil {
+			panic(fmt.Errorf("connect db fail: %w", err))
+		}
+		return db
+	case "postgres", "postgresql":
+		db, err := gorm.Open(postgres.Open(cfg.GetSource()))
 		if err != nil {
 			panic(fmt.Errorf("connect db fail: %w", err))
 		}

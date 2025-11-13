@@ -34,7 +34,7 @@ Thumbs.db
 bin/
 logs/
 cache/
-configs/*.yaml
+configs/config.yaml
 data.db
 
 # Develop tools

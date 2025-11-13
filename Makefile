@@ -336,9 +336,10 @@ build-all:
 
 .PHONY: run
 ## Run the application (Building)
+## TODO: 添加配置文件参数支持
 run:
 	$(call print_step,Starting $(BINARY_NAME)...)
-	cd cmd/server && go run .
+	cd cmd/server && go run . -conf ../../configs/config.yaml
 
 .PHONY: run-debug
 ## Run the application in debug mode (Building)
