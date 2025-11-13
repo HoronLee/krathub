@@ -69,6 +69,15 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 
+	// 添加 CORS 过滤器（如果启用了 CORS 配置）
+	if c.Http.Cors != nil {
+		corsOptions := mw.CORSConfigFromConfig(c.Http.Cors)
+		if len(corsOptions.AllowedOrigins) > 0 {
+			opts = append(opts, http.Filter(mw.CORS(corsOptions)))
+			logger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
+		}
+	}
+
 	// Add TLS configuration
 	if c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {

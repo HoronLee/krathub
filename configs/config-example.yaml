@@ -6,6 +6,15 @@ server:
       enable: false
       cert_path: "${HTTPS_CERT_PATH:../../manifest/certs/server.cert}"
       key_path: "${HTTPS_KEY_PATH:../../manifest/certs/server.key}"
+    cors:
+      enable: "${CORS_ENABLE:true}"
+      allowed_origins: ["${CORS_ALLOWED_ORIGINS:*}"]
+      allowed_methods: ["${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}"]
+      allowed_headers:
+        ["${CORS_ALLOWED_HEADERS:Origin,Content-Type,Accept,Authorization}"]
+      exposed_headers: []
+      allow_credentials: "${CORS_ALLOW_CREDENTIALS:false}"
+      max_age: "${CORS_MAX_AGE:86400}s"
   grpc:
     addr: "${GADDR:0.0.0.0:8001}"
     timeout: "${GTIMEHOUT:1s}"
