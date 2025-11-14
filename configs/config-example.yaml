@@ -3,7 +3,7 @@ server:
     addr: "${HADDR:0.0.0.0:8000}"
     timeout: "${HTIMEOUT:1s}"
     tls:
-      enable: false
+      enable: ${HTLS_ENABLE:false}
       cert_path: "${HTTPS_CERT_PATH:../../manifest/certs/server.cert}"
       key_path: "${HTTPS_KEY_PATH:../../manifest/certs/server.key}"
     cors:
@@ -19,7 +19,7 @@ server:
     addr: "${GADDR:0.0.0.0:8001}"
     timeout: "${GTIMEHOUT:1s}"
     tls:
-      enable: false
+      enable: ${GTLS_ENABLE:false}
       cert_path: "${GRPCS_CERT_PATH:../../manifest/certs/server.cert}"
       key_path: "${GRPCS_KEY_PATH:../../manifest/certs/server.key}"
 
@@ -47,9 +47,8 @@ data:
     # 默认不用配置，而是在代码中直接服务发现
     grpc:
       # - service_name: hello.grpc  # nacos需要添加协议后缀
-      #   endpoint: "${GRPC_ENDPOINT:127.0.0.1:8003}"
-      #   enable_tls: false
-      #   timeout: 5s
+      #   endpoint: "${CLIENT_GRPC_ENDPOINT:127.0.0.1:8003}"
+      #   timeout: ${CLIENT_GRPC_TIMEOUT:5s}
 
 app:
   name: krathub
@@ -69,19 +68,23 @@ app:
     max_age: "${LOG_MAX_AGE:30}" # 日志文件最大保存天数
     max_backups: "${LOG_MAX_BACKUPS:10}" # 日志文件最大备份数
 
-# 注册中心配置
+# 注册中心配置 - 用于服务注册
 registry:
   # 使用 Consul 作为注册中心
   consul:
-    addr: consul.r430.com:30080
-    scheme: http
-    datacenter: dc1
-    timeout: 5s
-    # 为服务自定义 tag
+    # Consul 服务器地址
+    addr: "${REGISTRY_CONSUL_ADDR:consul.r430.com:30080}"
+    # 通信协议 (http/https)
+    scheme: "${REGISTRY_CONSUL_SCHEME:http}"
+    # 数据中心名称
+    datacenter: "${REGISTRY_CONSUL_DC:dc1}"
+    # 连接超时时间
+    timeout: "${REGISTRY_CONSUL_TIMEOUT:5s}"
+    # 为服务自定义标签，可用于服务网格、负载均衡等
     tags:
-      - "traefik.enable=true"
-      - "traefik.http.routers.krathub-router.rule=Host(`krathub.r430.com`)"
-      - "traefik.http.services.krathub-svc.loadbalancer.server.port=8000"
+      - "traefik.enable=true" # 启用 Traefik 路由
+      - "traefik.http.routers.${APP_NAME:krathub}-router.rule=Host(`${DOMAIN:krathub.r430.com}`)" # 路由规则
+      - "traefik.http.services.${APP_NAME:krathub}-svc.loadbalancer.server.port=${SERVER_HTTP_PORT:8000}" # 服务端口
 
   # 或者使用 Nacos 作为注册中心
   # nacos:
@@ -93,13 +96,18 @@ registry:
   # password: "${NACOSR_PASSWORD:nacos}"
   # timeout: "${NACOSR_TIMEOUT:5s}"
 
-# 服务发现配置，一般和注册中心配置相同
+# 服务发现配置 - 用于服务发现，一般和注册中心配置相同
 discovery:
+  # 使用 Consul 作为服务发现
   consul:
-    addr: consul.r430.com:30080
-    scheme: http
-    datacenter: dc1
-    timeout: 5s
+    # Consul 服务器地址
+    addr: "${DISCOVERY_CONSUL_ADDR:consul.r430.com:30080}"
+    # 通信协议 (http/https)
+    scheme: "${DISCOVERY_CONSUL_SCHEME:http}"
+    # 数据中心名称
+    datacenter: "${DISCOVERY_CONSUL_DC:dc1}"
+    # 连接超时时间
+    timeout: "${DISCOVERY_CONSUL_TIMEOUT:5s}"
 
   # nacos:
   #   addr: "${NACOSD_ADDR:127.0.0.1}"
@@ -110,35 +118,38 @@ discovery:
   #   password: "${NACOSD_PASSWORD:nacos}"
   #   timeout: "${NACOSD_TIMEOUT:5s}"
 
-# 配置中心配置
+# 配置中心配置 - 用于动态配置管理
 config:
 
   # 使用 Nacos 作为配置中心
   # nacos:
-  #   addr: "${NACOSC_ADDR:127.0.0.1}"
-  #   port: "${NACOSC_PORT:8848}"
-  #   namespace: "${NACOSC_NAMESPACE:public}"
-  #   group: "${NACOSC_GROUP:DEFAULT_GROUP}"
-  #   data_id: "${NACOSC_DATA_ID:projectName.yaml}"
-  #   username: "${NACOSC_USERNAME:nacos}"
-  #   password: "${NACOSC_PASSWORD:nacos}"
-  #   timeout: "${NACOSC_TIMEOUT:5s}"
+  #   addr: "${CONFIG_NACOS_ADDR:127.0.0.1}"
+  #   port: "${CONFIG_NACOS_PORT:8848}"
+  #   namespace: "${CONFIG_NACOS_NAMESPACE:public}"
+  #   group: "${CONFIG_NACOS_GROUP:DEFAULT_GROUP}"
+  #   data_id: "${CONFIG_NACOS_DATA_ID:${APP_NAME:projectName}.yaml}"
+  #   username: "${CONFIG_NACOS_USERNAME:nacos}"
+  #   password: "${CONFIG_NACOS_PASSWORD:nacos}"
+  #   timeout: "${CONFIG_NACOS_TIMEOUT:5s}"
 
-  # 使用 consul 作为配置中心
+  # 使用 Consul 作为配置中心
   # consul:
-  #   addr: consul.r430.com:30080
-  #   scheme: http
-  #   datacenter: dc1
-  #   timeout: 5s
-  #   key: projectName/config.yaml  # 配置键名
+  #   # Consul 服务器地址
+  #   addr: "${CONFIG_CONSUL_ADDR:consul.r430.com:30080}"
+  #   # 通信协议 (http/https)
+  #   scheme: "${CONFIG_CONSUL_SCHEME:http}"
+  #   # 数据中心名称
+  #   datacenter: "${CONFIG_CONSUL_DC:dc1}"
+  #   # 连接超时时间
+  #   timeout: "${CONFIG_CONSUL_TIMEOUT:5s}"
+  #   # 配置键名，建议格式：应用名/环境.config.yaml
+  #   key: "${CONFIG_CONSUL_KEY:${APP_NAME:projectName}/config.yaml}"
 
 # 链路追踪配置
 trace:
   # 使用 Jaeger 作为链路追踪
-  endpoint: otlp.jaeger.r430.com:30080
+  endpoint: "${TRACE_JAEGER_ENDPOINT:otlp.jaeger.r430.com:30080}"
 # 监控配置
 metrics:
-  # 当前只支持Prometheus
-  prometheus:
-    addr: ":8000"
-  meterName: "krathub"
+  enable: ${METRICS_ENABLE:true}
+  meter_name: "${METER_NAME:krathub}"

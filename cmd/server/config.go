@@ -18,7 +18,10 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 	}
 
 	// 先加载基本配置以检查是否需要配置中心
-	tempConfig := config.New(config.WithSource(sources...))
+	tempConfig := config.New(
+		config.WithSource(sources...),
+		config.WithResolveActualTypes(true),
+	)
 	if err := tempConfig.Load(); err != nil {
 		return nil, nil, err
 	}
@@ -62,7 +65,10 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 	tempConfig.Close()
 
 	// 创建最终配置对象，包含所有配置源
-	c := config.New(config.WithSource(sources...))
+	c := config.New(
+		config.WithSource(sources...),
+		config.WithResolveActualTypes(true),
+	)
 
 	// 加载配置
 	if err := c.Load(); err != nil {
