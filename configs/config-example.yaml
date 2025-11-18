@@ -14,7 +14,7 @@ server:
         ["${CORS_ALLOWED_HEADERS:Origin,Content-Type,Accept,Authorization}"]
       exposed_headers: []
       allow_credentials: "${CORS_ALLOW_CREDENTIALS:false}"
-      max_age: "${CORS_MAX_AGE:86400}s"
+      max_age: "${CORS_MAX_AGE:86400s}"
   grpc:
     addr: "${GADDR:0.0.0.0:8001}"
     timeout: "${GTIMEHOUT:1s}"
