@@ -13,7 +13,7 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 		return nil
 	}
 	switch c := cfg.Discovery.(type) {
-	case *conf.Discovery_Consul_:
+	case *conf.Discovery_Consul:
 		return discovery.NewConsulDiscovery(&discovery.ConsulConfig{
 			Addr:       c.Consul.Addr,
 			Scheme:     c.Consul.Scheme,
@@ -21,10 +21,10 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 			Datacenter: c.Consul.Datacenter,
 			Timeout:    c.Consul.Timeout,
 		})
-	case *conf.Discovery_Etcd_:
+	case *conf.Discovery_Etcd:
 		// TODO: 实现 Etcd 服务发现
 		return nil
-	case *conf.Discovery_Nacos_:
+	case *conf.Discovery_Nacos:
 		return discovery.NewNacosDiscovery(&discovery.NacosConfig{
 			Addr:      c.Nacos.Addr,
 			Port:      c.Nacos.Port,

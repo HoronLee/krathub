@@ -13,7 +13,7 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 		return nil
 	}
 	switch c := cfg.Registry.(type) {
-	case *conf.Registry_Consul_:
+	case *conf.Registry_Consul:
 		return registry.NewConsulRegistrar(&registry.ConsulConfig{
 			Addr:       c.Consul.Addr,
 			Scheme:     c.Consul.Scheme,
@@ -22,10 +22,10 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 			Timeout:    c.Consul.Timeout,
 			Tags:       c.Consul.Tags,
 		})
-	case *conf.Registry_Etcd_:
+	case *conf.Registry_Etcd:
 		// TODO: 实现 Etcd 注册中心
 		return nil
-	case *conf.Registry_Nacos_:
+	case *conf.Registry_Nacos:
 		return registry.NewNacosRegistrar(&registry.NacosConfig{
 			Addr:      c.Nacos.Addr,
 			Port:      c.Nacos.Port,

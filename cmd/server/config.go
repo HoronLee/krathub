@@ -34,7 +34,7 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 	// 检查是否配置了远程配置中心
 	if configCfg := bc.Config; configCfg != nil {
 		switch cT := configCfg.Config.(type) {
-		case *conf.Config_Nacos_:
+		case *conf.Config_Nacos:
 			sources = append(sources, cC.NewNacosConfigSource(&cC.NacosConfig{
 				Addr:      cT.Nacos.Addr,
 				Port:      cT.Nacos.Port,
@@ -45,7 +45,7 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 				DataId:    cT.Nacos.DataId,
 				Timeout:   cT.Nacos.Timeout,
 			}))
-		case *conf.Config_Consul_:
+		case *conf.Config_Consul:
 			sources = append(sources, cC.NewConsulConfigSource(&cC.ConsulConfig{
 				Addr:       cT.Consul.Addr,
 				Scheme:     cT.Consul.Scheme,
@@ -54,7 +54,7 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 				Key:        cT.Consul.Key,
 				Timeout:    cT.Consul.Timeout,
 			}))
-		case *conf.Config_Etcd_:
+		case *conf.Config_Etcd:
 			// TODO: 实现 Etcd 配置中心
 			tempConfig.Close()
 			return nil, nil, nil
