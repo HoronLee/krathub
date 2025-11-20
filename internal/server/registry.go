@@ -1,6 +1,9 @@
 package server
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/horonlee/krathub/internal/conf"
 	"github.com/horonlee/krathub/pkg/registry"
 
@@ -23,8 +26,19 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 			Tags:       c.Consul.Tags,
 		})
 	case *conf.Registry_Etcd:
-		// TODO: 实现 Etcd 注册中心
-		return nil
+		namespace := "/krathub"
+		if c.Etcd.Namespace != "" {
+			namespace = c.Etcd.Namespace
+		}
+		registrar, err := registry.NewEtcdRegistry(c.Etcd,
+			registry.Namespace(namespace),
+			registry.RegisterTTL(15*time.Second),
+			registry.MaxRetry(5),
+		)
+		if err != nil {
+			panic(fmt.Sprintf("failed to create etcd registry: %v", err))
+		}
+		return registrar
 	case *conf.Registry_Nacos:
 		return registry.NewNacosRegistrar(&registry.NacosConfig{
 			Addr:      c.Nacos.Addr,

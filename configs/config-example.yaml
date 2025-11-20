@@ -86,6 +86,21 @@ registry:
       - "traefik.http.routers.${APP_NAME:krathub}-router.rule=Host(`${DOMAIN:krathub.r430.com}`)" # 路由规则
       - "traefik.http.services.${APP_NAME:krathub}-svc.loadbalancer.server.port=${SERVER_HTTP_PORT:8000}" # 服务端口
 
+  # 或者使用 etcd 作为注册中心
+  # etcd:
+  #   # etcd 端点列表
+  #   endpoints:
+  #     - "${REGISTRY_ETCD_ENDPOINTS_1:127.0.0.1:2379}"
+  #     - "${REGISTRY_ETCD_ENDPOINTS_2:127.0.0.1:2380}"
+  #     - "${REGISTRY_ETCD_ENDPOINTS_3:127.0.0.1:2381}"
+  #   # 认证信息
+  #   username: "${REGISTRY_ETCD_USERNAME:}"
+  #   password: "${REGISTRY_ETCD_PASSWORD:}"
+  #   # 连接超时时间
+  #   timeout: "${REGISTRY_ETCD_TIMEOUT:5s}"
+  #   # 命名空间（可选，默认为 /krathub）
+  #   namespace: "${REGISTRY_ETCD_NAMESPACE:/krathub}"
+
   # 或者使用 Nacos 作为注册中心
   # nacos:
   # addr: "${NACOSR_ADDR:127.0.0.1}"
@@ -108,6 +123,21 @@ discovery:
     datacenter: "${DISCOVERY_CONSUL_DC:dc1}"
     # 连接超时时间
     timeout: "${DISCOVERY_CONSUL_TIMEOUT:5s}"
+
+  # 使用 etcd 作为服务发现
+  # etcd:
+  #   # etcd 端点列表
+  #   endpoints:
+  #     - "${DISCOVERY_ETCD_ENDPOINTS_1:127.0.0.1:2379}"
+  #     - "${DISCOVERY_ETCD_ENDPOINTS_2:127.0.0.1:2380}"
+  #     - "${DISCOVERY_ETCD_ENDPOINTS_3:127.0.0.1:2381}"
+  #   # 认证信息
+  #   username: "${DISCOVERY_ETCD_USERNAME:}"
+  #   password: "${DISCOVERY_ETCD_PASSWORD:}"
+  #   # 连接超时时间
+  #   timeout: "${DISCOVERY_ETCD_TIMEOUT:5s}"
+  #   # 命名空间（可选，默认为 /krathub，通常与注册中心保持一致）
+  #   namespace: "${DISCOVERY_ETCD_NAMESPACE:/krathub}"
 
   # nacos:
   #   addr: "${NACOSD_ADDR:127.0.0.1}"

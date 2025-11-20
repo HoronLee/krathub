@@ -1,0 +1,306 @@
+package registry
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"math/rand"
+	"time"
+
+	clientv3 "go.etcd.io/etcd/client/v3"
+	"google.golang.org/grpc"
+
+	"github.com/go-kratos/kratos/v2/registry"
+	"github.com/horonlee/krathub/internal/conf"
+)
+
+var (
+	_ registry.Registrar = (*Registry)(nil)
+	_ registry.Discovery = (*Registry)(nil)
+)
+
+// Option is etcd registry option.
+type Option func(o *options)
+
+type options struct {
+	ctx       context.Context
+	namespace string
+	ttl       time.Duration
+	maxRetry  int
+}
+
+// Context with registry context.
+func Context(ctx context.Context) Option {
+	return func(o *options) { o.ctx = ctx }
+}
+
+// Namespace with registry namespace.
+func Namespace(ns string) Option {
+	return func(o *options) { o.namespace = ns }
+}
+
+// RegisterTTL with register ttl.
+func RegisterTTL(ttl time.Duration) Option {
+	return func(o *options) { o.ttl = ttl }
+}
+
+func MaxRetry(num int) Option {
+	return func(o *options) { o.maxRetry = num }
+}
+
+// Registry is etcd registry.
+type Registry struct {
+	opts   *options
+	client *clientv3.Client
+	kv     clientv3.KV
+	lease  clientv3.Lease
+	/*
+		ctxMap is used to store the context cancel function of each service instance.
+		When the service instance is deregistered, the corresponding context cancel function is called to stop the heartbeat.
+	*/
+	ctxMap map[string]*serviceCancel
+}
+
+type serviceCancel struct {
+	service *registry.ServiceInstance
+	cancel  context.CancelFunc
+}
+
+// New creates etcd registry
+func New(client *clientv3.Client, opts ...Option) (r *Registry) {
+	op := &options{
+		ctx:       context.Background(),
+		namespace: "/krathub",
+		ttl:       time.Second * 15,
+		maxRetry:  5,
+	}
+	for _, o := range opts {
+		o(op)
+	}
+	return &Registry{
+		opts:   op,
+		client: client,
+		kv:     clientv3.NewKV(client),
+		ctxMap: make(map[string]*serviceCancel),
+	}
+}
+
+// Register the registration.
+func (r *Registry) Register(ctx context.Context, service *registry.ServiceInstance) error {
+	key := r.registerKey(service)
+	value, err := marshal(service)
+	if err != nil {
+		return err
+	}
+	if r.lease != nil {
+		r.lease.Close()
+	}
+	r.lease = clientv3.NewLease(r.client)
+	leaseID, err := r.registerWithKV(ctx, key, value)
+	if err != nil {
+		return err
+	}
+
+	hctx, cancel := context.WithCancel(r.opts.ctx)
+	r.ctxMap[key] = &serviceCancel{
+		service: service,
+		cancel:  cancel,
+	}
+	go r.heartBeat(hctx, leaseID, key, value)
+	return nil
+}
+
+func (r *Registry) registerKey(service *registry.ServiceInstance) string {
+	return fmt.Sprintf("%s/%s/%s", r.opts.namespace, service.Name, service.ID)
+}
+
+// Deregister the registration.
+func (r *Registry) Deregister(ctx context.Context, service *registry.ServiceInstance) error {
+	defer func() {
+		if r.lease != nil {
+			r.lease.Close()
+		}
+	}()
+	// cancel heartbeat
+	key := r.registerKey(service)
+	if serviceCancel, ok := r.ctxMap[key]; ok {
+		serviceCancel.cancel()
+		delete(r.ctxMap, key)
+	}
+	_, err := r.client.Delete(ctx, key)
+	return err
+}
+
+// GetService return the service instances in memory according to the service name.
+func (r *Registry) GetService(ctx context.Context, name string) ([]*registry.ServiceInstance, error) {
+	key := r.serviceKey(name)
+	resp, err := r.kv.Get(ctx, key, clientv3.WithPrefix())
+	if err != nil {
+		return nil, err
+	}
+	items := make([]*registry.ServiceInstance, 0, len(resp.Kvs))
+	for _, kv := range resp.Kvs {
+		si, err := unmarshal(kv.Value)
+		if err != nil {
+			return nil, err
+		}
+		if si.Name != name {
+			continue
+		}
+		items = append(items, si)
+	}
+	return items, nil
+}
+
+func (r *Registry) serviceKey(name string) string {
+	return fmt.Sprintf("%s/%s", r.opts.namespace, name)
+}
+
+// Watch creates a watcher according to the service name.
+func (r *Registry) Watch(ctx context.Context, name string) (registry.Watcher, error) {
+	key := r.serviceKey(name)
+	return newWatcher(ctx, key, name, r.client)
+}
+
+// registerWithKV create a new lease, return current leaseID
+func (r *Registry) registerWithKV(ctx context.Context, key string, value string) (clientv3.LeaseID, error) {
+	grant, err := r.lease.Grant(ctx, int64(r.opts.ttl.Seconds()))
+	if err != nil {
+		return 0, err
+	}
+	_, err = r.client.Put(ctx, key, value, clientv3.WithLease(grant.ID))
+	if err != nil {
+		return 0, err
+	}
+	return grant.ID, nil
+}
+
+func (r *Registry) heartBeat(ctx context.Context, leaseID clientv3.LeaseID, key string, value string) {
+	curLeaseID := leaseID
+	kac, err := r.client.KeepAlive(ctx, leaseID)
+	if err != nil {
+		curLeaseID = 0
+	}
+	randSource := rand.New(rand.NewSource(time.Now().Unix()))
+
+	for {
+		if curLeaseID == 0 {
+			// try to registerWithKV
+			var retreat []int
+			for retryCnt := 0; retryCnt < r.opts.maxRetry; retryCnt++ {
+				if ctx.Err() != nil {
+					return
+				}
+				// prevent infinite blocking
+				idChan := make(chan clientv3.LeaseID, 1)
+				errChan := make(chan error, 1)
+				cancelCtx, cancel := context.WithCancel(ctx)
+				go func() {
+					defer cancel()
+					id, registerErr := r.registerWithKV(cancelCtx, key, value)
+					if registerErr != nil {
+						errChan <- registerErr
+					} else {
+						idChan <- id
+					}
+				}()
+
+				select {
+				case <-time.After(3 * time.Second):
+					cancel()
+					continue
+				case <-errChan:
+					continue
+				case curLeaseID = <-idChan:
+				}
+
+				kac, err = r.client.KeepAlive(ctx, curLeaseID)
+				if err == nil {
+					break
+				}
+				retreat = append(retreat, 1<<retryCnt)
+				time.Sleep(time.Duration(retreat[randSource.Intn(len(retreat))]) * time.Second)
+			}
+			if _, ok := <-kac; !ok {
+				// retry failed
+				return
+			}
+		}
+
+		select {
+		case _, ok := <-kac:
+			if !ok {
+				if ctx.Err() != nil {
+					// channel closed due to context cancel
+					return
+				}
+				// need to retry registration
+				curLeaseID = 0
+				continue
+			}
+		case <-r.opts.ctx.Done():
+			return
+		}
+	}
+}
+
+// NewEtcdClient 从配置创建 etcd 客户端
+func NewEtcdClient(cfg *conf.EtcdConfig) (*clientv3.Client, error) {
+	if cfg == nil {
+		return nil, fmt.Errorf("etcd config is nil")
+	}
+
+	// 创建 etcd 客户端配置
+	etcdConfig := clientv3.Config{
+		Endpoints: cfg.Endpoints,
+		Username:  cfg.Username,
+		Password:  cfg.Password,
+	}
+
+	// 设置超时时间
+	if cfg.Timeout != nil {
+		etcdConfig.DialTimeout = cfg.Timeout.AsDuration()
+	} else {
+		etcdConfig.DialTimeout = 5 * time.Second
+		etcdConfig.DialOptions = []grpc.DialOption{grpc.WithBlock()}
+	}
+
+	// 创建 etcd 客户端
+	client, err := clientv3.New(etcdConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create etcd client: %w", err)
+	}
+
+	return client, nil
+}
+
+// NewEtcdRegistry 从配置创建 etcd 注册中心
+func NewEtcdRegistry(cfg *conf.EtcdConfig, opts ...Option) (registry.Registrar, error) {
+	client, err := NewEtcdClient(cfg)
+	if err != nil {
+		return nil, err
+	}
+	return New(client, opts...), nil
+}
+
+// NewEtcdDiscovery 从配置创建 etcd 服务发现
+func NewEtcdDiscovery(cfg *conf.EtcdConfig, opts ...Option) (registry.Discovery, error) {
+	client, err := NewEtcdClient(cfg)
+	if err != nil {
+		return nil, err
+	}
+	return New(client, opts...), nil
+}
+
+func marshal(si *registry.ServiceInstance) (string, error) {
+	data, err := json.Marshal(si)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+func unmarshal(data []byte) (si *registry.ServiceInstance, err error) {
+	err = json.Unmarshal(data, &si)
+	return
+}

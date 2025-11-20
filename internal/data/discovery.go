@@ -1,8 +1,12 @@
 package data
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/horonlee/krathub/internal/conf"
 	"github.com/horonlee/krathub/pkg/discovery"
+	"github.com/horonlee/krathub/pkg/registry"
 
 	kratosRegistry "github.com/go-kratos/kratos/v2/registry"
 )
@@ -22,8 +26,19 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 			Timeout:    c.Consul.Timeout,
 		})
 	case *conf.Discovery_Etcd:
-		// TODO: 实现 Etcd 服务发现
-		return nil
+		namespace := "/krathub"
+		if c.Etcd.Namespace != "" {
+			namespace = c.Etcd.Namespace
+		}
+		discovery, err := registry.NewEtcdDiscovery(c.Etcd,
+			registry.Namespace(namespace),
+			registry.RegisterTTL(15*time.Second),
+			registry.MaxRetry(5),
+		)
+		if err != nil {
+			panic(fmt.Sprintf("failed to create etcd discovery: %v", err))
+		}
+		return discovery
 	case *conf.Discovery_Nacos:
 		return discovery.NewNacosDiscovery(&discovery.NacosConfig{
 			Addr:      c.Nacos.Addr,

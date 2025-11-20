@@ -50,6 +50,7 @@ message EtcdConfig {
   string password = 3; // 密码
   google.protobuf.Duration timeout = 4; // 超时时间
   string key = 5; // 配置键名 (仅 Config 使用)
+  string namespace = 6; // 命名空间 (仅 Registry 和 Discovery 使用)
 }
 
 // Nacos 配置

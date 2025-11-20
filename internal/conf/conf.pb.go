@@ -285,6 +285,7 @@ type EtcdConfig struct {
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`   // 密码
 	Timeout       *durationpb.Duration   `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`     // 超时时间
 	Key           string                 `protobuf:"bytes,5,opt,name=key,proto3" json:"key,omitempty"`             // 配置键名 (仅 Config 使用)
+	Namespace     string                 `protobuf:"bytes,6,opt,name=namespace,proto3" json:"namespace,omitempty"` // 命名空间 (仅 Registry 和 Discovery 使用)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -350,6 +351,13 @@ func (x *EtcdConfig) GetTimeout() *durationpb.Duration {
 func (x *EtcdConfig) GetKey() string {
 	if x != nil {
 		return x.Key
+	}
+	return ""
+}
+
+func (x *EtcdConfig) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
 	}
 	return ""
 }
@@ -1896,14 +1904,15 @@ const file_conf_conf_proto_rawDesc = "" +
 	"datacenter\x123\n" +
 	"\atimeout\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12\x12\n" +
 	"\x04tags\x18\x06 \x03(\tR\x04tags\x12\x10\n" +
-	"\x03key\x18\a \x01(\tR\x03key\"\xa9\x01\n" +
+	"\x03key\x18\a \x01(\tR\x03key\"\xc7\x01\n" +
 	"\n" +
 	"EtcdConfig\x12\x1c\n" +
 	"\tendpoints\x18\x01 \x03(\tR\tendpoints\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x123\n" +
 	"\atimeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12\x10\n" +
-	"\x03key\x18\x05 \x01(\tR\x03key\"\xef\x01\n" +
+	"\x03key\x18\x05 \x01(\tR\x03key\x12\x1c\n" +
+	"\tnamespace\x18\x06 \x01(\tR\tnamespace\"\xef\x01\n" +
 	"\vNacosConfig\x12\x12\n" +
 	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x12\n" +
 	"\x04port\x18\x02 \x01(\x04R\x04port\x12\x1c\n" +
