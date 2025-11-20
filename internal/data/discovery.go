@@ -25,15 +25,12 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 			Timeout:    c.Consul.Timeout,
 		})
 	case *conf.Discovery_Etcd:
-		namespace := "/krathub"
+		var opts []registry.Option
 		if c.Etcd.Namespace != "" {
-			namespace = c.Etcd.Namespace
+			opts = append(opts, registry.Namespace(c.Etcd.Namespace))
 		}
-		discovery, err := registry.NewEtcdDiscovery(c.Etcd,
-			registry.Namespace(namespace),
-			registry.RegisterTTL(15*time.Second),
-			registry.MaxRetry(5),
-		)
+		opts = append(opts, registry.RegisterTTL(15*time.Second), registry.MaxRetry(5))
+		discovery, err := registry.NewEtcdDiscovery(c.Etcd, opts...)
 		if err != nil {
 			panic(fmt.Sprintf("failed to create etcd discovery: %v", err))
 		}

@@ -26,15 +26,12 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 			Tags:       c.Consul.Tags,
 		})
 	case *conf.Registry_Etcd:
-		namespace := "/krathub"
+		var opts []registry.Option
 		if c.Etcd.Namespace != "" {
-			namespace = c.Etcd.Namespace
+			opts = append(opts, registry.Namespace(c.Etcd.Namespace))
 		}
-		registrar, err := registry.NewEtcdRegistry(c.Etcd,
-			registry.Namespace(namespace),
-			registry.RegisterTTL(15*time.Second),
-			registry.MaxRetry(5),
-		)
+		opts = append(opts, registry.RegisterTTL(15*time.Second), registry.MaxRetry(5))
+		registrar, err := registry.NewEtcdRegistry(c.Etcd, opts...)
 		if err != nil {
 			panic(fmt.Sprintf("failed to create etcd registry: %v", err))
 		}
