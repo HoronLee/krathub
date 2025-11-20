@@ -5,7 +5,6 @@ package krathub.user.v1;
 import "google/api/annotations.proto";
 import "buf/validate/validate.proto";
 import "errors/errors.proto";
-import "google/api/client.proto";
 
 option go_package = "github.com/horonlee/krathub/api/v1/user;userv1";
 option java_multiple_files = true;
@@ -28,14 +27,12 @@ enum ErrorReason {
 
 service User{
   rpc CurrentUserInfo(CurrentUserInfoRequest) returns (CurrentUserInfoReply) {
-    option (google.api.method_signature) = "";
     option (google.api.http) = {
       get: "/v1/user/info"
     };
   }
 
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserReply) {
-    option (google.api.method_signature) = "user";
     option (google.api.http) = {
       post: "/v1/user/update"
       body: "*"
@@ -43,7 +40,6 @@ service User{
   }
 
   rpc SaveUser(SaveUserRequest) returns (SaveUserReply) {
-    option (google.api.method_signature) = "user";
     option (google.api.http) = {
       post: "/v1/user/save"
       body: "*"
@@ -51,7 +47,6 @@ service User{
   }
 
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserReply) {
-    option (google.api.method_signature) = "id";
     option (google.api.http) = {
       delete: "/v1/user/delete/{id}"
     };
