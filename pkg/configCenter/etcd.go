@@ -2,13 +2,15 @@ package configCenter
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/config"
 	clientv3 "go.etcd.io/etcd/client/v3"
+	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -21,15 +23,43 @@ type EtcdConfig struct {
 	Timeout   *durationpb.Duration
 }
 
-// etcdSource 实现 config.Source 接口的 Etcd 配置源
-type etcdSource struct {
-	client   *clientv3.Client
-	key      string
-	mu       sync.RWMutex
-	watchers []config.Watcher
+// Option is etcd config option.
+type Option func(o *options)
+
+type options struct {
+	ctx    context.Context
+	path   string
+	prefix bool
 }
 
-// NewEtcdConfigSource 创建 Etcd 配置源
+// WithContext with registry context.
+func WithContext(ctx context.Context) Option {
+	return func(o *options) {
+		o.ctx = ctx
+	}
+}
+
+// WithPath is config path
+func WithPath(p string) Option {
+	return func(o *options) {
+		o.path = p
+	}
+}
+
+// WithPrefix is config prefix
+func WithPrefix(prefix bool) Option {
+	return func(o *options) {
+		o.prefix = prefix
+	}
+}
+
+// source 实现 config.Source 接口的 Etcd 配置源
+type source struct {
+	client  *clientv3.Client
+	options *options
+}
+
+// NewEtcdConfigSource 创建 Etcd 配置源（兼容旧版本）
 func NewEtcdConfigSource(c *EtcdConfig) config.Source {
 	if c == nil {
 		return nil
@@ -47,115 +77,140 @@ func NewEtcdConfigSource(c *EtcdConfig) config.Source {
 		etcdConfig.DialTimeout = c.Timeout.AsDuration()
 	} else {
 		etcdConfig.DialTimeout = 5 * time.Second
+		etcdConfig.DialOptions = []grpc.DialOption{grpc.WithBlock()}
 	}
 
 	// 创建 Etcd 客户端
 	client, err := clientv3.New(etcdConfig)
 	if err != nil {
-		panic(fmt.Sprintf("failed to create etcd client: %v", err))
+		return nil
 	}
 
-	// 设置配置键名，默认为 /config
-	key := "/config"
+	// 设置配置路径，默认为 /config
+	path := "/config"
 	if c.Key != "" {
-		key = c.Key
+		path = c.Key
 	}
 
-	return &etcdSource{
+	return &source{
 		client: client,
-		key:    key,
+		options: &options{
+			ctx:    context.Background(),
+			path:   path,
+			prefix: true, // 默认启用 prefix
+		},
 	}
 }
 
-// Load 实现 config.Source 接口
-func (s *etcdSource) Load() ([]*config.KeyValue, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+// New 创建 Etcd 配置源（官方标准接口）
+func New(client *clientv3.Client, opts ...Option) (config.Source, error) {
+	if client == nil {
+		return nil, errors.New("client is nil")
+	}
 
-	resp, err := s.client.Get(ctx, s.key, clientv3.WithPrefix())
+	options := &options{
+		ctx:    context.Background(),
+		path:   "",
+		prefix: false,
+	}
+
+	for _, opt := range opts {
+		opt(options)
+	}
+
+	if options.path == "" {
+		return nil, errors.New("path invalid")
+	}
+
+	return &source{
+		client:  client,
+		options: options,
+	}, nil
+}
+
+// Load 实现 config.Source 接口
+func (s *source) Load() ([]*config.KeyValue, error) {
+	var opts []clientv3.OpOption
+	if s.options.prefix {
+		opts = append(opts, clientv3.WithPrefix())
+	}
+
+	rsp, err := s.client.Get(s.options.ctx, s.options.path, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	var kvs []*config.KeyValue
-	for _, kv := range resp.Kvs {
+	kvs := make([]*config.KeyValue, 0, len(rsp.Kvs))
+	for _, item := range rsp.Kvs {
+		k := string(item.Key)
 		kvs = append(kvs, &config.KeyValue{
-			Key:    string(kv.Key),
-			Value:  kv.Value,
-			Format: s.getFormat(string(kv.Key)),
+			Key:    k,
+			Value:  item.Value,
+			Format: strings.TrimPrefix(filepath.Ext(k), "."),
 		})
 	}
-
 	return kvs, nil
 }
 
 // Watch 实现 config.Source 接口
-func (s *etcdSource) Watch() (config.Watcher, error) {
-	watcher := &etcdWatcher{
-		source: s,
-		ctx:    context.Background(),
-		cancel: func() {},
-	}
-
-	s.mu.Lock()
-	s.watchers = append(s.watchers, watcher)
-	s.mu.Unlock()
-
-	return watcher, nil
+func (s *source) Watch() (config.Watcher, error) {
+	return newWatcher(s), nil
 }
 
-// getFormat 根据文件扩展名推断配置格式
-func (s *etcdSource) getFormat(key string) string {
-	ext := filepath.Ext(key)
-	switch ext {
-	case ".yaml", ".yml":
-		return "yaml"
-	case ".json":
-		return "json"
-	case ".toml":
-		return "toml"
-	default:
-		return "yaml" // 默认格式
+// Close 关闭配置源
+func (s *source) Close() error {
+	if s.client != nil {
+		return s.client.Close()
 	}
+	return nil
 }
 
-// etcdWatcher 实现 config.Watcher 接口的 Etcd 监听器
-type etcdWatcher struct {
-	source *etcdSource
+// watcher 实现 config.Watcher 接口的 Etcd 监听器
+type watcher struct {
+	source *source
+	ch     clientv3.WatchChan
+
 	ctx    context.Context
 	cancel context.CancelFunc
+	mu     sync.Mutex
+}
+
+func newWatcher(s *source) *watcher {
+	ctx, cancel := context.WithCancel(context.Background())
+	w := &watcher{
+		source: s,
+		ctx:    ctx,
+		cancel: cancel,
+	}
+
+	var opts []clientv3.OpOption
+	if s.options.prefix {
+		opts = append(opts, clientv3.WithPrefix())
+	}
+	w.ch = s.client.Watch(s.options.ctx, s.options.path, opts...)
+
+	return w
 }
 
 // Next 实现 config.Watcher 接口
-func (w *etcdWatcher) Next() ([]*config.KeyValue, error) {
-	w.ctx, w.cancel = context.WithCancel(context.Background())
-
-	watchCh := w.source.client.Watch(w.ctx, w.source.key, clientv3.WithPrefix())
-
-	for watchResp := range watchCh {
-		if watchResp.Err() != nil {
-			return nil, watchResp.Err()
+func (w *watcher) Next() ([]*config.KeyValue, error) {
+	select {
+	case resp := <-w.ch:
+		if err := resp.Err(); err != nil {
+			return nil, err
 		}
-
-		var kvs []*config.KeyValue
-		for _, event := range watchResp.Events {
-			kvs = append(kvs, &config.KeyValue{
-				Key:    string(event.Kv.Key),
-				Value:  event.Kv.Value,
-				Format: w.source.getFormat(string(event.Kv.Key)),
-			})
-		}
-
-		if len(kvs) > 0 {
-			return kvs, nil
-		}
+		// 返回所有当前配置，而不仅仅是变更的部分
+		return w.source.Load()
+	case <-w.ctx.Done():
+		return nil, w.ctx.Err()
 	}
-
-	return nil, fmt.Errorf("watch channel closed")
 }
 
 // Stop 实现 config.Watcher 接口
-func (w *etcdWatcher) Stop() error {
+func (w *watcher) Stop() error {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
 	if w.cancel != nil {
 		w.cancel()
 	}
