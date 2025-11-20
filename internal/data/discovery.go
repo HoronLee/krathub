@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/horonlee/krathub/internal/conf"
-	"github.com/horonlee/krathub/pkg/discovery"
 	"github.com/horonlee/krathub/pkg/registry"
 
 	kratosRegistry "github.com/go-kratos/kratos/v2/registry"
@@ -18,7 +17,7 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 	}
 	switch c := cfg.Discovery.(type) {
 	case *conf.Discovery_Consul:
-		return discovery.NewConsulDiscovery(&discovery.ConsulConfig{
+		return registry.NewConsulDiscovery(&registry.ConsulConfig{
 			Addr:       c.Consul.Addr,
 			Scheme:     c.Consul.Scheme,
 			Token:      c.Consul.Token,
@@ -40,7 +39,7 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 		}
 		return discovery
 	case *conf.Discovery_Nacos:
-		return discovery.NewNacosDiscovery(&discovery.NacosConfig{
+		return registry.NewNacosDiscovery(&registry.NacosConfig{
 			Addr:      c.Nacos.Addr,
 			Port:      c.Nacos.Port,
 			Namespace: c.Nacos.Namespace,

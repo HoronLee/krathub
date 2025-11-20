@@ -159,56 +159,6 @@ make run
 
 完整的配置示例请参考 `configs/config-example.yaml` 文件。
 
-### 🔧 etcd 服务发现配置
-
-本项目现在支持使用 etcd 作为服务注册中心。以下是 etcd 配置示例：
-
-```yaml
-# 注册中心配置 - 用于服务注册
-registry:
-  etcd:
-    # etcd 端点列表
-    endpoints: 
-      - "${REGISTRY_ETCD_ENDPOINTS_1:127.0.0.1:2379}"
-      - "${REGISTRY_ETCD_ENDPOINTS_2:127.0.0.1:2380}"
-      - "${REGISTRY_ETCD_ENDPOINTS_3:127.0.0.1:2381}"
-    # 认证信息（可选）
-    username: "${REGISTRY_ETCD_USERNAME:}"
-    password: "${REGISTRY_ETCD_PASSWORD:}"
-    # 连接超时时间
-    timeout: "${REGISTRY_ETCD_TIMEOUT:5s}"
-    # 命名空间（可选，默认为 /krathub）
-    namespace: "${REGISTRY_ETCD_NAMESPACE:/my-services}"
-
-# 服务发现配置 - 用于服务发现，通常与注册中心配置相同
-discovery:
-  etcd:
-    endpoints: 
-      - "${DISCOVERY_ETCD_ENDPOINTS_1:127.0.0.1:2379}"
-      - "${DISCOVERY_ETCD_ENDPOINTS_2:127.0.0.1:2380}"
-      - "${DISCOVERY_ETCD_ENDPOINTS_3:127.0.0.1:2381}"
-    username: "${DISCOVERY_ETCD_USERNAME:}"
-    password: "${DISCOVERY_ETCD_PASSWORD:}"
-    timeout: "${DISCOVERY_ETCD_TIMEOUT:5s}"
-    # 命名空间（可选，默认为 /krathub，通常与注册中心保持一致）
-    namespace: "${DISCOVERY_ETCD_NAMESPACE:/my-services}"
-```
-
-**etcd 特性：**
-- ✅ 基于官方 Kratos contrib/registry/etcd 实现
-- ✅ 自动心跳和健康检查（默认 TTL 15s）
-- ✅ 智能重试机制（指数退避，最大重试 5 次）
-- ✅ 实时服务监听和拓扑变化检测
-- ✅ 高可用性支持（多端点配置）
-- ✅ 性能优化（服务发现延迟 < 100μs）
-
-**从 Consul/Nacos 迁移到 etcd：**
-1. 修改配置文件，将 `consul` 或 `nacos` 配置替换为 `etcd` 配置
-2. 确保 etcd 集群正常运行并可访问
-3. 重启服务，新的注册中心配置将自动生效
-
-完整的配置示例请参考 `configs/config-example.yaml` 文件。
-
 ## 📄 许可协议
 
 本项目遵循 [LICENSE](LICENSE) 文件中的许可协议。

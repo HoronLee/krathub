@@ -17,7 +17,7 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 	}
 	switch c := cfg.Registry.(type) {
 	case *conf.Registry_Consul:
-		return registry.NewConsulRegistrar(&registry.ConsulConfig{
+		return registry.NewConsulRegistry(&registry.ConsulConfig{
 			Addr:       c.Consul.Addr,
 			Scheme:     c.Consul.Scheme,
 			Token:      c.Consul.Token,
@@ -40,7 +40,7 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 		}
 		return registrar
 	case *conf.Registry_Nacos:
-		return registry.NewNacosRegistrar(&registry.NacosConfig{
+		return registry.NewNacosRegistry(&registry.NacosConfig{
 			Addr:      c.Nacos.Addr,
 			Port:      c.Nacos.Port,
 			Namespace: c.Nacos.Namespace,
