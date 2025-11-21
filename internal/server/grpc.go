@@ -40,7 +40,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 			metrics.WithRequests(m.Requests),
 		))
 	}
-
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(mds...),
 	}
@@ -53,7 +52,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	if c.Grpc.Timeout != nil {
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
-
 	// Add TLS configuration
 	if c.Grpc.Tls != nil && c.Grpc.Tls.Enable {
 		cert, err := tls.LoadX509KeyPair(c.Grpc.Tls.CertPath, c.Grpc.Tls.KeyPath)
@@ -63,7 +61,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 		creds := credentials.NewTLS(&tls.Config{Certificates: []tls.Certificate{cert}})
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))
 	}
-
 	srv := grpc.NewServer(opts...)
 	// 注册服务
 	return srv

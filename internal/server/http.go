@@ -47,7 +47,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 	if trace != nil && trace.Endpoint != "" {
 		mds = append(mds, tracing.Server())
 	}
-
 	// 开启 metrics
 	if m != nil {
 		mds = append(mds, metrics.Server(
@@ -55,7 +54,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 			metrics.WithRequests(m.Requests),
 		))
 	}
-
 	var opts = []http.ServerOption{
 		http.Middleware(mds...),
 	}
@@ -68,7 +66,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
-
 	// 添加 CORS 过滤器（如果启用了 CORS 配置）
 	if c.Http.Cors != nil {
 		corsOptions := mw.CORSConfigFromConfig(c.Http.Cors)
@@ -77,7 +74,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 			logger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
 		}
 	}
-
 	// Add TLS configuration
 	if c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
@@ -89,7 +85,6 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 		}
 		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}
-
 	srv := http.NewServer(opts...)
 	// 开启 metrics 路由
 	if m != nil {

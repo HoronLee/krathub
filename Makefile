@@ -28,7 +28,6 @@ THIRD_PARTY_DIR := third_party
 CONFIG_DIR := configs
 CMD_DIR := cmd
 COVERAGE_DIR := coverage
-DOCS_DIR := docs
 
 # Build configuration
 BINARY_NAME := server

@@ -70,7 +70,7 @@ type serviceCancel struct {
 func New(client *clientv3.Client, opts ...Option) (r *Registry) {
 	op := &options{
 		ctx:       context.Background(),
-		namespace: "/krathub",
+		namespace: "",
 		ttl:       time.Second * 15,
 		maxRetry:  5,
 	}
