@@ -62,7 +62,7 @@ app:
     issuer: "${JWT_ISSUER:projectName}"
     # audience: "${JWT_AUDIENCE:projectName}"
   log:
-    level: "${LOG_LEVEL:-1}" # -1debug,0info,1warn,2error,3dpanic,4panic,5fatal
+    level: "${LOG_LEVEL:0}" # 0:debug, 1:info, 2:warn, 3:error, 4:fatal
     filename: "${LOG_FILENAME:projectName.log}" # 日志文件夹为根目录logs
     max_size: "${LOG_MAX_SIZE:20}" # 日志文件最大大小，单位MB
     max_age: "${LOG_MAX_AGE:30}" # 日志文件最大保存天数

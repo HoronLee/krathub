@@ -166,7 +166,7 @@ message App {
     string audience = 4;
   }
   message Log {
-    int32 level = 1; // -1~5 代表了debug,info,warn,error,dpanic,panic,fatal
+    int32 level = 1; // 0:debug, 1:info, 2:warn, 3:error, 4:fatal
     string filename = 2;  // 日志文件名
     int32 max_size = 3; // 日志文件最大大小
     int32 max_backups = 4; // 日志文件最大备份数

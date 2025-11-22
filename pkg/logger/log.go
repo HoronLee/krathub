@@ -32,10 +32,25 @@ type Config struct {
 
 // NewLogger 配置zap日志,将zap日志库引入
 func NewLogger(c *Config) log.Logger {
-	// 设置日志级别
+	// 设置日志级别，只支持 Kratos 定义的 5 个等级
 	level := zap.NewAtomicLevelAt(zapcore.InfoLevel)
 	if c != nil {
-		level.SetLevel(zapcore.Level(c.Level))
+		// 映射 Kratos 日志等级到 Zap 等级，并对无效值进行默认处理
+		switch c.Level {
+		case 0: // debug
+			level.SetLevel(zapcore.DebugLevel)
+		case 1: // info
+			level.SetLevel(zapcore.InfoLevel)
+		case 2: // warn
+			level.SetLevel(zapcore.WarnLevel)
+		case 3: // error
+			level.SetLevel(zapcore.ErrorLevel)
+		case 4: // fatal
+			level.SetLevel(zapcore.FatalLevel)
+		default:
+			// 无效等级默认使用 info
+			level.SetLevel(zapcore.InfoLevel)
+		}
 	}
 
 	// lumberjack 日志切割
