@@ -69,11 +69,11 @@ func NewLogger(c *Config) log.Logger {
 			maxAge = int(c.MaxAge)
 		}
 		lumberjackLogger = &lumberjack.Logger{
-			Filename:   "../../logs/" + c.Filename, // 日志文件路径
-			MaxSize:    maxSize,                    // 每个日志文件保存的最大尺寸 单位：M
-			MaxBackups: maxBackups,                 // 日志文件最多保存多少个备份
-			MaxAge:     maxAge,                     // 文件最多保存多少天
-			Compress:   c.Compress,                 // 是否压缩
+			Filename:   c.Filename, // 日志文件路径
+			MaxSize:    maxSize,    // 每个日志文件保存的最大尺寸 单位：M
+			MaxBackups: maxBackups, // 日志文件最多保存多少个备份
+			MaxAge:     maxAge,     // 文件最多保存多少天
+			Compress:   c.Compress, // 是否压缩
 		}
 	}
 
