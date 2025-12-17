@@ -60,6 +60,7 @@ func main() {
 		config.WithSource(
 			file.NewSource(flagconf),
 		),
+		config.WithResolveActualTypes(true),
 	)
 	defer c.Close()
 
