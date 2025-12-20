@@ -60,6 +60,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.auth.v1.SignupByEmailReply'
+    /v1/test/private:
+        post:
+            tags:
+                - Test
+            operationId: Test_PrivateTest
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.test.v1.PrivateTestRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.test.v1.PrivateTestResponse'
+    /v1/test/test:
+        post:
+            tags:
+                - Test
+            operationId: Test_Test
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.test.v1.TestRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.test.v1.TestResponse'
     /v1/user/delete/{id}:
         delete:
             tags:
@@ -182,6 +218,22 @@ components:
                 email:
                     type: string
             description: 邮箱注册请求
+        krathub.test.v1.PrivateTestRequest:
+            type: object
+            properties: {}
+        krathub.test.v1.PrivateTestResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+        krathub.test.v1.TestRequest:
+            type: object
+            properties: {}
+        krathub.test.v1.TestResponse:
+            type: object
+            properties:
+                message:
+                    type: string
         krathub.user.v1.CurrentUserInfoReply:
             type: object
             properties:
@@ -252,4 +304,5 @@ components:
                     type: string
 tags:
     - name: Auth
+    - name: Test
     - name: User

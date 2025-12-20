@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package krathub.test.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/horonlee/krathub/api/v1/test;testv1";
+
+service Test {
+  rpc Test(TestRequest) returns (TestResponse) {
+    option (google.api.http) = {
+      post: "/v1/test/test"
+      body: "*"
+    };
+  }
+  rpc PrivateTest(PrivateTestRequest) returns (PrivateTestResponse) {
+    option (google.api.http) = {
+      post: "/v1/test/private"
+      body: "*"
+    };
+  }
+}
+
+message TestRequest {}
+
+message TestResponse {
+  string message = 1;
+}
+
+message PrivateTestRequest {}
+
+message PrivateTestResponse {
+  string message = 1;
+}

@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package krathub.auth.v1;
 
-import "google/api/annotations.proto";
 import "buf/validate/validate.proto";
 import "errors/errors.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/horonlee/krathub/api/v1/auth;authv1";
 option java_multiple_files = true;
-option java_package = "dev.krathub.api.auth.v1";
 option java_outer_classname = "AuthProtoV1";
+option java_package = "dev.krathub.api.auth.v1";
 
 // 错误码定义
 enum ErrorReason {
@@ -56,19 +56,22 @@ service Auth {
       body: "*"
     };
   }
-
 }
 
 // 邮箱注册请求
 message SignupByEmailRequest {
   // 用户名最小长度5
-  string name = 1 [(buf.validate.field).string.min_len =  5];
+  string name = 1 [(buf.validate.field).string.min_len = 5];
   // 密码最小长度5，最大长度10
-  string password = 2 [(buf.validate.field).string = {min_len: 5, max_len: 10}];
+  string password = 2 [(buf.validate.field).string = {
+    min_len: 5
+    max_len: 10
+  }];
   // 确认密码最小长度5，最大长度10
-  string password_confirm = 3 [
-    (buf.validate.field).string = {min_len: 5, max_len: 10}
-  ];
+  string password_confirm = 3 [(buf.validate.field).string = {
+    min_len: 5
+    max_len: 10
+  }];
   string email = 4 [(buf.validate.field).string.email = true]; // 邮箱格式验证
 }
 
@@ -84,7 +87,10 @@ message SignupByEmailReply {
 message LoginByEmailPasswordRequest {
   // 可以是用户名或邮箱
   string login_id = 1;
-  string password = 2 [(buf.validate.field).string = {min_len: 5, max_len: 10}];
+  string password = 2 [(buf.validate.field).string = {
+    min_len: 5
+    max_len: 10
+  }];
 }
 
 // 密码登录响应

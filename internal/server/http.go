@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 
 	authV1 "github.com/horonlee/krathub/api/auth/v1"
+	testV1 "github.com/horonlee/krathub/api/test/v1"
 	userV1 "github.com/horonlee/krathub/api/user/v1"
 	"github.com/horonlee/krathub/internal/conf"
 	"github.com/horonlee/krathub/internal/consts"
@@ -23,26 +24,16 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService, user *service.UserService, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, auth *service.AuthService, user *service.UserService, test *service.TestService) *http.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(logger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
-		// 登录等无需鉴权接口
-		selector.Server(mM.Auth(consts.UserRole(0))).
-			Prefix("/krathub.auth.v1.Auth/").
-			Build(),
-		// 需要User权限的接口
-		selector.Server(mM.Auth(consts.UserRole(2))).
-			Prefix("/krathub.user.v1.User/").
-			Build(),
-		// 需要Admin权限的接口
-		selector.Server(mM.Auth(consts.UserRole(3))).
-			Path("/krathub.user.v1.User/DeleteUser", "/krathub.user.v1.User/SaveUser").
-			Build(),
 	}
+	// 配置特殊路由
+	mds = append(mds, configureRoutes(mM)...)
 	// 开启链路追踪
 	if trace != nil && trace.Endpoint != "" {
 		mds = append(mds, tracing.Server())
@@ -93,5 +84,20 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, auth *service.AuthService,
 	// 注册服务
 	authV1.RegisterAuthHTTPServer(srv, auth)
 	userV1.RegisterUserHTTPServer(srv, user)
+	testV1.RegisterTestHTTPServer(srv, test)
 	return srv
+}
+
+// configureRoutes 配置权限路由中间件
+func configureRoutes(mM *mw.MiddlewareManager) []middleware.Middleware {
+	return []middleware.Middleware{
+		// 需要User权限的接口
+		selector.Server(mM.Auth(consts.UserRole(2))).
+			Prefix("/krathub.user.v1.User/").
+			Build(),
+		// 需要Admin权限的接口
+		selector.Server(mM.Auth(consts.UserRole(3))).
+			Path("/krathub.user.v1.User/DeleteUser", "/krathub.user.v1.User/SaveUser").
+			Build(),
+	}
 }

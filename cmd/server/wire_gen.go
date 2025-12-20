@@ -52,7 +52,8 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	userRepo := data.NewUserRepo(dataData, logger)
 	userUsecase := biz.NewUserUsecase(userRepo, logger, app, authRepo)
 	userService := service.NewUserService(userUsecase)
-	httpServer := server.NewHTTPServer(confServer, trace, authService, userService, middlewareManager, serverMetrics, logger)
+	testService := service.NewTestService()
+	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger, authService, userService, testService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup()

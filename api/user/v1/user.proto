@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package krathub.user.v1;
 
-import "google/api/annotations.proto";
 import "buf/validate/validate.proto";
 import "errors/errors.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/horonlee/krathub/api/v1/user;userv1";
 option java_multiple_files = true;
-option java_package = "dev.krathub.api.user.v1";
 option java_outer_classname = "UserProtoV1";
+option java_package = "dev.krathub.api.user.v1";
 
 // 错误码定义
 enum ErrorReason {
@@ -25,11 +25,9 @@ enum ErrorReason {
   SAVE_USER_FAILED = 3 [(errors.code) = 500];
 }
 
-service User{
+service User {
   rpc CurrentUserInfo(CurrentUserInfoRequest) returns (CurrentUserInfoReply) {
-    option (google.api.http) = {
-      get: "/v1/user/info"
-    };
+    option (google.api.http) = {get: "/v1/user/info"};
   }
 
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserReply) {
@@ -47,15 +45,11 @@ service User{
   }
 
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserReply) {
-    option (google.api.http) = {
-      delete: "/v1/user/delete/{id}"
-    };
+    option (google.api.http) = {delete: "/v1/user/delete/{id}"};
   }
-
 }
 
-message CurrentUserInfoRequest {
-}
+message CurrentUserInfoRequest {}
 
 message CurrentUserInfoReply {
   int64 id = 1;
@@ -64,11 +58,11 @@ message CurrentUserInfoReply {
 }
 
 message DeleteUserRequest {
-    int64 id = 1 [(buf.validate.field).int64.gt = 0]; // 用户ID必须大于0
-  }
+  int64 id = 1 [(buf.validate.field).int64.gt = 0]; // 用户ID必须大于0
+}
 
 message DeleteUserReply {
-    bool success = 1; // 删除是否成功
+  bool success = 1; // 删除是否成功
 }
 
 message UpdateUserRequest {
@@ -91,7 +85,10 @@ message UpdateUserReply {
 message SaveUserRequest {
   string name = 1 [(buf.validate.field).string.min_len = 5];
   string email = 2 [(buf.validate.field).string.email = true];
-  string password = 3 [(buf.validate.field).string = {min_len: 5, max_len: 10}];
+  string password = 3 [(buf.validate.field).string = {
+    min_len: 5
+    max_len: 10
+  }];
   string phone = 4;
   string avatar = 5;
   string bio = 6;
