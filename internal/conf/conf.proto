@@ -1,9 +1,26 @@
 syntax = "proto3";
 package kratos.api;
 
+import "google/protobuf/duration.proto";
+
 option go_package = "github.com/horonlee/krathub/internal/conf;conf";
 
-import "google/protobuf/duration.proto";
+// =============================================================================
+// Bootstrap 配置
+// =============================================================================
+
+// Bootstrap 配置
+message Bootstrap {
+  App app = 1; // 应用基础配置
+  Server server = 2; // 服务端配置
+  Client client = 3; // 客户端配置
+  Data data = 4; // 数据源配置
+  Registry registry = 5; // 注册中心配置
+  Discovery discovery = 6; // 服务发现配置
+  Config config = 7; // 配置中心配置
+  Trace trace = 8; // 链路追踪配置
+  Metrics metrics = 9; // 指标配置
+}
 
 // =============================================================================
 // 通用配置
@@ -11,10 +28,10 @@ import "google/protobuf/duration.proto";
 
 // 可复用的 TLS 配置
 message TLSConfig {
-  bool enable = 1;      // 开关
+  bool enable = 1; // 开关
   string cert_path = 2; // 证书路径
-  string key_path = 3;  // 私钥路径
-  string ca_path = 4;   // CA 证书路径
+  string key_path = 3; // 私钥路径
+  string ca_path = 4; // CA 证书路径
 }
 
 // CORS 配置
@@ -63,23 +80,6 @@ message NacosConfig {
   string password = 6; // 密码
   google.protobuf.Duration timeout = 7; // 超时时间
   string data_id = 8; // 数据ID (仅 Config 使用)
-}
-
-// =============================================================================
-// Bootstrap 配置
-// =============================================================================
-
-// Bootstrap 配置
-message Bootstrap {
-  App app = 1;        // 应用基础配置
-  Server server = 2;  // 服务端配置
-  Client client = 3;  // 客户端配置
-  Data data = 4;      // 数据源配置
-  Registry registry = 5; // 注册中心配置
-  Discovery discovery = 6; // 服务发现配置
-  Config config = 7;     // 配置中心配置
-  Trace trace = 8;       // 链路追踪配置
-  Metrics metrics = 9;   // 指标配置
 }
 
 // =============================================================================
@@ -167,7 +167,7 @@ message App {
   }
   message Log {
     int32 level = 1; // 0:debug, 1:info, 2:warn, 3:error, 4:fatal
-    string filename = 2;  // 日志文件名
+    string filename = 2; // 日志文件名
     int32 max_size = 3; // 日志文件最大大小
     int32 max_backups = 4; // 日志文件最大备份数
     int32 max_age = 5; // 日志文件最大保留天数
