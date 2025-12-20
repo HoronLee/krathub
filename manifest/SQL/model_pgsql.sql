@@ -33,8 +33,3 @@ CREATE TRIGGER trigger_user_updated_at
 CREATE INDEX IF NOT EXISTS idx_user_email ON "user"("email");
 CREATE INDEX IF NOT EXISTS idx_user_name ON "user"("name");
 CREATE INDEX IF NOT EXISTS idx_user_role ON "user"("role");
-
--- 插入默认管理员用户（密码为 'admin123' 的 bcrypt 哈希值）
-INSERT INTO "user" ("name", "email", "password", "role")
-VALUES ('admin', 'admin@krathub.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin')
-ON CONFLICT ("email") DO NOTHING;
