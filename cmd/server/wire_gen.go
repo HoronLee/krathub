@@ -42,8 +42,13 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup, err := data.NewData(db, confData, logger, clientClient)
+	redisClient, cleanup, err := data.NewRedis(confData, logger)
 	if err != nil {
+		return nil, nil, err
+	}
+	dataData, cleanup2, err := data.NewData(db, confData, logger, clientClient, redisClient)
+	if err != nil {
+		cleanup()
 		return nil, nil, err
 	}
 	authRepo := data.NewAuthRepo(dataData, logger)
@@ -56,6 +61,7 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger, authService, userService, testService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
+		cleanup2()
 		cleanup()
 	}, nil
 }

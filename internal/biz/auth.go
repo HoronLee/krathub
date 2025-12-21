@@ -46,7 +46,7 @@ type AuthUsecase struct {
 func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
 	// Instantiate the JWT service with the specific UserClaims type.
 	jwtService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
-		SecretKey: cfg.Jwt.SecretKey,
+		SecretKey: cfg.Jwt.AccessSecret,
 	})
 
 	uc := &AuthUsecase{
@@ -120,7 +120,7 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.Use
 		return "", authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 	}
 	// 登录成功，签发 token
-	expirationTime := time.Duration(uc.cfg.Jwt.Expire) * time.Hour
+	expirationTime := time.Duration(uc.cfg.Jwt.AccessExpire) * time.Second
 	claims := &UserClaims{
 		ID:   users[0].ID,
 		Name: users[0].Name,

@@ -36,7 +36,7 @@ func (m *MiddlewareManager) Auth(minRole consts.UserRole) middleware.Middleware 
 
 			// 创建JWT实例并解析Token
 			jwtInstance := jwt.NewJWT[biz.UserClaims](&jwt.Config{
-				SecretKey: m.appConf.Jwt.SecretKey,
+				SecretKey: m.appConf.Jwt.AccessSecret,
 			})
 			claims, err := jwtInstance.ParseToken(tokenString)
 			if err != nil {

@@ -5,7 +5,7 @@ import "context"
 // Connection 顶层连接接口
 type Connection interface {
 	// Value 返回原始连接对象
-	Value() interface{}
+	Value() any
 	// Close 关闭连接
 	Close() error
 	// IsHealthy 检查连接健康状态

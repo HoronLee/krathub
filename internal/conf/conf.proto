@@ -160,10 +160,12 @@ message Data {
 // 应用配置
 message App {
   message Jwt {
-    string secret_key = 1; // JWT密钥
-    int32 expire = 2; // JWT过期时间，单位秒
-    string issuer = 3; // JWT签发者
-    string audience = 4;
+    string access_secret = 1; // Access Token密钥
+    string refresh_secret = 2; // Refresh Token密钥
+    int32 access_expire = 3; // Access Token过期时间，单位秒
+    int32 refresh_expire = 4; // Refresh Token过期时间，单位秒
+    string issuer = 5; // JWT签发者
+    string audience = 6; // JWT受众
   }
   message Log {
     int32 level = 1; // 0:debug, 1:info, 2:warn, 3:error, 4:fatal

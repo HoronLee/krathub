@@ -47,6 +47,8 @@ AGENTS.md
 CLAUDE.md
 GEMINI.md
 openspec/
+.kilocode/
+.kiro/
 
 # Frontend
 # Logs
