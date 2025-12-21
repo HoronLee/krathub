@@ -93,7 +93,7 @@ func configureRoutes(mM *mw.MiddlewareManager) []middleware.Middleware {
 	return []middleware.Middleware{
 		// 需要User权限的接口
 		selector.Server(mM.Auth(consts.UserRole(2))).
-			Prefix("/krathub.user.v1.User/").
+			Prefix("/krathub.user.v1.User/", "/krathub.test.v1.User/").
 			Build(),
 		// 需要Admin权限的接口
 		selector.Server(mM.Auth(consts.UserRole(3))).
