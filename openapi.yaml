@@ -24,7 +24,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.auth.v1.HelloResponse'
-    /v1/auth/login/using-email-password:
+    /v1/auth/login/email-password:
         post:
             tags:
                 - Auth
@@ -42,6 +42,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/krathub.auth.v1.LoginByEmailPasswordReply'
+    /v1/auth/logout:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_Logout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.auth.v1.LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.auth.v1.LogoutReply'
+    /v1/auth/refresh-token:
+        post:
+            tags:
+                - Auth
+            operationId: Auth_RefreshToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/krathub.auth.v1.RefreshTokenRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/krathub.auth.v1.RefreshTokenReply'
     /v1/auth/signup/using-email:
         post:
             tags:
@@ -179,18 +215,49 @@ components:
         krathub.auth.v1.LoginByEmailPasswordReply:
             type: object
             properties:
-                token:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
                     type: string
             description: 密码登录响应
         krathub.auth.v1.LoginByEmailPasswordRequest:
             type: object
             properties:
-                loginId:
+                email:
                     type: string
-                    description: 可以是用户名或邮箱
                 password:
                     type: string
             description: 密码登录请求
+        krathub.auth.v1.LogoutReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+            description: 登出响应
+        krathub.auth.v1.LogoutRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+            description: 登出请求
+        krathub.auth.v1.RefreshTokenReply:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
+                    type: string
+            description: 刷新Token响应
+        krathub.auth.v1.RefreshTokenRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+            description: 刷新Token请求
         krathub.auth.v1.SignupByEmailReply:
             type: object
             properties:

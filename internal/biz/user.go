@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+
 	authv1 "github.com/horonlee/krathub/api/auth/v1"
 	userv1 "github.com/horonlee/krathub/api/user/v1"
 	"github.com/horonlee/krathub/internal/conf"
@@ -61,22 +62,22 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *model.User) (*model
 
 	// 只有当用户名发生变化时才检查重复
 	if user.Name != origUser.Name {
-		usersWithSameName, err := uc.authRepo.ListUserByUserName(ctx, user.Name)
+		userWithSameName, err := uc.authRepo.GetUserByUserName(ctx, user.Name)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
 		}
-		if len(usersWithSameName) > 0 {
+		if userWithSameName != nil {
 			return nil, authv1.ErrorUserAlreadyExists("username already exists")
 		}
 	}
 
 	// 只有当邮箱发生变化时才检查重复
 	if user.Email != origUser.Email {
-		usersWithSameEmail, err := uc.authRepo.ListUserByEmail(ctx, user.Email)
+		userWithSameEmail, err := uc.authRepo.GetUserByEmail(ctx, user.Email)
 		if err != nil {
 			return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
 		}
-		if len(usersWithSameEmail) > 0 {
+		if userWithSameEmail != nil {
 			return nil, authv1.ErrorUserAlreadyExists("email already exists")
 		}
 	}
@@ -109,15 +110,15 @@ func (uc *UserUsecase) DeleteUser(ctx context.Context, user *model.User) (succes
 }
 
 func (uc *UserUsecase) checkUserExists(ctx context.Context, user *model.User) error {
-	if users, err := uc.authRepo.ListUserByUserName(ctx, user.Name); err != nil {
+	if existingUser, err := uc.authRepo.GetUserByUserName(ctx, user.Name); err != nil {
 		return authv1.ErrorUserNotFound("failed to check username: %v", err)
-	} else if len(users) > 0 {
+	} else if existingUser != nil {
 		return authv1.ErrorUserAlreadyExists("username already exists")
 	}
 
-	if emails, err := uc.authRepo.ListUserByEmail(ctx, user.Email); err != nil {
+	if existingEmail, err := uc.authRepo.GetUserByEmail(ctx, user.Email); err != nil {
 		return authv1.ErrorUserNotFound("failed to check email: %v", err)
-	} else if len(emails) > 0 {
+	} else if existingEmail != nil {
 		return authv1.ErrorUserAlreadyExists("email already exists")
 	}
 	return nil

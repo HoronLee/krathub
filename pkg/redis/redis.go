@@ -58,7 +58,7 @@ func (c *Client) Ping(ctx context.Context) error {
 }
 
 // Set 存储键值对
-func (c *Client) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
+func (c *Client) Set(ctx context.Context, key string, value any, expiration time.Duration) error {
 	return c.rdb.Set(ctx, key, value, expiration).Err()
 }
 
@@ -84,7 +84,7 @@ func (c *Client) Keys(ctx context.Context, pattern string) ([]string, error) {
 }
 
 // SAdd 向集合添加成员
-func (c *Client) SAdd(ctx context.Context, key string, members ...interface{}) error {
+func (c *Client) SAdd(ctx context.Context, key string, members ...any) error {
 	return c.rdb.SAdd(ctx, key, members...).Err()
 }
 

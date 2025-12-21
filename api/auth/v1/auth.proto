@@ -33,6 +33,8 @@ enum ErrorReason {
   TOKEN_GENERATION_FAILED = 6 [(errors.code) = 500];
   // 没有权限
   UNAUTHORIZED = 7 [(errors.code) = 403];
+  // 无效的刷新Token
+  INVALID_REFRESH_TOKEN = 8 [(errors.code) = 401];
 }
 
 service Auth {
@@ -52,7 +54,21 @@ service Auth {
 
   rpc LoginByEmailPassword(LoginByEmailPasswordRequest) returns (LoginByEmailPasswordReply) {
     option (google.api.http) = {
-      post: "/v1/auth/login/using-email-password"
+      post: "/v1/auth/login/email-password"
+      body: "*"
+    };
+  }
+
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenReply) {
+    option (google.api.http) = {
+      post: "/v1/auth/refresh-token"
+      body: "*"
+    };
+  }
+
+  rpc Logout(LogoutRequest) returns (LogoutReply) {
+    option (google.api.http) = {
+      post: "/v1/auth/logout"
       body: "*"
     };
   }
@@ -85,8 +101,7 @@ message SignupByEmailReply {
 
 // 密码登录请求
 message LoginByEmailPasswordRequest {
-  // 可以是用户名或邮箱
-  string login_id = 1;
+  string email = 1;
   string password = 2 [(buf.validate.field).string = {
     min_len: 5
     max_len: 10
@@ -95,7 +110,31 @@ message LoginByEmailPasswordRequest {
 
 // 密码登录响应
 message LoginByEmailPasswordReply {
-  string token = 1;
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3; // Access Token过期时间(秒)
+}
+
+// 刷新Token请求
+message RefreshTokenRequest {
+  string refresh_token = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+// 刷新Token响应
+message RefreshTokenReply {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3; // Access Token过期时间(秒)
+}
+
+// 登出请求
+message LogoutRequest {
+  string refresh_token = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+// 登出响应
+message LogoutReply {
+  bool success = 1;
 }
 
 // HelloRequest 是 Hello 服务的请求消息

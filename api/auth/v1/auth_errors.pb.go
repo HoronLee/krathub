@@ -136,3 +136,17 @@ func IsUnauthorized(err error) bool {
 func ErrorUnauthorized(format string, args ...interface{}) *errors.Error {
 	return errors.New(403, ErrorReason_UNAUTHORIZED.String(), fmt.Sprintf(format, args...))
 }
+
+// 无效的刷新Token
+func IsInvalidRefreshToken(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_INVALID_REFRESH_TOKEN.String() && e.Code == 401
+}
+
+// 无效的刷新Token
+func ErrorInvalidRefreshToken(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, ErrorReason_INVALID_REFRESH_TOKEN.String(), fmt.Sprintf(format, args...))
+}

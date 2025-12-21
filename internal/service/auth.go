@@ -49,15 +49,41 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEma
 // LoginByEmailPassword user login by email and password.
 func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.LoginByEmailPasswordRequest) (*authv1.LoginByEmailPasswordReply, error) {
 	user := &model.User{
-		Email:    req.LoginId,
+		Email:    req.Email,
 		Password: req.Password,
 	}
-	token, err := s.uc.LoginByEmailPassword(ctx, user)
+	tokenPair, err := s.uc.LoginByEmailPassword(ctx, user)
 	if err != nil {
 		return nil, fmt.Errorf("login by email password failed: %w", err)
 	}
 	return &authv1.LoginByEmailPasswordReply{
-		Token: token,
+		AccessToken:  tokenPair.AccessToken,
+		RefreshToken: tokenPair.RefreshToken,
+		ExpiresIn:    tokenPair.ExpiresIn,
+	}, nil
+}
+
+// RefreshToken refreshes the access token using a valid refresh token
+func (s *AuthService) RefreshToken(ctx context.Context, req *authv1.RefreshTokenRequest) (*authv1.RefreshTokenReply, error) {
+	tokenPair, err := s.uc.RefreshToken(ctx, req.RefreshToken)
+	if err != nil {
+		return nil, fmt.Errorf("refresh token failed: %w", err)
+	}
+	return &authv1.RefreshTokenReply{
+		AccessToken:  tokenPair.AccessToken,
+		RefreshToken: tokenPair.RefreshToken,
+		ExpiresIn:    tokenPair.ExpiresIn,
+	}, nil
+}
+
+// Logout invalidates the refresh token
+func (s *AuthService) Logout(ctx context.Context, req *authv1.LogoutRequest) (*authv1.LogoutReply, error) {
+	err := s.uc.Logout(ctx, req.RefreshToken)
+	if err != nil {
+		return nil, fmt.Errorf("logout failed: %w", err)
+	}
+	return &authv1.LogoutReply{
+		Success: true,
 	}, nil
 }
 
