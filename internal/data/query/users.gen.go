@@ -55,11 +55,11 @@ type user struct {
 	Email     field.String
 	Password  field.String
 	Phone     field.String
-	Avatar    field.String // 用户头像
-	Bio       field.String // 用户简介
-	Location  field.String // 用户位置
-	Website   field.String // 用户个人网站
-	Role      field.String // 用户权限角色
+	Avatar    field.String
+	Bio       field.String
+	Location  field.String
+	Website   field.String
+	Role      field.String
 	CreatedAt field.Time
 	UpdatedAt field.Time
 

@@ -1,9 +1,10 @@
 services:
   krathub:
-    image: krathub:dev
+    image: krathub:latest
     container_name: krathub
     environment:
-      - DB_SOURCE=krathub:dbKrathub@tcp(db:3306)/krathub?parseTime=True&loc=Local
+      - DB_DRIVER=postgres
+      - DB_SOURCE=host=db user=krathub password=krathub dbname=krathub port=5432 sslmode=disable
       - RADDR=redis:6379
     volumes:
       - ./data/conf:/data/conf
@@ -17,30 +18,31 @@ services:
         condition: service_healthy
 
   db:
-    image: mysql:latest
+    image: postgres:18.1-alpine
     container_name: krathub_db
+    environment:
+      POSTGRES_DB: krathub
+      POSTGRES_USER: krathub
+      POSTGRES_PASSWORD: krathub
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U krathub -d krathub"]
       interval: 10s
       timeout: 5s
       retries: 5
-    environment:
-      - MYSQL_ROOT_PASSWORD=dbKrathub
-      - MYSQL_DATABASE=krathub
-      - MYSQL_USER=krathub
-      - MYSQL_PASSWORD=dbKrathubUser
     volumes:
-      - ./data/db:/var/lib/mysql
-      - ./data/initdb:/docker-entrypoint-initdb.d
+      - ./data/db:/var/lib/postgresql/data
+      - ./data/initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
 
   redis:
     image: redis:latest
     container_name: krathub_redis
+    command: redis-server --requirepass redisKrathub
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "redisKrathub", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-    command: redis-server --requirepass redisKrathub
     volumes:
       - ./data/redis:/data

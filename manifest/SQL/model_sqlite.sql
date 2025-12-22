@@ -1,5 +1,5 @@
 -- 用户表：存储用户的基本信息 (SQLite 兼容版本)
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT, -- 用户ID，自增主键 (SQLite 语法)
   `name` TEXT NOT NULL UNIQUE, -- 用户名
   `email` TEXT NOT NULL UNIQUE, -- 用户邮箱，唯一

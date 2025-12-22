@@ -1,5 +1,5 @@
 -- 用户表：存储用户的基本信息
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- 用户ID，自增主键
   `name` VARCHAR(64) NOT NULL UNIQUE, -- 用户名
   `email` VARCHAR(128) NOT NULL UNIQUE, -- 用户邮箱，唯一

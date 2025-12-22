@@ -1,5 +1,4 @@
--- 用户表：存储用户的基本信息 (PostgreSQL 兼容版本)
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS users (
     "id" BIGSERIAL PRIMARY KEY, -- 用户ID，PostgreSQL 自增主键
     "name" VARCHAR(64) NOT NULL UNIQUE, -- 用户名
     "email" VARCHAR(128) NOT NULL UNIQUE, -- 用户邮箱，唯一
@@ -21,15 +20,10 @@ BEGIN
     NEW.updated_at = CURRENT_TIMESTAMP;
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 -- 创建触发器，在更新用户记录时自动更新 updated_at 字段
-CREATE TRIGGER trigger_user_updated_at
-    BEFORE UPDATE ON "user"
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
-
--- 添加索引以提升查询性能
-CREATE INDEX IF NOT EXISTS idx_user_email ON "user"("email");
-CREATE INDEX IF NOT EXISTS idx_user_name ON "user"("name");
-CREATE INDEX IF NOT EXISTS idx_user_role ON "user"("role");
+CREATE TRIGGER trigger_users_updated_at
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
