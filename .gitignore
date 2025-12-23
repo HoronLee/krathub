@@ -49,6 +49,7 @@ GEMINI.md
 openspec/
 .kilocode/
 .kiro/
+.opencode/
 
 # Frontend
 # Logs

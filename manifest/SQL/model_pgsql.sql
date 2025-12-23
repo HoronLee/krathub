@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP -- 更新时间（带时区）
 );
 
--- 创建触发器函数来模拟 MySQL 的 ON UPDATE CURRENT_TIMESTAMP
+-- 创建触发器，在更新用户记录时自动更新 updated_at 字段
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -21,8 +21,7 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
--- 创建触发器，在更新用户记录时自动更新 updated_at 字段
+-- 创建触发器函数来模拟 MySQL 的 ON UPDATE CURRENT_TIMESTAMP
 CREATE TRIGGER trigger_users_updated_at
 BEFORE UPDATE ON users
 FOR EACH ROW
