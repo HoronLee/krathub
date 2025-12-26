@@ -70,6 +70,19 @@ make run
 └── third_party/ # 第三方 proto 文件和依赖
 ```
 
+## 📝 开发流程
+
+推荐的开发顺序如下，以确保依赖关系正确：
+
+1. **API 定义 (`api/`)**: 在 `.proto` 文件中定义 gRPC 服务和消息体。
+2. **生成代码 (`make proto`)**: 运行命令生成 gRPC、HTTP、Errors 的桩代码。
+3. **业务逻辑 (`internal/biz/`)**: 定义业务逻辑的接口和实现，这是不依赖任何框架的核心。
+4. **数据访问 (`internal/data/`)**: 实现 `biz` 层定义的接口，负责与数据库、缓存等交互。
+5. **服务实现 (`internal/service/`)**: 实现 `api` 层定义的 gRPC 服务接口，它会调用 `biz` 层的逻辑。
+6. **依赖注入 (`cmd/server/wire.go`)**: 将新的 `service`, `biz`, `data` 组件注入到 `wire.go` 中。
+7. **运行 `make wire`**: 生成最终的依赖注入代码。
+8. **启动与测试**: 运行 `make run` 并进行测试。
+
 ## 🛠️ 常用命令
 
 ### 🚀 开发命令
@@ -126,19 +139,6 @@ make run
 
 所有原有命令都保持向后兼容，包括：
 - `make init`: 初始化开发环境（现在是 `install-dev` 的别名）。
-
-## 📝 开发流程
-
-推荐的开发顺序如下，以确保依赖关系正确：
-
-1. **API 定义 (`api/`)**: 在 `.proto` 文件中定义 gRPC 服务和消息体。
-2. **生成代码 (`make proto`)**: 运行命令生成 gRPC、HTTP、Errors 的桩代码。
-3. **业务逻辑 (`internal/biz/`)**: 定义业务逻辑的接口和实现，这是不依赖任何框架的核心。
-4. **数据访问 (`internal/data/`)**: 实现 `biz` 层定义的接口，负责与数据库、缓存等交互。
-5. **服务实现 (`internal/service/`)**: 实现 `api` 层定义的 gRPC 服务接口，它会调用 `biz` 层的逻辑。
-6. **依赖注入 (`cmd/server/wire.go`)**: 将新的 `service`, `biz`, `data` 组件注入到 `wire.go` 中。
-7. **运行 `make wire`**: 生成最终的依赖注入代码。
-8. **启动与测试**: 运行 `make run` 并进行测试。
 
 ## 📞 客户端层 (Client)
 

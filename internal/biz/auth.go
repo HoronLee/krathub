@@ -16,6 +16,43 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// AuthUsecase is a Auth usecase.
+type AuthUsecase struct {
+	repo            AuthRepo
+	log             *log.Helper
+	cfg             *conf.App
+	adminRegistered bool                    // 是否已经注册了 admin 用户
+	accessJWT       *jwtpkg.JWT[UserClaims] // Access Token JWT service
+	refreshJWT      *jwtpkg.JWT[UserClaims] // Refresh Token JWT service (for validation only)
+}
+
+// NewAuthUsecase new an auth usecase.
+func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
+	// Instantiate the Access Token JWT service
+	accessJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
+		SecretKey: cfg.Jwt.AccessSecret,
+	})
+
+	// Instantiate the Refresh Token JWT service (for validation only)
+	refreshJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
+		SecretKey: cfg.Jwt.RefreshSecret,
+	})
+
+	uc := &AuthUsecase{
+		repo:       repo,
+		log:        log.NewHelper(logger),
+		cfg:        cfg,
+		accessJWT:  accessJWTService,
+		refreshJWT: refreshJWTService,
+	}
+	// 初始化 adminRegistered
+	admin, err := repo.GetUserByUserName(context.Background(), "admin")
+	if err == nil && admin != nil {
+		uc.adminRegistered = true
+	}
+	return uc
+}
+
 // UserClaims defines the custom claims for the JWT.
 // It embeds jwt.RegisteredClaims to include standard JWT fields.
 type UserClaims struct {
@@ -59,43 +96,6 @@ type AuthRepo interface {
 	Hello(ctx context.Context, in string) (string, error)
 	// Token存储方法
 	TokenStore
-}
-
-// AuthUsecase is a Auth usecase.
-type AuthUsecase struct {
-	repo            AuthRepo
-	log             *log.Helper
-	cfg             *conf.App
-	adminRegistered bool                    // 是否已经注册了 admin 用户
-	accessJWT       *jwtpkg.JWT[UserClaims] // Access Token JWT service
-	refreshJWT      *jwtpkg.JWT[UserClaims] // Refresh Token JWT service (for validation only)
-}
-
-// NewAuthUsecase new an auth usecase.
-func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
-	// Instantiate the Access Token JWT service
-	accessJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
-		SecretKey: cfg.Jwt.AccessSecret,
-	})
-
-	// Instantiate the Refresh Token JWT service (for validation only)
-	refreshJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
-		SecretKey: cfg.Jwt.RefreshSecret,
-	})
-
-	uc := &AuthUsecase{
-		repo:       repo,
-		log:        log.NewHelper(logger),
-		cfg:        cfg,
-		accessJWT:  accessJWTService,
-		refreshJWT: refreshJWTService,
-	}
-	// 初始化 adminRegistered
-	admin, err := repo.GetUserByUserName(context.Background(), "admin")
-	if err == nil && admin != nil {
-		uc.adminRegistered = true
-	}
-	return uc
 }
 
 // SignupByEmail 使用邮件注册
