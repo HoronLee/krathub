@@ -9,19 +9,10 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/config"
+	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/types/known/durationpb"
 )
-
-// EtcdConfig Etcd 配置中心配置
-type EtcdConfig struct {
-	Endpoints []string
-	Username  string
-	Password  string
-	Key       string // Etcd 存储的键名
-	Timeout   *durationpb.Duration
-}
 
 // Option is etcd config option.
 type Option func(o *options)
@@ -60,7 +51,7 @@ type source struct {
 }
 
 // NewEtcdConfigSource 创建 Etcd 配置源（兼容旧版本）
-func NewEtcdConfigSource(c *EtcdConfig) config.Source {
+func NewEtcdConfigSource(c *conf.EtcdConfig) config.Source {
 	if c == nil {
 		return nil
 	}

@@ -5,25 +5,14 @@ import (
 
 	"github.com/go-kratos/kratos/contrib/registry/nacos/v2"
 	"github.com/go-kratos/kratos/v2/registry"
+	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
-	"google.golang.org/protobuf/types/known/durationpb"
 )
 
-// NacosConfig Nacos 注册中心配置
-type NacosConfig struct {
-	Addr      string
-	Port      uint64
-	Namespace string
-	Username  string
-	Password  string
-	Group     string
-	Timeout   *durationpb.Duration
-}
-
 // NewNacosRegistry 创建 Nacos 统一注册中心客户端（支持注册和发现）
-func NewNacosRegistry(c *NacosConfig) registry.Registrar {
+func NewNacosRegistry(c *conf.NacosConfig) registry.Registrar {
 	if c == nil {
 		return nil
 	}
@@ -72,7 +61,7 @@ func NewNacosRegistry(c *NacosConfig) registry.Registrar {
 }
 
 // NewNacosDiscovery 创建 Nacos 服务发现客户端
-func NewNacosDiscovery(c *NacosConfig) registry.Discovery {
+func NewNacosDiscovery(c *conf.NacosConfig) registry.Discovery {
 	if c == nil {
 		return nil
 	}
@@ -122,6 +111,6 @@ func NewNacosDiscovery(c *NacosConfig) registry.Discovery {
 
 // NewNacosRegistrar 创建 Nacos 注册中心客户端
 // Deprecated: 使用 NewNacosRegistry 替代
-func NewNacosRegistrar(c *NacosConfig) registry.Registrar {
+func NewNacosRegistrar(c *conf.NacosConfig) registry.Registrar {
 	return NewNacosRegistry(c)
 }

@@ -35,34 +35,11 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 	if configCfg := bc.Config; configCfg != nil {
 		switch cT := configCfg.Config.(type) {
 		case *conf.Config_Nacos:
-			sources = append(sources, cC.NewNacosConfigSource(&cC.NacosConfig{
-				Addr:      cT.Nacos.Addr,
-				Port:      cT.Nacos.Port,
-				Namespace: cT.Nacos.Namespace,
-				Username:  cT.Nacos.Username,
-				Password:  cT.Nacos.Password,
-				Group:     cT.Nacos.Group,
-				DataId:    cT.Nacos.DataId,
-				Timeout:   cT.Nacos.Timeout,
-			}))
+			sources = append(sources, cC.NewNacosConfigSource(cT.Nacos))
 		case *conf.Config_Consul:
-			sources = append(sources, cC.NewConsulConfigSource(&cC.ConsulConfig{
-				Addr:       cT.Consul.Addr,
-				Scheme:     cT.Consul.Scheme,
-				Token:      cT.Consul.Token,
-				Datacenter: cT.Consul.Datacenter,
-				Key:        cT.Consul.Key,
-				Timeout:    cT.Consul.Timeout,
-			}))
+			sources = append(sources, cC.NewConsulConfigSource(cT.Consul))
 		case *conf.Config_Etcd:
-			etcdConfig := cT.Etcd
-			etcdSource := cC.NewEtcdConfigSource(&cC.EtcdConfig{
-				Endpoints: etcdConfig.Endpoints,
-				Username:  etcdConfig.Username,
-				Password:  etcdConfig.Password,
-				Key:       etcdConfig.Key,
-				Timeout:   etcdConfig.Timeout,
-			})
+			etcdSource := cC.NewEtcdConfigSource(cT.Etcd)
 			if etcdSource != nil {
 				sources = append(sources, etcdSource)
 			}

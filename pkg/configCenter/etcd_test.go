@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"google.golang.org/grpc"
 )
@@ -180,7 +181,7 @@ func TestEtcdWithPrefix(t *testing.T) {
 }
 
 func TestNewEtcdConfigSource(t *testing.T) {
-	config := &EtcdConfig{
+	config := &conf.EtcdConfig{
 		Endpoints: []string{"127.0.0.1:2379"},
 		Key:       "/test/config",
 	}

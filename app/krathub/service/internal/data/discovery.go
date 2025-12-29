@@ -17,13 +17,7 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 	}
 	switch c := cfg.Discovery.(type) {
 	case *conf.Discovery_Consul:
-		return registry.NewConsulDiscovery(&registry.ConsulConfig{
-			Addr:       c.Consul.Addr,
-			Scheme:     c.Consul.Scheme,
-			Token:      c.Consul.Token,
-			Datacenter: c.Consul.Datacenter,
-			Timeout:    c.Consul.Timeout,
-		})
+		return registry.NewConsulDiscovery(c.Consul)
 	case *conf.Discovery_Etcd:
 		var opts []registry.Option
 		if c.Etcd.Namespace != "" {
@@ -36,15 +30,7 @@ func NewDiscovery(cfg *conf.Discovery) kratosRegistry.Discovery {
 		}
 		return discovery
 	case *conf.Discovery_Nacos:
-		return registry.NewNacosDiscovery(&registry.NacosConfig{
-			Addr:      c.Nacos.Addr,
-			Port:      c.Nacos.Port,
-			Namespace: c.Nacos.Namespace,
-			Username:  c.Nacos.Username,
-			Password:  c.Nacos.Password,
-			Group:     c.Nacos.Group,
-			Timeout:   c.Nacos.Timeout,
-		})
+		return registry.NewNacosDiscovery(c.Nacos)
 	default:
 		return nil
 	}

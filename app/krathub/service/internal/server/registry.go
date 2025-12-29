@@ -17,14 +17,7 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 	}
 	switch c := cfg.Registry.(type) {
 	case *conf.Registry_Consul:
-		return registry.NewConsulRegistry(&registry.ConsulConfig{
-			Addr:       c.Consul.Addr,
-			Scheme:     c.Consul.Scheme,
-			Token:      c.Consul.Token,
-			Datacenter: c.Consul.Datacenter,
-			Timeout:    c.Consul.Timeout,
-			Tags:       c.Consul.Tags,
-		})
+		return registry.NewConsulRegistry(c.Consul)
 	case *conf.Registry_Etcd:
 		var opts []registry.Option
 		if c.Etcd.Namespace != "" {
@@ -37,15 +30,7 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 		}
 		return registrar
 	case *conf.Registry_Nacos:
-		return registry.NewNacosRegistry(&registry.NacosConfig{
-			Addr:      c.Nacos.Addr,
-			Port:      c.Nacos.Port,
-			Namespace: c.Nacos.Namespace,
-			Username:  c.Nacos.Username,
-			Password:  c.Nacos.Password,
-			Group:     c.Nacos.Group,
-			Timeout:   c.Nacos.Timeout,
-		})
+		return registry.NewNacosRegistry(c.Nacos)
 	default:
 		return nil
 	}

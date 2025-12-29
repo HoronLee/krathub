@@ -2,29 +2,18 @@ package configCenter
 
 import (
 	"fmt"
+
 	nacosCfg "github.com/go-kratos/kratos/contrib/config/nacos/v2"
 	"github.com/go-kratos/kratos/v2/config"
+	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
-	"google.golang.org/protobuf/types/known/durationpb"
 )
 
-// NacosConfig Nacos 配置中心配置
-type NacosConfig struct {
-	Addr      string
-	Port      uint64
-	Namespace string
-	Username  string
-	Password  string
-	Group     string
-	DataId    string
-	Timeout   *durationpb.Duration
-}
-
 // NewNacosConfigSource 创建 Nacos 配置源
-func NewNacosConfigSource(c *NacosConfig) config.Source {
+func NewNacosConfigSource(c *conf.NacosConfig) config.Source {
 	if c == nil {
 		return nil
 	}

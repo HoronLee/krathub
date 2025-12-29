@@ -7,21 +7,11 @@ import (
 	"github.com/go-kratos/kratos/contrib/config/consul/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/hashicorp/consul/api"
-	"google.golang.org/protobuf/types/known/durationpb"
+	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 )
 
-// ConsulConfig Consul 配置中心配置
-type ConsulConfig struct {
-	Addr       string
-	Scheme     string
-	Token      string
-	Datacenter string
-	Key        string // Consul KV 存储的键名
-	Timeout    *durationpb.Duration
-}
-
 // NewConsulConfigSource 创建 Consul 配置源
-func NewConsulConfigSource(c *ConsulConfig) config.Source {
+func NewConsulConfigSource(c *conf.ConsulConfig) config.Source {
 	if c == nil {
 		return nil
 	}
