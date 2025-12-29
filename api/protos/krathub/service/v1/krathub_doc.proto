@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package krathub.service.v1;
+
+import "gnostic/openapi/v3/annotations.proto";
+
+option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubv1";
+
+// OpenAPI 文档配置
+option (gnostic.openapi.v3.document) = {
+  info: {
+    title: "Krathub API";
+    version: "1.0";
+    description: "Krathub 微服务 API 文档";
+    contact: {
+      name: "Krathub Team";
+      url: "https://github.com/horonlee/krathub";
+    }
+    license: {
+      name: "MIT License";
+      url: "https://github.com/horonlee/krathub/blob/main/LICENSE";
+    }
+  }
+
+  security: [
+    {
+      additional_properties: [
+        {
+          name: "BearerAuth"; 
+          value: {}
+        }
+      ]
+    }
+  ]
+
+  components: {
+    security_schemes: {
+      additional_properties: [
+        {
+          name: "BearerAuth";
+          value: {
+            security_scheme: {
+              type: "http";
+              scheme: "bearer";
+              bearer_format: "JWT";
+              description: "JWT 认证令牌";
+            }
+          }
+        }
+      ]
+    }
+
+    schemas: {
+      additional_properties: [
+        {
+          name: "KratosError";
+          value: {
+            schema: {
+              type: "object"
+              description: "Kratos 错误响应"
+              properties: {
+                additional_properties: [
+                  {
+                    name: "code"
+                    value: {
+                      schema: {
+                        type: "number"
+                        format: "int32"
+                        description: "错误码"
+                      }
+                    }
+                  },
+                  {
+                    name: "message"
+                    value: {
+                      schema: {
+                        type: "string"
+                        description: "错误消息"
+                      }
+                    }
+                  },
+                  {
+                    name: "reason"
+                    value: {
+                      schema: {
+                        type: "string"
+                        description: "错误原因"
+                      }
+                    }
+                  },
+                  {
+                    name: "metadata"
+                    value: {
+                      schema: {
+                        type: "object"
+                        description: "元数据"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+
+    responses: {
+      additional_properties: [
+        {
+          name: "default"
+          value: {
+            response: {
+              description: "默认 Kratos 错误响应"
+              content: {
+                additional_properties: [
+                  {
+                    name: "application/json"
+                    value: {
+                      schema: {
+                        reference: {
+                          _ref: "#/components/schemas/KratosError"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+};

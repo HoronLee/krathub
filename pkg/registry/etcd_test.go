@@ -8,7 +8,7 @@ import (
 	clientv3 "go.etcd.io/etcd/client/v3"
 
 	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/horonlee/krathub/internal/conf"
+	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 )
 
 // TestEtcdRegistryAndDiscovery 测试 etcd 注册和发现功能

@@ -34,8 +34,9 @@ Thumbs.db
 bin/
 logs/
 cache/
-configs/config.yaml
+config.yaml
 data.db
+examples/
 
 # Develop tools
 .vscode/

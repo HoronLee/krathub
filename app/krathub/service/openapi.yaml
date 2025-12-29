@@ -1,0 +1,417 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Krathub API
+    description: Krathub 微服务 API 文档
+    contact:
+        name: Krathub Team
+        url: https://github.com/horonlee/krathub
+    license:
+        name: MIT License
+        url: https://github.com/horonlee/krathub/blob/main/LICENSE
+    version: "1.0"
+paths:
+    /CallHello/Hello:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_Hello
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/HelloRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HelloResponse'
+    /v1/auth/login/email-password:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_LoginByEmailPassword
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginByEmailPasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginByEmailPasswordReply'
+    /v1/auth/logout:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_Logout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LogoutReply'
+    /v1/auth/refresh-token:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_RefreshToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RefreshTokenRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RefreshTokenReply'
+    /v1/auth/signup/using-email:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_SignupByEmail
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SignupByEmailRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SignupByEmailReply'
+    /v1/test/private:
+        post:
+            tags:
+                - TestService
+            operationId: TestService_PrivateTest
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PrivateTestRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PrivateTestResponse'
+    /v1/test/test:
+        post:
+            tags:
+                - TestService
+            operationId: TestService_Test
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TestRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TestResponse'
+    /v1/user/delete/{id}:
+        delete:
+            tags:
+                - UserService
+            operationId: UserService_DeleteUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteUserReply'
+    /v1/user/info:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_CurrentUserInfo
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CurrentUserInfoReply'
+    /v1/user/save:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_SaveUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SaveUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SaveUserReply'
+    /v1/user/update:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_UpdateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateUserReply'
+components:
+    schemas:
+        CurrentUserInfoReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                role:
+                    type: string
+        DeleteUserReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        HelloRequest:
+            type: object
+            properties:
+                req:
+                    type: string
+            description: HelloRequest 是 Hello 服务的请求消息
+        HelloResponse:
+            type: object
+            properties:
+                rep:
+                    type: string
+            description: HelloResponse 是 Hello 服务的响应消息
+        KratosError:
+            type: object
+            properties:
+                code:
+                    type: number
+                    description: 错误码
+                    format: int32
+                message:
+                    type: string
+                    description: 错误消息
+                reason:
+                    type: string
+                    description: 错误原因
+                metadata:
+                    type: object
+                    description: 元数据
+            description: Kratos 错误响应
+        LoginByEmailPasswordReply:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
+                    type: string
+            description: 密码登录响应
+        LoginByEmailPasswordRequest:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+            description: 密码登录请求
+        LogoutReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+            description: 登出响应
+        LogoutRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+            description: 登出请求
+        PrivateTestRequest:
+            type: object
+            properties: {}
+        PrivateTestResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+        RefreshTokenReply:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
+                    type: string
+            description: 刷新Token响应
+        RefreshTokenRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+            description: 刷新Token请求
+        SaveUserReply:
+            type: object
+            properties:
+                id:
+                    type: string
+        SaveUserRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+                phone:
+                    type: string
+                avatar:
+                    type: string
+                bio:
+                    type: string
+                location:
+                    type: string
+                website:
+                    type: string
+                role:
+                    type: string
+        SignupByEmailReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                role:
+                    type: string
+            description: 邮箱注册响应
+        SignupByEmailRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: 用户名最小长度5
+                password:
+                    type: string
+                    description: 密码最小长度5，最大长度10
+                passwordConfirm:
+                    type: string
+                    description: 确认密码最小长度5，最大长度10
+                email:
+                    type: string
+            description: 邮箱注册请求
+        TestRequest:
+            type: object
+            properties: {}
+        TestResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+        UpdateUserReply:
+            type: object
+            properties:
+                success:
+                    type: string
+        UpdateUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+                phone:
+                    type: string
+                avatar:
+                    type: string
+                bio:
+                    type: string
+                location:
+                    type: string
+                website:
+                    type: string
+                role:
+                    type: string
+    responses:
+        default:
+            description: 默认 Kratos 错误响应
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/KratosError'
+    securitySchemes:
+        BearerAuth:
+            type: http
+            description: JWT 认证令牌
+            scheme: bearer
+            bearerFormat: JWT
+security:
+    - BearerAuth: []
+tags:
+    - name: AuthService
+      description: Auth HTTP 服务 - 用于 OpenAPI 生成
+    - name: TestService
+      description: Test HTTP 服务 - 用于 OpenAPI 生成
+    - name: UserService
+      description: User HTTP 服务 - 用于 OpenAPI 生成

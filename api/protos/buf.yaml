@@ -1,0 +1,18 @@
+version: v1
+
+build:
+  excludes: []
+
+deps:
+  - 'buf.build/googleapis/googleapis'
+  - 'buf.build/kratos/apis'
+  - 'buf.build/bufbuild/protovalidate'
+  - 'buf.build/gnostic/gnostic'
+
+breaking:
+  use:
+    - FILE
+
+lint:
+  use:
+    - DEFAULT
