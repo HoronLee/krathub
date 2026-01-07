@@ -3,12 +3,13 @@ package service
 import (
 	"context"
 	"fmt"
+
 	authv1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	userv1 "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
-	"github.com/horonlee/krathub/app/krathub/service/internal/data/model"
+	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 )
 
 type UserService struct {
@@ -58,7 +59,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 		}
 	}
 
-	user := &model.User{
+	user := &po.User{
 		ID:       req.Id,
 		Name:     req.Name,
 		Email:    req.Email,
@@ -81,7 +82,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 
 // SaveUser 保存用户
 func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest) (*userv1.SaveUserReply, error) {
-	user := &model.User{
+	user := &po.User{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
@@ -101,7 +102,7 @@ func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest)
 
 // DeleteUser 删除用户
 func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserReply, error) {
-	success, err := s.uc.DeleteUser(ctx, &model.User{
+	success, err := s.uc.DeleteUser(ctx, &po.User{
 		ID: req.Id,
 	})
 	if err != nil {

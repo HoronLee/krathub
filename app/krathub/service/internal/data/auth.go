@@ -9,7 +9,7 @@ import (
 	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/client"
-	"github.com/horonlee/krathub/app/krathub/service/internal/data/model"
+	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -31,7 +31,7 @@ func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 
 // 数据库操作方法
 
-func (r *authRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *authRepo) SaveUser(ctx context.Context, user *po.User) (*po.User, error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
@@ -47,7 +47,7 @@ func (r *authRepo) SaveUser(ctx context.Context, user *model.User) (*model.User,
 	return user, nil
 }
 
-func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*model.User, error) {
+func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*po.User, error) {
 	user, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.Name.Eq(name)).First()
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*model.U
 	return user, nil
 }
 
-func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*model.User, error) {
+func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*po.User, error) {
 	user, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.Email.Eq(email)).First()
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*model.Use
 	return user, nil
 }
 
-func (r *authRepo) GetUserByID(ctx context.Context, id int64) (*model.User, error) {
+func (r *authRepo) GetUserByID(ctx context.Context, id int64) (*po.User, error) {
 	user, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.ID.Eq(id)).First()
 	if err != nil {
 		return nil, err

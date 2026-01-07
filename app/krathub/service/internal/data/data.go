@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/horonlee/krathub/app/krathub/service/internal/client"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/app/krathub/service/internal/data/query"
+	"github.com/horonlee/krathub/app/krathub/service/internal/client"
+	dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
 	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/redis"
 
@@ -24,7 +24,7 @@ var ProviderSet = wire.NewSet(NewDiscovery, NewDB, NewRedis, NewData, NewAuthRep
 
 // Data .
 type Data struct {
-	query  *query.Query
+	query  *dao.Query
 	log    *log.Helper
 	client client.Client
 	redis  *redis.Client
@@ -36,9 +36,9 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, client client.Client,
 		log.NewHelper(logger).Info("closing the data resources")
 	}
 	// 为GEN生成的query代码设置数据库连接对象
-	query.SetDefault(db)
+	dao.SetDefault(db)
 	return &Data{
-		query:  query.Q,
+		query:  dao.Q,
 		log:    log.NewHelper(logger),
 		client: client,
 		redis:  redisClient,

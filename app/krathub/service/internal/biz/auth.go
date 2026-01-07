@@ -8,7 +8,7 @@ import (
 
 	authv1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/app/krathub/service/internal/data/model"
+	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
 	jwtpkg "github.com/horonlee/krathub/pkg/jwt"
 
@@ -88,10 +88,10 @@ type TokenStore interface {
 // AuthRepo 统一的认证仓库接口，包含数据库和 grpc 操作
 type AuthRepo interface {
 	// 数据库操作
-	SaveUser(context.Context, *model.User) (*model.User, error)
-	GetUserByEmail(context.Context, string) (*model.User, error)
-	GetUserByUserName(context.Context, string) (*model.User, error)
-	GetUserByID(context.Context, int64) (*model.User, error)
+	SaveUser(context.Context, *po.User) (*po.User, error)
+	GetUserByEmail(context.Context, string) (*po.User, error)
+	GetUserByUserName(context.Context, string) (*po.User, error)
+	GetUserByID(context.Context, int64) (*po.User, error)
 	// grpc 操作
 	Hello(ctx context.Context, in string) (string, error)
 	// Token存储方法
@@ -99,7 +99,7 @@ type AuthRepo interface {
 }
 
 // SignupByEmail 使用邮件注册
-func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *model.User) (*model.User, error) {
+func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *po.User) (*po.User, error) {
 	// 检查 admin 用户是否已存在
 	if !uc.adminRegistered {
 		// 第一次注册，用户名必须为 admin
@@ -151,7 +151,7 @@ func (uc *AuthUsecase) generateRefreshToken() (string, error) {
 }
 
 // LoginByEmailPassword 邮箱密码登录 - 返回Token Pair
-func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *model.User) (*TokenPair, error) {
+func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *po.User) (*TokenPair, error) {
 	foundUser, err := uc.repo.GetUserByEmail(ctx, user.Email)
 	if err != nil {
 		return nil, authv1.ErrorUserNotFound("failed to get user: %v", err)

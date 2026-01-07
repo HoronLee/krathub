@@ -2,8 +2,9 @@ package data
 
 import (
 	"context"
+
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	"github.com/horonlee/krathub/app/krathub/service/internal/data/model"
+	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -22,7 +23,7 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 }
 
 // SaveUser 保存用户信息
-func (r *userRepo) SaveUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) SaveUser(ctx context.Context, user *po.User) (*po.User, error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
@@ -41,7 +42,7 @@ func (r *userRepo) SaveUser(ctx context.Context, user *model.User) (*model.User,
 }
 
 // GetUserById 根据用户ID获取用户信息
-func (r *userRepo) GetUserById(ctx context.Context, id int64) (*model.User, error) {
+func (r *userRepo) GetUserById(ctx context.Context, id int64) (*po.User, error) {
 	user, err := r.data.query.User.
 		WithContext(ctx).
 		Where(r.data.query.User.ID.Eq(id)).
@@ -53,7 +54,7 @@ func (r *userRepo) GetUserById(ctx context.Context, id int64) (*model.User, erro
 }
 
 // DeleteUser 删除用户
-func (r *userRepo) DeleteUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) DeleteUser(ctx context.Context, user *po.User) (*po.User, error) {
 	_, err := r.data.query.User.
 		WithContext(ctx).
 		Delete(user)
@@ -64,7 +65,7 @@ func (r *userRepo) DeleteUser(ctx context.Context, user *model.User) (*model.Use
 }
 
 // UpdateUser 更新用户信息
-func (r *userRepo) UpdateUser(ctx context.Context, user *model.User) (*model.User, error) {
+func (r *userRepo) UpdateUser(ctx context.Context, user *po.User) (*po.User, error) {
 	// 判断密码是否已加密，未加密则加密
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)

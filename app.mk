@@ -76,7 +76,7 @@ APP_NAME          := $(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
 # Format: buf.{service_name}.openapi.gen.yaml
 OPENAPI_CONFIG := buf.$(SERVICE_NAME).openapi.gen.yaml
 
-.PHONY: build clean docker gen ent wire api openapi run app help env
+.PHONY: build clean docker gen wire api openapi run app help env genDao
 
 # show environment variables
 env:
@@ -115,7 +115,7 @@ run: api openapi
 	-@go run $(GOFLAGS) -ldflags "$(LDFLAGS)" ./cmd/server -conf ./configs
 
 # build service app
-app: api openapi wire ent build
+app: api openapi wire build
 
 # clean build files
 clean:
@@ -124,18 +124,12 @@ clean:
 	@rm -f openapi.yaml
 
 # generate code
-gen: ent wire api openapi
+gen: wire api openapi
 
-# generate ent code, if ent schema exist in the project's internal/data/ent folder
-ent:
-ifneq ("$(wildcard ./internal/data/ent)","")
-	@ent generate \
-				--feature privacy \
-				--feature entql \
-				--feature sql/modifier \
-				--feature sql/upsert \
-				--feature sql/lock \
-				./internal/data/ent/schema
+# generate GORM GEN PO and DAO code, if genDao cmd exist
+genDao:
+ifneq ("$(wildcard ./cmd/genDao)","")
+	@go run ./cmd/genDao -conf ./configs
 endif
 
 # generate wire code
