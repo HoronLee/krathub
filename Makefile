@@ -119,16 +119,8 @@ wire:
     )
 	@echo "$(GREEN)✓ Wire code generated$(RESET)"
 
-# generate ent code for all services (if needed)
-ent:
-	@echo "$(CYAN)Generating ent code for all services...$(RESET)"
-	@$(foreach dir, $(dir $(realpath $(SRCS_MK))),\
-      cd $(dir) && make ent;\
-    )
-	@echo "$(GREEN)✓ Ent code generated$(RESET)"
-
 # generate all code
-gen: ent wire api openapi
+gen: wire api openapi
 	@echo "$(GREEN)✓ All code generated$(RESET)"
 
 # generate protobuf api go code

@@ -134,7 +134,11 @@ endif
 
 # generate wire code
 wire:
+ifneq ("$(wildcard ./cmd/server)","")
 	@go run -mod=mod github.com/google/wire/cmd/wire ./cmd/server
+else
+	@echo "No cmd/server directory found, skipping wire for $(SERVICE_NAME)"
+endif
 
 # generate protobuf api go code
 api:
