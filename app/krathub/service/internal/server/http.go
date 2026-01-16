@@ -8,6 +8,7 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
 	mw "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
+	"github.com/horonlee/krathub/pkg/middleware/cors"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -57,9 +58,9 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	}
 	// 添加 CORS 过滤器（如果启用了 CORS 配置）
 	if c.Http.Cors != nil {
-		corsOptions := mw.CORSConfigFromConfig(c.Http.Cors)
+		corsOptions := mw.CORS(c.Http.Cors)
 		if len(corsOptions.AllowedOrigins) > 0 {
-			opts = append(opts, http.Filter(mw.CORS(corsOptions)))
+			opts = append(opts, http.Filter(cors.Middleware(corsOptions)))
 			logger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
 		}
 	}
