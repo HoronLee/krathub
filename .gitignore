@@ -44,9 +44,6 @@ examples/
 *.swp
 
 # AI tools
-AGENTS.md
-CLAUDE.md
-GEMINI.md
 openspec/
 .kilocode/
 .kiro/
