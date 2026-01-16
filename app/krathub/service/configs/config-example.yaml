@@ -175,6 +175,18 @@ config:
   #   # 配置键名，建议格式：应用名/环境.config.yaml
   #   key: "${CONFIG_CONSUL_KEY:${APP_NAME:projectName}/config.yaml}"
 
+  # 使用 Etcd 作为配置中心
+  # etcd:
+  #   endpoints:
+  #     - "${CONFIG_ETCD_ENDPOINTS:127.0.0.1:2379}"
+  #   username: "${CONFIG_ETCD_USERNAME:}"
+  #   password: "${CONFIG_ETCD_PASSWORD:}"
+  #   timeout: "${CONFIG_ETCD_TIMEOUT:5s}"
+  #   # 配置路径 (推荐)
+  #   key: "${CONFIG_ETCD_KEY:/krathub/config.yaml}"
+  #   # 或者使用 namespace (自动拼接为 {namespace}/config.yaml)
+  #   # namespace: "${CONFIG_ETCD_NAMESPACE:/krathub}"
+
 # 链路追踪配置
 trace:
   # 使用 Jaeger 作为链路追踪
