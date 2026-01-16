@@ -11,7 +11,6 @@ import (
 	"github.com/go-kratos/kratos/v2/config"
 	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 	clientv3 "go.etcd.io/etcd/client/v3"
-	"google.golang.org/grpc"
 )
 
 // Option is etcd config option.
@@ -56,31 +55,28 @@ func NewEtcdConfigSource(c *conf.EtcdConfig) config.Source {
 		return nil
 	}
 
-	// 创建 Etcd 客户端配置
 	etcdConfig := clientv3.Config{
 		Endpoints: c.Endpoints,
 		Username:  c.Username,
 		Password:  c.Password,
 	}
 
-	// 设置超时时间
 	if c.Timeout != nil {
 		etcdConfig.DialTimeout = c.Timeout.AsDuration()
 	} else {
 		etcdConfig.DialTimeout = 5 * time.Second
-		etcdConfig.DialOptions = []grpc.DialOption{grpc.WithBlock()}
 	}
 
-	// 创建 Etcd 客户端
 	client, err := clientv3.New(etcdConfig)
 	if err != nil {
-		return nil
+		panic("failed to create etcd client: " + err.Error())
 	}
 
-	// 设置配置路径，默认为 /config
 	path := "/config"
 	if c.Key != "" {
 		path = c.Key
+	} else if c.Namespace != "" {
+		path = c.Namespace + "/config.yaml"
 	}
 
 	return &source{
@@ -88,7 +84,7 @@ func NewEtcdConfigSource(c *conf.EtcdConfig) config.Source {
 		options: &options{
 			ctx:    context.Background(),
 			path:   path,
-			prefix: true, // 默认启用 prefix
+			prefix: false,
 		},
 	}
 }
