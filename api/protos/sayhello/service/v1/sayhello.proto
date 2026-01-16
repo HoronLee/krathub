@@ -22,7 +22,7 @@ service SayHello {
 
 // HelloRequest 是 Hello 服务的请求消息
 message HelloRequest {
-  optional string greeting = 1;
+  string greeting = 1;
 }
 
 // HelloResponse 是 Hello 服务的响应消息

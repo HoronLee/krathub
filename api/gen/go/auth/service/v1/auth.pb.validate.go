@@ -907,9 +907,7 @@ func (m *HelloRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.Req != nil {
-		// no validation rules for Req
-	}
+	// no validation rules for Req
 
 	if len(errors) > 0 {
 		return HelloRequestMultiError(errors)

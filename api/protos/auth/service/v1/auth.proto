@@ -110,7 +110,7 @@ message LogoutReply {
 
 // HelloRequest 是 Hello 服务的请求消息
 message HelloRequest {
-  optional string req = 1;
+  string req = 1;
 }
 
 // HelloResponse 是 Hello 服务的响应消息

@@ -558,7 +558,7 @@ func (x *LogoutReply) GetSuccess() bool {
 // HelloRequest 是 Hello 服务的请求消息
 type HelloRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Req           *string                `protobuf:"bytes,1,opt,name=req,proto3,oneof" json:"req,omitempty"`
+	Req           string                 `protobuf:"bytes,1,opt,name=req,proto3" json:"req,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -594,8 +594,8 @@ func (*HelloRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *HelloRequest) GetReq() string {
-	if x != nil && x.Req != nil {
-		return *x.Req
+	if x != nil {
+		return x.Req
 	}
 	return ""
 }
@@ -681,10 +681,9 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\rLogoutRequest\x12,\n" +
 	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"'\n" +
 	"\vLogoutReply\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"-\n" +
-	"\fHelloRequest\x12\x15\n" +
-	"\x03req\x18\x01 \x01(\tH\x00R\x03req\x88\x01\x01B\x06\n" +
-	"\x04_req\"!\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\" \n" +
+	"\fHelloRequest\x12\x10\n" +
+	"\x03req\x18\x01 \x01(\tR\x03req\"!\n" +
 	"\rHelloResponse\x12\x10\n" +
 	"\x03rep\x18\x01 \x01(\tR\x03rep*\xb5\x02\n" +
 	"\vErrorReason\x12\x18\n" +
@@ -757,7 +756,6 @@ func file_auth_service_v1_auth_proto_init() {
 	if File_auth_service_v1_auth_proto != nil {
 		return
 	}
-	file_auth_service_v1_auth_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

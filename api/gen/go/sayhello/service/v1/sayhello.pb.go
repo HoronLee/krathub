@@ -27,7 +27,7 @@ const (
 // HelloRequest 是 Hello 服务的请求消息
 type HelloRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Greeting      *string                `protobuf:"bytes,1,opt,name=greeting,proto3,oneof" json:"greeting,omitempty"`
+	Greeting      string                 `protobuf:"bytes,1,opt,name=greeting,proto3" json:"greeting,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,8 +63,8 @@ func (*HelloRequest) Descriptor() ([]byte, []int) {
 }
 
 func (x *HelloRequest) GetGreeting() string {
-	if x != nil && x.Greeting != nil {
-		return *x.Greeting
+	if x != nil {
+		return x.Greeting
 	}
 	return ""
 }
@@ -118,10 +118,9 @@ var File_sayhello_service_v1_sayhello_proto protoreflect.FileDescriptor
 
 const file_sayhello_service_v1_sayhello_proto_rawDesc = "" +
 	"\n" +
-	"\"sayhello/service/v1/sayhello.proto\x12\x13sayhello.service.v1\x1a\x1cgoogle/api/annotations.proto\"<\n" +
-	"\fHelloRequest\x12\x1f\n" +
-	"\bgreeting\x18\x01 \x01(\tH\x00R\bgreeting\x88\x01\x01B\v\n" +
-	"\t_greeting\"%\n" +
+	"\"sayhello/service/v1/sayhello.proto\x12\x13sayhello.service.v1\x1a\x1cgoogle/api/annotations.proto\"*\n" +
+	"\fHelloRequest\x12\x1a\n" +
+	"\bgreeting\x18\x01 \x01(\tR\bgreeting\"%\n" +
 	"\rHelloResponse\x12\x14\n" +
 	"\x05reply\x18\x01 \x01(\tR\x05reply2p\n" +
 	"\bSayHello\x12d\n" +
@@ -160,7 +159,6 @@ func file_sayhello_service_v1_sayhello_proto_init() {
 	if File_sayhello_service_v1_sayhello_proto != nil {
 		return
 	}
-	file_sayhello_service_v1_sayhello_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

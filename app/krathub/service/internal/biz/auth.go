@@ -211,14 +211,13 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *po.User) 
 }
 
 // Hello 通过 repo 实现
-func (uc *AuthUsecase) Hello(ctx context.Context, in *string) (string, error) {
-	uc.log.Debugf("Saying hello with greeting: %s", *in)
-	response, err := uc.repo.Hello(ctx, *in)
-	if err != nil {
-		uc.log.Errorf("Failed to say hello: %v", err)
-		return "", err
+func (uc *AuthUsecase) Hello(ctx context.Context, in string) (string, error) {
+	greeting := "World"
+	if in != "" {
+		greeting = in
 	}
-	return response, nil
+	uc.log.Debugf("Saying hello with greeting: %s", greeting)
+	return uc.repo.Hello(ctx, greeting)
 }
 
 // RefreshToken 刷新Access Token

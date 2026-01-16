@@ -89,8 +89,8 @@ func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
 
 	// 使用连接创建客户端
 	helloClient := sayhellov1.NewSayHelloClient(conn)
-
-	ret, err := helloClient.Hello(ctx, &sayhellov1.HelloRequest{Greeting: &in})
+	// 使用客户端调用 SayHello 方法
+	ret, err := helloClient.Hello(ctx, &sayhellov1.HelloRequest{Greeting: in})
 	if err != nil {
 		r.log.Errorf("Failed to say hello: %v", err)
 		return "", err

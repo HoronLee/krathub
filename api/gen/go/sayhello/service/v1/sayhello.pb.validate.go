@@ -57,9 +57,7 @@ func (m *HelloRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.Greeting != nil {
-		// no validation rules for Greeting
-	}
+	// no validation rules for Greeting
 
 	if len(errors) > 0 {
 		return HelloRequestMultiError(errors)
