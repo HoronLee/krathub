@@ -8,6 +8,7 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
 	mw "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/middleware/cors"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
@@ -24,10 +25,11 @@ import (
 
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, auth *service.AuthService, user *service.UserService, test *service.TestService) *http.Server {
+	httpLogger := pkglogger.WithModule(logger, "http/server/krathub-service")
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
-		logging.Server(logger),
+		logging.Server(httpLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
 	}
@@ -46,6 +48,7 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	}
 	var opts = []http.ServerOption{
 		http.Middleware(mds...),
+		http.Logger(httpLogger),
 	}
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
@@ -56,22 +59,20 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
-	// 添加 CORS 过滤器（如果启用了 CORS 配置）
 	if c.Http.Cors != nil {
 		corsOptions := mw.CORS(c.Http.Cors)
 		if len(corsOptions.AllowedOrigins) > 0 {
 			opts = append(opts, http.Filter(cors.Middleware(corsOptions)))
-			logger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
+			httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
 		}
 	}
-	// Add TLS configuration
 	if c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
-			logger.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
+			httpLogger.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
 		}
 		cert, err := tls.LoadX509KeyPair(c.Http.Tls.CertPath, c.Http.Tls.KeyPath)
 		if err != nil {
-			logger.Log(log.LevelFatal, "msg", "Server TLS: Failed to load key pair", "error", err)
+			httpLogger.Log(log.LevelFatal, "msg", "Server TLS: Failed to load key pair", "error", err)
 		}
 		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}

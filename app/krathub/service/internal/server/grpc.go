@@ -5,6 +5,7 @@ import (
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	mw "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -15,16 +16,17 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	gogrpc "google.golang.org/grpc" // 引入官方 gRPC 包并重命名
+	gogrpc "google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
 
 // NewGRPCServer new a gRPC server.
 func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger) *grpc.Server {
+	grpcLogger := pkglogger.WithModule(logger, "grpc/server/krathub-service")
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
-		logging.Server(logger),
+		logging.Server(grpcLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
 	}
@@ -40,8 +42,9 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 			metrics.WithRequests(m.Requests),
 		))
 	}
-	var opts = []grpc.ServerOption{
+	opts := []grpc.ServerOption{
 		grpc.Middleware(mds...),
+		grpc.Logger(grpcLogger),
 	}
 	if c.Grpc.Network != "" {
 		opts = append(opts, grpc.Network(c.Grpc.Network))
@@ -52,11 +55,10 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	if c.Grpc.Timeout != nil {
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
-	// Add TLS configuration
 	if c.Grpc.Tls != nil && c.Grpc.Tls.Enable {
 		cert, err := tls.LoadX509KeyPair(c.Grpc.Tls.CertPath, c.Grpc.Tls.KeyPath)
 		if err != nil {
-			logger.Log(log.LevelFatal, "msg", "gRPC Server TLS: Failed to load key pair", "error", err)
+			grpcLogger.Log(log.LevelFatal, "msg", "gRPC Server TLS: Failed to load key pair", "error", err)
 		}
 		creds := credentials.NewTLS(&tls.Config{Certificates: []tls.Certificate{cert}})
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))

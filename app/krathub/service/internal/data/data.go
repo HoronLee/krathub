@@ -8,7 +8,7 @@ import (
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/client"
 	dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
-	"github.com/horonlee/krathub/pkg/logger"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/redis"
 
 	"github.com/glebarez/sqlite"
@@ -35,18 +35,17 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, client client.Client,
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-	// 为GEN生成的query代码设置数据库连接对象
 	dao.SetDefault(db)
 	return &Data{
 		query:  dao.Q,
-		log:    log.NewHelper(logger),
+		log:    log.NewHelper(pkglogger.WithModule(logger, "data/data/krathub-service")),
 		client: client,
 		redis:  redisClient,
 	}, cleanup, nil
 }
 
 func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
-	gormLogger := l.(*logger.ZapLogger).GetGormLogger()
+	gormLogger := l.(*pkglogger.ZapLogger).GetGormLogger("gorm/data/krathub-service")
 	switch strings.ToLower(cfg.Database.GetDriver()) {
 	case "mysql":
 		return gorm.Open(mysql.Open(cfg.Database.GetSource()), &gorm.Config{
@@ -77,18 +76,17 @@ func NewRedis(cfg *conf.Data, logger log.Logger) (*redis.Client, func(), error) 
 		DB:       int(cfg.Redis.GetDb()),
 	}
 
-	// 设置超时时间
 	if cfg.Redis.GetReadTimeout() != nil {
 		redisConfig.ReadTimeout = cfg.Redis.GetReadTimeout().AsDuration()
 	} else {
-		redisConfig.ReadTimeout = 3 * time.Second // 默认读超时
+		redisConfig.ReadTimeout = 3 * time.Second
 	}
 
 	if cfg.Redis.GetWriteTimeout() != nil {
 		redisConfig.WriteTimeout = cfg.Redis.GetWriteTimeout().AsDuration()
 	} else {
-		redisConfig.WriteTimeout = 3 * time.Second // 默认写超时
+		redisConfig.WriteTimeout = 3 * time.Second
 	}
 
-	return redis.NewClient(redisConfig, logger)
+	return redis.NewClient(redisConfig, pkglogger.WithModule(logger, "redis/data/krathub-service"))
 }

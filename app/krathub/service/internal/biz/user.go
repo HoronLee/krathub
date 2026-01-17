@@ -8,6 +8,7 @@ import (
 	userv1 "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/jwt"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -29,7 +30,7 @@ type UserUsecase struct {
 func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, authRepo AuthRepo) *UserUsecase {
 	uc := &UserUsecase{
 		repo:     repo,
-		log:      log.NewHelper(logger),
+		log:      log.NewHelper(pkglogger.WithModule(logger, "user/biz/krathub-service")),
 		cfg:      cfg,
 		authRepo: authRepo,
 	}

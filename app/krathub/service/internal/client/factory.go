@@ -5,12 +5,12 @@ import (
 	"fmt"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 )
 
-// client Client接口的实现
 type client struct {
 	dataCfg   *conf.Data
 	traceCfg  *conf.Trace
@@ -18,7 +18,6 @@ type client struct {
 	logger    log.Logger
 }
 
-// NewClient 创建客户端
 func NewClient(
 	dataCfg *conf.Data,
 	traceCfg *conf.Trace,
@@ -29,11 +28,10 @@ func NewClient(
 		dataCfg:   dataCfg,
 		traceCfg:  traceCfg,
 		discovery: discovery,
-		logger:    logger,
+		logger:    pkglogger.WithModule(logger, "client/client/krathub-service"),
 	}, nil
 }
 
-// CreateConn 创建指定类型的连接
 func (c *client) CreateConn(ctx context.Context, connType ConnType, serviceName string) (Connection, error) {
 	switch connType {
 	case GRPC:
@@ -43,7 +41,6 @@ func (c *client) CreateConn(ctx context.Context, connType ConnType, serviceName 
 	}
 }
 
-// createGrpcConn 创建gRPC连接
 func (c *client) createGrpcConn(ctx context.Context, serviceName string) (Connection, error) {
 	grpcConn, err := createGrpcConnection(ctx, serviceName, c.dataCfg, c.traceCfg, c.discovery, c.logger)
 	if err != nil {

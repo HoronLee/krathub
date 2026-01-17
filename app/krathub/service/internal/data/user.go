@@ -6,6 +6,7 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -18,7 +19,7 @@ type userRepo struct {
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{
 		data: data,
-		log:  log.NewHelper(logger),
+		log:  log.NewHelper(pkglogger.WithModule(logger, "user/data/krathub-service")),
 	}
 }
 

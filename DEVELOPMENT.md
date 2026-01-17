@@ -86,22 +86,25 @@ make build
 ### Adding a New Service
 
 1. Create service directory structure:
+
 ```bash
 mkdir -p app/{service-name}/service/{cmd/server,internal,configs}
 ```
 
-2. Create service Makefile:
+1. Create service Makefile:
+
 ```bash
 echo "include ../../../app.mk" > app/{service-name}/service/Makefile
 ```
 
-3. Create OpenAPI config for the service:
+1. Create OpenAPI config for the service:
+
 ```bash
 cp api/buf.krathub.openapi.gen.yaml api/buf.{service-name}.openapi.gen.yaml
 # Edit the config to point to your service's proto files
 ```
 
-4. Create proto files:
+1. Create proto files:
    - HTTP interfaces: `api/protos/{service-name}/service/v1/i_*.proto`
    - gRPC interfaces: `api/protos/{domain}/service/v1/{domain}.proto`
 
@@ -120,6 +123,7 @@ Following go-wind-admin conventions:
   - Used for: gRPC service implementation
 
 Example:
+
 ```
 api/protos/
 ├── krathub/service/v1/
@@ -146,7 +150,7 @@ api/protos/
 | `make api` | Generate all protobuf Go code |
 | `make openapi` | Generate OpenAPI docs for all services |
 | `make wire` | Generate wire code for all services |
-| `make gen` | Generate all code (ent + wire + api + openapi) |
+| `make gen` | Generate all code (wire + api + openapi) |
 | `make build` | Build all services |
 | `make build_only` | Build without code generation |
 | `make all` | Generate and build all services |
@@ -166,7 +170,6 @@ All services use the common `app.mk` file:
 | `make api` | Generate protobuf code |
 | `make openapi` | Generate OpenAPI documentation |
 | `make wire` | Generate wire code |
-| `make ent` | Generate ent code (if schema exists) |
 | `make gen` | Generate all code |
 | `make clean` | Clean build files |
 | `make env` | Show environment variables |
@@ -186,9 +189,11 @@ cd api && buf generate
 ### OpenAPI Generation
 
 Each service has its own OpenAPI config file:
+
 - `api/buf.krathub.openapi.gen.yaml` - Krathub service
 
 OpenAPI files are generated to each service directory:
+
 - `app/krathub/service/openapi.yaml`
 
 ```bash
@@ -218,6 +223,7 @@ cp .env.example .env
 ```
 
 Variables:
+
 - `PROJECT_NAME`: Project name (default: krathub)
 - `SERVICE_APP_VERSION`: Service version (default: 0.0.1)
 - `VERSION`: Build version (overridden by git tags)
@@ -237,6 +243,7 @@ Variables:
 - golangci-lint
 
 Install all tools:
+
 ```bash
 make init
 ```

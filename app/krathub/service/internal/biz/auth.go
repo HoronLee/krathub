@@ -11,6 +11,7 @@ import (
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
 	jwtpkg "github.com/horonlee/krathub/pkg/jwt"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt/v5"
@@ -28,24 +29,21 @@ type AuthUsecase struct {
 
 // NewAuthUsecase new an auth usecase.
 func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
-	// Instantiate the Access Token JWT service
 	accessJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
 		SecretKey: cfg.Jwt.AccessSecret,
 	})
 
-	// Instantiate the Refresh Token JWT service (for validation only)
 	refreshJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
 		SecretKey: cfg.Jwt.RefreshSecret,
 	})
 
 	uc := &AuthUsecase{
 		repo:       repo,
-		log:        log.NewHelper(logger),
+		log:        log.NewHelper(pkglogger.WithModule(logger, "auth/biz/krathub-service")),
 		cfg:        cfg,
 		accessJWT:  accessJWTService,
 		refreshJWT: refreshJWTService,
 	}
-	// 初始化 adminRegistered
 	admin, err := repo.GetUserByUserName(context.Background(), "admin")
 	if err == nil && admin != nil {
 		uc.adminRegistered = true

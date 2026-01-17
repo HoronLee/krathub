@@ -5,16 +5,15 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/redis/go-redis/v9"
 )
 
-// Client Redis客户端封装
 type Client struct {
 	rdb *redis.Client
 	log *log.Helper
 }
 
-// Config Redis配置
 type Config struct {
 	Addr         string
 	Username     string
@@ -24,7 +23,6 @@ type Config struct {
 	WriteTimeout time.Duration
 }
 
-// NewClient 创建Redis客户端（支持依赖注入）
 func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         cfg.Addr,
@@ -35,7 +33,6 @@ func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 		WriteTimeout: cfg.WriteTimeout,
 	})
 
-	// 测试连接
 	ctx := context.Background()
 	if err := rdb.Ping(ctx).Err(); err != nil {
 		return nil, nil, err
@@ -48,7 +45,7 @@ func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 
 	return &Client{
 		rdb: rdb,
-		log: log.NewHelper(logger),
+		log: log.NewHelper(pkglogger.WithModule(logger, "redis/pkg/krathub-service")),
 	}, cleanup, nil
 }
 

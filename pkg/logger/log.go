@@ -11,9 +11,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-var (
-	_ log.Logger = (*ZapLogger)(nil)
-)
+var _ log.Logger = (*ZapLogger)(nil)
 
 type ZapLogger struct {
 	log  *zap.Logger
@@ -162,9 +160,18 @@ func (l *ZapLogger) Log(level log.Level, keyvals ...any) error {
 	return nil
 }
 
-func (l *ZapLogger) GetGormLogger() GormLogger {
+// GetGormLogger 获取Gorm日志适配器
+func (l *ZapLogger) GetGormLogger(module string) GormLogger {
+	moduleLogger := l.log.With(zap.String("module", module))
 	return GormLogger{
-		ZapLogger:     l.log,
-		SlowThreshold: 200 * time.Millisecond, // 慢查询阈值，单位为千分之一秒
+		ZapLogger:     moduleLogger,
+		SlowThreshold: 200 * time.Millisecond,
 	}
+}
+
+// WithModule 为logger添加module键值对
+// module命名规范: "[组件]/[层]/[服务名]"
+// 例如: "redis/data/krathub-service", "auth/biz/krathub-service"
+func WithModule(logger log.Logger, module string) log.Logger {
+	return log.With(logger, "module", module)
 }

@@ -11,12 +11,12 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/client"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 	gogrpc "google.golang.org/grpc"
 )
 
-// authRepo 统一的认证仓库实现，同时包含数据库和 grpc 操作
 type authRepo struct {
 	data *Data
 	log  *log.Helper
@@ -25,7 +25,7 @@ type authRepo struct {
 func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 	return &authRepo{
 		data: data,
-		log:  log.NewHelper(logger),
+		log:  log.NewHelper(pkglogger.WithModule(logger, "auth/data/krathub-service")),
 	}
 }
 
