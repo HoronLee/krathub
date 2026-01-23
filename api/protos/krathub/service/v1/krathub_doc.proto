@@ -22,16 +22,6 @@ option (gnostic.openapi.v3.document) = {
     }
   }
 
-  security: [
-    {
-      additional_properties: [
-        {
-          name: "BearerAuth"; 
-          value: {}
-        }
-      ]
-    }
-  ]
 
   components: {
     security_schemes: {
