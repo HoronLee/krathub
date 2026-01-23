@@ -7,6 +7,7 @@
 package servicev1
 
 import (
+	_ "github.com/google/gnostic/openapiv3"
 	v1 "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -26,14 +27,26 @@ var File_krathub_service_v1_i_user_proto protoreflect.FileDescriptor
 
 const file_krathub_service_v1_i_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1fkrathub/service/v1/i_user.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1auser/service/v1/user.proto2\xd1\x03\n" +
-	"\vUserService\x12x\n" +
-	"\x0fCurrentUserInfo\x12'.user.service.v1.CurrentUserInfoRequest\x1a%.user.service.v1.CurrentUserInfoReply\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/info\x12n\n" +
+	"\x1fkrathub/service/v1/i_user.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a$gnostic/openapi/v3/annotations.proto\x1a\x1auser/service/v1/user.proto2\xa8\x04\n" +
+	"\vUserService\x12\x8d\x01\n" +
+	"\x0fCurrentUserInfo\x12'.user.service.v1.CurrentUserInfoRequest\x1a%.user.service.v1.CurrentUserInfoReply\"*\xbaG\x12Z\x10\n" +
+	"\x0e\n" +
 	"\n" +
-	"UpdateUser\x12\".user.service.v1.UpdateUserRequest\x1a .user.service.v1.UpdateUserReply\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12f\n" +
-	"\bSaveUser\x12 .user.service.v1.SaveUserRequest\x1a\x1e.user.service.v1.SaveUserReply\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12p\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/info\x12\x83\x01\n" +
 	"\n" +
-	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a .user.service.v1.DeleteUserReply\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B\xd3\x01\n" +
+	"UpdateUser\x12\".user.service.v1.UpdateUserRequest\x1a .user.service.v1.UpdateUserReply\"/\xbaG\x12Z\x10\n" +
+	"\x0e\n" +
+	"\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12{\n" +
+	"\bSaveUser\x12 .user.service.v1.SaveUserRequest\x1a\x1e.user.service.v1.SaveUserReply\"-\xbaG\x12Z\x10\n" +
+	"\x0e\n" +
+	"\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12\x85\x01\n" +
+	"\n" +
+	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a .user.service.v1.DeleteUserReply\"1\xbaG\x12Z\x10\n" +
+	"\x0e\n" +
+	"\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B\xd3\x01\n" +
 	"\x16com.krathub.service.v1B\n" +
 	"IUserProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;servicev1\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 

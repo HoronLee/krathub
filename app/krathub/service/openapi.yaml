@@ -13,24 +13,6 @@ info:
         url: https://github.com/horonlee/krathub/blob/main/LICENSE
     version: "1.0"
 paths:
-    /CallHello/Hello:
-        post:
-            tags:
-                - TestService
-            operationId: TestService_Hello
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/HelloRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HelloResponse'
     /v1/auth/login/email-password:
         post:
             tags:
@@ -103,6 +85,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SignupByEmailReply'
+    /v1/test/Hello:
+        post:
+            tags:
+                - TestService
+            operationId: TestService_Hello
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/HelloRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HelloResponse'
     /v1/test/private:
         post:
             tags:
@@ -121,6 +121,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/PrivateTestResponse'
+            security:
+                - BearerAuth: []
     /v1/test/test:
         post:
             tags:
@@ -157,6 +159,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/DeleteUserReply'
+            security:
+                - BearerAuth: []
     /v1/user/info:
         get:
             tags:
@@ -169,6 +173,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CurrentUserInfoReply'
+            security:
+                - BearerAuth: []
     /v1/user/save:
         post:
             tags:
@@ -187,6 +193,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SaveUserReply'
+            security:
+                - BearerAuth: []
     /v1/user/update:
         post:
             tags:
@@ -205,6 +213,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UpdateUserReply'
+            security:
+                - BearerAuth: []
 components:
     schemas:
         CurrentUserInfoReply:
@@ -404,8 +414,6 @@ components:
             description: JWT 认证令牌
             scheme: bearer
             bearerFormat: JWT
-security:
-    - BearerAuth: []
 tags:
     - name: AuthService
       description: Auth HTTP 服务 - 用于 OpenAPI 生成
