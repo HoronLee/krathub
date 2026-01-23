@@ -11,11 +11,11 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	"github.com/horonlee/krathub/app/krathub/service/internal/client"
 	"github.com/horonlee/krathub/app/krathub/service/internal/data"
 	"github.com/horonlee/krathub/app/krathub/service/internal/server"
 	"github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
+	"github.com/horonlee/krathub/pkg/client"
 )
 
 import (

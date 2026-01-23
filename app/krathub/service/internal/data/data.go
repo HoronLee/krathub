@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/app/krathub/service/internal/client"
 	dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
+	"github.com/horonlee/krathub/pkg/client"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/redis"
 

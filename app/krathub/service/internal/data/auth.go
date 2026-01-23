@@ -8,8 +8,8 @@ import (
 
 	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	"github.com/horonlee/krathub/app/krathub/service/internal/client"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
+	"github.com/horonlee/krathub/pkg/client"
 	"github.com/horonlee/krathub/pkg/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 

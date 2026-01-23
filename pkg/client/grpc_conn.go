@@ -35,7 +35,7 @@ func NewGrpcConn(conn gogrpc.ClientConnInterface) *GrpcConn {
 }
 
 // Value 返回原始gRPC连接
-func (g *GrpcConn) Value() interface{} {
+func (g *GrpcConn) Value() any {
 	g.mu.RLock()
 	defer g.mu.RUnlock()
 	return g.conn
