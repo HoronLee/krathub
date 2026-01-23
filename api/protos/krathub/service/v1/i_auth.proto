@@ -11,13 +11,6 @@ option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;k
 
 // Auth HTTP 服务 - 用于 OpenAPI 生成
 service AuthService {
-  rpc Hello(auth.service.v1.HelloRequest) returns (auth.service.v1.HelloResponse) {
-    option (google.api.http) = {
-      post: "/CallHello/Hello"
-      body: "*"
-    };
-  }
-
   rpc SignupByEmail(auth.service.v1.SignupByEmailRequest) returns (auth.service.v1.SignupByEmailReply) {
     option (google.api.http) = {
       post: "/v1/auth/signup/using-email"

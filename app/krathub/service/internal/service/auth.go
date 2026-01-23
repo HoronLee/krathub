@@ -7,8 +7,6 @@ import (
 	authv1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
-
-	"github.com/fatedier/golib/log"
 )
 
 // AuthService is a auth service.
@@ -84,19 +82,5 @@ func (s *AuthService) Logout(ctx context.Context, req *authv1.LogoutRequest) (*a
 	}
 	return &authv1.LogoutReply{
 		Success: true,
-	}, nil
-}
-
-// SayHello 实现 authv1.AuthServer 接口的 SayHello 方法
-func (s *AuthService) Hello(ctx context.Context, req *authv1.HelloRequest) (*authv1.HelloResponse, error) {
-	log.Debugf("Received SayHello request with greeting: %v", req.Req)
-	// 调用 biz 层
-	res, err := s.uc.Hello(ctx, req.Req)
-	if err != nil {
-		return nil, err
-	}
-	// 拼装返回响应
-	return &authv1.HelloResponse{
-		Rep: res,
 	}, nil
 }

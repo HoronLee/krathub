@@ -16,8 +16,8 @@ paths:
     /CallHello/Hello:
         post:
             tags:
-                - AuthService
-            operationId: AuthService_Hello
+                - TestService
+            operationId: TestService_Hello
             requestBody:
                 content:
                     application/json:
@@ -226,13 +226,11 @@ components:
             properties:
                 req:
                     type: string
-            description: HelloRequest 是 Hello 服务的请求消息
         HelloResponse:
             type: object
             properties:
                 rep:
                     type: string
-            description: HelloResponse 是 Hello 服务的响应消息
         KratosError:
             type: object
             properties:

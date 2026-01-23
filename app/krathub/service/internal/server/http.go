@@ -94,7 +94,7 @@ func configureRoutes(authMiddleware mw.AuthJWT) []middleware.Middleware {
 	return []middleware.Middleware{
 		// 需要User权限的接口
 		selector.Server(authMiddleware(consts.UserRole(2))).
-			Prefix("/krathub.service.v1.UserService/", "/krathub.service.v1.TestService/").
+			Prefix("/krathub.service.v1.UserService/", "/krathub.service.v1.TestService/PrivateTest").
 			Build(),
 		// 需要Admin权限的接口
 		selector.Server(authMiddleware(consts.UserRole(3))).

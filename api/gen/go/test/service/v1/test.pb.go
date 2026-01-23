@@ -21,6 +21,94 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type HelloRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Req           string                 `protobuf:"bytes,1,opt,name=req,proto3" json:"req,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HelloRequest) Reset() {
+	*x = HelloRequest{}
+	mi := &file_test_service_v1_test_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HelloRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HelloRequest) ProtoMessage() {}
+
+func (x *HelloRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_test_service_v1_test_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
+func (*HelloRequest) Descriptor() ([]byte, []int) {
+	return file_test_service_v1_test_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *HelloRequest) GetReq() string {
+	if x != nil {
+		return x.Req
+	}
+	return ""
+}
+
+type HelloResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Rep           string                 `protobuf:"bytes,1,opt,name=rep,proto3" json:"rep,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HelloResponse) Reset() {
+	*x = HelloResponse{}
+	mi := &file_test_service_v1_test_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HelloResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HelloResponse) ProtoMessage() {}
+
+func (x *HelloResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_test_service_v1_test_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HelloResponse.ProtoReflect.Descriptor instead.
+func (*HelloResponse) Descriptor() ([]byte, []int) {
+	return file_test_service_v1_test_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *HelloResponse) GetRep() string {
+	if x != nil {
+		return x.Rep
+	}
+	return ""
+}
+
 type TestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -29,7 +117,7 @@ type TestRequest struct {
 
 func (x *TestRequest) Reset() {
 	*x = TestRequest{}
-	mi := &file_test_service_v1_test_proto_msgTypes[0]
+	mi := &file_test_service_v1_test_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -41,7 +129,7 @@ func (x *TestRequest) String() string {
 func (*TestRequest) ProtoMessage() {}
 
 func (x *TestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_test_service_v1_test_proto_msgTypes[0]
+	mi := &file_test_service_v1_test_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -54,7 +142,7 @@ func (x *TestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestRequest.ProtoReflect.Descriptor instead.
 func (*TestRequest) Descriptor() ([]byte, []int) {
-	return file_test_service_v1_test_proto_rawDescGZIP(), []int{0}
+	return file_test_service_v1_test_proto_rawDescGZIP(), []int{2}
 }
 
 type TestResponse struct {
@@ -66,7 +154,7 @@ type TestResponse struct {
 
 func (x *TestResponse) Reset() {
 	*x = TestResponse{}
-	mi := &file_test_service_v1_test_proto_msgTypes[1]
+	mi := &file_test_service_v1_test_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -78,7 +166,7 @@ func (x *TestResponse) String() string {
 func (*TestResponse) ProtoMessage() {}
 
 func (x *TestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_test_service_v1_test_proto_msgTypes[1]
+	mi := &file_test_service_v1_test_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -91,7 +179,7 @@ func (x *TestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestResponse.ProtoReflect.Descriptor instead.
 func (*TestResponse) Descriptor() ([]byte, []int) {
-	return file_test_service_v1_test_proto_rawDescGZIP(), []int{1}
+	return file_test_service_v1_test_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TestResponse) GetMessage() string {
@@ -109,7 +197,7 @@ type PrivateTestRequest struct {
 
 func (x *PrivateTestRequest) Reset() {
 	*x = PrivateTestRequest{}
-	mi := &file_test_service_v1_test_proto_msgTypes[2]
+	mi := &file_test_service_v1_test_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -121,7 +209,7 @@ func (x *PrivateTestRequest) String() string {
 func (*PrivateTestRequest) ProtoMessage() {}
 
 func (x *PrivateTestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_test_service_v1_test_proto_msgTypes[2]
+	mi := &file_test_service_v1_test_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -134,7 +222,7 @@ func (x *PrivateTestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrivateTestRequest.ProtoReflect.Descriptor instead.
 func (*PrivateTestRequest) Descriptor() ([]byte, []int) {
-	return file_test_service_v1_test_proto_rawDescGZIP(), []int{2}
+	return file_test_service_v1_test_proto_rawDescGZIP(), []int{4}
 }
 
 type PrivateTestResponse struct {
@@ -146,7 +234,7 @@ type PrivateTestResponse struct {
 
 func (x *PrivateTestResponse) Reset() {
 	*x = PrivateTestResponse{}
-	mi := &file_test_service_v1_test_proto_msgTypes[3]
+	mi := &file_test_service_v1_test_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -158,7 +246,7 @@ func (x *PrivateTestResponse) String() string {
 func (*PrivateTestResponse) ProtoMessage() {}
 
 func (x *PrivateTestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_test_service_v1_test_proto_msgTypes[3]
+	mi := &file_test_service_v1_test_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -171,7 +259,7 @@ func (x *PrivateTestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrivateTestResponse.ProtoReflect.Descriptor instead.
 func (*PrivateTestResponse) Descriptor() ([]byte, []int) {
-	return file_test_service_v1_test_proto_rawDescGZIP(), []int{3}
+	return file_test_service_v1_test_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PrivateTestResponse) GetMessage() string {
@@ -185,14 +273,19 @@ var File_test_service_v1_test_proto protoreflect.FileDescriptor
 
 const file_test_service_v1_test_proto_rawDesc = "" +
 	"\n" +
-	"\x1atest/service/v1/test.proto\x12\x0ftest.service.v1\"\r\n" +
+	"\x1atest/service/v1/test.proto\x12\x0ftest.service.v1\" \n" +
+	"\fHelloRequest\x12\x10\n" +
+	"\x03req\x18\x01 \x01(\tR\x03req\"!\n" +
+	"\rHelloResponse\x12\x10\n" +
+	"\x03rep\x18\x01 \x01(\tR\x03rep\"\r\n" +
 	"\vTestRequest\"(\n" +
 	"\fTestResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\"\x14\n" +
 	"\x12PrivateTestRequest\"/\n" +
 	"\x13PrivateTestResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2\xa5\x01\n" +
-	"\x04Test\x12C\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2\xed\x01\n" +
+	"\x04Test\x12F\n" +
+	"\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\x12C\n" +
 	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\x12X\n" +
 	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponseB\xc0\x01\n" +
 	"\x13com.test.service.v1B\tTestProtoP\x01Z@github.com/horonlee/krathub/api/gen/go/test/service/v1;servicev1\xa2\x02\x03TSX\xaa\x02\x0fTest.Service.V1\xca\x02\x0fTest\\Service\\V1\xe2\x02\x1bTest\\Service\\V1\\GPBMetadata\xea\x02\x11Test::Service::V1b\x06proto3"
@@ -209,20 +302,24 @@ func file_test_service_v1_test_proto_rawDescGZIP() []byte {
 	return file_test_service_v1_test_proto_rawDescData
 }
 
-var file_test_service_v1_test_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_test_service_v1_test_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_test_service_v1_test_proto_goTypes = []any{
-	(*TestRequest)(nil),         // 0: test.service.v1.TestRequest
-	(*TestResponse)(nil),        // 1: test.service.v1.TestResponse
-	(*PrivateTestRequest)(nil),  // 2: test.service.v1.PrivateTestRequest
-	(*PrivateTestResponse)(nil), // 3: test.service.v1.PrivateTestResponse
+	(*HelloRequest)(nil),        // 0: test.service.v1.HelloRequest
+	(*HelloResponse)(nil),       // 1: test.service.v1.HelloResponse
+	(*TestRequest)(nil),         // 2: test.service.v1.TestRequest
+	(*TestResponse)(nil),        // 3: test.service.v1.TestResponse
+	(*PrivateTestRequest)(nil),  // 4: test.service.v1.PrivateTestRequest
+	(*PrivateTestResponse)(nil), // 5: test.service.v1.PrivateTestResponse
 }
 var file_test_service_v1_test_proto_depIdxs = []int32{
-	0, // 0: test.service.v1.Test.Test:input_type -> test.service.v1.TestRequest
-	2, // 1: test.service.v1.Test.PrivateTest:input_type -> test.service.v1.PrivateTestRequest
-	1, // 2: test.service.v1.Test.Test:output_type -> test.service.v1.TestResponse
-	3, // 3: test.service.v1.Test.PrivateTest:output_type -> test.service.v1.PrivateTestResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	0, // 0: test.service.v1.Test.Hello:input_type -> test.service.v1.HelloRequest
+	2, // 1: test.service.v1.Test.Test:input_type -> test.service.v1.TestRequest
+	4, // 2: test.service.v1.Test.PrivateTest:input_type -> test.service.v1.PrivateTestRequest
+	1, // 3: test.service.v1.Test.Hello:output_type -> test.service.v1.HelloResponse
+	3, // 4: test.service.v1.Test.Test:output_type -> test.service.v1.TestResponse
+	5, // 5: test.service.v1.Test.PrivateTest:output_type -> test.service.v1.PrivateTestResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -239,7 +336,7 @@ func file_test_service_v1_test_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_test_service_v1_test_proto_rawDesc), len(file_test_service_v1_test_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

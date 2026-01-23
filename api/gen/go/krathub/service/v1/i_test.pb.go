@@ -26,26 +26,31 @@ var File_krathub_service_v1_i_test_proto protoreflect.FileDescriptor
 
 const file_krathub_service_v1_i_test_proto_rawDesc = "" +
 	"\n" +
-	"\x1fkrathub/service/v1/i_test.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1atest/service/v1/test.proto2\xe3\x01\n" +
-	"\vTestService\x12]\n" +
+	"\x1fkrathub/service/v1/i_test.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1atest/service/v1/test.proto2\xc8\x02\n" +
+	"\vTestService\x12c\n" +
+	"\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/CallHello/Hello\x12]\n" +
 	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/test/test\x12u\n" +
 	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/test/privateB\xd3\x01\n" +
 	"\x16com.krathub.service.v1B\n" +
 	"ITestProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;servicev1\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 
 var file_krathub_service_v1_i_test_proto_goTypes = []any{
-	(*v1.TestRequest)(nil),         // 0: test.service.v1.TestRequest
-	(*v1.PrivateTestRequest)(nil),  // 1: test.service.v1.PrivateTestRequest
-	(*v1.TestResponse)(nil),        // 2: test.service.v1.TestResponse
-	(*v1.PrivateTestResponse)(nil), // 3: test.service.v1.PrivateTestResponse
+	(*v1.HelloRequest)(nil),        // 0: test.service.v1.HelloRequest
+	(*v1.TestRequest)(nil),         // 1: test.service.v1.TestRequest
+	(*v1.PrivateTestRequest)(nil),  // 2: test.service.v1.PrivateTestRequest
+	(*v1.HelloResponse)(nil),       // 3: test.service.v1.HelloResponse
+	(*v1.TestResponse)(nil),        // 4: test.service.v1.TestResponse
+	(*v1.PrivateTestResponse)(nil), // 5: test.service.v1.PrivateTestResponse
 }
 var file_krathub_service_v1_i_test_proto_depIdxs = []int32{
-	0, // 0: krathub.service.v1.TestService.Test:input_type -> test.service.v1.TestRequest
-	1, // 1: krathub.service.v1.TestService.PrivateTest:input_type -> test.service.v1.PrivateTestRequest
-	2, // 2: krathub.service.v1.TestService.Test:output_type -> test.service.v1.TestResponse
-	3, // 3: krathub.service.v1.TestService.PrivateTest:output_type -> test.service.v1.PrivateTestResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	0, // 0: krathub.service.v1.TestService.Hello:input_type -> test.service.v1.HelloRequest
+	1, // 1: krathub.service.v1.TestService.Test:input_type -> test.service.v1.TestRequest
+	2, // 2: krathub.service.v1.TestService.PrivateTest:input_type -> test.service.v1.PrivateTestRequest
+	3, // 3: krathub.service.v1.TestService.Hello:output_type -> test.service.v1.HelloResponse
+	4, // 4: krathub.service.v1.TestService.Test:output_type -> test.service.v1.TestResponse
+	5, // 5: krathub.service.v1.TestService.PrivateTest:output_type -> test.service.v1.PrivateTestResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

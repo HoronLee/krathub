@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	Test_Hello_FullMethodName       = "/test.service.v1.Test/Hello"
 	Test_Test_FullMethodName        = "/test.service.v1.Test/Test"
 	Test_PrivateTest_FullMethodName = "/test.service.v1.Test/PrivateTest"
 )
@@ -29,6 +30,7 @@ const (
 //
 // Test gRPC 服务 - 纯 gRPC 接口
 type TestClient interface {
+	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error)
 	PrivateTest(ctx context.Context, in *PrivateTestRequest, opts ...grpc.CallOption) (*PrivateTestResponse, error)
 }
@@ -39,6 +41,16 @@ type testClient struct {
 
 func NewTestClient(cc grpc.ClientConnInterface) TestClient {
 	return &testClient{cc}
+}
+
+func (c *testClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HelloResponse)
+	err := c.cc.Invoke(ctx, Test_Hello_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *testClient) Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error) {
@@ -67,6 +79,7 @@ func (c *testClient) PrivateTest(ctx context.Context, in *PrivateTestRequest, op
 //
 // Test gRPC 服务 - 纯 gRPC 接口
 type TestServer interface {
+	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
 	Test(context.Context, *TestRequest) (*TestResponse, error)
 	PrivateTest(context.Context, *PrivateTestRequest) (*PrivateTestResponse, error)
 	mustEmbedUnimplementedTestServer()
@@ -79,6 +92,9 @@ type TestServer interface {
 // pointer dereference when methods are called.
 type UnimplementedTestServer struct{}
 
+func (UnimplementedTestServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
+}
 func (UnimplementedTestServer) Test(context.Context, *TestRequest) (*TestResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Test not implemented")
 }
@@ -104,6 +120,24 @@ func RegisterTestServer(s grpc.ServiceRegistrar, srv TestServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&Test_ServiceDesc, srv)
+}
+
+func _Test_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestServer).Hello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Test_Hello_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestServer).Hello(ctx, req.(*HelloRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Test_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -149,6 +183,10 @@ var Test_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "test.service.v1.Test",
 	HandlerType: (*TestServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Hello",
+			Handler:    _Test_Hello_Handler,
+		},
 		{
 			MethodName: "Test",
 			Handler:    _Test_Test_Handler,

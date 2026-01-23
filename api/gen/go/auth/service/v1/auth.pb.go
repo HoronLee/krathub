@@ -555,96 +555,6 @@ func (x *LogoutReply) GetSuccess() bool {
 	return false
 }
 
-// HelloRequest 是 Hello 服务的请求消息
-type HelloRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Req           string                 `protobuf:"bytes,1,opt,name=req,proto3" json:"req,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HelloRequest) Reset() {
-	*x = HelloRequest{}
-	mi := &file_auth_service_v1_auth_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HelloRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HelloRequest) ProtoMessage() {}
-
-func (x *HelloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_service_v1_auth_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
-func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return file_auth_service_v1_auth_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *HelloRequest) GetReq() string {
-	if x != nil {
-		return x.Req
-	}
-	return ""
-}
-
-// HelloResponse 是 Hello 服务的响应消息
-type HelloResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Rep           string                 `protobuf:"bytes,1,opt,name=rep,proto3" json:"rep,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HelloResponse) Reset() {
-	*x = HelloResponse{}
-	mi := &file_auth_service_v1_auth_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HelloResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HelloResponse) ProtoMessage() {}
-
-func (x *HelloResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_service_v1_auth_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HelloResponse.ProtoReflect.Descriptor instead.
-func (*HelloResponse) Descriptor() ([]byte, []int) {
-	return file_auth_service_v1_auth_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *HelloResponse) GetRep() string {
-	if x != nil {
-		return x.Rep
-	}
-	return ""
-}
-
 var File_auth_service_v1_auth_proto protoreflect.FileDescriptor
 
 const file_auth_service_v1_auth_proto_rawDesc = "" +
@@ -681,11 +591,7 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\rLogoutRequest\x12,\n" +
 	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"'\n" +
 	"\vLogoutReply\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\" \n" +
-	"\fHelloRequest\x12\x10\n" +
-	"\x03req\x18\x01 \x01(\tR\x03req\"!\n" +
-	"\rHelloResponse\x12\x10\n" +
-	"\x03rep\x18\x01 \x01(\tR\x03rep*\xb5\x02\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess*\xb5\x02\n" +
 	"\vErrorReason\x12\x18\n" +
 	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1d\n" +
 	"\x13USER_ALREADY_EXISTS\x10\x01\x1a\x04\xa8E\x90\x03\x12\x1c\n" +
@@ -697,9 +603,8 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
 	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
 	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x12\x1f\n" +
-	"\x15INVALID_REFRESH_TOKEN\x10\b\x1a\x04\xa8E\x91\x03\x1a\x04\xa0E\xf4\x032\xbf\x03\n" +
-	"\x04Auth\x12F\n" +
-	"\x05Hello\x12\x1d.auth.service.v1.HelloRequest\x1a\x1e.auth.service.v1.HelloResponse\x12[\n" +
+	"\x15INVALID_REFRESH_TOKEN\x10\b\x1a\x04\xa8E\x91\x03\x1a\x04\xa0E\xf4\x032\xf7\x02\n" +
+	"\x04Auth\x12[\n" +
 	"\rSignupByEmail\x12%.auth.service.v1.SignupByEmailRequest\x1a#.auth.service.v1.SignupByEmailReply\x12p\n" +
 	"\x14LoginByEmailPassword\x12,.auth.service.v1.LoginByEmailPasswordRequest\x1a*.auth.service.v1.LoginByEmailPasswordReply\x12X\n" +
 	"\fRefreshToken\x12$.auth.service.v1.RefreshTokenRequest\x1a\".auth.service.v1.RefreshTokenReply\x12F\n" +
@@ -719,7 +624,7 @@ func file_auth_service_v1_auth_proto_rawDescGZIP() []byte {
 }
 
 var file_auth_service_v1_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_auth_service_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_auth_service_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_auth_service_v1_auth_proto_goTypes = []any{
 	(ErrorReason)(0),                    // 0: auth.service.v1.ErrorReason
 	(*SignupByEmailRequest)(nil),        // 1: auth.service.v1.SignupByEmailRequest
@@ -730,25 +635,21 @@ var file_auth_service_v1_auth_proto_goTypes = []any{
 	(*RefreshTokenReply)(nil),           // 6: auth.service.v1.RefreshTokenReply
 	(*LogoutRequest)(nil),               // 7: auth.service.v1.LogoutRequest
 	(*LogoutReply)(nil),                 // 8: auth.service.v1.LogoutReply
-	(*HelloRequest)(nil),                // 9: auth.service.v1.HelloRequest
-	(*HelloResponse)(nil),               // 10: auth.service.v1.HelloResponse
 }
 var file_auth_service_v1_auth_proto_depIdxs = []int32{
-	9,  // 0: auth.service.v1.Auth.Hello:input_type -> auth.service.v1.HelloRequest
-	1,  // 1: auth.service.v1.Auth.SignupByEmail:input_type -> auth.service.v1.SignupByEmailRequest
-	3,  // 2: auth.service.v1.Auth.LoginByEmailPassword:input_type -> auth.service.v1.LoginByEmailPasswordRequest
-	5,  // 3: auth.service.v1.Auth.RefreshToken:input_type -> auth.service.v1.RefreshTokenRequest
-	7,  // 4: auth.service.v1.Auth.Logout:input_type -> auth.service.v1.LogoutRequest
-	10, // 5: auth.service.v1.Auth.Hello:output_type -> auth.service.v1.HelloResponse
-	2,  // 6: auth.service.v1.Auth.SignupByEmail:output_type -> auth.service.v1.SignupByEmailReply
-	4,  // 7: auth.service.v1.Auth.LoginByEmailPassword:output_type -> auth.service.v1.LoginByEmailPasswordReply
-	6,  // 8: auth.service.v1.Auth.RefreshToken:output_type -> auth.service.v1.RefreshTokenReply
-	8,  // 9: auth.service.v1.Auth.Logout:output_type -> auth.service.v1.LogoutReply
-	5,  // [5:10] is the sub-list for method output_type
-	0,  // [0:5] is the sub-list for method input_type
-	0,  // [0:0] is the sub-list for extension type_name
-	0,  // [0:0] is the sub-list for extension extendee
-	0,  // [0:0] is the sub-list for field type_name
+	1, // 0: auth.service.v1.Auth.SignupByEmail:input_type -> auth.service.v1.SignupByEmailRequest
+	3, // 1: auth.service.v1.Auth.LoginByEmailPassword:input_type -> auth.service.v1.LoginByEmailPasswordRequest
+	5, // 2: auth.service.v1.Auth.RefreshToken:input_type -> auth.service.v1.RefreshTokenRequest
+	7, // 3: auth.service.v1.Auth.Logout:input_type -> auth.service.v1.LogoutRequest
+	2, // 4: auth.service.v1.Auth.SignupByEmail:output_type -> auth.service.v1.SignupByEmailReply
+	4, // 5: auth.service.v1.Auth.LoginByEmailPassword:output_type -> auth.service.v1.LoginByEmailPasswordReply
+	6, // 6: auth.service.v1.Auth.RefreshToken:output_type -> auth.service.v1.RefreshTokenReply
+	8, // 7: auth.service.v1.Auth.Logout:output_type -> auth.service.v1.LogoutReply
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_auth_service_v1_auth_proto_init() }
@@ -762,7 +663,7 @@ func file_auth_service_v1_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_service_v1_auth_proto_rawDesc), len(file_auth_service_v1_auth_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   10,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -6,15 +6,12 @@ import (
 	"strconv"
 	"time"
 
-	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
-	"github.com/horonlee/krathub/pkg/client"
 	"github.com/horonlee/krathub/pkg/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
-	gogrpc "google.golang.org/grpc"
 )
 
 type authRepo struct {
@@ -69,33 +66,6 @@ func (r *authRepo) GetUserByID(ctx context.Context, id int64) (*po.User, error) 
 		return nil, err
 	}
 	return user, nil
-}
-
-// Grpc 操作方法
-
-// Hello 负责调用 hello 服务的 SayHello 方法
-func (r *authRepo) Hello(ctx context.Context, in string) (string, error) {
-	r.log.Debugf("Saying hello with greeting: %s", in)
-
-	// 使用新的 CreateConn 方法获取连接
-	connWrapper, err := r.data.client.CreateConn(ctx, client.GRPC, "hello")
-	if err != nil {
-		r.log.Errorf("Failed to create grpc connection: %v", err)
-		return "", err
-	}
-
-	// 获取原始gRPC连接
-	conn := connWrapper.Value().(gogrpc.ClientConnInterface)
-
-	// 使用连接创建客户端
-	helloClient := sayhellov1.NewSayHelloClient(conn)
-	// 使用客户端调用 SayHello 方法
-	ret, err := helloClient.Hello(ctx, &sayhellov1.HelloRequest{Greeting: in})
-	if err != nil {
-		r.log.Errorf("Failed to say hello: %v", err)
-		return "", err
-	}
-	return ret.Reply, nil
 }
 
 // TokenStore methods implementation

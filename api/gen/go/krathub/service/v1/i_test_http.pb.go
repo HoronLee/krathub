@@ -20,18 +20,43 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationTestServiceHello = "/krathub.service.v1.TestService/Hello"
 const OperationTestServicePrivateTest = "/krathub.service.v1.TestService/PrivateTest"
 const OperationTestServiceTest = "/krathub.service.v1.TestService/Test"
 
 type TestServiceHTTPServer interface {
+	Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error)
 	PrivateTest(context.Context, *v1.PrivateTestRequest) (*v1.PrivateTestResponse, error)
 	Test(context.Context, *v1.TestRequest) (*v1.TestResponse, error)
 }
 
 func RegisterTestServiceHTTPServer(s *http.Server, srv TestServiceHTTPServer) {
 	r := s.Route("/")
+	r.POST("/CallHello/Hello", _TestService_Hello0_HTTP_Handler(srv))
 	r.POST("/v1/test/test", _TestService_Test0_HTTP_Handler(srv))
 	r.POST("/v1/test/private", _TestService_PrivateTest0_HTTP_Handler(srv))
+}
+
+func _TestService_Hello0_HTTP_Handler(srv TestServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in v1.HelloRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationTestServiceHello)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Hello(ctx, req.(*v1.HelloRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*v1.HelloResponse)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _TestService_Test0_HTTP_Handler(srv TestServiceHTTPServer) func(ctx http.Context) error {
@@ -79,6 +104,7 @@ func _TestService_PrivateTest0_HTTP_Handler(srv TestServiceHTTPServer) func(ctx 
 }
 
 type TestServiceHTTPClient interface {
+	Hello(ctx context.Context, req *v1.HelloRequest, opts ...http.CallOption) (rsp *v1.HelloResponse, err error)
 	PrivateTest(ctx context.Context, req *v1.PrivateTestRequest, opts ...http.CallOption) (rsp *v1.PrivateTestResponse, err error)
 	Test(ctx context.Context, req *v1.TestRequest, opts ...http.CallOption) (rsp *v1.TestResponse, err error)
 }
@@ -89,6 +115,19 @@ type TestServiceHTTPClientImpl struct {
 
 func NewTestServiceHTTPClient(client *http.Client) TestServiceHTTPClient {
 	return &TestServiceHTTPClientImpl{client}
+}
+
+func (c *TestServiceHTTPClientImpl) Hello(ctx context.Context, in *v1.HelloRequest, opts ...http.CallOption) (*v1.HelloResponse, error) {
+	var out v1.HelloResponse
+	pattern := "/CallHello/Hello"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationTestServiceHello))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *TestServiceHTTPClientImpl) PrivateTest(ctx context.Context, in *v1.PrivateTestRequest, opts ...http.CallOption) (*v1.PrivateTestResponse, error) {

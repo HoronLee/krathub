@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	TestService_Hello_FullMethodName       = "/krathub.service.v1.TestService/Hello"
 	TestService_Test_FullMethodName        = "/krathub.service.v1.TestService/Test"
 	TestService_PrivateTest_FullMethodName = "/krathub.service.v1.TestService/PrivateTest"
 )
@@ -30,6 +31,7 @@ const (
 //
 // Test HTTP 服务 - 用于 OpenAPI 生成
 type TestServiceClient interface {
+	Hello(ctx context.Context, in *v1.HelloRequest, opts ...grpc.CallOption) (*v1.HelloResponse, error)
 	Test(ctx context.Context, in *v1.TestRequest, opts ...grpc.CallOption) (*v1.TestResponse, error)
 	PrivateTest(ctx context.Context, in *v1.PrivateTestRequest, opts ...grpc.CallOption) (*v1.PrivateTestResponse, error)
 }
@@ -40,6 +42,16 @@ type testServiceClient struct {
 
 func NewTestServiceClient(cc grpc.ClientConnInterface) TestServiceClient {
 	return &testServiceClient{cc}
+}
+
+func (c *testServiceClient) Hello(ctx context.Context, in *v1.HelloRequest, opts ...grpc.CallOption) (*v1.HelloResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(v1.HelloResponse)
+	err := c.cc.Invoke(ctx, TestService_Hello_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *testServiceClient) Test(ctx context.Context, in *v1.TestRequest, opts ...grpc.CallOption) (*v1.TestResponse, error) {
@@ -68,6 +80,7 @@ func (c *testServiceClient) PrivateTest(ctx context.Context, in *v1.PrivateTestR
 //
 // Test HTTP 服务 - 用于 OpenAPI 生成
 type TestServiceServer interface {
+	Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error)
 	Test(context.Context, *v1.TestRequest) (*v1.TestResponse, error)
 	PrivateTest(context.Context, *v1.PrivateTestRequest) (*v1.PrivateTestResponse, error)
 	mustEmbedUnimplementedTestServiceServer()
@@ -80,6 +93,9 @@ type TestServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedTestServiceServer struct{}
 
+func (UnimplementedTestServiceServer) Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
+}
 func (UnimplementedTestServiceServer) Test(context.Context, *v1.TestRequest) (*v1.TestResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Test not implemented")
 }
@@ -105,6 +121,24 @@ func RegisterTestServiceServer(s grpc.ServiceRegistrar, srv TestServiceServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&TestService_ServiceDesc, srv)
+}
+
+func _TestService_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.HelloRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestServiceServer).Hello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TestService_Hello_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestServiceServer).Hello(ctx, req.(*v1.HelloRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _TestService_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -150,6 +184,10 @@ var TestService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "krathub.service.v1.TestService",
 	HandlerType: (*TestServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Hello",
+			Handler:    _TestService_Hello_Handler,
+		},
 		{
 			MethodName: "Test",
 			Handler:    _TestService_Test_Handler,

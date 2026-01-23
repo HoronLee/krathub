@@ -58,7 +58,9 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	userRepo := data.NewUserRepo(dataData, logger)
 	userUsecase := biz.NewUserUsecase(userRepo, logger, app, authRepo)
 	userService := service.NewUserService(userUsecase)
-	testService := service.NewTestService()
+	testRepo := data.NewTestRepo(dataData, logger)
+	testUsecase := biz.NewTestUsecase(testRepo, logger)
+	testService := service.NewTestService(testUsecase)
 	httpServer := server.NewHTTPServer(confServer, trace, authJWT, serverMetrics, logger, authService, userService, testService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {

@@ -20,7 +20,6 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_Hello_FullMethodName                = "/krathub.service.v1.AuthService/Hello"
 	AuthService_SignupByEmail_FullMethodName        = "/krathub.service.v1.AuthService/SignupByEmail"
 	AuthService_LoginByEmailPassword_FullMethodName = "/krathub.service.v1.AuthService/LoginByEmailPassword"
 	AuthService_RefreshToken_FullMethodName         = "/krathub.service.v1.AuthService/RefreshToken"
@@ -33,7 +32,6 @@ const (
 //
 // Auth HTTP 服务 - 用于 OpenAPI 生成
 type AuthServiceClient interface {
-	Hello(ctx context.Context, in *v1.HelloRequest, opts ...grpc.CallOption) (*v1.HelloResponse, error)
 	SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...grpc.CallOption) (*v1.SignupByEmailReply, error)
 	LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*v1.LoginByEmailPasswordReply, error)
 	RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...grpc.CallOption) (*v1.RefreshTokenReply, error)
@@ -46,16 +44,6 @@ type authServiceClient struct {
 
 func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
-}
-
-func (c *authServiceClient) Hello(ctx context.Context, in *v1.HelloRequest, opts ...grpc.CallOption) (*v1.HelloResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.HelloResponse)
-	err := c.cc.Invoke(ctx, AuthService_Hello_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *authServiceClient) SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...grpc.CallOption) (*v1.SignupByEmailReply, error) {
@@ -104,7 +92,6 @@ func (c *authServiceClient) Logout(ctx context.Context, in *v1.LogoutRequest, op
 //
 // Auth HTTP 服务 - 用于 OpenAPI 生成
 type AuthServiceServer interface {
-	Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error)
 	SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailReply, error)
 	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error)
 	RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenReply, error)
@@ -119,9 +106,6 @@ type AuthServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServiceServer struct{}
 
-func (UnimplementedAuthServiceServer) Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
-}
 func (UnimplementedAuthServiceServer) SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method SignupByEmail not implemented")
 }
@@ -153,24 +137,6 @@ func RegisterAuthServiceServer(s grpc.ServiceRegistrar, srv AuthServiceServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&AuthService_ServiceDesc, srv)
-}
-
-func _AuthService_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.HelloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServiceServer).Hello(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthService_Hello_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Hello(ctx, req.(*v1.HelloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _AuthService_SignupByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -252,10 +218,6 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "krathub.service.v1.AuthService",
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Hello",
-			Handler:    _AuthService_Hello_Handler,
-		},
 		{
 			MethodName: "SignupByEmail",
 			Handler:    _AuthService_SignupByEmail_Handler,

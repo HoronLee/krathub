@@ -90,8 +90,6 @@ type AuthRepo interface {
 	GetUserByEmail(context.Context, string) (*po.User, error)
 	GetUserByUserName(context.Context, string) (*po.User, error)
 	GetUserByID(context.Context, int64) (*po.User, error)
-	// grpc 操作
-	Hello(ctx context.Context, in string) (string, error)
 	// Token存储方法
 	TokenStore
 }
@@ -206,16 +204,6 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *po.User) 
 		RefreshToken: refreshToken,
 		ExpiresIn:    int64(uc.cfg.Jwt.AccessExpire),
 	}, nil
-}
-
-// Hello 通过 repo 实现
-func (uc *AuthUsecase) Hello(ctx context.Context, in string) (string, error) {
-	greeting := "World"
-	if in != "" {
-		greeting = in
-	}
-	uc.log.Debugf("Saying hello with greeting: %s", greeting)
-	return uc.repo.Hello(ctx, greeting)
 }
 
 // RefreshToken 刷新Access Token

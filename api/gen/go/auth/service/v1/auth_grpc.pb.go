@@ -19,7 +19,6 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_Hello_FullMethodName                = "/auth.service.v1.Auth/Hello"
 	Auth_SignupByEmail_FullMethodName        = "/auth.service.v1.Auth/SignupByEmail"
 	Auth_LoginByEmailPassword_FullMethodName = "/auth.service.v1.Auth/LoginByEmailPassword"
 	Auth_RefreshToken_FullMethodName         = "/auth.service.v1.Auth/RefreshToken"
@@ -32,7 +31,6 @@ const (
 //
 // Auth gRPC 服务 - 纯 gRPC 接口
 type AuthClient interface {
-	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailReply, error)
 	LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*LoginByEmailPasswordReply, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenReply, error)
@@ -45,16 +43,6 @@ type authClient struct {
 
 func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
 	return &authClient{cc}
-}
-
-func (c *authClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, Auth_Hello_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *authClient) SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailReply, error) {
@@ -103,7 +91,6 @@ func (c *authClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc
 //
 // Auth gRPC 服务 - 纯 gRPC 接口
 type AuthServer interface {
-	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
 	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
 	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenReply, error)
@@ -118,9 +105,6 @@ type AuthServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServer struct{}
 
-func (UnimplementedAuthServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
-}
 func (UnimplementedAuthServer) SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method SignupByEmail not implemented")
 }
@@ -152,24 +136,6 @@ func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&Auth_ServiceDesc, srv)
-}
-
-func _Auth_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).Hello(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Auth_Hello_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Hello(ctx, req.(*HelloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Auth_SignupByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -251,10 +217,6 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "auth.service.v1.Auth",
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Hello",
-			Handler:    _Auth_Hello_Handler,
-		},
 		{
 			MethodName: "SignupByEmail",
 			Handler:    _Auth_SignupByEmail_Handler,

@@ -38,7 +38,6 @@ enum ErrorReason {
 
 // Auth gRPC 服务 - 纯 gRPC 接口
 service Auth {
-  rpc Hello(HelloRequest) returns (HelloResponse);
   rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply);
   rpc LoginByEmailPassword(LoginByEmailPasswordRequest) returns (LoginByEmailPasswordReply);
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenReply);
@@ -106,14 +105,4 @@ message LogoutRequest {
 // 登出响应
 message LogoutReply {
   bool success = 1;
-}
-
-// HelloRequest 是 Hello 服务的请求消息
-message HelloRequest {
-  string req = 1;
-}
-
-// HelloResponse 是 Hello 服务的响应消息
-message HelloResponse {
-  string rep = 1;
 }

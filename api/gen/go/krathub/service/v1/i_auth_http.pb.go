@@ -20,14 +20,12 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAuthServiceHello = "/krathub.service.v1.AuthService/Hello"
 const OperationAuthServiceLoginByEmailPassword = "/krathub.service.v1.AuthService/LoginByEmailPassword"
 const OperationAuthServiceLogout = "/krathub.service.v1.AuthService/Logout"
 const OperationAuthServiceRefreshToken = "/krathub.service.v1.AuthService/RefreshToken"
 const OperationAuthServiceSignupByEmail = "/krathub.service.v1.AuthService/SignupByEmail"
 
 type AuthServiceHTTPServer interface {
-	Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error)
 	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error)
 	Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutReply, error)
 	RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenReply, error)
@@ -36,33 +34,10 @@ type AuthServiceHTTPServer interface {
 
 func RegisterAuthServiceHTTPServer(s *http.Server, srv AuthServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/CallHello/Hello", _AuthService_Hello0_HTTP_Handler(srv))
 	r.POST("/v1/auth/signup/using-email", _AuthService_SignupByEmail0_HTTP_Handler(srv))
 	r.POST("/v1/auth/login/email-password", _AuthService_LoginByEmailPassword0_HTTP_Handler(srv))
 	r.POST("/v1/auth/refresh-token", _AuthService_RefreshToken0_HTTP_Handler(srv))
 	r.POST("/v1/auth/logout", _AuthService_Logout0_HTTP_Handler(srv))
-}
-
-func _AuthService_Hello0_HTTP_Handler(srv AuthServiceHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in v1.HelloRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationAuthServiceHello)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.Hello(ctx, req.(*v1.HelloRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*v1.HelloResponse)
-		return ctx.Result(200, reply)
-	}
 }
 
 func _AuthService_SignupByEmail0_HTTP_Handler(srv AuthServiceHTTPServer) func(ctx http.Context) error {
@@ -154,7 +129,6 @@ func _AuthService_Logout0_HTTP_Handler(srv AuthServiceHTTPServer) func(ctx http.
 }
 
 type AuthServiceHTTPClient interface {
-	Hello(ctx context.Context, req *v1.HelloRequest, opts ...http.CallOption) (rsp *v1.HelloResponse, err error)
 	LoginByEmailPassword(ctx context.Context, req *v1.LoginByEmailPasswordRequest, opts ...http.CallOption) (rsp *v1.LoginByEmailPasswordReply, err error)
 	Logout(ctx context.Context, req *v1.LogoutRequest, opts ...http.CallOption) (rsp *v1.LogoutReply, err error)
 	RefreshToken(ctx context.Context, req *v1.RefreshTokenRequest, opts ...http.CallOption) (rsp *v1.RefreshTokenReply, err error)
@@ -167,19 +141,6 @@ type AuthServiceHTTPClientImpl struct {
 
 func NewAuthServiceHTTPClient(client *http.Client) AuthServiceHTTPClient {
 	return &AuthServiceHTTPClientImpl{client}
-}
-
-func (c *AuthServiceHTTPClientImpl) Hello(ctx context.Context, in *v1.HelloRequest, opts ...http.CallOption) (*v1.HelloResponse, error) {
-	var out v1.HelloResponse
-	pattern := "/CallHello/Hello"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationAuthServiceHello))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
 }
 
 func (c *AuthServiceHTTPClientImpl) LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...http.CallOption) (*v1.LoginByEmailPasswordReply, error) {

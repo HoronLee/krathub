@@ -27,9 +27,8 @@ var File_krathub_service_v1_i_auth_proto protoreflect.FileDescriptor
 
 const file_krathub_service_v1_i_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x1fkrathub/service/v1/i_auth.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1aauth/service/v1/auth.proto2\xf6\x04\n" +
-	"\vAuthService\x12c\n" +
-	"\x05Hello\x12\x1d.auth.service.v1.HelloRequest\x1a\x1e.auth.service.v1.HelloResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/CallHello/Hello\x12\x83\x01\n" +
+	"\x1fkrathub/service/v1/i_auth.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1aauth/service/v1/auth.proto2\x91\x04\n" +
+	"\vAuthService\x12\x83\x01\n" +
 	"\rSignupByEmail\x12%.auth.service.v1.SignupByEmailRequest\x1a#.auth.service.v1.SignupByEmailReply\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/v1/auth/signup/using-email\x12\x9a\x01\n" +
 	"\x14LoginByEmailPassword\x12,.auth.service.v1.LoginByEmailPasswordRequest\x1a*.auth.service.v1.LoginByEmailPasswordReply\"(\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/auth/login/email-password\x12{\n" +
 	"\fRefreshToken\x12$.auth.service.v1.RefreshTokenRequest\x1a\".auth.service.v1.RefreshTokenReply\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/v1/auth/refresh-token\x12b\n" +
@@ -38,30 +37,26 @@ const file_krathub_service_v1_i_auth_proto_rawDesc = "" +
 	"IAuthProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;servicev1\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 
 var file_krathub_service_v1_i_auth_proto_goTypes = []any{
-	(*v1.HelloRequest)(nil),                // 0: auth.service.v1.HelloRequest
-	(*v1.SignupByEmailRequest)(nil),        // 1: auth.service.v1.SignupByEmailRequest
-	(*v1.LoginByEmailPasswordRequest)(nil), // 2: auth.service.v1.LoginByEmailPasswordRequest
-	(*v1.RefreshTokenRequest)(nil),         // 3: auth.service.v1.RefreshTokenRequest
-	(*v1.LogoutRequest)(nil),               // 4: auth.service.v1.LogoutRequest
-	(*v1.HelloResponse)(nil),               // 5: auth.service.v1.HelloResponse
-	(*v1.SignupByEmailReply)(nil),          // 6: auth.service.v1.SignupByEmailReply
-	(*v1.LoginByEmailPasswordReply)(nil),   // 7: auth.service.v1.LoginByEmailPasswordReply
-	(*v1.RefreshTokenReply)(nil),           // 8: auth.service.v1.RefreshTokenReply
-	(*v1.LogoutReply)(nil),                 // 9: auth.service.v1.LogoutReply
+	(*v1.SignupByEmailRequest)(nil),        // 0: auth.service.v1.SignupByEmailRequest
+	(*v1.LoginByEmailPasswordRequest)(nil), // 1: auth.service.v1.LoginByEmailPasswordRequest
+	(*v1.RefreshTokenRequest)(nil),         // 2: auth.service.v1.RefreshTokenRequest
+	(*v1.LogoutRequest)(nil),               // 3: auth.service.v1.LogoutRequest
+	(*v1.SignupByEmailReply)(nil),          // 4: auth.service.v1.SignupByEmailReply
+	(*v1.LoginByEmailPasswordReply)(nil),   // 5: auth.service.v1.LoginByEmailPasswordReply
+	(*v1.RefreshTokenReply)(nil),           // 6: auth.service.v1.RefreshTokenReply
+	(*v1.LogoutReply)(nil),                 // 7: auth.service.v1.LogoutReply
 }
 var file_krathub_service_v1_i_auth_proto_depIdxs = []int32{
-	0, // 0: krathub.service.v1.AuthService.Hello:input_type -> auth.service.v1.HelloRequest
-	1, // 1: krathub.service.v1.AuthService.SignupByEmail:input_type -> auth.service.v1.SignupByEmailRequest
-	2, // 2: krathub.service.v1.AuthService.LoginByEmailPassword:input_type -> auth.service.v1.LoginByEmailPasswordRequest
-	3, // 3: krathub.service.v1.AuthService.RefreshToken:input_type -> auth.service.v1.RefreshTokenRequest
-	4, // 4: krathub.service.v1.AuthService.Logout:input_type -> auth.service.v1.LogoutRequest
-	5, // 5: krathub.service.v1.AuthService.Hello:output_type -> auth.service.v1.HelloResponse
-	6, // 6: krathub.service.v1.AuthService.SignupByEmail:output_type -> auth.service.v1.SignupByEmailReply
-	7, // 7: krathub.service.v1.AuthService.LoginByEmailPassword:output_type -> auth.service.v1.LoginByEmailPasswordReply
-	8, // 8: krathub.service.v1.AuthService.RefreshToken:output_type -> auth.service.v1.RefreshTokenReply
-	9, // 9: krathub.service.v1.AuthService.Logout:output_type -> auth.service.v1.LogoutReply
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
+	0, // 0: krathub.service.v1.AuthService.SignupByEmail:input_type -> auth.service.v1.SignupByEmailRequest
+	1, // 1: krathub.service.v1.AuthService.LoginByEmailPassword:input_type -> auth.service.v1.LoginByEmailPasswordRequest
+	2, // 2: krathub.service.v1.AuthService.RefreshToken:input_type -> auth.service.v1.RefreshTokenRequest
+	3, // 3: krathub.service.v1.AuthService.Logout:input_type -> auth.service.v1.LogoutRequest
+	4, // 4: krathub.service.v1.AuthService.SignupByEmail:output_type -> auth.service.v1.SignupByEmailReply
+	5, // 5: krathub.service.v1.AuthService.LoginByEmailPassword:output_type -> auth.service.v1.LoginByEmailPasswordReply
+	6, // 6: krathub.service.v1.AuthService.RefreshToken:output_type -> auth.service.v1.RefreshTokenReply
+	7, // 7: krathub.service.v1.AuthService.Logout:output_type -> auth.service.v1.LogoutReply
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
