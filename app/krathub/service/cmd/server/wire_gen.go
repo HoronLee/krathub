@@ -19,6 +19,7 @@ import (
 )
 
 import (
+	_ "embed"
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -27,12 +28,12 @@ import (
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
 	registrar := server.NewRegistrar(registry)
-	middlewareManager := middleware.NewMiddlewareManager(app)
 	serverMetrics, err := server.NewMetrics(metrics, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	grpcServer := server.NewGRPCServer(confServer, trace, middlewareManager, serverMetrics, logger)
+	grpcServer := server.NewGRPCServer(confServer, trace, serverMetrics, logger)
+	authJWT := middleware.NewAuthMiddleware(app)
 	db, err := data.NewDB(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -58,7 +59,7 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	userUsecase := biz.NewUserUsecase(userRepo, logger, app, authRepo)
 	userService := service.NewUserService(userUsecase)
 	testService := service.NewTestService()
-	httpServer := server.NewHTTPServer(confServer, trace, middlewareManager, serverMetrics, logger, authService, userService, testService)
+	httpServer := server.NewHTTPServer(confServer, trace, authJWT, serverMetrics, logger, authService, userService, testService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup2()

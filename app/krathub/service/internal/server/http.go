@@ -24,30 +24,30 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger, auth *service.AuthService, user *service.UserService, test *service.TestService) *http.Server {
+func NewHTTPServer(c *conf.Server, trace *conf.Trace, authJWT mw.AuthJWT, m *Metrics, logger log.Logger, auth *service.AuthService, user *service.UserService, test *service.TestService) *http.Server {
 	httpLogger := pkglogger.WithModule(logger, "http/server/krathub-service")
-	var mds []middleware.Middleware
-	mds = []middleware.Middleware{
+	var mws []middleware.Middleware
+	mws = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(httpLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
 	}
-	// 配置特殊路由
-	mds = append(mds, configureRoutes(mM)...)
 	// 开启链路追踪
 	if trace != nil && trace.Endpoint != "" {
-		mds = append(mds, tracing.Server())
+		mws = append(mws, tracing.Server())
 	}
 	// 开启 metrics
 	if m != nil {
-		mds = append(mds, metrics.Server(
+		mws = append(mws, metrics.Server(
 			metrics.WithSeconds(m.Seconds),
 			metrics.WithRequests(m.Requests),
 		))
 	}
+	// 配置特殊路由
+	mws = append(mws, configureRoutes(authJWT)...)
 	var opts = []http.ServerOption{
-		http.Middleware(mds...),
+		http.Middleware(mws...),
 		http.Logger(httpLogger),
 	}
 	if c.Http.Network != "" {
@@ -81,6 +81,7 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	if m != nil {
 		srv.Handle("/metrics", m.Handler)
 	}
+
 	// 注册服务 - 使用 krathub HTTP 服务（i_*.proto 生成的）
 	krathubv1.RegisterAuthServiceHTTPServer(srv, auth)
 	krathubv1.RegisterUserServiceHTTPServer(srv, user)
@@ -89,14 +90,14 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 }
 
 // configureRoutes 配置权限路由中间件
-func configureRoutes(mM *mw.MiddlewareManager) []middleware.Middleware {
+func configureRoutes(authMiddleware mw.AuthJWT) []middleware.Middleware {
 	return []middleware.Middleware{
 		// 需要User权限的接口
-		selector.Server(mM.Auth(consts.UserRole(2))).
+		selector.Server(authMiddleware(consts.UserRole(2))).
 			Prefix("/krathub.service.v1.UserService/", "/krathub.service.v1.TestService/").
 			Build(),
 		// 需要Admin权限的接口
-		selector.Server(mM.Auth(consts.UserRole(3))).
+		selector.Server(authMiddleware(consts.UserRole(3))).
 			Path("/krathub.service.v1.UserService/DeleteUser", "/krathub.service.v1.UserService/SaveUser").
 			Build(),
 	}

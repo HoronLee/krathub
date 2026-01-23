@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	mw "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
@@ -21,10 +20,10 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, m *Metrics, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, m *Metrics, logger log.Logger) *grpc.Server {
 	grpcLogger := pkglogger.WithModule(logger, "grpc/server/krathub-service")
-	var mds []middleware.Middleware
-	mds = []middleware.Middleware{
+	var mws []middleware.Middleware
+	mws = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(grpcLogger),
 		ratelimit.Server(),
@@ -32,18 +31,18 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 	}
 	// 开启链路追踪
 	if trace != nil && trace.Endpoint != "" {
-		mds = append(mds, tracing.Server())
+		mws = append(mws, tracing.Server())
 	}
 
 	// 开启 metrics
 	if m != nil {
-		mds = append(mds, metrics.Server(
+		mws = append(mws, metrics.Server(
 			metrics.WithSeconds(m.Seconds),
 			metrics.WithRequests(m.Requests),
 		))
 	}
 	opts := []grpc.ServerOption{
-		grpc.Middleware(mds...),
+		grpc.Middleware(mws...),
 		grpc.Logger(grpcLogger),
 	}
 	if c.Grpc.Network != "" {
@@ -64,6 +63,8 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, mM *mw.MiddlewareManager, 
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))
 	}
 	srv := grpc.NewServer(opts...)
+
 	// 注册服务
+
 	return srv
 }
