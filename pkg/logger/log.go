@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -65,6 +66,9 @@ func NewLogger(c *Config) log.Logger {
 		maxAge := 30
 		if c.MaxAge != 0 {
 			maxAge = int(c.MaxAge)
+		}
+		if dir := filepath.Dir(c.Filename); dir != "." && dir != "/" {
+			_ = os.MkdirAll(dir, 0755)
 		}
 		lumberjackLogger = &lumberjack.Logger{
 			Filename:   c.Filename, // 日志文件路径

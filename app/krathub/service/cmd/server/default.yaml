@@ -37,8 +37,6 @@ data:
     grpc: []
 
 app:
-  name: "krathub"
-  version: "v1.0.0"
   env: "dev"
   metadata: {}
   jwt:
@@ -47,7 +45,6 @@ app:
     issuer: "krathub"
   log:
     level: "0"
-    filename: "krathub.log"
     max_size: "20"
     max_age: "30"
     max_backups: "10"

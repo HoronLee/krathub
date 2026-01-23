@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
@@ -27,9 +28,9 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string
+	Name = "krathub.service"
 	// Version is the version of the compiled software.
-	Version string
+	Version = "v1.0.0"
 	// flagconf is the config flag.
 	flagconf string
 	// id is the id of the instance.
@@ -94,23 +95,23 @@ func main() {
 	}
 	defer c.Close()
 
-	// 初始化服务名称和版本
-	Name = bc.App.Name
-	Version = bc.App.Version
-	if Name == "" {
-		Name = "krathub.service"
+	// 初始化服务名称、版本、元信息
+	if bc.App.Name != "" {
+		Name = bc.App.Name
 	}
-	if Version == "" {
-		Version = "v0.1"
+	if bc.App.Version != "" {
+		Version = bc.App.Version
 	}
-
-	// 设置服务实例的元信息
 	Metadata = bc.App.Metadata
 	if Metadata == nil {
 		Metadata = make(map[string]string)
 	}
 
 	// 初始化日志
+	// 如果未配置日志文件名，则使用默认值
+	if bc.App.Log.Filename == "" {
+		bc.App.Log.Filename = fmt.Sprintf("./logs/%s.log", Name)
+	}
 	log := logger.NewLogger(&logger.Config{
 		Env:        bc.App.Env,
 		Level:      bc.App.Log.Level,
