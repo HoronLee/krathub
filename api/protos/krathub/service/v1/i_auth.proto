@@ -5,8 +5,6 @@ package krathub.service.v1;
 import "auth/service/v1/auth.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubv1";
-
 // Auth HTTP 服务 - 用于 OpenAPI 生成
 service AuthService {
   rpc SignupByEmail(auth.service.v1.SignupByEmailRequest) returns (auth.service.v1.SignupByEmailResponse) {

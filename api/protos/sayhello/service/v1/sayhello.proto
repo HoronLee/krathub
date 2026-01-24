@@ -2,17 +2,16 @@
 syntax = "proto3";
 
 package sayhello.service.v1;
+
 import "google/api/annotations.proto";
 
-// go 包名
-option go_package = "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1;sayhellov1";
 option java_multiple_files = true;
-option java_package = "dev.krathub.api.sayhello.v1";
 option java_outer_classname = "SayHelloProtoV1";
+option java_package = "dev.krathub.api.sayhello.v1";
 
 // SayHello 定义一个简单的 Hello 服务
 service SayHello {
-  rpc Hello(HelloRequest) returns (HelloResponse){
+  rpc Hello(HelloRequest) returns (HelloResponse) {
     option (google.api.http) = {
       post: "/SayHello"
       body: "*"

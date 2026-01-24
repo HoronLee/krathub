@@ -5,7 +5,6 @@ package user.service.v1;
 import "buf/validate/validate.proto";
 import "errors/errors.proto";
 
-option go_package = "github.com/horonlee/krathub/api/gen/go/user/service/v1;userv1";
 option java_multiple_files = true;
 option java_outer_classname = "UserProtoV1";
 option java_package = "dev.krathub.api.user.v1";

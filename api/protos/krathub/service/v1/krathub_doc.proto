@@ -4,36 +4,33 @@ package krathub.service.v1;
 
 import "gnostic/openapi/v3/annotations.proto";
 
-option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubv1";
-
 // OpenAPI 文档配置
 option (gnostic.openapi.v3.document) = {
   info: {
-    title: "Krathub API";
-    version: "1.0";
-    description: "Krathub 微服务 API 文档";
+    title: "Krathub API"
+    version: "1.0"
+    description: "Krathub 微服务 API 文档"
     contact: {
-      name: "Krathub Team";
-      url: "https://github.com/horonlee/krathub";
+      name: "Krathub Team"
+      url: "https://github.com/horonlee/krathub"
     }
     license: {
-      name: "MIT License";
-      url: "https://github.com/horonlee/krathub/blob/main/LICENSE";
+      name: "MIT License"
+      url: "https://github.com/horonlee/krathub/blob/main/LICENSE"
     }
   }
-
 
   components: {
     security_schemes: {
       additional_properties: [
         {
-          name: "BearerAuth";
+          name: "BearerAuth"
           value: {
             security_scheme: {
-              type: "http";
-              scheme: "bearer";
-              bearer_format: "JWT";
-              description: "JWT 认证令牌";
+              type: "http"
+              scheme: "bearer"
+              bearer_format: "JWT"
+              description: "JWT 认证令牌"
             }
           }
         }
@@ -43,7 +40,7 @@ option (gnostic.openapi.v3.document) = {
     schemas: {
       additional_properties: [
         {
-          name: "KratosError";
+          name: "KratosError"
           value: {
             schema: {
               type: "object"
@@ -108,9 +105,7 @@ option (gnostic.openapi.v3.document) = {
                     name: "application/json"
                     value: {
                       schema: {
-                        reference: {
-                          _ref: "#/components/schemas/KratosError"
-                        }
+                        reference: {_ref: "#/components/schemas/KratosError"}
                       }
                     }
                   }

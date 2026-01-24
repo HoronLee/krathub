@@ -6,8 +6,6 @@ import "gnostic/openapi/v3/annotations.proto";
 import "google/api/annotations.proto";
 import "user/service/v1/user.proto";
 
-option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubv1";
-
 // User HTTP 服务 - 用于 OpenAPI 生成
 service UserService {
   rpc CurrentUserInfo(user.service.v1.CurrentUserInfoRequest) returns (user.service.v1.CurrentUserInfoResponse) {

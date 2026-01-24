@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package test.service.v1;
 
-option go_package = "github.com/horonlee/krathub/api/gen/go/test/service/v1;testv1";
-
 // Test gRPC 服务 - 纯 gRPC 接口
 service TestService {
   rpc Hello(HelloRequest) returns (HelloResponse);
