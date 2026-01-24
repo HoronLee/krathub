@@ -94,11 +94,19 @@ func configureRoutes(authMiddleware mw.AuthJWT) []middleware.Middleware {
 	return []middleware.Middleware{
 		// 需要User权限的接口
 		selector.Server(authMiddleware(consts.UserRole(2))).
-			Prefix("/krathub.service.v1.UserService/", "/krathub.service.v1.TestService/PrivateTest").
+			Path(
+				// UserService 所有方法
+				krathubv1.OperationUserServiceCurrentUserInfo,
+				krathubv1.OperationUserServiceUpdateUser,
+				krathubv1.OperationUserServiceDeleteUser,
+				krathubv1.OperationUserServiceSaveUser,
+				// TestService 特定方法
+				krathubv1.OperationTestServicePrivateTest,
+			).
 			Build(),
 		// 需要Admin权限的接口
 		selector.Server(authMiddleware(consts.UserRole(3))).
-			Path("/krathub.service.v1.UserService/DeleteUser", "/krathub.service.v1.UserService/SaveUser").
+			Path(krathubv1.OperationUserServiceDeleteUser, krathubv1.OperationUserServiceSaveUser).
 			Build(),
 	}
 }
