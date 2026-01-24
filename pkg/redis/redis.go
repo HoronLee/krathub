@@ -5,8 +5,15 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/redis/go-redis/v9"
+)
+
+const (
+	DefaultDialTimeout  = 5 * time.Second
+	DefaultReadTimeout  = 3 * time.Second
+	DefaultWriteTimeout = 3 * time.Second
 )
 
 type Client struct {
@@ -22,6 +29,39 @@ type Config struct {
 	DialTimeout  time.Duration
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
+}
+
+func NewConfigFromProto(cfg *conf.Data_Redis) *Config {
+	if cfg == nil {
+		return nil
+	}
+
+	config := &Config{
+		Addr:     cfg.GetAddr(),
+		Username: cfg.GetUserName(),
+		Password: cfg.GetPassword(),
+		DB:       int(cfg.GetDb()),
+	}
+
+	if cfg.GetDialTimeout() != nil {
+		config.DialTimeout = cfg.GetDialTimeout().AsDuration()
+	} else {
+		config.DialTimeout = DefaultDialTimeout
+	}
+
+	if cfg.GetReadTimeout() != nil {
+		config.ReadTimeout = cfg.GetReadTimeout().AsDuration()
+	} else {
+		config.ReadTimeout = DefaultReadTimeout
+	}
+
+	if cfg.GetWriteTimeout() != nil {
+		config.WriteTimeout = cfg.GetWriteTimeout().AsDuration()
+	} else {
+		config.WriteTimeout = DefaultWriteTimeout
+	}
+
+	return config
 }
 
 func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {

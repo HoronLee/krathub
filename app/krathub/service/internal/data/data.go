@@ -3,7 +3,6 @@ package data
 import (
 	"errors"
 	"strings"
-	"time"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
@@ -63,35 +62,10 @@ func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
 	return nil, errors.New("connect db fail: unsupported db driver")
 }
 
-// NewRedis 创建Redis客户端从配置初始化
 func NewRedis(cfg *conf.Data, logger log.Logger) (*redis.Client, func(), error) {
-	if cfg.Redis == nil {
+	redisConfig := redis.NewConfigFromProto(cfg.Redis)
+	if redisConfig == nil {
 		return nil, nil, errors.New("redis configuration is required")
-	}
-
-	redisConfig := &redis.Config{
-		Addr:     cfg.Redis.GetAddr(),
-		Username: cfg.Redis.GetUserName(),
-		Password: cfg.Redis.GetPassword(),
-		DB:       int(cfg.Redis.GetDb()),
-	}
-
-	if cfg.Redis.GetDialTimeout() != nil {
-		redisConfig.DialTimeout = cfg.Redis.GetDialTimeout().AsDuration()
-	} else {
-		redisConfig.DialTimeout = 5 * time.Second
-	}
-
-	if cfg.Redis.GetReadTimeout() != nil {
-		redisConfig.ReadTimeout = cfg.Redis.GetReadTimeout().AsDuration()
-	} else {
-		redisConfig.ReadTimeout = 3 * time.Second
-	}
-
-	if cfg.Redis.GetWriteTimeout() != nil {
-		redisConfig.WriteTimeout = cfg.Redis.GetWriteTimeout().AsDuration()
-	} else {
-		redisConfig.WriteTimeout = 3 * time.Second
 	}
 
 	return redis.NewClient(redisConfig, pkglogger.WithModule(logger, "redis/data/krathub-service"))
