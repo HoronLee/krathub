@@ -19,21 +19,21 @@ enum ErrorReason {
   // 用户已存在
   USER_ALREADY_EXISTS = 1 [(errors.code) = 400];
   // 密码错误
-  INCORRECT_PASSWORD = 10 [(errors.code) = 401];
+  INCORRECT_PASSWORD = 2 [(errors.code) = 401];
   // 错误的认证信息
-  INVALID_CREDENTIALS = 2 [(errors.code) = 401];
+  INVALID_CREDENTIALS = 3 [(errors.code) = 401];
   // Token 类型错误
-  INVALID_TOKEN_TYPE = 3 [(errors.code) = 400];
+  INVALID_TOKEN_TYPE = 4 [(errors.code) = 400];
   // Token 已过期
-  TOKEN_EXPIRED = 4 [(errors.code) = 401];
+  TOKEN_EXPIRED = 5 [(errors.code) = 401];
   // 没有 Token
-  MISSING_TOKEN = 5 [(errors.code) = 401];
+  MISSING_TOKEN = 6 [(errors.code) = 401];
   // Token 生成失败
-  TOKEN_GENERATION_FAILED = 6 [(errors.code) = 500];
+  TOKEN_GENERATION_FAILED = 7 [(errors.code) = 500];
   // 没有权限
-  UNAUTHORIZED = 7 [(errors.code) = 403];
+  UNAUTHORIZED = 8 [(errors.code) = 403];
   // 无效的刷新Token
-  INVALID_REFRESH_TOKEN = 8 [(errors.code) = 401];
+  INVALID_REFRESH_TOKEN = 9 [(errors.code) = 401];
 }
 
 // Auth gRPC 服务 - 纯 gRPC 接口

@@ -131,8 +131,9 @@ message Data {
     string user_name = 3; // Redis用户名
     string password = 4; // Redis密码
     int32 db = 5; // Redis数据库编号
-    google.protobuf.Duration read_timeout = 6;
-    google.protobuf.Duration write_timeout = 7;
+    google.protobuf.Duration dial_timeout = 6;
+    google.protobuf.Duration read_timeout = 7;
+    google.protobuf.Duration write_timeout = 8;
   }
   message Client {
     message HTTP {

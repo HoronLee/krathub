@@ -19,6 +19,7 @@ type Config struct {
 	Username     string
 	Password     string
 	DB           int
+	DialTimeout  time.Duration
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
@@ -29,11 +30,14 @@ func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 		Username:     cfg.Username,
 		Password:     cfg.Password,
 		DB:           cfg.DB,
+		DialTimeout:  cfg.DialTimeout,
 		ReadTimeout:  cfg.ReadTimeout,
 		WriteTimeout: cfg.WriteTimeout,
 	})
 
-	ctx := context.Background()
+	// 使用带超时的 context 进行连接测试
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.DialTimeout)
+	defer cancel()
 	if err := rdb.Ping(ctx).Err(); err != nil {
 		return nil, nil, err
 	}

@@ -3198,6 +3198,35 @@ func (m *Data_Redis) validate(all bool) error {
 	// no validation rules for Db
 
 	if all {
+		switch v := interface{}(m.GetDialTimeout()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, Data_RedisValidationError{
+					field:  "DialTimeout",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, Data_RedisValidationError{
+					field:  "DialTimeout",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDialTimeout()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return Data_RedisValidationError{
+				field:  "DialTimeout",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
 		switch v := interface{}(m.GetReadTimeout()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {

@@ -32,48 +32,48 @@ const (
 	// 用户已存在
 	ErrorReason_USER_ALREADY_EXISTS ErrorReason = 1
 	// 密码错误
-	ErrorReason_INCORRECT_PASSWORD ErrorReason = 10
+	ErrorReason_INCORRECT_PASSWORD ErrorReason = 2
 	// 错误的认证信息
-	ErrorReason_INVALID_CREDENTIALS ErrorReason = 2
+	ErrorReason_INVALID_CREDENTIALS ErrorReason = 3
 	// Token 类型错误
-	ErrorReason_INVALID_TOKEN_TYPE ErrorReason = 3
+	ErrorReason_INVALID_TOKEN_TYPE ErrorReason = 4
 	// Token 已过期
-	ErrorReason_TOKEN_EXPIRED ErrorReason = 4
+	ErrorReason_TOKEN_EXPIRED ErrorReason = 5
 	// 没有 Token
-	ErrorReason_MISSING_TOKEN ErrorReason = 5
+	ErrorReason_MISSING_TOKEN ErrorReason = 6
 	// Token 生成失败
-	ErrorReason_TOKEN_GENERATION_FAILED ErrorReason = 6
+	ErrorReason_TOKEN_GENERATION_FAILED ErrorReason = 7
 	// 没有权限
-	ErrorReason_UNAUTHORIZED ErrorReason = 7
+	ErrorReason_UNAUTHORIZED ErrorReason = 8
 	// 无效的刷新Token
-	ErrorReason_INVALID_REFRESH_TOKEN ErrorReason = 8
+	ErrorReason_INVALID_REFRESH_TOKEN ErrorReason = 9
 )
 
 // Enum value maps for ErrorReason.
 var (
 	ErrorReason_name = map[int32]string{
-		0:  "USER_NOT_FOUND",
-		1:  "USER_ALREADY_EXISTS",
-		10: "INCORRECT_PASSWORD",
-		2:  "INVALID_CREDENTIALS",
-		3:  "INVALID_TOKEN_TYPE",
-		4:  "TOKEN_EXPIRED",
-		5:  "MISSING_TOKEN",
-		6:  "TOKEN_GENERATION_FAILED",
-		7:  "UNAUTHORIZED",
-		8:  "INVALID_REFRESH_TOKEN",
+		0: "USER_NOT_FOUND",
+		1: "USER_ALREADY_EXISTS",
+		2: "INCORRECT_PASSWORD",
+		3: "INVALID_CREDENTIALS",
+		4: "INVALID_TOKEN_TYPE",
+		5: "TOKEN_EXPIRED",
+		6: "MISSING_TOKEN",
+		7: "TOKEN_GENERATION_FAILED",
+		8: "UNAUTHORIZED",
+		9: "INVALID_REFRESH_TOKEN",
 	}
 	ErrorReason_value = map[string]int32{
 		"USER_NOT_FOUND":          0,
 		"USER_ALREADY_EXISTS":     1,
-		"INCORRECT_PASSWORD":      10,
-		"INVALID_CREDENTIALS":     2,
-		"INVALID_TOKEN_TYPE":      3,
-		"TOKEN_EXPIRED":           4,
-		"MISSING_TOKEN":           5,
-		"TOKEN_GENERATION_FAILED": 6,
-		"UNAUTHORIZED":            7,
-		"INVALID_REFRESH_TOKEN":   8,
+		"INCORRECT_PASSWORD":      2,
+		"INVALID_CREDENTIALS":     3,
+		"INVALID_TOKEN_TYPE":      4,
+		"TOKEN_EXPIRED":           5,
+		"MISSING_TOKEN":           6,
+		"TOKEN_GENERATION_FAILED": 7,
+		"UNAUTHORIZED":            8,
+		"INVALID_REFRESH_TOKEN":   9,
 	}
 )
 
@@ -595,15 +595,14 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\vErrorReason\x12\x18\n" +
 	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1d\n" +
 	"\x13USER_ALREADY_EXISTS\x10\x01\x1a\x04\xa8E\x90\x03\x12\x1c\n" +
-	"\x12INCORRECT_PASSWORD\x10\n" +
-	"\x1a\x04\xa8E\x91\x03\x12\x1d\n" +
-	"\x13INVALID_CREDENTIALS\x10\x02\x1a\x04\xa8E\x91\x03\x12\x1c\n" +
-	"\x12INVALID_TOKEN_TYPE\x10\x03\x1a\x04\xa8E\x90\x03\x12\x17\n" +
-	"\rTOKEN_EXPIRED\x10\x04\x1a\x04\xa8E\x91\x03\x12\x17\n" +
-	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
-	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
-	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x12\x1f\n" +
-	"\x15INVALID_REFRESH_TOKEN\x10\b\x1a\x04\xa8E\x91\x03\x1a\x04\xa0E\xf4\x032\x8a\x03\n" +
+	"\x12INCORRECT_PASSWORD\x10\x02\x1a\x04\xa8E\x91\x03\x12\x1d\n" +
+	"\x13INVALID_CREDENTIALS\x10\x03\x1a\x04\xa8E\x91\x03\x12\x1c\n" +
+	"\x12INVALID_TOKEN_TYPE\x10\x04\x1a\x04\xa8E\x90\x03\x12\x17\n" +
+	"\rTOKEN_EXPIRED\x10\x05\x1a\x04\xa8E\x91\x03\x12\x17\n" +
+	"\rMISSING_TOKEN\x10\x06\x1a\x04\xa8E\x91\x03\x12!\n" +
+	"\x17TOKEN_GENERATION_FAILED\x10\a\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
+	"\fUNAUTHORIZED\x10\b\x1a\x04\xa8E\x93\x03\x12\x1f\n" +
+	"\x15INVALID_REFRESH_TOKEN\x10\t\x1a\x04\xa8E\x91\x03\x1a\x04\xa0E\xf4\x032\x8a\x03\n" +
 	"\vAuthService\x12^\n" +
 	"\rSignupByEmail\x12%.auth.service.v1.SignupByEmailRequest\x1a&.auth.service.v1.SignupByEmailResponse\x12s\n" +
 	"\x14LoginByEmailPassword\x12,.auth.service.v1.LoginByEmailPasswordRequest\x1a-.auth.service.v1.LoginByEmailPasswordResponse\x12[\n" +

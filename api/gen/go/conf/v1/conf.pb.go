@@ -1467,8 +1467,9 @@ type Data_Redis struct {
 	UserName      string                 `protobuf:"bytes,3,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"` // Redis用户名
 	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`                 // Redis密码
 	Db            int32                  `protobuf:"varint,5,opt,name=db,proto3" json:"db,omitempty"`                            // Redis数据库编号
-	ReadTimeout   *durationpb.Duration   `protobuf:"bytes,6,opt,name=read_timeout,json=readTimeout,proto3" json:"read_timeout,omitempty"`
-	WriteTimeout  *durationpb.Duration   `protobuf:"bytes,7,opt,name=write_timeout,json=writeTimeout,proto3" json:"write_timeout,omitempty"`
+	DialTimeout   *durationpb.Duration   `protobuf:"bytes,6,opt,name=dial_timeout,json=dialTimeout,proto3" json:"dial_timeout,omitempty"`
+	ReadTimeout   *durationpb.Duration   `protobuf:"bytes,7,opt,name=read_timeout,json=readTimeout,proto3" json:"read_timeout,omitempty"`
+	WriteTimeout  *durationpb.Duration   `protobuf:"bytes,8,opt,name=write_timeout,json=writeTimeout,proto3" json:"write_timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1536,6 +1537,13 @@ func (x *Data_Redis) GetDb() int32 {
 		return x.Db
 	}
 	return 0
+}
+
+func (x *Data_Redis) GetDialTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.DialTimeout
+	}
+	return nil
 }
 
 func (x *Data_Redis) GetReadTimeout() *durationpb.Duration {
@@ -1968,22 +1976,23 @@ const file_conf_v1_conf_proto_rawDesc = "" +
 	"\x03tls\x18\x02 \x01(\v2\x12.conf.v1.TLSConfigR\x03tls\x1aM\n" +
 	"\tGrpcEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12*\n" +
-	"\x05value\x18\x02 \x01(\v2\x14.conf.v1.Client.GRPCR\x05value:\x028\x01\"\xaf\x06\n" +
+	"\x05value\x18\x02 \x01(\v2\x14.conf.v1.Client.GRPCR\x05value:\x028\x01\"\xed\x06\n" +
 	"\x04Data\x122\n" +
 	"\bdatabase\x18\x01 \x01(\v2\x16.conf.v1.Data.DatabaseR\bdatabase\x12)\n" +
 	"\x05redis\x18\x02 \x01(\v2\x13.conf.v1.Data.RedisR\x05redis\x12,\n" +
 	"\x06client\x18\x03 \x01(\v2\x14.conf.v1.Data.ClientR\x06client\x1a:\n" +
 	"\bDatabase\x12\x16\n" +
 	"\x06driver\x18\x01 \x01(\tR\x06driver\x12\x16\n" +
-	"\x06source\x18\x02 \x01(\tR\x06source\x1a\xfc\x01\n" +
+	"\x06source\x18\x02 \x01(\tR\x06source\x1a\xba\x02\n" +
 	"\x05Redis\x12\x18\n" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x12\n" +
 	"\x04addr\x18\x02 \x01(\tR\x04addr\x12\x1b\n" +
 	"\tuser_name\x18\x03 \x01(\tR\buserName\x12\x1a\n" +
 	"\bpassword\x18\x04 \x01(\tR\bpassword\x12\x0e\n" +
 	"\x02db\x18\x05 \x01(\x05R\x02db\x12<\n" +
-	"\fread_timeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
-	"\rwrite_timeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x1a\xde\x02\n" +
+	"\fdial_timeout\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\vdialTimeout\x12<\n" +
+	"\fread_timeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
+	"\rwrite_timeout\x18\b \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x1a\xde\x02\n" +
 	"\x06Client\x12-\n" +
 	"\x04grpc\x18\x01 \x03(\v2\x19.conf.v1.Data.Client.GRPCR\x04grpc\x12-\n" +
 	"\x04http\x18\x02 \x03(\v2\x19.conf.v1.Data.Client.HTTPR\x04http\x1az\n" +
@@ -2126,17 +2135,18 @@ var file_conf_v1_conf_proto_depIdxs = []int32{
 	1,  // 35: conf.v1.Server.GRPC.tls:type_name -> conf.v1.TLSConfig
 	1,  // 36: conf.v1.Client.GRPC.tls:type_name -> conf.v1.TLSConfig
 	17, // 37: conf.v1.Client.GrpcEntry.value:type_name -> conf.v1.Client.GRPC
-	27, // 38: conf.v1.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	27, // 39: conf.v1.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	23, // 40: conf.v1.Data.Client.grpc:type_name -> conf.v1.Data.Client.GRPC
-	22, // 41: conf.v1.Data.Client.http:type_name -> conf.v1.Data.Client.HTTP
-	27, // 42: conf.v1.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
-	27, // 43: conf.v1.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
-	44, // [44:44] is the sub-list for method output_type
-	44, // [44:44] is the sub-list for method input_type
-	44, // [44:44] is the sub-list for extension type_name
-	44, // [44:44] is the sub-list for extension extendee
-	0,  // [0:44] is the sub-list for field type_name
+	27, // 38: conf.v1.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
+	27, // 39: conf.v1.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	27, // 40: conf.v1.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	23, // 41: conf.v1.Data.Client.grpc:type_name -> conf.v1.Data.Client.GRPC
+	22, // 42: conf.v1.Data.Client.http:type_name -> conf.v1.Data.Client.HTTP
+	27, // 43: conf.v1.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	27, // 44: conf.v1.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	45, // [45:45] is the sub-list for method output_type
+	45, // [45:45] is the sub-list for method input_type
+	45, // [45:45] is the sub-list for extension type_name
+	45, // [45:45] is the sub-list for extension extendee
+	0,  // [0:45] is the sub-list for field type_name
 }
 
 func init() { file_conf_v1_conf_proto_init() }

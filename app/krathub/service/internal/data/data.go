@@ -76,6 +76,12 @@ func NewRedis(cfg *conf.Data, logger log.Logger) (*redis.Client, func(), error) 
 		DB:       int(cfg.Redis.GetDb()),
 	}
 
+	if cfg.Redis.GetDialTimeout() != nil {
+		redisConfig.DialTimeout = cfg.Redis.GetDialTimeout().AsDuration()
+	} else {
+		redisConfig.DialTimeout = 5 * time.Second
+	}
+
 	if cfg.Redis.GetReadTimeout() != nil {
 		redisConfig.ReadTimeout = cfg.Redis.GetReadTimeout().AsDuration()
 	} else {

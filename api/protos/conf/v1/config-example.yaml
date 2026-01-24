@@ -40,6 +40,7 @@ data:
     user_name: "${RUSER_NAME:}" # Redis用户名
     password: "${RPASSWORD:redisHoron}" # Redis密码
     db: "${RDB:5}" # Redis数据库编号
+    dial_timeout: "${RDIAL_TIMEOUT:5s}" # Redis连接超时
     read_timeout: "${RREAD_TIMEOUT:0.2s}"
     write_timeout: "${RWRITE_TIMEOUT:0.2s}"
   client:
