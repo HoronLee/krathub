@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport"
-	authV1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
+	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
@@ -23,7 +23,7 @@ func NewAuthMiddleware(appConf *conf.App) AuthJWT {
 			return func(ctx context.Context, req any) (reply any, err error) {
 				tr, ok := transport.FromServerContext(ctx)
 				if !ok {
-					return nil, authV1.ErrorMissingToken("missing transport context")
+					return nil, authpb.ErrorMissingToken("missing transport context")
 				}
 				authHeader := tr.RequestHeader().Get("Authorization")
 				tokenString := strings.TrimPrefix(authHeader, "Bearer ")
@@ -34,7 +34,7 @@ func NewAuthMiddleware(appConf *conf.App) AuthJWT {
 				}
 
 				if tokenString == "" {
-					return nil, authV1.ErrorMissingToken("missing Authorization header")
+					return nil, authpb.ErrorMissingToken("missing Authorization header")
 				}
 
 				// 创建JWT实例并解析Token
@@ -43,7 +43,7 @@ func NewAuthMiddleware(appConf *conf.App) AuthJWT {
 				})
 				claims, err := jwtInstance.ParseToken(tokenString)
 				if err != nil {
-					return nil, authV1.ErrorUnauthorized("invalid token: %v", err)
+					return nil, authpb.ErrorUnauthorized("invalid token: %v", err)
 				}
 
 				// 验证用户角色
@@ -58,11 +58,11 @@ func NewAuthMiddleware(appConf *conf.App) AuthJWT {
 				case "operator":
 					userRole = consts.Operator
 				default:
-					return nil, authV1.ErrorUnauthorized("unknown role")
+					return nil, authpb.ErrorUnauthorized("unknown role")
 				}
 
 				if userRole < minRole {
-					return nil, authV1.ErrorUnauthorized("permission denied, you at least need %s role", minRole.String())
+					return nil, authpb.ErrorUnauthorized("permission denied, you at least need %s role", minRole.String())
 				}
 
 				// 将用户claims存入context

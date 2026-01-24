@@ -4,7 +4,7 @@
 // 	protoc        (unknown)
 // source: sayhello/service/v1/sayhello_doc.proto
 
-package servicev1
+package sayhellopb
 
 import (
 	_ "github.com/google/gnostic/openapiv3"
@@ -25,7 +25,7 @@ var File_sayhello_service_v1_sayhello_doc_proto protoreflect.FileDescriptor
 
 const file_sayhello_service_v1_sayhello_doc_proto_rawDesc = "" +
 	"\n" +
-	"&sayhello/service/v1/sayhello_doc.proto\x12\x13sayhello.service.v1\x1a$gnostic/openapi/v3/annotations.protoB\xd6\x05\xbaG\xf3\x03\x12\xd1\x01\n" +
+	"&sayhello/service/v1/sayhello_doc.proto\x12\x13sayhello.service.v1\x1a$gnostic/openapi/v3/annotations.protoB\xd7\x05\xbaG\xf3\x03\x12\xd1\x01\n" +
 	"\fSayHello API\x12ASayHello 微服务 API 文档 - 一个简单的问候服务示例\"3\n" +
 	"\fKrathub Team\x12#https://github.com/horonlee/krathub*D\n" +
 	"\vMIT License\x125https://github.com/horonlee/krathub/blob/main/LICENSE2\x031.0*\x9c\x02\n" +
@@ -50,7 +50,7 @@ const file_sayhello_service_v1_sayhello_doc_proto_rawDesc = "" +
 	"\x10application/json\x12&\n" +
 	"$\x12\"\n" +
 	" #/components/schemas/KratosError\n" +
-	"\x17com.sayhello.service.v1B\x10SayhelloDocProtoP\x01ZDgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;servicev1\xa2\x02\x03SSX\xaa\x02\x13Sayhello.Service.V1\xca\x02\x13Sayhello\\Service\\V1\xe2\x02\x1fSayhello\\Service\\V1\\GPBMetadata\xea\x02\x15Sayhello::Service::V1b\x06proto3"
+	"\x17com.sayhello.service.v1B\x10SayhelloDocProtoP\x01ZEgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;sayhellopb\xa2\x02\x03SSX\xaa\x02\x13Sayhello.Service.V1\xca\x02\x13Sayhello\\Service\\V1\xe2\x02\x1fSayhello\\Service\\V1\\GPBMetadata\xea\x02\x15Sayhello::Service::V1b\x06proto3"
 
 var file_sayhello_service_v1_sayhello_doc_proto_goTypes = []any{}
 var file_sayhello_service_v1_sayhello_doc_proto_depIdxs = []int32{

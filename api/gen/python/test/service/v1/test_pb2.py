@@ -24,14 +24,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1atest/service/v1/test.proto\x12\x0ftest.service.v1\" \n\x0cHelloRequest\x12\x10\n\x03req\x18\x01 \x01(\tR\x03req\"!\n\rHelloResponse\x12\x10\n\x03rep\x18\x01 \x01(\tR\x03rep\"\r\n\x0bTestRequest\"(\n\x0cTestResponse\x12\x18\n\x07message\x18\x01 \x01(\tR\x07message\"\x14\n\x12PrivateTestRequest\"/\n\x13PrivateTestResponse\x12\x18\n\x07message\x18\x01 \x01(\tR\x07message2\xf4\x01\n\x0bTestService\x12\x46\n\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\x12\x43\n\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\x12X\n\x0bPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponseB\xc0\x01\n\x13\x63om.test.service.v1B\tTestProtoP\x01Z@github.com/horonlee/krathub/api/gen/go/test/service/v1;servicev1\xa2\x02\x03TSX\xaa\x02\x0fTest.Service.V1\xca\x02\x0fTest\\Service\\V1\xe2\x02\x1bTest\\Service\\V1\\GPBMetadata\xea\x02\x11Test::Service::V1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1atest/service/v1/test.proto\x12\x0ftest.service.v1\" \n\x0cHelloRequest\x12\x10\n\x03req\x18\x01 \x01(\tR\x03req\"!\n\rHelloResponse\x12\x10\n\x03rep\x18\x01 \x01(\tR\x03rep\"\r\n\x0bTestRequest\"(\n\x0cTestResponse\x12\x18\n\x07message\x18\x01 \x01(\tR\x07message\"\x14\n\x12PrivateTestRequest\"/\n\x13PrivateTestResponse\x12\x18\n\x07message\x18\x01 \x01(\tR\x07message2\xf4\x01\n\x0bTestService\x12\x46\n\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\x12\x43\n\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\x12X\n\x0bPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponseB\xbd\x01\n\x13\x63om.test.service.v1B\tTestProtoP\x01Z=github.com/horonlee/krathub/api/gen/go/test/service/v1;testpb\xa2\x02\x03TSX\xaa\x02\x0fTest.Service.V1\xca\x02\x0fTest\\Service\\V1\xe2\x02\x1bTest\\Service\\V1\\GPBMetadata\xea\x02\x11Test::Service::V1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'test.service.v1.test_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'\n\023com.test.service.v1B\tTestProtoP\001Z@github.com/horonlee/krathub/api/gen/go/test/service/v1;servicev1\242\002\003TSX\252\002\017Test.Service.V1\312\002\017Test\\Service\\V1\342\002\033Test\\Service\\V1\\GPBMetadata\352\002\021Test::Service::V1'
+  _globals['DESCRIPTOR']._serialized_options = b'\n\023com.test.service.v1B\tTestProtoP\001Z=github.com/horonlee/krathub/api/gen/go/test/service/v1;testpb\242\002\003TSX\252\002\017Test.Service.V1\312\002\017Test\\Service\\V1\342\002\033Test\\Service\\V1\\GPBMetadata\352\002\021Test::Service::V1'
   _globals['_HELLOREQUEST']._serialized_start=47
   _globals['_HELLOREQUEST']._serialized_end=79
   _globals['_HELLORESPONSE']._serialized_start=81

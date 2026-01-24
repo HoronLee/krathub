@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	authv1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
-	userv1 "github.com/horonlee/krathub/api/gen/go/user/service/v1"
+	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
+	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
@@ -13,7 +13,7 @@ import (
 )
 
 type UserService struct {
-	userv1.UnimplementedUserServiceServer
+	userpb.UnimplementedUserServiceServer
 
 	uc *biz.UserUsecase
 }
@@ -22,12 +22,12 @@ func NewUserService(uc *biz.UserUsecase) *UserService {
 	return &UserService{uc: uc}
 }
 
-func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUserInfoRequest) (*userv1.CurrentUserInfoResponse, error) {
+func (s *UserService) CurrentUserInfo(ctx context.Context, req *userpb.CurrentUserInfoRequest) (*userpb.CurrentUserInfoResponse, error) {
 	user, err := s.uc.CurrentUserInfo(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.CurrentUserInfoResponse{
+	return &userpb.CurrentUserInfoResponse{
 		Id:   user.ID,
 		Name: user.Name,
 		Role: user.Role,
@@ -35,7 +35,7 @@ func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUs
 }
 
 // UpdateUser 更新用户信息
-func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequest) (*userv1.UpdateUserResponse, error) {
+func (s *UserService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
 	currentUser, err := s.uc.CurrentUserInfo(ctx)
 	if err != nil {
 		return nil, err
@@ -44,18 +44,18 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 	switch currentUser.Role {
 	case consts.User.String():
 		if currentUser.ID != req.Id {
-			return nil, authv1.ErrorUnauthorized("you only can update your own information")
+			return nil, authpb.ErrorUnauthorized("you only can update your own information")
 		}
 		if req.Role != "" && req.Role != consts.User.String() {
-			return nil, authv1.ErrorUnauthorized("you do not have permission to change your role")
+			return nil, authpb.ErrorUnauthorized("you do not have permission to change your role")
 		}
 	case consts.Admin.String():
 		if req.Role != "" && req.Role >= consts.Admin.String() {
-			return nil, authv1.ErrorUnauthorized("admin cannot assign role higher than admin")
+			return nil, authpb.ErrorUnauthorized("admin cannot assign role higher than admin")
 		}
 	case consts.Operator.String():
 		if req.Role != "" && req.Role > consts.Operator.String() {
-			return nil, authv1.ErrorUnauthorized("operator cannot assign role higher than operator")
+			return nil, authpb.ErrorUnauthorized("operator cannot assign role higher than operator")
 		}
 	}
 
@@ -75,13 +75,13 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.UpdateUserResponse{
+	return &userpb.UpdateUserResponse{
 		Success: "true",
 	}, nil
 }
 
 // SaveUser 保存用户
-func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest) (*userv1.SaveUserResponse, error) {
+func (s *UserService) SaveUser(ctx context.Context, req *userpb.SaveUserRequest) (*userpb.SaveUserResponse, error) {
 	user := &po.User{
 		Name:     req.Name,
 		Email:    req.Email,
@@ -97,16 +97,16 @@ func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest)
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.SaveUserResponse{Id: fmt.Sprintf("%d", user.ID)}, nil
+	return &userpb.SaveUserResponse{Id: fmt.Sprintf("%d", user.ID)}, nil
 }
 
 // DeleteUser 删除用户
-func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserResponse, error) {
+func (s *UserService) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
 	success, err := s.uc.DeleteUser(ctx, &po.User{
 		ID: req.Id,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.DeleteUserResponse{Success: success}, err
+	return &userpb.DeleteUserResponse{Success: success}, err
 }

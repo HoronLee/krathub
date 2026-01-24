@@ -25,14 +25,14 @@ _sym_db = _symbol_database.Default()
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"sayhello/service/v1/sayhello.proto\x12\x13sayhello.service.v1\x1a\x1cgoogle/api/annotations.proto\"*\n\x0cHelloRequest\x12\x1a\n\x08greeting\x18\x01 \x01(\tR\x08greeting\"%\n\rHelloResponse\x12\x14\n\x05reply\x18\x01 \x01(\tR\x05reply2p\n\x08SayHello\x12\x64\n\x05Hello\x12!.sayhello.service.v1.HelloRequest\x1a\".sayhello.service.v1.HelloResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\"\t/SayHello:\x01*B\xdc\x01\n\x17\x63om.sayhello.service.v1B\rSayhelloProtoP\x01ZDgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;servicev1\xa2\x02\x03SSX\xaa\x02\x13Sayhello.Service.V1\xca\x02\x13Sayhello\\Service\\V1\xe2\x02\x1fSayhello\\Service\\V1\\GPBMetadata\xea\x02\x15Sayhello::Service::V1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"sayhello/service/v1/sayhello.proto\x12\x13sayhello.service.v1\x1a\x1cgoogle/api/annotations.proto\"*\n\x0cHelloRequest\x12\x1a\n\x08greeting\x18\x01 \x01(\tR\x08greeting\"%\n\rHelloResponse\x12\x14\n\x05reply\x18\x01 \x01(\tR\x05reply2p\n\x08SayHello\x12\x64\n\x05Hello\x12!.sayhello.service.v1.HelloRequest\x1a\".sayhello.service.v1.HelloResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\"\t/SayHello:\x01*B\xdc\x01\n\x17\x63om.sayhello.service.v1B\rSayhelloProtoP\x01ZDgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;sayhellob\xa2\x02\x03SSX\xaa\x02\x13Sayhello.Service.V1\xca\x02\x13Sayhello\\Service\\V1\xe2\x02\x1fSayhello\\Service\\V1\\GPBMetadata\xea\x02\x15Sayhello::Service::V1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'sayhello.service.v1.sayhello_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'\n\027com.sayhello.service.v1B\rSayhelloProtoP\001ZDgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;servicev1\242\002\003SSX\252\002\023Sayhello.Service.V1\312\002\023Sayhello\\Service\\V1\342\002\037Sayhello\\Service\\V1\\GPBMetadata\352\002\025Sayhello::Service::V1'
+  _globals['DESCRIPTOR']._serialized_options = b'\n\027com.sayhello.service.v1B\rSayhelloProtoP\001ZDgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;sayhellob\242\002\003SSX\252\002\023Sayhello.Service.V1\312\002\023Sayhello\\Service\\V1\342\002\037Sayhello\\Service\\V1\\GPBMetadata\352\002\025Sayhello::Service::V1'
   _globals['_SAYHELLO'].methods_by_name['Hello']._loaded_options = None
   _globals['_SAYHELLO'].methods_by_name['Hello']._serialized_options = b'\202\323\344\223\002\016\"\t/SayHello:\001*'
   _globals['_HELLOREQUEST']._serialized_start=89

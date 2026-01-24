@@ -3,9 +3,9 @@ package biz
 import (
 	"context"
 
-	authv1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
+	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	userv1 "github.com/horonlee/krathub/api/gen/go/user/service/v1"
+	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/jwt"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
@@ -41,7 +41,7 @@ func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*po.User, error) {
 	// 从context中获取当前登录用户信息
 	claims, ok := jwt.FromContext[UserClaims](ctx)
 	if !ok {
-		return nil, authv1.ErrorUnauthorized("user not authenticated")
+		return nil, authpb.ErrorUnauthorized("user not authenticated")
 	}
 
 	// 直接使用JWT中的信息构建用户模型，避免数据库查询
@@ -58,17 +58,17 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *po.User) (*po.User,
 	// 获取原始用户信息
 	origUser, err := uc.repo.GetUserById(ctx, user.ID)
 	if err != nil {
-		return nil, userv1.ErrorUserNotFound("user not found: %v", err)
+		return nil, userpb.ErrorUserNotFound("user not found: %v", err)
 	}
 
 	// 只有当用户名发生变化时才检查重复
 	if user.Name != origUser.Name {
 		userWithSameName, err := uc.authRepo.GetUserByUserName(ctx, user.Name)
 		if err != nil {
-			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
+			return nil, authpb.ErrorUserNotFound("failed to check username: %v", err)
 		}
 		if userWithSameName != nil {
-			return nil, authv1.ErrorUserAlreadyExists("username already exists")
+			return nil, authpb.ErrorUserAlreadyExists("username already exists")
 		}
 	}
 
@@ -76,16 +76,16 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *po.User) (*po.User,
 	if user.Email != origUser.Email {
 		userWithSameEmail, err := uc.authRepo.GetUserByEmail(ctx, user.Email)
 		if err != nil {
-			return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
+			return nil, authpb.ErrorUserNotFound("failed to check email: %v", err)
 		}
 		if userWithSameEmail != nil {
-			return nil, authv1.ErrorUserAlreadyExists("email already exists")
+			return nil, authpb.ErrorUserAlreadyExists("email already exists")
 		}
 	}
 
 	updatedUser, err := uc.repo.UpdateUser(ctx, user)
 	if err != nil {
-		return nil, userv1.ErrorUpdateUserFailed("failed to update user: %v", err)
+		return nil, userpb.ErrorUpdateUserFailed("failed to update user: %v", err)
 	}
 	return updatedUser, nil
 }
@@ -97,7 +97,7 @@ func (uc *UserUsecase) SaveUser(ctx context.Context, user *po.User) (*po.User, e
 
 	savedUser, err := uc.repo.SaveUser(ctx, user)
 	if err != nil {
-		return nil, userv1.ErrorSaveUserFailed("failed to save user: %v", err)
+		return nil, userpb.ErrorSaveUserFailed("failed to save user: %v", err)
 	}
 	return savedUser, nil
 }
@@ -105,22 +105,22 @@ func (uc *UserUsecase) SaveUser(ctx context.Context, user *po.User) (*po.User, e
 func (uc *UserUsecase) DeleteUser(ctx context.Context, user *po.User) (success bool, err error) {
 	_, err = uc.repo.DeleteUser(ctx, user)
 	if err != nil {
-		return false, userv1.ErrorDeleteUserFailed("failed to delete user: %v", err)
+		return false, userpb.ErrorDeleteUserFailed("failed to delete user: %v", err)
 	}
 	return true, nil
 }
 
 func (uc *UserUsecase) checkUserExists(ctx context.Context, user *po.User) error {
 	if existingUser, err := uc.authRepo.GetUserByUserName(ctx, user.Name); err != nil {
-		return authv1.ErrorUserNotFound("failed to check username: %v", err)
+		return authpb.ErrorUserNotFound("failed to check username: %v", err)
 	} else if existingUser != nil {
-		return authv1.ErrorUserAlreadyExists("username already exists")
+		return authpb.ErrorUserAlreadyExists("username already exists")
 	}
 
 	if existingEmail, err := uc.authRepo.GetUserByEmail(ctx, user.Email); err != nil {
-		return authv1.ErrorUserNotFound("failed to check email: %v", err)
+		return authpb.ErrorUserNotFound("failed to check email: %v", err)
 	} else if existingEmail != nil {
-		return authv1.ErrorUserAlreadyExists("email already exists")
+		return authpb.ErrorUserAlreadyExists("email already exists")
 	}
 	return nil
 }

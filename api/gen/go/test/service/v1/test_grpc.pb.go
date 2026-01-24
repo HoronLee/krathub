@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: test/service/v1/test.proto
 
-package servicev1
+package testpb
 
 import (
 	context "context"

@@ -6,7 +6,7 @@
 // - protoc             (unknown)
 // source: sayhello/service/v1/sayhello.proto
 
-package servicev1
+package sayhellopb
 
 import (
 	context "context"

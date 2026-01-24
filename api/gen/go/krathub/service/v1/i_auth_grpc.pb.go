@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: krathub/service/v1/i_auth.proto
 
-package servicev1
+package krathubpb
 
 import (
 	context "context"

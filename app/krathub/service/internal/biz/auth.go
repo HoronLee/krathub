@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"time"
 
-	authv1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
+	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/hash"
@@ -100,7 +100,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *po.User) (*po.Us
 	if !uc.adminRegistered {
 		// 第一次注册，用户名必须为 admin
 		if user.Name != "admin" {
-			return nil, authv1.ErrorInvalidCredentials("the first user must be named admin")
+			return nil, authpb.ErrorInvalidCredentials("the first user must be named admin")
 		}
 		user.Role = "admin"
 	} else {
@@ -108,10 +108,10 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *po.User) (*po.Us
 		// 检查用户名是否已存在
 		existingUser, err := uc.repo.GetUserByUserName(ctx, user.Name)
 		if err != nil {
-			return nil, authv1.ErrorUserNotFound("failed to check username: %v", err)
+			return nil, authpb.ErrorUserNotFound("failed to check username: %v", err)
 		}
 		if existingUser != nil {
-			return nil, authv1.ErrorUserAlreadyExists("username already exists")
+			return nil, authpb.ErrorUserAlreadyExists("username already exists")
 		}
 		user.Role = "user"
 	}
@@ -119,10 +119,10 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *po.User) (*po.Us
 	// 检查邮箱是否已存在
 	existingEmail, err := uc.repo.GetUserByEmail(ctx, user.Email)
 	if err != nil {
-		return nil, authv1.ErrorUserNotFound("failed to check email: %v", err)
+		return nil, authpb.ErrorUserNotFound("failed to check email: %v", err)
 	}
 	if existingEmail != nil {
-		return nil, authv1.ErrorUserAlreadyExists("email already exists")
+		return nil, authpb.ErrorUserAlreadyExists("email already exists")
 	}
 
 	createdUser, err := uc.repo.SaveUser(ctx, user)
@@ -150,14 +150,14 @@ func (uc *AuthUsecase) generateRefreshToken() (string, error) {
 func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *po.User) (*TokenPair, error) {
 	foundUser, err := uc.repo.GetUserByEmail(ctx, user.Email)
 	if err != nil {
-		return nil, authv1.ErrorUserNotFound("failed to get user: %v", err)
+		return nil, authpb.ErrorUserNotFound("failed to get user: %v", err)
 	}
 	if foundUser == nil {
 		uc.log.Warnf("user %s does not exist", user.Email)
-		return nil, authv1.ErrorUserNotFound("user %s does not exist", user.Email)
+		return nil, authpb.ErrorUserNotFound("user %s does not exist", user.Email)
 	}
 	if !hash.BcryptCheck(user.Password, foundUser.Password) {
-		return nil, authv1.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
+		return nil, authpb.ErrorIncorrectPassword("incorrect password for user: %s", user.Email)
 	}
 
 	// 登录成功，生成Token Pair
@@ -165,7 +165,7 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *po.User) 
 	// Generate a random nonce to ensure token uniqueness
 	nonce, err := uc.generateRefreshToken()
 	if err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to generate nonce: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to generate nonce: %v", err)
 	}
 
 	// 生成Access Token
@@ -184,19 +184,19 @@ func (uc *AuthUsecase) LoginByEmailPassword(ctx context.Context, user *po.User) 
 
 	accessToken, err := uc.generateAccessToken(accessClaims)
 	if err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to generate access token: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to generate access token: %v", err)
 	}
 
 	// 生成Refresh Token
 	refreshToken, err := uc.generateRefreshToken()
 	if err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to generate refresh token: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to generate refresh token: %v", err)
 	}
 
 	// 保存Refresh Token到Redis
 	refreshExpirationTime := time.Duration(uc.cfg.Jwt.RefreshExpire) * time.Second
 	if err := uc.repo.SaveRefreshToken(ctx, foundUser.ID, refreshToken, refreshExpirationTime); err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to save refresh token: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to save refresh token: %v", err)
 	}
 
 	return &TokenPair{
@@ -212,14 +212,14 @@ func (uc *AuthUsecase) RefreshToken(ctx context.Context, refreshToken string) (*
 	userID, err := uc.repo.GetRefreshToken(ctx, refreshToken)
 	if err != nil {
 		uc.log.Warnf("Invalid refresh token: %v", err)
-		return nil, authv1.ErrorInvalidRefreshToken("invalid or expired refresh token")
+		return nil, authpb.ErrorInvalidRefreshToken("invalid or expired refresh token")
 	}
 
 	// 获取用户信息
 	user, err := uc.repo.GetUserByID(ctx, userID)
 	if err != nil {
 		uc.log.Errorf("Failed to get user by ID: %v", err)
-		return nil, authv1.ErrorUserNotFound("user not found: %v", err)
+		return nil, authpb.ErrorUserNotFound("user not found: %v", err)
 	}
 
 	// 生成新的Access Token
@@ -228,7 +228,7 @@ func (uc *AuthUsecase) RefreshToken(ctx context.Context, refreshToken string) (*
 	// Generate a random nonce to ensure token uniqueness
 	nonce, err := uc.generateRefreshToken() // Reuse the random generation logic
 	if err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to generate nonce: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to generate nonce: %v", err)
 	}
 
 	accessClaims := &UserClaims{
@@ -246,14 +246,14 @@ func (uc *AuthUsecase) RefreshToken(ctx context.Context, refreshToken string) (*
 
 	accessToken, err := uc.generateAccessToken(accessClaims)
 	if err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to generate access token: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to generate access token: %v", err)
 	}
 
 	// 可选：轮换Refresh Token
 	// 这里我们生成新的Refresh Token并删除旧的
 	newRefreshToken, err := uc.generateRefreshToken()
 	if err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to generate refresh token: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to generate refresh token: %v", err)
 	}
 
 	// 删除旧的Refresh Token
@@ -265,7 +265,7 @@ func (uc *AuthUsecase) RefreshToken(ctx context.Context, refreshToken string) (*
 	// 保存新的Refresh Token
 	refreshExpirationTime := time.Duration(uc.cfg.Jwt.RefreshExpire) * time.Second
 	if err := uc.repo.SaveRefreshToken(ctx, user.ID, newRefreshToken, refreshExpirationTime); err != nil {
-		return nil, authv1.ErrorTokenGenerationFailed("failed to save refresh token: %v", err)
+		return nil, authpb.ErrorTokenGenerationFailed("failed to save refresh token: %v", err)
 	}
 
 	return &TokenPair{

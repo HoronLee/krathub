@@ -4,7 +4,7 @@
 // 	protoc        (unknown)
 // source: krathub/service/v1/krathub_doc.proto
 
-package servicev1
+package krathubpb
 
 import (
 	_ "github.com/google/gnostic/openapiv3"
@@ -58,7 +58,7 @@ const file_krathub_service_v1_krathub_doc_proto_rawDesc = "" +
 	"BearerAuth\x12'\n" +
 	"%\n" +
 	"\x04http\x12\x10JWT 认证令牌*\x06bearer2\x03JWT\n" +
-	"\x16com.krathub.service.v1B\x0fKrathubDocProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;servicev1\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
+	"\x16com.krathub.service.v1B\x0fKrathubDocProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubpb\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 
 var file_krathub_service_v1_krathub_doc_proto_goTypes = []any{}
 var file_krathub_service_v1_krathub_doc_proto_depIdxs = []int32{

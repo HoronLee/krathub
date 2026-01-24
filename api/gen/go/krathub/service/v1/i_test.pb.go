@@ -4,7 +4,7 @@
 // 	protoc        (unknown)
 // source: krathub/service/v1/i_test.proto
 
-package servicev1
+package krathubpb
 
 import (
 	_ "github.com/google/gnostic/openapiv3"
@@ -36,7 +36,7 @@ const file_krathub_service_v1_i_test_proto_rawDesc = "" +
 	"\n" +
 	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/test/privateB\xd3\x01\n" +
 	"\x16com.krathub.service.v1B\n" +
-	"ITestProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;servicev1\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
+	"ITestProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubpb\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 
 var file_krathub_service_v1_i_test_proto_goTypes = []any{
 	(*v1.HelloRequest)(nil),        // 0: test.service.v1.HelloRequest

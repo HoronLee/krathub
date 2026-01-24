@@ -4,7 +4,7 @@
 // 	protoc        (unknown)
 // source: krathub/service/v1/i_auth.proto
 
-package servicev1
+package krathubpb
 
 import (
 	v1 "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
@@ -33,7 +33,7 @@ const file_krathub_service_v1_i_auth_proto_rawDesc = "" +
 	"\fRefreshToken\x12$.auth.service.v1.RefreshTokenRequest\x1a%.auth.service.v1.RefreshTokenResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/v1/auth/refresh-token\x12e\n" +
 	"\x06Logout\x12\x1e.auth.service.v1.LogoutRequest\x1a\x1f.auth.service.v1.LogoutResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/auth/logoutB\xd3\x01\n" +
 	"\x16com.krathub.service.v1B\n" +
-	"IAuthProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;servicev1\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
+	"IAuthProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubpb\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 
 var file_krathub_service_v1_i_auth_proto_goTypes = []any{
 	(*v1.SignupByEmailRequest)(nil),         // 0: auth.service.v1.SignupByEmailRequest
