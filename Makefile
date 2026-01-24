@@ -125,9 +125,9 @@ gen: wire api openapi
 
 # generate protobuf api go code
 api:
-	@echo "$(CYAN)Generating protobuf Go code...$(RESET)"
+	@echo "$(CYAN)Generating protobuf code (Go + Python)...$(RESET)"
 	@cd $(API_DIR) && buf generate
-	@echo "$(GREEN)✓ Protobuf Go code generated$(RESET)"
+	@echo "$(GREEN)✓ Protobuf code generated (Go + Python)$(RESET)"
 
 # generate protobuf api OpenAPI v3 docs for all services
 openapi:

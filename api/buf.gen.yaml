@@ -46,3 +46,12 @@ plugins:
     opt:
       - paths=source_relative
       - lang=go
+
+  # ==================== Python ====================
+  # generate python struct code
+  - remote: buf.build/protocolbuffers/python
+    out: gen/python
+
+  # generate python grpc service code
+  - remote: buf.build/grpc/python
+    out: gen/python
