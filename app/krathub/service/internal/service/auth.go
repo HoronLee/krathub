@@ -11,7 +11,7 @@ import (
 
 // AuthService is a auth service.
 type AuthService struct {
-	authv1.UnimplementedAuthServer
+	authv1.UnimplementedAuthServiceServer
 
 	uc *biz.AuthUsecase
 }
@@ -21,7 +21,7 @@ func NewAuthService(uc *biz.AuthUsecase) *AuthService {
 	return &AuthService{uc: uc}
 }
 
-func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEmailRequest) (*authv1.SignupByEmailReply, error) {
+func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEmailRequest) (*authv1.SignupByEmailResponse, error) {
 	// 参数校验
 	if req.Password != req.PasswordConfirm {
 		return nil, fmt.Errorf("password and confirm password do not match")
@@ -36,7 +36,7 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEma
 		return nil, err
 	}
 	// 拼装返回结果
-	return &authv1.SignupByEmailReply{
+	return &authv1.SignupByEmailResponse{
 		Id:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
@@ -45,7 +45,7 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *authv1.SignupByEma
 }
 
 // LoginByEmailPassword user login by email and password.
-func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.LoginByEmailPasswordRequest) (*authv1.LoginByEmailPasswordReply, error) {
+func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.LoginByEmailPasswordRequest) (*authv1.LoginByEmailPasswordResponse, error) {
 	user := &po.User{
 		Email:    req.Email,
 		Password: req.Password,
@@ -54,7 +54,7 @@ func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.Logi
 	if err != nil {
 		return nil, fmt.Errorf("login by email password failed: %w", err)
 	}
-	return &authv1.LoginByEmailPasswordReply{
+	return &authv1.LoginByEmailPasswordResponse{
 		AccessToken:  tokenPair.AccessToken,
 		RefreshToken: tokenPair.RefreshToken,
 		ExpiresIn:    tokenPair.ExpiresIn,
@@ -62,12 +62,12 @@ func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authv1.Logi
 }
 
 // RefreshToken refreshes the access token using a valid refresh token
-func (s *AuthService) RefreshToken(ctx context.Context, req *authv1.RefreshTokenRequest) (*authv1.RefreshTokenReply, error) {
+func (s *AuthService) RefreshToken(ctx context.Context, req *authv1.RefreshTokenRequest) (*authv1.RefreshTokenResponse, error) {
 	tokenPair, err := s.uc.RefreshToken(ctx, req.RefreshToken)
 	if err != nil {
 		return nil, fmt.Errorf("refresh token failed: %w", err)
 	}
-	return &authv1.RefreshTokenReply{
+	return &authv1.RefreshTokenResponse{
 		AccessToken:  tokenPair.AccessToken,
 		RefreshToken: tokenPair.RefreshToken,
 		ExpiresIn:    tokenPair.ExpiresIn,
@@ -75,12 +75,12 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *authv1.RefreshToken
 }
 
 // Logout invalidates the refresh token
-func (s *AuthService) Logout(ctx context.Context, req *authv1.LogoutRequest) (*authv1.LogoutReply, error) {
+func (s *AuthService) Logout(ctx context.Context, req *authv1.LogoutRequest) (*authv1.LogoutResponse, error) {
 	err := s.uc.Logout(ctx, req.RefreshToken)
 	if err != nil {
 		return nil, fmt.Errorf("logout failed: %w", err)
 	}
-	return &authv1.LogoutReply{
+	return &authv1.LogoutResponse{
 		Success: true,
 	}, nil
 }

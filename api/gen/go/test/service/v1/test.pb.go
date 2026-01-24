@@ -283,8 +283,8 @@ const file_test_service_v1_test_proto_rawDesc = "" +
 	"\amessage\x18\x01 \x01(\tR\amessage\"\x14\n" +
 	"\x12PrivateTestRequest\"/\n" +
 	"\x13PrivateTestResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2\xed\x01\n" +
-	"\x04Test\x12F\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2\xf4\x01\n" +
+	"\vTestService\x12F\n" +
 	"\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\x12C\n" +
 	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\x12X\n" +
 	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponseB\xc0\x01\n" +
@@ -312,12 +312,12 @@ var file_test_service_v1_test_proto_goTypes = []any{
 	(*PrivateTestResponse)(nil), // 5: test.service.v1.PrivateTestResponse
 }
 var file_test_service_v1_test_proto_depIdxs = []int32{
-	0, // 0: test.service.v1.Test.Hello:input_type -> test.service.v1.HelloRequest
-	2, // 1: test.service.v1.Test.Test:input_type -> test.service.v1.TestRequest
-	4, // 2: test.service.v1.Test.PrivateTest:input_type -> test.service.v1.PrivateTestRequest
-	1, // 3: test.service.v1.Test.Hello:output_type -> test.service.v1.HelloResponse
-	3, // 4: test.service.v1.Test.Test:output_type -> test.service.v1.TestResponse
-	5, // 5: test.service.v1.Test.PrivateTest:output_type -> test.service.v1.PrivateTestResponse
+	0, // 0: test.service.v1.TestService.Hello:input_type -> test.service.v1.HelloRequest
+	2, // 1: test.service.v1.TestService.Test:input_type -> test.service.v1.TestRequest
+	4, // 2: test.service.v1.TestService.PrivateTest:input_type -> test.service.v1.PrivateTestRequest
+	1, // 3: test.service.v1.TestService.Hello:output_type -> test.service.v1.HelloResponse
+	3, // 4: test.service.v1.TestService.Test:output_type -> test.service.v1.TestResponse
+	5, // 5: test.service.v1.TestService.PrivateTest:output_type -> test.service.v1.PrivateTestResponse
 	3, // [3:6] is the sub-list for method output_type
 	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

@@ -177,7 +177,7 @@ func (x *SignupByEmailRequest) GetEmail() string {
 }
 
 // 邮箱注册响应
-type SignupByEmailReply struct {
+type SignupByEmailResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -187,20 +187,20 @@ type SignupByEmailReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignupByEmailReply) Reset() {
-	*x = SignupByEmailReply{}
+func (x *SignupByEmailResponse) Reset() {
+	*x = SignupByEmailResponse{}
 	mi := &file_auth_service_v1_auth_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SignupByEmailReply) String() string {
+func (x *SignupByEmailResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SignupByEmailReply) ProtoMessage() {}
+func (*SignupByEmailResponse) ProtoMessage() {}
 
-func (x *SignupByEmailReply) ProtoReflect() protoreflect.Message {
+func (x *SignupByEmailResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_service_v1_auth_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -212,33 +212,33 @@ func (x *SignupByEmailReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SignupByEmailReply.ProtoReflect.Descriptor instead.
-func (*SignupByEmailReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use SignupByEmailResponse.ProtoReflect.Descriptor instead.
+func (*SignupByEmailResponse) Descriptor() ([]byte, []int) {
 	return file_auth_service_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SignupByEmailReply) GetId() int64 {
+func (x *SignupByEmailResponse) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *SignupByEmailReply) GetName() string {
+func (x *SignupByEmailResponse) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *SignupByEmailReply) GetEmail() string {
+func (x *SignupByEmailResponse) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-func (x *SignupByEmailReply) GetRole() string {
+func (x *SignupByEmailResponse) GetRole() string {
 	if x != nil {
 		return x.Role
 	}
@@ -299,7 +299,7 @@ func (x *LoginByEmailPasswordRequest) GetPassword() string {
 }
 
 // 密码登录响应
-type LoginByEmailPasswordReply struct {
+type LoginByEmailPasswordResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
 	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
@@ -308,20 +308,20 @@ type LoginByEmailPasswordReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LoginByEmailPasswordReply) Reset() {
-	*x = LoginByEmailPasswordReply{}
+func (x *LoginByEmailPasswordResponse) Reset() {
+	*x = LoginByEmailPasswordResponse{}
 	mi := &file_auth_service_v1_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LoginByEmailPasswordReply) String() string {
+func (x *LoginByEmailPasswordResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LoginByEmailPasswordReply) ProtoMessage() {}
+func (*LoginByEmailPasswordResponse) ProtoMessage() {}
 
-func (x *LoginByEmailPasswordReply) ProtoReflect() protoreflect.Message {
+func (x *LoginByEmailPasswordResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_service_v1_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -333,26 +333,26 @@ func (x *LoginByEmailPasswordReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LoginByEmailPasswordReply.ProtoReflect.Descriptor instead.
-func (*LoginByEmailPasswordReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use LoginByEmailPasswordResponse.ProtoReflect.Descriptor instead.
+func (*LoginByEmailPasswordResponse) Descriptor() ([]byte, []int) {
 	return file_auth_service_v1_auth_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *LoginByEmailPasswordReply) GetAccessToken() string {
+func (x *LoginByEmailPasswordResponse) GetAccessToken() string {
 	if x != nil {
 		return x.AccessToken
 	}
 	return ""
 }
 
-func (x *LoginByEmailPasswordReply) GetRefreshToken() string {
+func (x *LoginByEmailPasswordResponse) GetRefreshToken() string {
 	if x != nil {
 		return x.RefreshToken
 	}
 	return ""
 }
 
-func (x *LoginByEmailPasswordReply) GetExpiresIn() int64 {
+func (x *LoginByEmailPasswordResponse) GetExpiresIn() int64 {
 	if x != nil {
 		return x.ExpiresIn
 	}
@@ -405,7 +405,7 @@ func (x *RefreshTokenRequest) GetRefreshToken() string {
 }
 
 // 刷新Token响应
-type RefreshTokenReply struct {
+type RefreshTokenResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
 	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
@@ -414,20 +414,20 @@ type RefreshTokenReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RefreshTokenReply) Reset() {
-	*x = RefreshTokenReply{}
+func (x *RefreshTokenResponse) Reset() {
+	*x = RefreshTokenResponse{}
 	mi := &file_auth_service_v1_auth_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RefreshTokenReply) String() string {
+func (x *RefreshTokenResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RefreshTokenReply) ProtoMessage() {}
+func (*RefreshTokenResponse) ProtoMessage() {}
 
-func (x *RefreshTokenReply) ProtoReflect() protoreflect.Message {
+func (x *RefreshTokenResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_service_v1_auth_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -439,26 +439,26 @@ func (x *RefreshTokenReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RefreshTokenReply.ProtoReflect.Descriptor instead.
-func (*RefreshTokenReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use RefreshTokenResponse.ProtoReflect.Descriptor instead.
+func (*RefreshTokenResponse) Descriptor() ([]byte, []int) {
 	return file_auth_service_v1_auth_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *RefreshTokenReply) GetAccessToken() string {
+func (x *RefreshTokenResponse) GetAccessToken() string {
 	if x != nil {
 		return x.AccessToken
 	}
 	return ""
 }
 
-func (x *RefreshTokenReply) GetRefreshToken() string {
+func (x *RefreshTokenResponse) GetRefreshToken() string {
 	if x != nil {
 		return x.RefreshToken
 	}
 	return ""
 }
 
-func (x *RefreshTokenReply) GetExpiresIn() int64 {
+func (x *RefreshTokenResponse) GetExpiresIn() int64 {
 	if x != nil {
 		return x.ExpiresIn
 	}
@@ -511,27 +511,27 @@ func (x *LogoutRequest) GetRefreshToken() string {
 }
 
 // 登出响应
-type LogoutReply struct {
+type LogoutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LogoutReply) Reset() {
-	*x = LogoutReply{}
+func (x *LogoutResponse) Reset() {
+	*x = LogoutResponse{}
 	mi := &file_auth_service_v1_auth_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LogoutReply) String() string {
+func (x *LogoutResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LogoutReply) ProtoMessage() {}
+func (*LogoutResponse) ProtoMessage() {}
 
-func (x *LogoutReply) ProtoReflect() protoreflect.Message {
+func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_service_v1_auth_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -543,12 +543,12 @@ func (x *LogoutReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LogoutReply.ProtoReflect.Descriptor instead.
-func (*LogoutReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use LogoutResponse.ProtoReflect.Descriptor instead.
+func (*LogoutResponse) Descriptor() ([]byte, []int) {
 	return file_auth_service_v1_auth_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *LogoutReply) GetSuccess() bool {
+func (x *LogoutResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
@@ -566,8 +566,8 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"R\bpassword\x124\n" +
 	"\x10password_confirm\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
 	"R\x0fpasswordConfirm\x12\x1d\n" +
-	"\x05email\x18\x04 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\"b\n" +
-	"\x12SignupByEmailReply\x12\x0e\n" +
+	"\x05email\x18\x04 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\"e\n" +
+	"\x15SignupByEmailResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
@@ -575,22 +575,22 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\x1bLoginByEmailPasswordRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12%\n" +
 	"\bpassword\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
-	"R\bpassword\"\x82\x01\n" +
-	"\x19LoginByEmailPasswordReply\x12!\n" +
+	"R\bpassword\"\x85\x01\n" +
+	"\x1cLoginByEmailPasswordResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x1d\n" +
 	"\n" +
 	"expires_in\x18\x03 \x01(\x03R\texpiresIn\"C\n" +
 	"\x13RefreshTokenRequest\x12,\n" +
-	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"z\n" +
-	"\x11RefreshTokenReply\x12!\n" +
+	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"}\n" +
+	"\x14RefreshTokenResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x1d\n" +
 	"\n" +
 	"expires_in\x18\x03 \x01(\x03R\texpiresIn\"=\n" +
 	"\rLogoutRequest\x12,\n" +
-	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"'\n" +
-	"\vLogoutReply\x12\x18\n" +
+	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"*\n" +
+	"\x0eLogoutResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess*\xb5\x02\n" +
 	"\vErrorReason\x12\x18\n" +
 	"\x0eUSER_NOT_FOUND\x10\x00\x1a\x04\xa8E\x94\x03\x12\x1d\n" +
@@ -603,12 +603,12 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\rMISSING_TOKEN\x10\x05\x1a\x04\xa8E\x91\x03\x12!\n" +
 	"\x17TOKEN_GENERATION_FAILED\x10\x06\x1a\x04\xa8E\xf4\x03\x12\x16\n" +
 	"\fUNAUTHORIZED\x10\a\x1a\x04\xa8E\x93\x03\x12\x1f\n" +
-	"\x15INVALID_REFRESH_TOKEN\x10\b\x1a\x04\xa8E\x91\x03\x1a\x04\xa0E\xf4\x032\xf7\x02\n" +
-	"\x04Auth\x12[\n" +
-	"\rSignupByEmail\x12%.auth.service.v1.SignupByEmailRequest\x1a#.auth.service.v1.SignupByEmailReply\x12p\n" +
-	"\x14LoginByEmailPassword\x12,.auth.service.v1.LoginByEmailPasswordRequest\x1a*.auth.service.v1.LoginByEmailPasswordReply\x12X\n" +
-	"\fRefreshToken\x12$.auth.service.v1.RefreshTokenRequest\x1a\".auth.service.v1.RefreshTokenReply\x12F\n" +
-	"\x06Logout\x12\x1e.auth.service.v1.LogoutRequest\x1a\x1c.auth.service.v1.LogoutReplyB\xc0\x01\n" +
+	"\x15INVALID_REFRESH_TOKEN\x10\b\x1a\x04\xa8E\x91\x03\x1a\x04\xa0E\xf4\x032\x8a\x03\n" +
+	"\vAuthService\x12^\n" +
+	"\rSignupByEmail\x12%.auth.service.v1.SignupByEmailRequest\x1a&.auth.service.v1.SignupByEmailResponse\x12s\n" +
+	"\x14LoginByEmailPassword\x12,.auth.service.v1.LoginByEmailPasswordRequest\x1a-.auth.service.v1.LoginByEmailPasswordResponse\x12[\n" +
+	"\fRefreshToken\x12$.auth.service.v1.RefreshTokenRequest\x1a%.auth.service.v1.RefreshTokenResponse\x12I\n" +
+	"\x06Logout\x12\x1e.auth.service.v1.LogoutRequest\x1a\x1f.auth.service.v1.LogoutResponseB\xc0\x01\n" +
 	"\x13com.auth.service.v1B\tAuthProtoP\x01Z@github.com/horonlee/krathub/api/gen/go/auth/service/v1;servicev1\xa2\x02\x03ASX\xaa\x02\x0fAuth.Service.V1\xca\x02\x0fAuth\\Service\\V1\xe2\x02\x1bAuth\\Service\\V1\\GPBMetadata\xea\x02\x11Auth::Service::V1b\x06proto3"
 
 var (
@@ -626,25 +626,25 @@ func file_auth_service_v1_auth_proto_rawDescGZIP() []byte {
 var file_auth_service_v1_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_auth_service_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_auth_service_v1_auth_proto_goTypes = []any{
-	(ErrorReason)(0),                    // 0: auth.service.v1.ErrorReason
-	(*SignupByEmailRequest)(nil),        // 1: auth.service.v1.SignupByEmailRequest
-	(*SignupByEmailReply)(nil),          // 2: auth.service.v1.SignupByEmailReply
-	(*LoginByEmailPasswordRequest)(nil), // 3: auth.service.v1.LoginByEmailPasswordRequest
-	(*LoginByEmailPasswordReply)(nil),   // 4: auth.service.v1.LoginByEmailPasswordReply
-	(*RefreshTokenRequest)(nil),         // 5: auth.service.v1.RefreshTokenRequest
-	(*RefreshTokenReply)(nil),           // 6: auth.service.v1.RefreshTokenReply
-	(*LogoutRequest)(nil),               // 7: auth.service.v1.LogoutRequest
-	(*LogoutReply)(nil),                 // 8: auth.service.v1.LogoutReply
+	(ErrorReason)(0),                     // 0: auth.service.v1.ErrorReason
+	(*SignupByEmailRequest)(nil),         // 1: auth.service.v1.SignupByEmailRequest
+	(*SignupByEmailResponse)(nil),        // 2: auth.service.v1.SignupByEmailResponse
+	(*LoginByEmailPasswordRequest)(nil),  // 3: auth.service.v1.LoginByEmailPasswordRequest
+	(*LoginByEmailPasswordResponse)(nil), // 4: auth.service.v1.LoginByEmailPasswordResponse
+	(*RefreshTokenRequest)(nil),          // 5: auth.service.v1.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),         // 6: auth.service.v1.RefreshTokenResponse
+	(*LogoutRequest)(nil),                // 7: auth.service.v1.LogoutRequest
+	(*LogoutResponse)(nil),               // 8: auth.service.v1.LogoutResponse
 }
 var file_auth_service_v1_auth_proto_depIdxs = []int32{
-	1, // 0: auth.service.v1.Auth.SignupByEmail:input_type -> auth.service.v1.SignupByEmailRequest
-	3, // 1: auth.service.v1.Auth.LoginByEmailPassword:input_type -> auth.service.v1.LoginByEmailPasswordRequest
-	5, // 2: auth.service.v1.Auth.RefreshToken:input_type -> auth.service.v1.RefreshTokenRequest
-	7, // 3: auth.service.v1.Auth.Logout:input_type -> auth.service.v1.LogoutRequest
-	2, // 4: auth.service.v1.Auth.SignupByEmail:output_type -> auth.service.v1.SignupByEmailReply
-	4, // 5: auth.service.v1.Auth.LoginByEmailPassword:output_type -> auth.service.v1.LoginByEmailPasswordReply
-	6, // 6: auth.service.v1.Auth.RefreshToken:output_type -> auth.service.v1.RefreshTokenReply
-	8, // 7: auth.service.v1.Auth.Logout:output_type -> auth.service.v1.LogoutReply
+	1, // 0: auth.service.v1.AuthService.SignupByEmail:input_type -> auth.service.v1.SignupByEmailRequest
+	3, // 1: auth.service.v1.AuthService.LoginByEmailPassword:input_type -> auth.service.v1.LoginByEmailPasswordRequest
+	5, // 2: auth.service.v1.AuthService.RefreshToken:input_type -> auth.service.v1.RefreshTokenRequest
+	7, // 3: auth.service.v1.AuthService.Logout:input_type -> auth.service.v1.LogoutRequest
+	2, // 4: auth.service.v1.AuthService.SignupByEmail:output_type -> auth.service.v1.SignupByEmailResponse
+	4, // 5: auth.service.v1.AuthService.LoginByEmailPassword:output_type -> auth.service.v1.LoginByEmailPasswordResponse
+	6, // 6: auth.service.v1.AuthService.RefreshToken:output_type -> auth.service.v1.RefreshTokenResponse
+	8, // 7: auth.service.v1.AuthService.Logout:output_type -> auth.service.v1.LogoutResponse
 	4, // [4:8] is the sub-list for method output_type
 	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

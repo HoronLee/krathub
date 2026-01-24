@@ -5,7 +5,7 @@ package test.service.v1;
 option go_package = "github.com/horonlee/krathub/api/gen/go/test/service/v1;testv1";
 
 // Test gRPC 服务 - 纯 gRPC 接口
-service Test {
+service TestService {
   rpc Hello(HelloRequest) returns (HelloResponse);
   rpc Test(TestRequest) returns (TestResponse);
   rpc PrivateTest(PrivateTestRequest) returns (PrivateTestResponse);

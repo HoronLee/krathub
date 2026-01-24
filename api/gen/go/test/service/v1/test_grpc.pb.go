@@ -19,181 +19,181 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Test_Hello_FullMethodName       = "/test.service.v1.Test/Hello"
-	Test_Test_FullMethodName        = "/test.service.v1.Test/Test"
-	Test_PrivateTest_FullMethodName = "/test.service.v1.Test/PrivateTest"
+	TestService_Hello_FullMethodName       = "/test.service.v1.TestService/Hello"
+	TestService_Test_FullMethodName        = "/test.service.v1.TestService/Test"
+	TestService_PrivateTest_FullMethodName = "/test.service.v1.TestService/PrivateTest"
 )
 
-// TestClient is the client API for Test service.
+// TestServiceClient is the client API for TestService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Test gRPC 服务 - 纯 gRPC 接口
-type TestClient interface {
+type TestServiceClient interface {
 	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error)
 	PrivateTest(ctx context.Context, in *PrivateTestRequest, opts ...grpc.CallOption) (*PrivateTestResponse, error)
 }
 
-type testClient struct {
+type testServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewTestClient(cc grpc.ClientConnInterface) TestClient {
-	return &testClient{cc}
+func NewTestServiceClient(cc grpc.ClientConnInterface) TestServiceClient {
+	return &testServiceClient{cc}
 }
 
-func (c *testClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+func (c *testServiceClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, Test_Hello_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, TestService_Hello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *testClient) Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error) {
+func (c *testServiceClient) Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TestResponse)
-	err := c.cc.Invoke(ctx, Test_Test_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, TestService_Test_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *testClient) PrivateTest(ctx context.Context, in *PrivateTestRequest, opts ...grpc.CallOption) (*PrivateTestResponse, error) {
+func (c *testServiceClient) PrivateTest(ctx context.Context, in *PrivateTestRequest, opts ...grpc.CallOption) (*PrivateTestResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PrivateTestResponse)
-	err := c.cc.Invoke(ctx, Test_PrivateTest_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, TestService_PrivateTest_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// TestServer is the server API for Test service.
-// All implementations must embed UnimplementedTestServer
+// TestServiceServer is the server API for TestService service.
+// All implementations must embed UnimplementedTestServiceServer
 // for forward compatibility.
 //
 // Test gRPC 服务 - 纯 gRPC 接口
-type TestServer interface {
+type TestServiceServer interface {
 	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
 	Test(context.Context, *TestRequest) (*TestResponse, error)
 	PrivateTest(context.Context, *PrivateTestRequest) (*PrivateTestResponse, error)
-	mustEmbedUnimplementedTestServer()
+	mustEmbedUnimplementedTestServiceServer()
 }
 
-// UnimplementedTestServer must be embedded to have
+// UnimplementedTestServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedTestServer struct{}
+type UnimplementedTestServiceServer struct{}
 
-func (UnimplementedTestServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
+func (UnimplementedTestServiceServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
 }
-func (UnimplementedTestServer) Test(context.Context, *TestRequest) (*TestResponse, error) {
+func (UnimplementedTestServiceServer) Test(context.Context, *TestRequest) (*TestResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Test not implemented")
 }
-func (UnimplementedTestServer) PrivateTest(context.Context, *PrivateTestRequest) (*PrivateTestResponse, error) {
+func (UnimplementedTestServiceServer) PrivateTest(context.Context, *PrivateTestRequest) (*PrivateTestResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method PrivateTest not implemented")
 }
-func (UnimplementedTestServer) mustEmbedUnimplementedTestServer() {}
-func (UnimplementedTestServer) testEmbeddedByValue()              {}
+func (UnimplementedTestServiceServer) mustEmbedUnimplementedTestServiceServer() {}
+func (UnimplementedTestServiceServer) testEmbeddedByValue()                     {}
 
-// UnsafeTestServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to TestServer will
+// UnsafeTestServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TestServiceServer will
 // result in compilation errors.
-type UnsafeTestServer interface {
-	mustEmbedUnimplementedTestServer()
+type UnsafeTestServiceServer interface {
+	mustEmbedUnimplementedTestServiceServer()
 }
 
-func RegisterTestServer(s grpc.ServiceRegistrar, srv TestServer) {
-	// If the following call panics, it indicates UnimplementedTestServer was
+func RegisterTestServiceServer(s grpc.ServiceRegistrar, srv TestServiceServer) {
+	// If the following call panics, it indicates UnimplementedTestServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Test_ServiceDesc, srv)
+	s.RegisterService(&TestService_ServiceDesc, srv)
 }
 
-func _Test_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _TestService_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TestServer).Hello(ctx, in)
+		return srv.(TestServiceServer).Hello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Test_Hello_FullMethodName,
+		FullMethod: TestService_Hello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestServer).Hello(ctx, req.(*HelloRequest))
+		return srv.(TestServiceServer).Hello(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Test_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _TestService_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TestRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TestServer).Test(ctx, in)
+		return srv.(TestServiceServer).Test(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Test_Test_FullMethodName,
+		FullMethod: TestService_Test_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestServer).Test(ctx, req.(*TestRequest))
+		return srv.(TestServiceServer).Test(ctx, req.(*TestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Test_PrivateTest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _TestService_PrivateTest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PrivateTestRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TestServer).PrivateTest(ctx, in)
+		return srv.(TestServiceServer).PrivateTest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Test_PrivateTest_FullMethodName,
+		FullMethod: TestService_PrivateTest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestServer).PrivateTest(ctx, req.(*PrivateTestRequest))
+		return srv.(TestServiceServer).PrivateTest(ctx, req.(*PrivateTestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Test_ServiceDesc is the grpc.ServiceDesc for Test service.
+// TestService_ServiceDesc is the grpc.ServiceDesc for TestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Test_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "test.service.v1.Test",
-	HandlerType: (*TestServer)(nil),
+var TestService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "test.service.v1.TestService",
+	HandlerType: (*TestServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Hello",
-			Handler:    _Test_Hello_Handler,
+			Handler:    _TestService_Hello_Handler,
 		},
 		{
 			MethodName: "Test",
-			Handler:    _Test_Test_Handler,
+			Handler:    _TestService_Test_Handler,
 		},
 		{
 			MethodName: "PrivateTest",
-			Handler:    _Test_PrivateTest_Handler,
+			Handler:    _TestService_PrivateTest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

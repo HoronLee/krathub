@@ -9,7 +9,7 @@ import (
 
 // TestService is a test service.
 type TestService struct {
-	testv1.UnimplementedTestServer
+	testv1.UnimplementedTestServiceServer
 
 	uc *biz.TestUsecase
 }

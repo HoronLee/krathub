@@ -2,6 +2,8 @@
 
 Instructions for AI assistants working in this project.
 
+无论何时，用中文回答
+
 <!-- OPENSPEC:START -->
 ## OpenSpec Instructions
 

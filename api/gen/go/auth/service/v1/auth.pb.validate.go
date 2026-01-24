@@ -145,22 +145,22 @@ var _ interface {
 	ErrorName() string
 } = SignupByEmailRequestValidationError{}
 
-// Validate checks the field values on SignupByEmailReply with the rules
+// Validate checks the field values on SignupByEmailResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *SignupByEmailReply) Validate() error {
+func (m *SignupByEmailResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on SignupByEmailReply with the rules
+// ValidateAll checks the field values on SignupByEmailResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// SignupByEmailReplyMultiError, or nil if none found.
-func (m *SignupByEmailReply) ValidateAll() error {
+// SignupByEmailResponseMultiError, or nil if none found.
+func (m *SignupByEmailResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *SignupByEmailReply) validate(all bool) error {
+func (m *SignupByEmailResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -176,19 +176,19 @@ func (m *SignupByEmailReply) validate(all bool) error {
 	// no validation rules for Role
 
 	if len(errors) > 0 {
-		return SignupByEmailReplyMultiError(errors)
+		return SignupByEmailResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// SignupByEmailReplyMultiError is an error wrapping multiple validation errors
-// returned by SignupByEmailReply.ValidateAll() if the designated constraints
-// aren't met.
-type SignupByEmailReplyMultiError []error
+// SignupByEmailResponseMultiError is an error wrapping multiple validation
+// errors returned by SignupByEmailResponse.ValidateAll() if the designated
+// constraints aren't met.
+type SignupByEmailResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m SignupByEmailReplyMultiError) Error() string {
+func (m SignupByEmailResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -197,11 +197,11 @@ func (m SignupByEmailReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m SignupByEmailReplyMultiError) AllErrors() []error { return m }
+func (m SignupByEmailResponseMultiError) AllErrors() []error { return m }
 
-// SignupByEmailReplyValidationError is the validation error returned by
-// SignupByEmailReply.Validate if the designated constraints aren't met.
-type SignupByEmailReplyValidationError struct {
+// SignupByEmailResponseValidationError is the validation error returned by
+// SignupByEmailResponse.Validate if the designated constraints aren't met.
+type SignupByEmailResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -209,24 +209,24 @@ type SignupByEmailReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e SignupByEmailReplyValidationError) Field() string { return e.field }
+func (e SignupByEmailResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e SignupByEmailReplyValidationError) Reason() string { return e.reason }
+func (e SignupByEmailResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e SignupByEmailReplyValidationError) Cause() error { return e.cause }
+func (e SignupByEmailResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e SignupByEmailReplyValidationError) Key() bool { return e.key }
+func (e SignupByEmailResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e SignupByEmailReplyValidationError) ErrorName() string {
-	return "SignupByEmailReplyValidationError"
+func (e SignupByEmailResponseValidationError) ErrorName() string {
+	return "SignupByEmailResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e SignupByEmailReplyValidationError) Error() string {
+func (e SignupByEmailResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -238,14 +238,14 @@ func (e SignupByEmailReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sSignupByEmailReply.%s: %s%s",
+		"invalid %sSignupByEmailResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = SignupByEmailReplyValidationError{}
+var _ error = SignupByEmailResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -253,7 +253,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = SignupByEmailReplyValidationError{}
+} = SignupByEmailResponseValidationError{}
 
 // Validate checks the field values on LoginByEmailPasswordRequest with the
 // rules defined in the proto definition for this message. If any rules are
@@ -362,22 +362,22 @@ var _ interface {
 	ErrorName() string
 } = LoginByEmailPasswordRequestValidationError{}
 
-// Validate checks the field values on LoginByEmailPasswordReply with the rules
-// defined in the proto definition for this message. If any rules are
+// Validate checks the field values on LoginByEmailPasswordResponse with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *LoginByEmailPasswordReply) Validate() error {
+func (m *LoginByEmailPasswordResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on LoginByEmailPasswordReply with the
+// ValidateAll checks the field values on LoginByEmailPasswordResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// LoginByEmailPasswordReplyMultiError, or nil if none found.
-func (m *LoginByEmailPasswordReply) ValidateAll() error {
+// LoginByEmailPasswordResponseMultiError, or nil if none found.
+func (m *LoginByEmailPasswordResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *LoginByEmailPasswordReply) validate(all bool) error {
+func (m *LoginByEmailPasswordResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -391,19 +391,19 @@ func (m *LoginByEmailPasswordReply) validate(all bool) error {
 	// no validation rules for ExpiresIn
 
 	if len(errors) > 0 {
-		return LoginByEmailPasswordReplyMultiError(errors)
+		return LoginByEmailPasswordResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// LoginByEmailPasswordReplyMultiError is an error wrapping multiple validation
-// errors returned by LoginByEmailPasswordReply.ValidateAll() if the
-// designated constraints aren't met.
-type LoginByEmailPasswordReplyMultiError []error
+// LoginByEmailPasswordResponseMultiError is an error wrapping multiple
+// validation errors returned by LoginByEmailPasswordResponse.ValidateAll() if
+// the designated constraints aren't met.
+type LoginByEmailPasswordResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m LoginByEmailPasswordReplyMultiError) Error() string {
+func (m LoginByEmailPasswordResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -412,11 +412,12 @@ func (m LoginByEmailPasswordReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m LoginByEmailPasswordReplyMultiError) AllErrors() []error { return m }
+func (m LoginByEmailPasswordResponseMultiError) AllErrors() []error { return m }
 
-// LoginByEmailPasswordReplyValidationError is the validation error returned by
-// LoginByEmailPasswordReply.Validate if the designated constraints aren't met.
-type LoginByEmailPasswordReplyValidationError struct {
+// LoginByEmailPasswordResponseValidationError is the validation error returned
+// by LoginByEmailPasswordResponse.Validate if the designated constraints
+// aren't met.
+type LoginByEmailPasswordResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -424,24 +425,24 @@ type LoginByEmailPasswordReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e LoginByEmailPasswordReplyValidationError) Field() string { return e.field }
+func (e LoginByEmailPasswordResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e LoginByEmailPasswordReplyValidationError) Reason() string { return e.reason }
+func (e LoginByEmailPasswordResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e LoginByEmailPasswordReplyValidationError) Cause() error { return e.cause }
+func (e LoginByEmailPasswordResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e LoginByEmailPasswordReplyValidationError) Key() bool { return e.key }
+func (e LoginByEmailPasswordResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e LoginByEmailPasswordReplyValidationError) ErrorName() string {
-	return "LoginByEmailPasswordReplyValidationError"
+func (e LoginByEmailPasswordResponseValidationError) ErrorName() string {
+	return "LoginByEmailPasswordResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e LoginByEmailPasswordReplyValidationError) Error() string {
+func (e LoginByEmailPasswordResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -453,14 +454,14 @@ func (e LoginByEmailPasswordReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sLoginByEmailPasswordReply.%s: %s%s",
+		"invalid %sLoginByEmailPasswordResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = LoginByEmailPasswordReplyValidationError{}
+var _ error = LoginByEmailPasswordResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -468,7 +469,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = LoginByEmailPasswordReplyValidationError{}
+} = LoginByEmailPasswordResponseValidationError{}
 
 // Validate checks the field values on RefreshTokenRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -574,22 +575,22 @@ var _ interface {
 	ErrorName() string
 } = RefreshTokenRequestValidationError{}
 
-// Validate checks the field values on RefreshTokenReply with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *RefreshTokenReply) Validate() error {
+// Validate checks the field values on RefreshTokenResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *RefreshTokenResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on RefreshTokenReply with the rules
+// ValidateAll checks the field values on RefreshTokenResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// RefreshTokenReplyMultiError, or nil if none found.
-func (m *RefreshTokenReply) ValidateAll() error {
+// RefreshTokenResponseMultiError, or nil if none found.
+func (m *RefreshTokenResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *RefreshTokenReply) validate(all bool) error {
+func (m *RefreshTokenResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -603,19 +604,19 @@ func (m *RefreshTokenReply) validate(all bool) error {
 	// no validation rules for ExpiresIn
 
 	if len(errors) > 0 {
-		return RefreshTokenReplyMultiError(errors)
+		return RefreshTokenResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// RefreshTokenReplyMultiError is an error wrapping multiple validation errors
-// returned by RefreshTokenReply.ValidateAll() if the designated constraints
-// aren't met.
-type RefreshTokenReplyMultiError []error
+// RefreshTokenResponseMultiError is an error wrapping multiple validation
+// errors returned by RefreshTokenResponse.ValidateAll() if the designated
+// constraints aren't met.
+type RefreshTokenResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m RefreshTokenReplyMultiError) Error() string {
+func (m RefreshTokenResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -624,11 +625,11 @@ func (m RefreshTokenReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m RefreshTokenReplyMultiError) AllErrors() []error { return m }
+func (m RefreshTokenResponseMultiError) AllErrors() []error { return m }
 
-// RefreshTokenReplyValidationError is the validation error returned by
-// RefreshTokenReply.Validate if the designated constraints aren't met.
-type RefreshTokenReplyValidationError struct {
+// RefreshTokenResponseValidationError is the validation error returned by
+// RefreshTokenResponse.Validate if the designated constraints aren't met.
+type RefreshTokenResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -636,24 +637,24 @@ type RefreshTokenReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e RefreshTokenReplyValidationError) Field() string { return e.field }
+func (e RefreshTokenResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e RefreshTokenReplyValidationError) Reason() string { return e.reason }
+func (e RefreshTokenResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e RefreshTokenReplyValidationError) Cause() error { return e.cause }
+func (e RefreshTokenResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e RefreshTokenReplyValidationError) Key() bool { return e.key }
+func (e RefreshTokenResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e RefreshTokenReplyValidationError) ErrorName() string {
-	return "RefreshTokenReplyValidationError"
+func (e RefreshTokenResponseValidationError) ErrorName() string {
+	return "RefreshTokenResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e RefreshTokenReplyValidationError) Error() string {
+func (e RefreshTokenResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -665,14 +666,14 @@ func (e RefreshTokenReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sRefreshTokenReply.%s: %s%s",
+		"invalid %sRefreshTokenResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = RefreshTokenReplyValidationError{}
+var _ error = RefreshTokenResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -680,7 +681,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = RefreshTokenReplyValidationError{}
+} = RefreshTokenResponseValidationError{}
 
 // Validate checks the field values on LogoutRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -784,22 +785,22 @@ var _ interface {
 	ErrorName() string
 } = LogoutRequestValidationError{}
 
-// Validate checks the field values on LogoutReply with the rules defined in
+// Validate checks the field values on LogoutResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *LogoutReply) Validate() error {
+func (m *LogoutResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on LogoutReply with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in LogoutReplyMultiError, or
-// nil if none found.
-func (m *LogoutReply) ValidateAll() error {
+// ValidateAll checks the field values on LogoutResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in LogoutResponseMultiError,
+// or nil if none found.
+func (m *LogoutResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *LogoutReply) validate(all bool) error {
+func (m *LogoutResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -809,18 +810,19 @@ func (m *LogoutReply) validate(all bool) error {
 	// no validation rules for Success
 
 	if len(errors) > 0 {
-		return LogoutReplyMultiError(errors)
+		return LogoutResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// LogoutReplyMultiError is an error wrapping multiple validation errors
-// returned by LogoutReply.ValidateAll() if the designated constraints aren't met.
-type LogoutReplyMultiError []error
+// LogoutResponseMultiError is an error wrapping multiple validation errors
+// returned by LogoutResponse.ValidateAll() if the designated constraints
+// aren't met.
+type LogoutResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m LogoutReplyMultiError) Error() string {
+func (m LogoutResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -829,11 +831,11 @@ func (m LogoutReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m LogoutReplyMultiError) AllErrors() []error { return m }
+func (m LogoutResponseMultiError) AllErrors() []error { return m }
 
-// LogoutReplyValidationError is the validation error returned by
-// LogoutReply.Validate if the designated constraints aren't met.
-type LogoutReplyValidationError struct {
+// LogoutResponseValidationError is the validation error returned by
+// LogoutResponse.Validate if the designated constraints aren't met.
+type LogoutResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -841,22 +843,22 @@ type LogoutReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e LogoutReplyValidationError) Field() string { return e.field }
+func (e LogoutResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e LogoutReplyValidationError) Reason() string { return e.reason }
+func (e LogoutResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e LogoutReplyValidationError) Cause() error { return e.cause }
+func (e LogoutResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e LogoutReplyValidationError) Key() bool { return e.key }
+func (e LogoutResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e LogoutReplyValidationError) ErrorName() string { return "LogoutReplyValidationError" }
+func (e LogoutResponseValidationError) ErrorName() string { return "LogoutResponseValidationError" }
 
 // Error satisfies the builtin error interface
-func (e LogoutReplyValidationError) Error() string {
+func (e LogoutResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -868,14 +870,14 @@ func (e LogoutReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sLogoutReply.%s: %s%s",
+		"invalid %sLogoutResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = LogoutReplyValidationError{}
+var _ error = LogoutResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -883,4 +885,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = LogoutReplyValidationError{}
+} = LogoutResponseValidationError{}

@@ -19,219 +19,219 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_SignupByEmail_FullMethodName        = "/auth.service.v1.Auth/SignupByEmail"
-	Auth_LoginByEmailPassword_FullMethodName = "/auth.service.v1.Auth/LoginByEmailPassword"
-	Auth_RefreshToken_FullMethodName         = "/auth.service.v1.Auth/RefreshToken"
-	Auth_Logout_FullMethodName               = "/auth.service.v1.Auth/Logout"
+	AuthService_SignupByEmail_FullMethodName        = "/auth.service.v1.AuthService/SignupByEmail"
+	AuthService_LoginByEmailPassword_FullMethodName = "/auth.service.v1.AuthService/LoginByEmailPassword"
+	AuthService_RefreshToken_FullMethodName         = "/auth.service.v1.AuthService/RefreshToken"
+	AuthService_Logout_FullMethodName               = "/auth.service.v1.AuthService/Logout"
 )
 
-// AuthClient is the client API for Auth service.
+// AuthServiceClient is the client API for AuthService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Auth gRPC 服务 - 纯 gRPC 接口
-type AuthClient interface {
-	SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailReply, error)
-	LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*LoginByEmailPasswordReply, error)
-	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenReply, error)
-	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutReply, error)
+type AuthServiceClient interface {
+	SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailResponse, error)
+	LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*LoginByEmailPasswordResponse, error)
+	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
+	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 }
 
-type authClient struct {
+type authServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
-	return &authClient{cc}
+func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
+	return &authServiceClient{cc}
 }
 
-func (c *authClient) SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailReply, error) {
+func (c *authServiceClient) SignupByEmail(ctx context.Context, in *SignupByEmailRequest, opts ...grpc.CallOption) (*SignupByEmailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SignupByEmailReply)
-	err := c.cc.Invoke(ctx, Auth_SignupByEmail_FullMethodName, in, out, cOpts...)
+	out := new(SignupByEmailResponse)
+	err := c.cc.Invoke(ctx, AuthService_SignupByEmail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authClient) LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*LoginByEmailPasswordReply, error) {
+func (c *authServiceClient) LoginByEmailPassword(ctx context.Context, in *LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*LoginByEmailPasswordResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LoginByEmailPasswordReply)
-	err := c.cc.Invoke(ctx, Auth_LoginByEmailPassword_FullMethodName, in, out, cOpts...)
+	out := new(LoginByEmailPasswordResponse)
+	err := c.cc.Invoke(ctx, AuthService_LoginByEmailPassword_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenReply, error) {
+func (c *authServiceClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RefreshTokenReply)
-	err := c.cc.Invoke(ctx, Auth_RefreshToken_FullMethodName, in, out, cOpts...)
+	out := new(RefreshTokenResponse)
+	err := c.cc.Invoke(ctx, AuthService_RefreshToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutReply, error) {
+func (c *authServiceClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LogoutReply)
-	err := c.cc.Invoke(ctx, Auth_Logout_FullMethodName, in, out, cOpts...)
+	out := new(LogoutResponse)
+	err := c.cc.Invoke(ctx, AuthService_Logout_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AuthServer is the server API for Auth service.
-// All implementations must embed UnimplementedAuthServer
+// AuthServiceServer is the server API for AuthService service.
+// All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
 //
 // Auth gRPC 服务 - 纯 gRPC 接口
-type AuthServer interface {
-	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error)
-	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error)
-	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenReply, error)
-	Logout(context.Context, *LogoutRequest) (*LogoutReply, error)
-	mustEmbedUnimplementedAuthServer()
+type AuthServiceServer interface {
+	SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailResponse, error)
+	LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordResponse, error)
+	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
+	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
+	mustEmbedUnimplementedAuthServiceServer()
 }
 
-// UnimplementedAuthServer must be embedded to have
+// UnimplementedAuthServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedAuthServer struct{}
+type UnimplementedAuthServiceServer struct{}
 
-func (UnimplementedAuthServer) SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailReply, error) {
+func (UnimplementedAuthServiceServer) SignupByEmail(context.Context, *SignupByEmailRequest) (*SignupByEmailResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SignupByEmail not implemented")
 }
-func (UnimplementedAuthServer) LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordReply, error) {
+func (UnimplementedAuthServiceServer) LoginByEmailPassword(context.Context, *LoginByEmailPasswordRequest) (*LoginByEmailPasswordResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method LoginByEmailPassword not implemented")
 }
-func (UnimplementedAuthServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenReply, error) {
+func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedAuthServer) Logout(context.Context, *LogoutRequest) (*LogoutReply, error) {
+func (UnimplementedAuthServiceServer) Logout(context.Context, *LogoutRequest) (*LogoutResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Logout not implemented")
 }
-func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
-func (UnimplementedAuthServer) testEmbeddedByValue()              {}
+func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
+func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
 
-// UnsafeAuthServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AuthServer will
+// UnsafeAuthServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AuthServiceServer will
 // result in compilation errors.
-type UnsafeAuthServer interface {
-	mustEmbedUnimplementedAuthServer()
+type UnsafeAuthServiceServer interface {
+	mustEmbedUnimplementedAuthServiceServer()
 }
 
-func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
-	// If the following call panics, it indicates UnimplementedAuthServer was
+func RegisterAuthServiceServer(s grpc.ServiceRegistrar, srv AuthServiceServer) {
+	// If the following call panics, it indicates UnimplementedAuthServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Auth_ServiceDesc, srv)
+	s.RegisterService(&AuthService_ServiceDesc, srv)
 }
 
-func _Auth_SignupByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_SignupByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SignupByEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServer).SignupByEmail(ctx, in)
+		return srv.(AuthServiceServer).SignupByEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Auth_SignupByEmail_FullMethodName,
+		FullMethod: AuthService_SignupByEmail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).SignupByEmail(ctx, req.(*SignupByEmailRequest))
+		return srv.(AuthServiceServer).SignupByEmail(ctx, req.(*SignupByEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Auth_LoginByEmailPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_LoginByEmailPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginByEmailPasswordRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServer).LoginByEmailPassword(ctx, in)
+		return srv.(AuthServiceServer).LoginByEmailPassword(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Auth_LoginByEmailPassword_FullMethodName,
+		FullMethod: AuthService_LoginByEmailPassword_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).LoginByEmailPassword(ctx, req.(*LoginByEmailPasswordRequest))
+		return srv.(AuthServiceServer).LoginByEmailPassword(ctx, req.(*LoginByEmailPasswordRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Auth_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RefreshTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServer).RefreshToken(ctx, in)
+		return srv.(AuthServiceServer).RefreshToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Auth_RefreshToken_FullMethodName,
+		FullMethod: AuthService_RefreshToken_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
+		return srv.(AuthServiceServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Auth_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LogoutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServer).Logout(ctx, in)
+		return srv.(AuthServiceServer).Logout(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Auth_Logout_FullMethodName,
+		FullMethod: AuthService_Logout_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Logout(ctx, req.(*LogoutRequest))
+		return srv.(AuthServiceServer).Logout(ctx, req.(*LogoutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
+// AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Auth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "auth.service.v1.Auth",
-	HandlerType: (*AuthServer)(nil),
+var AuthService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "auth.service.v1.AuthService",
+	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SignupByEmail",
-			Handler:    _Auth_SignupByEmail_Handler,
+			Handler:    _AuthService_SignupByEmail_Handler,
 		},
 		{
 			MethodName: "LoginByEmailPassword",
-			Handler:    _Auth_LoginByEmailPassword_Handler,
+			Handler:    _AuthService_LoginByEmailPassword_Handler,
 		},
 		{
 			MethodName: "RefreshToken",
-			Handler:    _Auth_RefreshToken_Handler,
+			Handler:    _AuthService_RefreshToken_Handler,
 		},
 		{
 			MethodName: "Logout",
-			Handler:    _Auth_Logout_Handler,
+			Handler:    _AuthService_Logout_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -30,7 +30,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/LoginByEmailPasswordReply'
+                                $ref: '#/components/schemas/LoginByEmailPasswordResponse'
     /v1/auth/logout:
         post:
             tags:
@@ -48,7 +48,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/LogoutReply'
+                                $ref: '#/components/schemas/LogoutResponse'
     /v1/auth/refresh-token:
         post:
             tags:
@@ -66,7 +66,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/RefreshTokenReply'
+                                $ref: '#/components/schemas/RefreshTokenResponse'
     /v1/auth/signup/using-email:
         post:
             tags:
@@ -84,7 +84,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SignupByEmailReply'
+                                $ref: '#/components/schemas/SignupByEmailResponse'
     /v1/test/Hello:
         post:
             tags:
@@ -158,7 +158,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/DeleteUserReply'
+                                $ref: '#/components/schemas/DeleteUserResponse'
             security:
                 - BearerAuth: []
     /v1/user/info:
@@ -172,7 +172,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CurrentUserInfoReply'
+                                $ref: '#/components/schemas/CurrentUserInfoResponse'
             security:
                 - BearerAuth: []
     /v1/user/save:
@@ -192,7 +192,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SaveUserReply'
+                                $ref: '#/components/schemas/SaveUserResponse'
             security:
                 - BearerAuth: []
     /v1/user/update:
@@ -212,12 +212,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UpdateUserReply'
+                                $ref: '#/components/schemas/UpdateUserResponse'
             security:
                 - BearerAuth: []
 components:
     schemas:
-        CurrentUserInfoReply:
+        CurrentUserInfoResponse:
             type: object
             properties:
                 id:
@@ -226,7 +226,7 @@ components:
                     type: string
                 role:
                     type: string
-        DeleteUserReply:
+        DeleteUserResponse:
             type: object
             properties:
                 success:
@@ -258,7 +258,15 @@ components:
                     type: object
                     description: 元数据
             description: Kratos 错误响应
-        LoginByEmailPasswordReply:
+        LoginByEmailPasswordRequest:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+            description: 密码登录请求
+        LoginByEmailPasswordResponse:
             type: object
             properties:
                 accessToken:
@@ -268,26 +276,18 @@ components:
                 expiresIn:
                     type: string
             description: 密码登录响应
-        LoginByEmailPasswordRequest:
-            type: object
-            properties:
-                email:
-                    type: string
-                password:
-                    type: string
-            description: 密码登录请求
-        LogoutReply:
-            type: object
-            properties:
-                success:
-                    type: boolean
-            description: 登出响应
         LogoutRequest:
             type: object
             properties:
                 refreshToken:
                     type: string
             description: 登出请求
+        LogoutResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+            description: 登出响应
         PrivateTestRequest:
             type: object
             properties: {}
@@ -296,7 +296,13 @@ components:
             properties:
                 message:
                     type: string
-        RefreshTokenReply:
+        RefreshTokenRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+            description: 刷新Token请求
+        RefreshTokenResponse:
             type: object
             properties:
                 accessToken:
@@ -306,17 +312,6 @@ components:
                 expiresIn:
                     type: string
             description: 刷新Token响应
-        RefreshTokenRequest:
-            type: object
-            properties:
-                refreshToken:
-                    type: string
-            description: 刷新Token请求
-        SaveUserReply:
-            type: object
-            properties:
-                id:
-                    type: string
         SaveUserRequest:
             type: object
             properties:
@@ -338,18 +333,11 @@ components:
                     type: string
                 role:
                     type: string
-        SignupByEmailReply:
+        SaveUserResponse:
             type: object
             properties:
                 id:
                     type: string
-                name:
-                    type: string
-                email:
-                    type: string
-                role:
-                    type: string
-            description: 邮箱注册响应
         SignupByEmailRequest:
             type: object
             properties:
@@ -365,6 +353,18 @@ components:
                 email:
                     type: string
             description: 邮箱注册请求
+        SignupByEmailResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                role:
+                    type: string
+            description: 邮箱注册响应
         TestRequest:
             type: object
             properties: {}
@@ -372,11 +372,6 @@ components:
             type: object
             properties:
                 message:
-                    type: string
-        UpdateUserReply:
-            type: object
-            properties:
-                success:
                     type: string
         UpdateUserRequest:
             type: object
@@ -400,6 +395,11 @@ components:
                 website:
                     type: string
                 role:
+                    type: string
+        UpdateUserResponse:
+            type: object
+            properties:
+                success:
                     type: string
     responses:
         default:

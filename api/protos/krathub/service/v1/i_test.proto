@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package krathub.service.v1;
 
-import "google/api/annotations.proto";
 import "gnostic/openapi/v3/annotations.proto";
+import "google/api/annotations.proto";
 import "test/service/v1/test.proto";
 
 option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubv1";
@@ -26,12 +26,16 @@ service TestService {
 
   rpc PrivateTest(test.service.v1.PrivateTestRequest) returns (test.service.v1.PrivateTestResponse) {
     option (gnostic.openapi.v3.operation) = {
-      security: [{
-        additional_properties: [{
-          name: "BearerAuth";
-          value: {}
-        }]
-      }]
+      security: [
+        {
+          additional_properties: [
+            {
+              name: "BearerAuth"
+              value: {}
+            }
+          ]
+        }
+      ]
     };
     option (google.api.http) = {
       post: "/v1/test/private"

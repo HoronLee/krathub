@@ -26,10 +26,10 @@ const OperationAuthServiceRefreshToken = "/krathub.service.v1.AuthService/Refres
 const OperationAuthServiceSignupByEmail = "/krathub.service.v1.AuthService/SignupByEmail"
 
 type AuthServiceHTTPServer interface {
-	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error)
-	Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutReply, error)
-	RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenReply, error)
-	SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailReply, error)
+	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordResponse, error)
+	Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutResponse, error)
+	RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenResponse, error)
+	SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailResponse, error)
 }
 
 func RegisterAuthServiceHTTPServer(s *http.Server, srv AuthServiceHTTPServer) {
@@ -57,7 +57,7 @@ func _AuthService_SignupByEmail0_HTTP_Handler(srv AuthServiceHTTPServer) func(ct
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.SignupByEmailReply)
+		reply := out.(*v1.SignupByEmailResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -79,7 +79,7 @@ func _AuthService_LoginByEmailPassword0_HTTP_Handler(srv AuthServiceHTTPServer) 
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.LoginByEmailPasswordReply)
+		reply := out.(*v1.LoginByEmailPasswordResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -101,7 +101,7 @@ func _AuthService_RefreshToken0_HTTP_Handler(srv AuthServiceHTTPServer) func(ctx
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.RefreshTokenReply)
+		reply := out.(*v1.RefreshTokenResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -123,16 +123,16 @@ func _AuthService_Logout0_HTTP_Handler(srv AuthServiceHTTPServer) func(ctx http.
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.LogoutReply)
+		reply := out.(*v1.LogoutResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
 type AuthServiceHTTPClient interface {
-	LoginByEmailPassword(ctx context.Context, req *v1.LoginByEmailPasswordRequest, opts ...http.CallOption) (rsp *v1.LoginByEmailPasswordReply, err error)
-	Logout(ctx context.Context, req *v1.LogoutRequest, opts ...http.CallOption) (rsp *v1.LogoutReply, err error)
-	RefreshToken(ctx context.Context, req *v1.RefreshTokenRequest, opts ...http.CallOption) (rsp *v1.RefreshTokenReply, err error)
-	SignupByEmail(ctx context.Context, req *v1.SignupByEmailRequest, opts ...http.CallOption) (rsp *v1.SignupByEmailReply, err error)
+	LoginByEmailPassword(ctx context.Context, req *v1.LoginByEmailPasswordRequest, opts ...http.CallOption) (rsp *v1.LoginByEmailPasswordResponse, err error)
+	Logout(ctx context.Context, req *v1.LogoutRequest, opts ...http.CallOption) (rsp *v1.LogoutResponse, err error)
+	RefreshToken(ctx context.Context, req *v1.RefreshTokenRequest, opts ...http.CallOption) (rsp *v1.RefreshTokenResponse, err error)
+	SignupByEmail(ctx context.Context, req *v1.SignupByEmailRequest, opts ...http.CallOption) (rsp *v1.SignupByEmailResponse, err error)
 }
 
 type AuthServiceHTTPClientImpl struct {
@@ -143,8 +143,8 @@ func NewAuthServiceHTTPClient(client *http.Client) AuthServiceHTTPClient {
 	return &AuthServiceHTTPClientImpl{client}
 }
 
-func (c *AuthServiceHTTPClientImpl) LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...http.CallOption) (*v1.LoginByEmailPasswordReply, error) {
-	var out v1.LoginByEmailPasswordReply
+func (c *AuthServiceHTTPClientImpl) LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...http.CallOption) (*v1.LoginByEmailPasswordResponse, error) {
+	var out v1.LoginByEmailPasswordResponse
 	pattern := "/v1/auth/login/email-password"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAuthServiceLoginByEmailPassword))
@@ -156,8 +156,8 @@ func (c *AuthServiceHTTPClientImpl) LoginByEmailPassword(ctx context.Context, in
 	return &out, nil
 }
 
-func (c *AuthServiceHTTPClientImpl) Logout(ctx context.Context, in *v1.LogoutRequest, opts ...http.CallOption) (*v1.LogoutReply, error) {
-	var out v1.LogoutReply
+func (c *AuthServiceHTTPClientImpl) Logout(ctx context.Context, in *v1.LogoutRequest, opts ...http.CallOption) (*v1.LogoutResponse, error) {
+	var out v1.LogoutResponse
 	pattern := "/v1/auth/logout"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAuthServiceLogout))
@@ -169,8 +169,8 @@ func (c *AuthServiceHTTPClientImpl) Logout(ctx context.Context, in *v1.LogoutReq
 	return &out, nil
 }
 
-func (c *AuthServiceHTTPClientImpl) RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...http.CallOption) (*v1.RefreshTokenReply, error) {
-	var out v1.RefreshTokenReply
+func (c *AuthServiceHTTPClientImpl) RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...http.CallOption) (*v1.RefreshTokenResponse, error) {
+	var out v1.RefreshTokenResponse
 	pattern := "/v1/auth/refresh-token"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAuthServiceRefreshToken))
@@ -182,8 +182,8 @@ func (c *AuthServiceHTTPClientImpl) RefreshToken(ctx context.Context, in *v1.Ref
 	return &out, nil
 }
 
-func (c *AuthServiceHTTPClientImpl) SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...http.CallOption) (*v1.SignupByEmailReply, error) {
-	var out v1.SignupByEmailReply
+func (c *AuthServiceHTTPClientImpl) SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...http.CallOption) (*v1.SignupByEmailResponse, error) {
+	var out v1.SignupByEmailResponse
 	pattern := "/v1/auth/signup/using-email"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAuthServiceSignupByEmail))

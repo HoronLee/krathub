@@ -32,10 +32,10 @@ const (
 //
 // Auth HTTP 服务 - 用于 OpenAPI 生成
 type AuthServiceClient interface {
-	SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...grpc.CallOption) (*v1.SignupByEmailReply, error)
-	LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*v1.LoginByEmailPasswordReply, error)
-	RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...grpc.CallOption) (*v1.RefreshTokenReply, error)
-	Logout(ctx context.Context, in *v1.LogoutRequest, opts ...grpc.CallOption) (*v1.LogoutReply, error)
+	SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...grpc.CallOption) (*v1.SignupByEmailResponse, error)
+	LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*v1.LoginByEmailPasswordResponse, error)
+	RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...grpc.CallOption) (*v1.RefreshTokenResponse, error)
+	Logout(ctx context.Context, in *v1.LogoutRequest, opts ...grpc.CallOption) (*v1.LogoutResponse, error)
 }
 
 type authServiceClient struct {
@@ -46,9 +46,9 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
 }
 
-func (c *authServiceClient) SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...grpc.CallOption) (*v1.SignupByEmailReply, error) {
+func (c *authServiceClient) SignupByEmail(ctx context.Context, in *v1.SignupByEmailRequest, opts ...grpc.CallOption) (*v1.SignupByEmailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.SignupByEmailReply)
+	out := new(v1.SignupByEmailResponse)
 	err := c.cc.Invoke(ctx, AuthService_SignupByEmail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -56,9 +56,9 @@ func (c *authServiceClient) SignupByEmail(ctx context.Context, in *v1.SignupByEm
 	return out, nil
 }
 
-func (c *authServiceClient) LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*v1.LoginByEmailPasswordReply, error) {
+func (c *authServiceClient) LoginByEmailPassword(ctx context.Context, in *v1.LoginByEmailPasswordRequest, opts ...grpc.CallOption) (*v1.LoginByEmailPasswordResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.LoginByEmailPasswordReply)
+	out := new(v1.LoginByEmailPasswordResponse)
 	err := c.cc.Invoke(ctx, AuthService_LoginByEmailPassword_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -66,9 +66,9 @@ func (c *authServiceClient) LoginByEmailPassword(ctx context.Context, in *v1.Log
 	return out, nil
 }
 
-func (c *authServiceClient) RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...grpc.CallOption) (*v1.RefreshTokenReply, error) {
+func (c *authServiceClient) RefreshToken(ctx context.Context, in *v1.RefreshTokenRequest, opts ...grpc.CallOption) (*v1.RefreshTokenResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.RefreshTokenReply)
+	out := new(v1.RefreshTokenResponse)
 	err := c.cc.Invoke(ctx, AuthService_RefreshToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -76,9 +76,9 @@ func (c *authServiceClient) RefreshToken(ctx context.Context, in *v1.RefreshToke
 	return out, nil
 }
 
-func (c *authServiceClient) Logout(ctx context.Context, in *v1.LogoutRequest, opts ...grpc.CallOption) (*v1.LogoutReply, error) {
+func (c *authServiceClient) Logout(ctx context.Context, in *v1.LogoutRequest, opts ...grpc.CallOption) (*v1.LogoutResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.LogoutReply)
+	out := new(v1.LogoutResponse)
 	err := c.cc.Invoke(ctx, AuthService_Logout_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -92,10 +92,10 @@ func (c *authServiceClient) Logout(ctx context.Context, in *v1.LogoutRequest, op
 //
 // Auth HTTP 服务 - 用于 OpenAPI 生成
 type AuthServiceServer interface {
-	SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailReply, error)
-	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error)
-	RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenReply, error)
-	Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutReply, error)
+	SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailResponse, error)
+	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordResponse, error)
+	RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenResponse, error)
+	Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -106,16 +106,16 @@ type AuthServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServiceServer struct{}
 
-func (UnimplementedAuthServiceServer) SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailReply, error) {
+func (UnimplementedAuthServiceServer) SignupByEmail(context.Context, *v1.SignupByEmailRequest) (*v1.SignupByEmailResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SignupByEmail not implemented")
 }
-func (UnimplementedAuthServiceServer) LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordReply, error) {
+func (UnimplementedAuthServiceServer) LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method LoginByEmailPassword not implemented")
 }
-func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenReply, error) {
+func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *v1.RefreshTokenRequest) (*v1.RefreshTokenResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedAuthServiceServer) Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutReply, error) {
+func (UnimplementedAuthServiceServer) Logout(context.Context, *v1.LogoutRequest) (*v1.LogoutResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}

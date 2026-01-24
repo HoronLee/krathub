@@ -4,10 +4,10 @@ build:
   excludes: []
 
 deps:
-  - 'buf.build/googleapis/googleapis'
-  - 'buf.build/kratos/apis'
-  - 'buf.build/bufbuild/protovalidate'
-  - 'buf.build/gnostic/gnostic'
+  - "buf.build/googleapis/googleapis"
+  - "buf.build/kratos/apis"
+  - "buf.build/bufbuild/protovalidate"
+  - "buf.build/gnostic/gnostic"
 
 breaking:
   use:
@@ -15,4 +15,4 @@ breaking:
 
 lint:
   use:
-    - DEFAULT
+    - STANDARD

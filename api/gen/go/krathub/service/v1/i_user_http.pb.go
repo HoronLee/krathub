@@ -26,10 +26,10 @@ const OperationUserServiceSaveUser = "/krathub.service.v1.UserService/SaveUser"
 const OperationUserServiceUpdateUser = "/krathub.service.v1.UserService/UpdateUser"
 
 type UserServiceHTTPServer interface {
-	CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoReply, error)
-	DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserReply, error)
-	SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserReply, error)
-	UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserReply, error)
+	CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoResponse, error)
+	DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserResponse, error)
+	SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserResponse, error)
+	UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserResponse, error)
 }
 
 func RegisterUserServiceHTTPServer(s *http.Server, srv UserServiceHTTPServer) {
@@ -54,7 +54,7 @@ func _UserService_CurrentUserInfo0_HTTP_Handler(srv UserServiceHTTPServer) func(
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.CurrentUserInfoReply)
+		reply := out.(*v1.CurrentUserInfoResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -76,7 +76,7 @@ func _UserService_UpdateUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx h
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.UpdateUserReply)
+		reply := out.(*v1.UpdateUserResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -98,7 +98,7 @@ func _UserService_SaveUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx htt
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.SaveUserReply)
+		reply := out.(*v1.SaveUserResponse)
 		return ctx.Result(200, reply)
 	}
 }
@@ -120,16 +120,16 @@ func _UserService_DeleteUser0_HTTP_Handler(srv UserServiceHTTPServer) func(ctx h
 		if err != nil {
 			return err
 		}
-		reply := out.(*v1.DeleteUserReply)
+		reply := out.(*v1.DeleteUserResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
 type UserServiceHTTPClient interface {
-	CurrentUserInfo(ctx context.Context, req *v1.CurrentUserInfoRequest, opts ...http.CallOption) (rsp *v1.CurrentUserInfoReply, err error)
-	DeleteUser(ctx context.Context, req *v1.DeleteUserRequest, opts ...http.CallOption) (rsp *v1.DeleteUserReply, err error)
-	SaveUser(ctx context.Context, req *v1.SaveUserRequest, opts ...http.CallOption) (rsp *v1.SaveUserReply, err error)
-	UpdateUser(ctx context.Context, req *v1.UpdateUserRequest, opts ...http.CallOption) (rsp *v1.UpdateUserReply, err error)
+	CurrentUserInfo(ctx context.Context, req *v1.CurrentUserInfoRequest, opts ...http.CallOption) (rsp *v1.CurrentUserInfoResponse, err error)
+	DeleteUser(ctx context.Context, req *v1.DeleteUserRequest, opts ...http.CallOption) (rsp *v1.DeleteUserResponse, err error)
+	SaveUser(ctx context.Context, req *v1.SaveUserRequest, opts ...http.CallOption) (rsp *v1.SaveUserResponse, err error)
+	UpdateUser(ctx context.Context, req *v1.UpdateUserRequest, opts ...http.CallOption) (rsp *v1.UpdateUserResponse, err error)
 }
 
 type UserServiceHTTPClientImpl struct {
@@ -140,8 +140,8 @@ func NewUserServiceHTTPClient(client *http.Client) UserServiceHTTPClient {
 	return &UserServiceHTTPClientImpl{client}
 }
 
-func (c *UserServiceHTTPClientImpl) CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...http.CallOption) (*v1.CurrentUserInfoReply, error) {
-	var out v1.CurrentUserInfoReply
+func (c *UserServiceHTTPClientImpl) CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...http.CallOption) (*v1.CurrentUserInfoResponse, error) {
+	var out v1.CurrentUserInfoResponse
 	pattern := "/v1/user/info"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationUserServiceCurrentUserInfo))
@@ -153,8 +153,8 @@ func (c *UserServiceHTTPClientImpl) CurrentUserInfo(ctx context.Context, in *v1.
 	return &out, nil
 }
 
-func (c *UserServiceHTTPClientImpl) DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...http.CallOption) (*v1.DeleteUserReply, error) {
-	var out v1.DeleteUserReply
+func (c *UserServiceHTTPClientImpl) DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...http.CallOption) (*v1.DeleteUserResponse, error) {
+	var out v1.DeleteUserResponse
 	pattern := "/v1/user/delete/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationUserServiceDeleteUser))
@@ -166,8 +166,8 @@ func (c *UserServiceHTTPClientImpl) DeleteUser(ctx context.Context, in *v1.Delet
 	return &out, nil
 }
 
-func (c *UserServiceHTTPClientImpl) SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...http.CallOption) (*v1.SaveUserReply, error) {
-	var out v1.SaveUserReply
+func (c *UserServiceHTTPClientImpl) SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...http.CallOption) (*v1.SaveUserResponse, error) {
+	var out v1.SaveUserResponse
 	pattern := "/v1/user/save"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUserServiceSaveUser))
@@ -179,8 +179,8 @@ func (c *UserServiceHTTPClientImpl) SaveUser(ctx context.Context, in *v1.SaveUse
 	return &out, nil
 }
 
-func (c *UserServiceHTTPClientImpl) UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...http.CallOption) (*v1.UpdateUserReply, error) {
-	var out v1.UpdateUserReply
+func (c *UserServiceHTTPClientImpl) UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...http.CallOption) (*v1.UpdateUserResponse, error) {
+	var out v1.UpdateUserResponse
 	pattern := "/v1/user/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUserServiceUpdateUser))

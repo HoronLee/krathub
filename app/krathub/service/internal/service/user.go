@@ -13,7 +13,7 @@ import (
 )
 
 type UserService struct {
-	userv1.UnimplementedUserServer
+	userv1.UnimplementedUserServiceServer
 
 	uc *biz.UserUsecase
 }
@@ -22,12 +22,12 @@ func NewUserService(uc *biz.UserUsecase) *UserService {
 	return &UserService{uc: uc}
 }
 
-func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUserInfoRequest) (*userv1.CurrentUserInfoReply, error) {
+func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUserInfoRequest) (*userv1.CurrentUserInfoResponse, error) {
 	user, err := s.uc.CurrentUserInfo(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.CurrentUserInfoReply{
+	return &userv1.CurrentUserInfoResponse{
 		Id:   user.ID,
 		Name: user.Name,
 		Role: user.Role,
@@ -35,7 +35,7 @@ func (s *UserService) CurrentUserInfo(ctx context.Context, req *userv1.CurrentUs
 }
 
 // UpdateUser 更新用户信息
-func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequest) (*userv1.UpdateUserReply, error) {
+func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequest) (*userv1.UpdateUserResponse, error) {
 	currentUser, err := s.uc.CurrentUserInfo(ctx)
 	if err != nil {
 		return nil, err
@@ -75,13 +75,13 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userv1.UpdateUserRequ
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.UpdateUserReply{
+	return &userv1.UpdateUserResponse{
 		Success: "true",
 	}, nil
 }
 
 // SaveUser 保存用户
-func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest) (*userv1.SaveUserReply, error) {
+func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest) (*userv1.SaveUserResponse, error) {
 	user := &po.User{
 		Name:     req.Name,
 		Email:    req.Email,
@@ -97,16 +97,16 @@ func (s *UserService) SaveUser(ctx context.Context, req *userv1.SaveUserRequest)
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.SaveUserReply{Id: fmt.Sprintf("%d", user.ID)}, nil
+	return &userv1.SaveUserResponse{Id: fmt.Sprintf("%d", user.ID)}, nil
 }
 
 // DeleteUser 删除用户
-func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserReply, error) {
+func (s *UserService) DeleteUser(ctx context.Context, req *userv1.DeleteUserRequest) (*userv1.DeleteUserResponse, error) {
 	success, err := s.uc.DeleteUser(ctx, &po.User{
 		ID: req.Id,
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &userv1.DeleteUserReply{Success: success}, err
+	return &userv1.DeleteUserResponse{Success: success}, err
 }

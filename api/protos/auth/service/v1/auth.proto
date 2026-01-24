@@ -37,11 +37,11 @@ enum ErrorReason {
 }
 
 // Auth gRPC 服务 - 纯 gRPC 接口
-service Auth {
-  rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailReply);
-  rpc LoginByEmailPassword(LoginByEmailPasswordRequest) returns (LoginByEmailPasswordReply);
-  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenReply);
-  rpc Logout(LogoutRequest) returns (LogoutReply);
+service AuthService {
+  rpc SignupByEmail(SignupByEmailRequest) returns (SignupByEmailResponse);
+  rpc LoginByEmailPassword(LoginByEmailPasswordRequest) returns (LoginByEmailPasswordResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
 }
 
 // 邮箱注册请求
@@ -62,7 +62,7 @@ message SignupByEmailRequest {
 }
 
 // 邮箱注册响应
-message SignupByEmailReply {
+message SignupByEmailResponse {
   int64 id = 1;
   string name = 2;
   string email = 3;
@@ -79,7 +79,7 @@ message LoginByEmailPasswordRequest {
 }
 
 // 密码登录响应
-message LoginByEmailPasswordReply {
+message LoginByEmailPasswordResponse {
   string access_token = 1;
   string refresh_token = 2;
   int64 expires_in = 3; // Access Token过期时间(秒)
@@ -91,7 +91,7 @@ message RefreshTokenRequest {
 }
 
 // 刷新Token响应
-message RefreshTokenReply {
+message RefreshTokenResponse {
   string access_token = 1;
   string refresh_token = 2;
   int64 expires_in = 3; // Access Token过期时间(秒)
@@ -103,6 +103,6 @@ message LogoutRequest {
 }
 
 // 登出响应
-message LogoutReply {
+message LogoutResponse {
   bool success = 1;
 }

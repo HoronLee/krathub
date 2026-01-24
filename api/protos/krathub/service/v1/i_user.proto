@@ -2,35 +2,42 @@ syntax = "proto3";
 
 package krathub.service.v1;
 
-import "google/api/annotations.proto";
 import "gnostic/openapi/v3/annotations.proto";
-
+import "google/api/annotations.proto";
 import "user/service/v1/user.proto";
 
 option go_package = "github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubv1";
 
 // User HTTP 服务 - 用于 OpenAPI 生成
 service UserService {
-  rpc CurrentUserInfo(user.service.v1.CurrentUserInfoRequest) returns (user.service.v1.CurrentUserInfoReply) {
+  rpc CurrentUserInfo(user.service.v1.CurrentUserInfoRequest) returns (user.service.v1.CurrentUserInfoResponse) {
     option (gnostic.openapi.v3.operation) = {
-      security: [{
-        additional_properties: [{
-          name: "BearerAuth";
-          value: {}
-        }]
-      }]
+      security: [
+        {
+          additional_properties: [
+            {
+              name: "BearerAuth"
+              value: {}
+            }
+          ]
+        }
+      ]
     };
     option (google.api.http) = {get: "/v1/user/info"};
   }
 
-  rpc UpdateUser(user.service.v1.UpdateUserRequest) returns (user.service.v1.UpdateUserReply) {
+  rpc UpdateUser(user.service.v1.UpdateUserRequest) returns (user.service.v1.UpdateUserResponse) {
     option (gnostic.openapi.v3.operation) = {
-      security: [{
-        additional_properties: [{
-          name: "BearerAuth";
-          value: {}
-        }]
-      }]
+      security: [
+        {
+          additional_properties: [
+            {
+              name: "BearerAuth"
+              value: {}
+            }
+          ]
+        }
+      ]
     };
     option (google.api.http) = {
       post: "/v1/user/update"
@@ -38,14 +45,18 @@ service UserService {
     };
   }
 
-  rpc SaveUser(user.service.v1.SaveUserRequest) returns (user.service.v1.SaveUserReply) {
+  rpc SaveUser(user.service.v1.SaveUserRequest) returns (user.service.v1.SaveUserResponse) {
     option (gnostic.openapi.v3.operation) = {
-      security: [{
-        additional_properties: [{
-          name: "BearerAuth";
-          value: {}
-        }]
-      }]
+      security: [
+        {
+          additional_properties: [
+            {
+              name: "BearerAuth"
+              value: {}
+            }
+          ]
+        }
+      ]
     };
     option (google.api.http) = {
       post: "/v1/user/save"
@@ -53,14 +64,18 @@ service UserService {
     };
   }
 
-  rpc DeleteUser(user.service.v1.DeleteUserRequest) returns (user.service.v1.DeleteUserReply) {
+  rpc DeleteUser(user.service.v1.DeleteUserRequest) returns (user.service.v1.DeleteUserResponse) {
     option (gnostic.openapi.v3.operation) = {
-      security: [{
-        additional_properties: [{
-          name: "BearerAuth";
-          value: {}
-        }]
-      }]
+      security: [
+        {
+          additional_properties: [
+            {
+              name: "BearerAuth"
+              value: {}
+            }
+          ]
+        }
+      ]
     };
     option (google.api.http) = {delete: "/v1/user/delete/{id}"};
   }

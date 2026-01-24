@@ -32,10 +32,10 @@ const (
 //
 // User HTTP 服务 - 用于 OpenAPI 生成
 type UserServiceClient interface {
-	CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...grpc.CallOption) (*v1.CurrentUserInfoReply, error)
-	UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...grpc.CallOption) (*v1.UpdateUserReply, error)
-	SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...grpc.CallOption) (*v1.SaveUserReply, error)
-	DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...grpc.CallOption) (*v1.DeleteUserReply, error)
+	CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...grpc.CallOption) (*v1.CurrentUserInfoResponse, error)
+	UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...grpc.CallOption) (*v1.UpdateUserResponse, error)
+	SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...grpc.CallOption) (*v1.SaveUserResponse, error)
+	DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...grpc.CallOption) (*v1.DeleteUserResponse, error)
 }
 
 type userServiceClient struct {
@@ -46,9 +46,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...grpc.CallOption) (*v1.CurrentUserInfoReply, error) {
+func (c *userServiceClient) CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...grpc.CallOption) (*v1.CurrentUserInfoResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.CurrentUserInfoReply)
+	out := new(v1.CurrentUserInfoResponse)
 	err := c.cc.Invoke(ctx, UserService_CurrentUserInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -56,9 +56,9 @@ func (c *userServiceClient) CurrentUserInfo(ctx context.Context, in *v1.CurrentU
 	return out, nil
 }
 
-func (c *userServiceClient) UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...grpc.CallOption) (*v1.UpdateUserReply, error) {
+func (c *userServiceClient) UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...grpc.CallOption) (*v1.UpdateUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.UpdateUserReply)
+	out := new(v1.UpdateUserResponse)
 	err := c.cc.Invoke(ctx, UserService_UpdateUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -66,9 +66,9 @@ func (c *userServiceClient) UpdateUser(ctx context.Context, in *v1.UpdateUserReq
 	return out, nil
 }
 
-func (c *userServiceClient) SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...grpc.CallOption) (*v1.SaveUserReply, error) {
+func (c *userServiceClient) SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...grpc.CallOption) (*v1.SaveUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.SaveUserReply)
+	out := new(v1.SaveUserResponse)
 	err := c.cc.Invoke(ctx, UserService_SaveUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -76,9 +76,9 @@ func (c *userServiceClient) SaveUser(ctx context.Context, in *v1.SaveUserRequest
 	return out, nil
 }
 
-func (c *userServiceClient) DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...grpc.CallOption) (*v1.DeleteUserReply, error) {
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...grpc.CallOption) (*v1.DeleteUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.DeleteUserReply)
+	out := new(v1.DeleteUserResponse)
 	err := c.cc.Invoke(ctx, UserService_DeleteUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -92,10 +92,10 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *v1.DeleteUserReq
 //
 // User HTTP 服务 - 用于 OpenAPI 生成
 type UserServiceServer interface {
-	CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoReply, error)
-	UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserReply, error)
-	SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserReply, error)
-	DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserReply, error)
+	CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoResponse, error)
+	UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserResponse, error)
+	SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserResponse, error)
+	DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -106,16 +106,16 @@ type UserServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserServiceServer struct{}
 
-func (UnimplementedUserServiceServer) CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoReply, error) {
+func (UnimplementedUserServiceServer) CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CurrentUserInfo not implemented")
 }
-func (UnimplementedUserServiceServer) UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserReply, error) {
+func (UnimplementedUserServiceServer) UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUserServiceServer) SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserReply, error) {
+func (UnimplementedUserServiceServer) SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SaveUser not implemented")
 }
-func (UnimplementedUserServiceServer) DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserReply, error) {
+func (UnimplementedUserServiceServer) DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}

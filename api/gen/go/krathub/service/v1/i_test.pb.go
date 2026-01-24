@@ -27,7 +27,7 @@ var File_krathub_service_v1_i_test_proto protoreflect.FileDescriptor
 
 const file_krathub_service_v1_i_test_proto_rawDesc = "" +
 	"\n" +
-	"\x1fkrathub/service/v1/i_test.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a$gnostic/openapi/v3/annotations.proto\x1a\x1atest/service/v1/test.proto2\xdc\x02\n" +
+	"\x1fkrathub/service/v1/i_test.proto\x12\x12krathub.service.v1\x1a$gnostic/openapi/v3/annotations.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1atest/service/v1/test.proto2\xdc\x02\n" +
 	"\vTestService\x12a\n" +
 	"\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/test/Hello\x12]\n" +
 	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/test/test\x12\x8a\x01\n" +
