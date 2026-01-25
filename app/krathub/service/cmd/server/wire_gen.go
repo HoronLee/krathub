@@ -32,8 +32,10 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	if err != nil {
 		return nil, nil, err
 	}
-	grpcServer := server.NewGRPCServer(confServer, trace, serverMetrics, logger)
+	grpcMiddleware := server.NewGRPCMiddleware(trace, serverMetrics, logger)
+	grpcServer := server.NewGRPCServer(confServer, grpcMiddleware, logger)
 	authJWT := middleware.NewAuthMiddleware(app)
+	httpMiddleware := server.NewHTTPMiddleware(trace, serverMetrics, logger, authJWT)
 	db, err := data.NewDB(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -61,7 +63,7 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	testRepo := data.NewTestRepo(dataData, logger)
 	testUsecase := biz.NewTestUsecase(testRepo, logger)
 	testService := service.NewTestService(testUsecase)
-	httpServer := server.NewHTTPServer(confServer, trace, authJWT, serverMetrics, logger, authService, userService, testService)
+	httpServer := server.NewHTTPServer(confServer, httpMiddleware, serverMetrics, logger, authService, userService, testService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup2()

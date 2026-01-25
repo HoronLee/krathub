@@ -6,9 +6,10 @@ import (
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	krathubv1 "github.com/horonlee/krathub/api/gen/go/krathub/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
-	mw "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
+	mwinter "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	logpkg "github.com/horonlee/krathub/pkg/logger"
+	mwpkg "github.com/horonlee/krathub/pkg/middleware"
 	"github.com/horonlee/krathub/pkg/middleware/cors"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
@@ -23,31 +24,84 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
-// NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, trace *conf.Trace, authJWT mw.AuthJWT, m *Metrics, logger log.Logger, auth *service.AuthService, user *service.UserService, test *service.TestService) *http.Server {
-	httpLogger := pkglogger.WithModule(logger, "http/server/krathub-service")
-	var mws []middleware.Middleware
-	mws = []middleware.Middleware{
+// HTTPMiddleware 用于 Wire 注入的中间件切片包装类型
+type HTTPMiddleware []middleware.Middleware
+
+// NewHTTPMiddleware 创建 HTTP 中间件（使用白名单机制）
+func NewHTTPMiddleware(
+	trace *conf.Trace,
+	m *Metrics,
+	logger log.Logger,
+	authJWT mwinter.AuthJWT,
+) HTTPMiddleware {
+	httpLogger := logpkg.WithModule(logger, "http/server/krathub-service")
+
+	var ms []middleware.Middleware
+	ms = append(ms,
 		recovery.Recovery(),
 		logging.Server(httpLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
-	}
-	// 开启链路追踪
+	)
+
 	if trace != nil && trace.Endpoint != "" {
-		mws = append(mws, tracing.Server())
+		ms = append(ms, tracing.Server())
 	}
-	// 开启 metrics
+
 	if m != nil {
-		mws = append(mws, metrics.Server(
+		ms = append(ms, metrics.Server(
 			metrics.WithSeconds(m.Seconds),
 			metrics.WithRequests(m.Requests),
 		))
 	}
-	// 配置特殊路由
-	mws = append(mws, configureRoutes(authJWT)...)
+
+	// 公开接口白名单（无需认证）
+	publicWhitelist := mwpkg.NewWhiteList(mwpkg.Exact,
+		krathubv1.OperationAuthServiceLoginByEmailPassword,
+		krathubv1.OperationAuthServiceRefreshToken,
+		krathubv1.OperationAuthServiceSignupByEmail,
+		krathubv1.OperationTestServiceTest,
+		krathubv1.OperationTestServiceHello,
+	)
+
+	// Admin 权限排除白名单（公开接口 + 只需 User 权限的接口都跳过 Admin 检查）
+	adminExcludeWhitelist := mwpkg.NewWhiteList(mwpkg.Exact,
+		krathubv1.OperationAuthServiceLoginByEmailPassword,
+		krathubv1.OperationAuthServiceRefreshToken,
+		krathubv1.OperationAuthServiceSignupByEmail,
+		krathubv1.OperationTestServiceTest,
+		krathubv1.OperationTestServiceHello,
+		krathubv1.OperationUserServiceCurrentUserInfo,
+		krathubv1.OperationUserServiceUpdateUser,
+		krathubv1.OperationTestServicePrivateTest,
+	)
+
+	ms = append(ms,
+		selector.Server(authJWT(consts.User)).
+			Match(publicWhitelist.MatchFunc()).
+			Build(),
+		selector.Server(authJWT(consts.Admin)).
+			Match(adminExcludeWhitelist.MatchFunc()).
+			Build(),
+	)
+
+	return ms
+}
+
+// NewHTTPServer new an HTTP server.
+func NewHTTPServer(
+	c *conf.Server,
+	middlewares HTTPMiddleware,
+	m *Metrics,
+	logger log.Logger,
+	auth *service.AuthService,
+	user *service.UserService,
+	test *service.TestService,
+) *http.Server {
+	httpLogger := logpkg.WithModule(logger, "http/server/krathub-service")
+
 	var opts = []http.ServerOption{
-		http.Middleware(mws...),
+		http.Middleware(middlewares...),
 		http.Logger(httpLogger),
 	}
 	if c.Http.Network != "" {
@@ -60,7 +114,7 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, authJWT mw.AuthJWT, m *Met
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	if c.Http.Cors != nil {
-		corsOptions := mw.CORS(c.Http.Cors)
+		corsOptions := mwinter.CORS(c.Http.Cors)
 		if len(corsOptions.AllowedOrigins) > 0 {
 			opts = append(opts, http.Filter(cors.Middleware(corsOptions)))
 			httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
@@ -76,37 +130,16 @@ func NewHTTPServer(c *conf.Server, trace *conf.Trace, authJWT mw.AuthJWT, m *Met
 		}
 		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}
+
 	srv := http.NewServer(opts...)
-	// 开启 metrics 路由
+
 	if m != nil {
 		srv.Handle("/metrics", m.Handler)
 	}
 
-	// 注册服务 - 使用 krathub HTTP 服务（i_*.proto 生成的）
 	krathubv1.RegisterAuthServiceHTTPServer(srv, auth)
 	krathubv1.RegisterUserServiceHTTPServer(srv, user)
 	krathubv1.RegisterTestServiceHTTPServer(srv, test)
-	return srv
-}
 
-// configureRoutes 配置权限路由中间件
-func configureRoutes(authMiddleware mw.AuthJWT) []middleware.Middleware {
-	return []middleware.Middleware{
-		// 需要User权限的接口
-		selector.Server(authMiddleware(consts.UserRole(2))).
-			Path(
-				// UserService 所有方法
-				krathubv1.OperationUserServiceCurrentUserInfo,
-				krathubv1.OperationUserServiceUpdateUser,
-				krathubv1.OperationUserServiceDeleteUser,
-				krathubv1.OperationUserServiceSaveUser,
-				// TestService 特定方法
-				krathubv1.OperationTestServicePrivateTest,
-			).
-			Build(),
-		// 需要Admin权限的接口
-		selector.Server(authMiddleware(consts.UserRole(3))).
-			Path(krathubv1.OperationUserServiceDeleteUser, krathubv1.OperationUserServiceSaveUser).
-			Build(),
-	}
+	return srv
 }

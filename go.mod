@@ -4,14 +4,13 @@ go 1.25.3
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1
-	github.com/fatedier/golib v0.5.1
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20251015020953-cdff24709025
 	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20251015020953-cdff24709025
 	github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20251015020953-cdff24709025
 	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20251015020953-cdff24709025
 	github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20251015020953-cdff24709025
-	github.com/go-kratos/kratos/v2 v2.9.1
+	github.com/go-kratos/kratos/v2 v2.9.2
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/gnostic v0.7.1
 	github.com/google/wire v0.7.0

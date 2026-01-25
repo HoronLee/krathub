@@ -7,4 +7,4 @@ import (
 )
 
 // ProviderSet is server providers.
-var ProviderSet = wire.NewSet(middleware.ProviderSet, NewRegistrar, NewGRPCServer, NewHTTPServer, NewMetrics)
+var ProviderSet = wire.NewSet(middleware.ProviderSet, NewRegistrar, NewGRPCMiddleware, NewGRPCServer, NewHTTPMiddleware, NewHTTPServer, NewMetrics)

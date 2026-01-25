@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	logpkg "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -19,30 +19,51 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-// NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, m *Metrics, logger log.Logger) *grpc.Server {
-	grpcLogger := pkglogger.WithModule(logger, "grpc/server/krathub-service")
-	var mws []middleware.Middleware
-	mws = []middleware.Middleware{
+// GRPCMiddleware 用于 Wire 注入的中间件切片包装类型
+type GRPCMiddleware []middleware.Middleware
+
+// NewGRPCMiddleware 创建 gRPC 中间件
+func NewGRPCMiddleware(
+	trace *conf.Trace,
+	m *Metrics,
+	logger log.Logger,
+) GRPCMiddleware {
+	grpcLogger := logpkg.WithModule(logger, "grpc/server/krathub-service")
+
+	var ms []middleware.Middleware
+	ms = append(ms,
 		recovery.Recovery(),
 		logging.Server(grpcLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
-	}
+	)
+
 	// 开启链路追踪
 	if trace != nil && trace.Endpoint != "" {
-		mws = append(mws, tracing.Server())
+		ms = append(ms, tracing.Server())
 	}
 
 	// 开启 metrics
 	if m != nil {
-		mws = append(mws, metrics.Server(
+		ms = append(ms, metrics.Server(
 			metrics.WithSeconds(m.Seconds),
 			metrics.WithRequests(m.Requests),
 		))
 	}
+
+	return ms
+}
+
+// NewGRPCServer new a gRPC server.
+func NewGRPCServer(
+	c *conf.Server,
+	middlewares GRPCMiddleware,
+	logger log.Logger,
+) *grpc.Server {
+	grpcLogger := logpkg.WithModule(logger, "grpc/server/krathub-service")
+
 	opts := []grpc.ServerOption{
-		grpc.Middleware(mws...),
+		grpc.Middleware(middlewares...),
 		grpc.Logger(grpcLogger),
 	}
 	if c.Grpc.Network != "" {
@@ -62,6 +83,7 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, m *Metrics, logger log.Log
 		creds := credentials.NewTLS(&tls.Config{Certificates: []tls.Certificate{cert}})
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))
 	}
+
 	srv := grpc.NewServer(opts...)
 
 	// 注册服务
