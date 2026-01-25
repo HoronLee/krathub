@@ -93,6 +93,27 @@ func (w *WhiteList) Snapshot() []string {
 	return res
 }
 
+// Merge creates a new WhiteList containing items from both whitelists
+func (w *WhiteList) Merge(other *WhiteList) *WhiteList {
+	w.mu.RLock()
+	other.mu.RLock()
+	defer w.mu.RUnlock()
+	defer other.mu.RUnlock()
+
+	newItems := make(map[string]struct{}, len(w.items)+len(other.items))
+	for k := range w.items {
+		newItems[k] = struct{}{}
+	}
+	for k := range other.items {
+		newItems[k] = struct{}{}
+	}
+
+	return &WhiteList{
+		items: newItems,
+		mode:  w.mode,
+	}
+}
+
 // isWhitelistedLocked checks match under read lock
 func (w *WhiteList) isWhitelistedLocked(op string) bool {
 	switch w.mode {

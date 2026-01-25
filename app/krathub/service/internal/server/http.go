@@ -64,17 +64,15 @@ func NewHTTPMiddleware(
 		krathubv1.OperationTestServiceHello,
 	)
 
-	// Admin 权限排除白名单（公开接口 + 只需 User 权限的接口都跳过 Admin 检查）
-	adminExcludeWhitelist := mwpkg.NewWhiteList(mwpkg.Exact,
-		krathubv1.OperationAuthServiceLoginByEmailPassword,
-		krathubv1.OperationAuthServiceRefreshToken,
-		krathubv1.OperationAuthServiceSignupByEmail,
-		krathubv1.OperationTestServiceTest,
-		krathubv1.OperationTestServiceHello,
+	// User 级接口白名单（需要 User 权限但跳过 Admin 检查）
+	userWhitelist := mwpkg.NewWhiteList(mwpkg.Exact,
 		krathubv1.OperationUserServiceCurrentUserInfo,
 		krathubv1.OperationUserServiceUpdateUser,
 		krathubv1.OperationTestServicePrivateTest,
 	)
+
+	// Admin 权限排除白名单 = 公开接口 ∪ User 级接口
+	adminExcludeWhitelist := publicWhitelist.Merge(userWhitelist)
 
 	ms = append(ms,
 		selector.Server(authJWT(consts.User)).
