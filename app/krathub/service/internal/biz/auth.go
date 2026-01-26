@@ -4,12 +4,12 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"github.com/horonlee/krathub/pkg/helpers/hash"
 	"time"
 
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
-	"github.com/horonlee/krathub/pkg/hash"
 	jwtpkg "github.com/horonlee/krathub/pkg/jwt"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 

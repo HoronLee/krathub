@@ -2,10 +2,10 @@ package data
 
 import (
 	"context"
+	"github.com/horonlee/krathub/pkg/helpers/hash"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
-	"github.com/horonlee/krathub/pkg/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
