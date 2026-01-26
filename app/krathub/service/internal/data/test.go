@@ -6,7 +6,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	sayhellopb "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	"github.com/horonlee/krathub/pkg/client"
+	"github.com/horonlee/krathub/pkg/transport/client"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	gogrpc "google.golang.org/grpc"
 )

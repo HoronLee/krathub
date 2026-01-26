@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/pkg/registry"
+	"github.com/horonlee/krathub/pkg/governance/registry"
 
 	kratosRegistry "github.com/go-kratos/kratos/v2/registry"
 )

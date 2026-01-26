@@ -15,7 +15,7 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/server"
 	"github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
-	"github.com/horonlee/krathub/pkg/client"
+	"github.com/horonlee/krathub/pkg/transport/client"
 )
 
 import (

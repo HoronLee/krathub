@@ -11,7 +11,7 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/data"
 	"github.com/horonlee/krathub/app/krathub/service/internal/server"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
-	"github.com/horonlee/krathub/pkg/client"
+	"github.com/horonlee/krathub/pkg/transport/client"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

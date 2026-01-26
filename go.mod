@@ -3,7 +3,7 @@ module github.com/horonlee/krathub
 go 1.25.3
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20251209175733-2a1774d88802.1
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20251015020953-cdff24709025
 	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20251015020953-cdff24709025
@@ -41,7 +41,7 @@ require (
 )
 
 require (
-	buf.build/go/protovalidate v1.0.0 // indirect
+	buf.build/go/protovalidate v1.1.0 // indirect
 	cel.dev/expr v0.24.0 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -142,8 +142,3 @@ require (
 	modernc.org/memory v1.11.0 // indirect
 	modernc.org/sqlite v1.39.1 // indirect
 )
-
-replace github.com/go-kratos/kratos/contrib/registry/consul/v2 => github.com/horonlee/kratos/contrib/registry/consul/v2 v2.0.0-20250908143215-8424ea00fb4f
-
-// PR: https://github.com/go-kratos/kratos/pull/3707
-// replace github.com/go-kratos/kratos/contrib/registry/consul/v2 => /home/horonlee/projects/kratos/contrib/registry/consul
