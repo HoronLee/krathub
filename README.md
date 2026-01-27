@@ -42,18 +42,8 @@ cd krathub
 ```
 
 ### 安装开发工具
-
-```shell
-# 安装 Kratos CLI
-go install github.com/go-kratos/kratos/cmd/kratos/v2@latest
-
-# 安装 Buf CLI
-go install github.com/bufbuild/buf/cmd/buf@latest
-
-# 安装 Wire
-go install github.com/google/wire/cmd/wire@latest
-
-# 安装其他必要工具
+```
+# 通过Make初始化开发环境
 make init
 ```
 
