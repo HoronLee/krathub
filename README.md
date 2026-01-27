@@ -42,6 +42,7 @@ cd krathub
 ```
 
 ### 安装开发工具
+```
 # 通过Make初始化开发环境
 make init
 ```
