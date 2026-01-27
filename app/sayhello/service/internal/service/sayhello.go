@@ -8,7 +8,7 @@ import (
 )
 
 type SayHelloService struct {
-	sayhellov1.UnimplementedSayHelloServer
+	sayhellov1.UnimplementedSayHelloServiceServer
 }
 
 func NewSayHelloService() *SayHelloService {

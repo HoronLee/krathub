@@ -19,18 +19,18 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationSayHelloHello = "/sayhello.service.v1.SayHello/Hello"
+const OperationSayHelloServiceHello = "/sayhello.service.v1.SayHelloService/Hello"
 
-type SayHelloHTTPServer interface {
+type SayHelloServiceHTTPServer interface {
 	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
 }
 
-func RegisterSayHelloHTTPServer(s *http.Server, srv SayHelloHTTPServer) {
+func RegisterSayHelloServiceHTTPServer(s *http.Server, srv SayHelloServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/SayHello", _SayHello_Hello0_HTTP_Handler(srv))
+	r.POST("/SayHello", _SayHelloService_Hello0_HTTP_Handler(srv))
 }
 
-func _SayHello_Hello0_HTTP_Handler(srv SayHelloHTTPServer) func(ctx http.Context) error {
+func _SayHelloService_Hello0_HTTP_Handler(srv SayHelloServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in HelloRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -39,7 +39,7 @@ func _SayHello_Hello0_HTTP_Handler(srv SayHelloHTTPServer) func(ctx http.Context
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationSayHelloHello)
+		http.SetOperation(ctx, OperationSayHelloServiceHello)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Hello(ctx, req.(*HelloRequest))
 		})
@@ -52,23 +52,23 @@ func _SayHello_Hello0_HTTP_Handler(srv SayHelloHTTPServer) func(ctx http.Context
 	}
 }
 
-type SayHelloHTTPClient interface {
+type SayHelloServiceHTTPClient interface {
 	Hello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloResponse, err error)
 }
 
-type SayHelloHTTPClientImpl struct {
+type SayHelloServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewSayHelloHTTPClient(client *http.Client) SayHelloHTTPClient {
-	return &SayHelloHTTPClientImpl{client}
+func NewSayHelloServiceHTTPClient(client *http.Client) SayHelloServiceHTTPClient {
+	return &SayHelloServiceHTTPClientImpl{client}
 }
 
-func (c *SayHelloHTTPClientImpl) Hello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloResponse, error) {
+func (c *SayHelloServiceHTTPClientImpl) Hello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloResponse, error) {
 	var out HelloResponse
 	pattern := "/SayHello"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationSayHelloHello))
+	opts = append(opts, http.Operation(OperationSayHelloServiceHello))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

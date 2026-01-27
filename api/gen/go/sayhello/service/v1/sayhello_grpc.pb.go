@@ -21,105 +21,105 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SayHello_Hello_FullMethodName = "/sayhello.service.v1.SayHello/Hello"
+	SayHelloService_Hello_FullMethodName = "/sayhello.service.v1.SayHelloService/Hello"
 )
 
-// SayHelloClient is the client API for SayHello service.
+// SayHelloServiceClient is the client API for SayHelloService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // SayHello 定义一个简单的 Hello 服务
-type SayHelloClient interface {
+type SayHelloServiceClient interface {
 	Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
-type sayHelloClient struct {
+type sayHelloServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSayHelloClient(cc grpc.ClientConnInterface) SayHelloClient {
-	return &sayHelloClient{cc}
+func NewSayHelloServiceClient(cc grpc.ClientConnInterface) SayHelloServiceClient {
+	return &sayHelloServiceClient{cc}
 }
 
-func (c *sayHelloClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+func (c *sayHelloServiceClient) Hello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, SayHello_Hello_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SayHelloService_Hello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SayHelloServer is the server API for SayHello service.
-// All implementations must embed UnimplementedSayHelloServer
+// SayHelloServiceServer is the server API for SayHelloService service.
+// All implementations must embed UnimplementedSayHelloServiceServer
 // for forward compatibility.
 //
 // SayHello 定义一个简单的 Hello 服务
-type SayHelloServer interface {
+type SayHelloServiceServer interface {
 	Hello(context.Context, *HelloRequest) (*HelloResponse, error)
-	mustEmbedUnimplementedSayHelloServer()
+	mustEmbedUnimplementedSayHelloServiceServer()
 }
 
-// UnimplementedSayHelloServer must be embedded to have
+// UnimplementedSayHelloServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedSayHelloServer struct{}
+type UnimplementedSayHelloServiceServer struct{}
 
-func (UnimplementedSayHelloServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
+func (UnimplementedSayHelloServiceServer) Hello(context.Context, *HelloRequest) (*HelloResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
 }
-func (UnimplementedSayHelloServer) mustEmbedUnimplementedSayHelloServer() {}
-func (UnimplementedSayHelloServer) testEmbeddedByValue()                  {}
+func (UnimplementedSayHelloServiceServer) mustEmbedUnimplementedSayHelloServiceServer() {}
+func (UnimplementedSayHelloServiceServer) testEmbeddedByValue()                         {}
 
-// UnsafeSayHelloServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SayHelloServer will
+// UnsafeSayHelloServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SayHelloServiceServer will
 // result in compilation errors.
-type UnsafeSayHelloServer interface {
-	mustEmbedUnimplementedSayHelloServer()
+type UnsafeSayHelloServiceServer interface {
+	mustEmbedUnimplementedSayHelloServiceServer()
 }
 
-func RegisterSayHelloServer(s grpc.ServiceRegistrar, srv SayHelloServer) {
-	// If the following call panics, it indicates UnimplementedSayHelloServer was
+func RegisterSayHelloServiceServer(s grpc.ServiceRegistrar, srv SayHelloServiceServer) {
+	// If the following call panics, it indicates UnimplementedSayHelloServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&SayHello_ServiceDesc, srv)
+	s.RegisterService(&SayHelloService_ServiceDesc, srv)
 }
 
-func _SayHello_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SayHelloService_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SayHelloServer).Hello(ctx, in)
+		return srv.(SayHelloServiceServer).Hello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SayHello_Hello_FullMethodName,
+		FullMethod: SayHelloService_Hello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SayHelloServer).Hello(ctx, req.(*HelloRequest))
+		return srv.(SayHelloServiceServer).Hello(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// SayHello_ServiceDesc is the grpc.ServiceDesc for SayHello service.
+// SayHelloService_ServiceDesc is the grpc.ServiceDesc for SayHelloService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var SayHello_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "sayhello.service.v1.SayHello",
-	HandlerType: (*SayHelloServer)(nil),
+var SayHelloService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sayhello.service.v1.SayHelloService",
+	HandlerType: (*SayHelloServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Hello",
-			Handler:    _SayHello_Hello_Handler,
+			Handler:    _SayHelloService_Hello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

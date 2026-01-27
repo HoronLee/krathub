@@ -6,8 +6,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	sayhellopb "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	"github.com/horonlee/krathub/pkg/transport/client"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/transport/client"
 	gogrpc "google.golang.org/grpc"
 )
 
@@ -34,7 +34,7 @@ func (r *testRepo) Hello(ctx context.Context, in string) (string, error) {
 
 	conn := connWrapper.Value().(gogrpc.ClientConnInterface)
 
-	helloClient := sayhellopb.NewSayHelloClient(conn)
+	helloClient := sayhellopb.NewSayHelloServiceClient(conn)
 	ret, err := helloClient.Hello(ctx, &sayhellopb.HelloRequest{Greeting: in})
 	if err != nil {
 		r.log.Errorf("Failed to say hello: %v", err)

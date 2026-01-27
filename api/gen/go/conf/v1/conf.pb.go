@@ -572,6 +572,51 @@ func (x *NacosConfig) GetDataId() string {
 	return ""
 }
 
+// Kubernetes 配置
+type KubernetesConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Enable        bool                   `protobuf:"varint,1,opt,name=enable,proto3" json:"enable,omitempty"` // 是否启用 K8s 服务发现/注册（在 Pod 中运行时设为 true）
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KubernetesConfig) Reset() {
+	*x = KubernetesConfig{}
+	mi := &file_conf_v1_conf_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KubernetesConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KubernetesConfig) ProtoMessage() {}
+
+func (x *KubernetesConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_conf_v1_conf_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KubernetesConfig.ProtoReflect.Descriptor instead.
+func (*KubernetesConfig) Descriptor() ([]byte, []int) {
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *KubernetesConfig) GetEnable() bool {
+	if x != nil {
+		return x.Enable
+	}
+	return false
+}
+
 // 通信服务端配置
 type Server struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -583,7 +628,7 @@ type Server struct {
 
 func (x *Server) Reset() {
 	*x = Server{}
-	mi := &file_conf_v1_conf_proto_msgTypes[6]
+	mi := &file_conf_v1_conf_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -595,7 +640,7 @@ func (x *Server) String() string {
 func (*Server) ProtoMessage() {}
 
 func (x *Server) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[6]
+	mi := &file_conf_v1_conf_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -608,7 +653,7 @@ func (x *Server) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server.ProtoReflect.Descriptor instead.
 func (*Server) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{6}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Server) GetHttp() *Server_HTTP {
@@ -636,7 +681,7 @@ type Client struct {
 
 func (x *Client) Reset() {
 	*x = Client{}
-	mi := &file_conf_v1_conf_proto_msgTypes[7]
+	mi := &file_conf_v1_conf_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -648,7 +693,7 @@ func (x *Client) String() string {
 func (*Client) ProtoMessage() {}
 
 func (x *Client) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[7]
+	mi := &file_conf_v1_conf_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -661,7 +706,7 @@ func (x *Client) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Client.ProtoReflect.Descriptor instead.
 func (*Client) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{7}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Client) GetGrpc() map[string]*Client_GRPC {
@@ -683,7 +728,7 @@ type Data struct {
 
 func (x *Data) Reset() {
 	*x = Data{}
-	mi := &file_conf_v1_conf_proto_msgTypes[8]
+	mi := &file_conf_v1_conf_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -695,7 +740,7 @@ func (x *Data) String() string {
 func (*Data) ProtoMessage() {}
 
 func (x *Data) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[8]
+	mi := &file_conf_v1_conf_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -708,7 +753,7 @@ func (x *Data) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data.ProtoReflect.Descriptor instead.
 func (*Data) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Data) GetDatabase() *Data_Database {
@@ -747,7 +792,7 @@ type App struct {
 
 func (x *App) Reset() {
 	*x = App{}
-	mi := &file_conf_v1_conf_proto_msgTypes[9]
+	mi := &file_conf_v1_conf_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -759,7 +804,7 @@ func (x *App) String() string {
 func (*App) ProtoMessage() {}
 
 func (x *App) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[9]
+	mi := &file_conf_v1_conf_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -772,7 +817,7 @@ func (x *App) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use App.ProtoReflect.Descriptor instead.
 func (*App) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *App) GetEnv() string {
@@ -825,6 +870,7 @@ type Registry struct {
 	//	*Registry_Consul
 	//	*Registry_Etcd
 	//	*Registry_Nacos
+	//	*Registry_Kubernetes
 	Registry      isRegistry_Registry `protobuf_oneof:"registry"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -832,7 +878,7 @@ type Registry struct {
 
 func (x *Registry) Reset() {
 	*x = Registry{}
-	mi := &file_conf_v1_conf_proto_msgTypes[10]
+	mi := &file_conf_v1_conf_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -844,7 +890,7 @@ func (x *Registry) String() string {
 func (*Registry) ProtoMessage() {}
 
 func (x *Registry) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[10]
+	mi := &file_conf_v1_conf_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -857,7 +903,7 @@ func (x *Registry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Registry.ProtoReflect.Descriptor instead.
 func (*Registry) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{10}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Registry) GetRegistry() isRegistry_Registry {
@@ -894,6 +940,15 @@ func (x *Registry) GetNacos() *NacosConfig {
 	return nil
 }
 
+func (x *Registry) GetKubernetes() *KubernetesConfig {
+	if x != nil {
+		if x, ok := x.Registry.(*Registry_Kubernetes); ok {
+			return x.Kubernetes
+		}
+	}
+	return nil
+}
+
 type isRegistry_Registry interface {
 	isRegistry_Registry()
 }
@@ -910,11 +965,17 @@ type Registry_Nacos struct {
 	Nacos *NacosConfig `protobuf:"bytes,3,opt,name=nacos,proto3,oneof"` // Nacos 配置
 }
 
+type Registry_Kubernetes struct {
+	Kubernetes *KubernetesConfig `protobuf:"bytes,4,opt,name=kubernetes,proto3,oneof"` // Kubernetes 配置
+}
+
 func (*Registry_Consul) isRegistry_Registry() {}
 
 func (*Registry_Etcd) isRegistry_Registry() {}
 
 func (*Registry_Nacos) isRegistry_Registry() {}
+
+func (*Registry_Kubernetes) isRegistry_Registry() {}
 
 // 服务发现配置
 type Discovery struct {
@@ -924,6 +985,7 @@ type Discovery struct {
 	//	*Discovery_Consul
 	//	*Discovery_Etcd
 	//	*Discovery_Nacos
+	//	*Discovery_Kubernetes
 	Discovery     isDiscovery_Discovery `protobuf_oneof:"discovery"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -931,7 +993,7 @@ type Discovery struct {
 
 func (x *Discovery) Reset() {
 	*x = Discovery{}
-	mi := &file_conf_v1_conf_proto_msgTypes[11]
+	mi := &file_conf_v1_conf_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -943,7 +1005,7 @@ func (x *Discovery) String() string {
 func (*Discovery) ProtoMessage() {}
 
 func (x *Discovery) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[11]
+	mi := &file_conf_v1_conf_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -956,7 +1018,7 @@ func (x *Discovery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Discovery.ProtoReflect.Descriptor instead.
 func (*Discovery) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{11}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Discovery) GetDiscovery() isDiscovery_Discovery {
@@ -993,6 +1055,15 @@ func (x *Discovery) GetNacos() *NacosConfig {
 	return nil
 }
 
+func (x *Discovery) GetKubernetes() *KubernetesConfig {
+	if x != nil {
+		if x, ok := x.Discovery.(*Discovery_Kubernetes); ok {
+			return x.Kubernetes
+		}
+	}
+	return nil
+}
+
 type isDiscovery_Discovery interface {
 	isDiscovery_Discovery()
 }
@@ -1009,11 +1080,17 @@ type Discovery_Nacos struct {
 	Nacos *NacosConfig `protobuf:"bytes,3,opt,name=nacos,proto3,oneof"` // Nacos 配置
 }
 
+type Discovery_Kubernetes struct {
+	Kubernetes *KubernetesConfig `protobuf:"bytes,4,opt,name=kubernetes,proto3,oneof"` // Kubernetes 配置
+}
+
 func (*Discovery_Consul) isDiscovery_Discovery() {}
 
 func (*Discovery_Etcd) isDiscovery_Discovery() {}
 
 func (*Discovery_Nacos) isDiscovery_Discovery() {}
+
+func (*Discovery_Kubernetes) isDiscovery_Discovery() {}
 
 // 配置中心配置
 type Config struct {
@@ -1030,7 +1107,7 @@ type Config struct {
 
 func (x *Config) Reset() {
 	*x = Config{}
-	mi := &file_conf_v1_conf_proto_msgTypes[12]
+	mi := &file_conf_v1_conf_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1042,7 +1119,7 @@ func (x *Config) String() string {
 func (*Config) ProtoMessage() {}
 
 func (x *Config) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[12]
+	mi := &file_conf_v1_conf_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1055,7 +1132,7 @@ func (x *Config) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Config.ProtoReflect.Descriptor instead.
 func (*Config) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{12}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Config) GetConfig() isConfig_Config {
@@ -1124,7 +1201,7 @@ type Trace struct {
 
 func (x *Trace) Reset() {
 	*x = Trace{}
-	mi := &file_conf_v1_conf_proto_msgTypes[13]
+	mi := &file_conf_v1_conf_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1136,7 +1213,7 @@ func (x *Trace) String() string {
 func (*Trace) ProtoMessage() {}
 
 func (x *Trace) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[13]
+	mi := &file_conf_v1_conf_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1149,7 +1226,7 @@ func (x *Trace) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Trace.ProtoReflect.Descriptor instead.
 func (*Trace) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{13}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Trace) GetEndpoint() string {
@@ -1170,7 +1247,7 @@ type Metrics struct {
 
 func (x *Metrics) Reset() {
 	*x = Metrics{}
-	mi := &file_conf_v1_conf_proto_msgTypes[14]
+	mi := &file_conf_v1_conf_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1182,7 +1259,7 @@ func (x *Metrics) String() string {
 func (*Metrics) ProtoMessage() {}
 
 func (x *Metrics) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[14]
+	mi := &file_conf_v1_conf_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1195,7 +1272,7 @@ func (x *Metrics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metrics.ProtoReflect.Descriptor instead.
 func (*Metrics) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{14}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Metrics) GetEnable() bool {
@@ -1225,7 +1302,7 @@ type Server_HTTP struct {
 
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
-	mi := &file_conf_v1_conf_proto_msgTypes[15]
+	mi := &file_conf_v1_conf_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1237,7 +1314,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[15]
+	mi := &file_conf_v1_conf_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1250,7 +1327,7 @@ func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server_HTTP.ProtoReflect.Descriptor instead.
 func (*Server_HTTP) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{6, 0}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{7, 0}
 }
 
 func (x *Server_HTTP) GetNetwork() string {
@@ -1300,7 +1377,7 @@ type Server_GRPC struct {
 
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
-	mi := &file_conf_v1_conf_proto_msgTypes[16]
+	mi := &file_conf_v1_conf_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1312,7 +1389,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[16]
+	mi := &file_conf_v1_conf_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1325,7 +1402,7 @@ func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server_GRPC.ProtoReflect.Descriptor instead.
 func (*Server_GRPC) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{6, 1}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{7, 1}
 }
 
 func (x *Server_GRPC) GetNetwork() string {
@@ -1366,7 +1443,7 @@ type Client_GRPC struct {
 
 func (x *Client_GRPC) Reset() {
 	*x = Client_GRPC{}
-	mi := &file_conf_v1_conf_proto_msgTypes[17]
+	mi := &file_conf_v1_conf_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1378,7 +1455,7 @@ func (x *Client_GRPC) String() string {
 func (*Client_GRPC) ProtoMessage() {}
 
 func (x *Client_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[17]
+	mi := &file_conf_v1_conf_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1391,7 +1468,7 @@ func (x *Client_GRPC) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Client_GRPC.ProtoReflect.Descriptor instead.
 func (*Client_GRPC) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{7, 0}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8, 0}
 }
 
 func (x *Client_GRPC) GetEndpoint() string {
@@ -1418,7 +1495,7 @@ type Data_Database struct {
 
 func (x *Data_Database) Reset() {
 	*x = Data_Database{}
-	mi := &file_conf_v1_conf_proto_msgTypes[19]
+	mi := &file_conf_v1_conf_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1430,7 +1507,7 @@ func (x *Data_Database) String() string {
 func (*Data_Database) ProtoMessage() {}
 
 func (x *Data_Database) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[19]
+	mi := &file_conf_v1_conf_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1443,7 +1520,7 @@ func (x *Data_Database) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Database.ProtoReflect.Descriptor instead.
 func (*Data_Database) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8, 0}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 0}
 }
 
 func (x *Data_Database) GetDriver() string {
@@ -1476,7 +1553,7 @@ type Data_Redis struct {
 
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
-	mi := &file_conf_v1_conf_proto_msgTypes[20]
+	mi := &file_conf_v1_conf_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1488,7 +1565,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[20]
+	mi := &file_conf_v1_conf_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1501,7 +1578,7 @@ func (x *Data_Redis) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Redis.ProtoReflect.Descriptor instead.
 func (*Data_Redis) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8, 1}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 1}
 }
 
 func (x *Data_Redis) GetNetwork() string {
@@ -1570,7 +1647,7 @@ type Data_Client struct {
 
 func (x *Data_Client) Reset() {
 	*x = Data_Client{}
-	mi := &file_conf_v1_conf_proto_msgTypes[21]
+	mi := &file_conf_v1_conf_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1582,7 +1659,7 @@ func (x *Data_Client) String() string {
 func (*Data_Client) ProtoMessage() {}
 
 func (x *Data_Client) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[21]
+	mi := &file_conf_v1_conf_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1595,7 +1672,7 @@ func (x *Data_Client) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Client.ProtoReflect.Descriptor instead.
 func (*Data_Client) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8, 2}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 2}
 }
 
 func (x *Data_Client) GetGrpc() []*Data_Client_GRPC {
@@ -1623,7 +1700,7 @@ type Data_Client_HTTP struct {
 
 func (x *Data_Client_HTTP) Reset() {
 	*x = Data_Client_HTTP{}
-	mi := &file_conf_v1_conf_proto_msgTypes[22]
+	mi := &file_conf_v1_conf_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1635,7 +1712,7 @@ func (x *Data_Client_HTTP) String() string {
 func (*Data_Client_HTTP) ProtoMessage() {}
 
 func (x *Data_Client_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[22]
+	mi := &file_conf_v1_conf_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1648,7 +1725,7 @@ func (x *Data_Client_HTTP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Client_HTTP.ProtoReflect.Descriptor instead.
 func (*Data_Client_HTTP) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8, 2, 0}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 2, 0}
 }
 
 func (x *Data_Client_HTTP) GetServiceName() string {
@@ -1683,7 +1760,7 @@ type Data_Client_GRPC struct {
 
 func (x *Data_Client_GRPC) Reset() {
 	*x = Data_Client_GRPC{}
-	mi := &file_conf_v1_conf_proto_msgTypes[23]
+	mi := &file_conf_v1_conf_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1695,7 +1772,7 @@ func (x *Data_Client_GRPC) String() string {
 func (*Data_Client_GRPC) ProtoMessage() {}
 
 func (x *Data_Client_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[23]
+	mi := &file_conf_v1_conf_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1708,7 +1785,7 @@ func (x *Data_Client_GRPC) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Client_GRPC.ProtoReflect.Descriptor instead.
 func (*Data_Client_GRPC) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{8, 2, 1}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 2, 1}
 }
 
 func (x *Data_Client_GRPC) GetServiceName() string {
@@ -1746,7 +1823,7 @@ type App_Jwt struct {
 
 func (x *App_Jwt) Reset() {
 	*x = App_Jwt{}
-	mi := &file_conf_v1_conf_proto_msgTypes[24]
+	mi := &file_conf_v1_conf_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1758,7 +1835,7 @@ func (x *App_Jwt) String() string {
 func (*App_Jwt) ProtoMessage() {}
 
 func (x *App_Jwt) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[24]
+	mi := &file_conf_v1_conf_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1771,7 +1848,7 @@ func (x *App_Jwt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use App_Jwt.ProtoReflect.Descriptor instead.
 func (*App_Jwt) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 0}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{10, 0}
 }
 
 func (x *App_Jwt) GetAccessSecret() string {
@@ -1830,7 +1907,7 @@ type App_Log struct {
 
 func (x *App_Log) Reset() {
 	*x = App_Log{}
-	mi := &file_conf_v1_conf_proto_msgTypes[25]
+	mi := &file_conf_v1_conf_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1842,7 +1919,7 @@ func (x *App_Log) String() string {
 func (*App_Log) ProtoMessage() {}
 
 func (x *App_Log) ProtoReflect() protoreflect.Message {
-	mi := &file_conf_v1_conf_proto_msgTypes[25]
+	mi := &file_conf_v1_conf_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1855,7 +1932,7 @@ func (x *App_Log) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use App_Log.ProtoReflect.Descriptor instead.
 func (*App_Log) Descriptor() ([]byte, []int) {
-	return file_conf_v1_conf_proto_rawDescGZIP(), []int{9, 1}
+	return file_conf_v1_conf_proto_rawDescGZIP(), []int{10, 1}
 }
 
 func (x *App_Log) GetLevel() int32 {
@@ -1954,7 +2031,9 @@ const file_conf_v1_conf_proto_rawDesc = "" +
 	"\busername\x18\x05 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x06 \x01(\tR\bpassword\x123\n" +
 	"\atimeout\x18\a \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12\x17\n" +
-	"\adata_id\x18\b \x01(\tR\x06dataId\"\xa3\x03\n" +
+	"\adata_id\x18\b \x01(\tR\x06dataId\"*\n" +
+	"\x10KubernetesConfig\x12\x16\n" +
+	"\x06enable\x18\x01 \x01(\bR\x06enable\"\xa3\x03\n" +
 	"\x06Server\x12(\n" +
 	"\x04http\x18\x01 \x01(\v2\x14.conf.v1.Server.HTTPR\x04http\x12(\n" +
 	"\x04grpc\x18\x02 \x01(\v2\x14.conf.v1.Server.GRPCR\x04grpc\x1a\xb2\x01\n" +
@@ -2028,17 +2107,23 @@ const file_conf_v1_conf_proto_rawDesc = "" +
 	"\bcompress\x18\x06 \x01(\bR\bcompress\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa0\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xdd\x01\n" +
 	"\bRegistry\x12/\n" +
 	"\x06consul\x18\x01 \x01(\v2\x15.conf.v1.ConsulConfigH\x00R\x06consul\x12)\n" +
 	"\x04etcd\x18\x02 \x01(\v2\x13.conf.v1.EtcdConfigH\x00R\x04etcd\x12,\n" +
-	"\x05nacos\x18\x03 \x01(\v2\x14.conf.v1.NacosConfigH\x00R\x05nacosB\n" +
+	"\x05nacos\x18\x03 \x01(\v2\x14.conf.v1.NacosConfigH\x00R\x05nacos\x12;\n" +
 	"\n" +
-	"\bregistry\"\xa2\x01\n" +
+	"kubernetes\x18\x04 \x01(\v2\x19.conf.v1.KubernetesConfigH\x00R\n" +
+	"kubernetesB\n" +
+	"\n" +
+	"\bregistry\"\xdf\x01\n" +
 	"\tDiscovery\x12/\n" +
 	"\x06consul\x18\x01 \x01(\v2\x15.conf.v1.ConsulConfigH\x00R\x06consul\x12)\n" +
 	"\x04etcd\x18\x02 \x01(\v2\x13.conf.v1.EtcdConfigH\x00R\x04etcd\x12,\n" +
-	"\x05nacos\x18\x03 \x01(\v2\x14.conf.v1.NacosConfigH\x00R\x05nacosB\v\n" +
+	"\x05nacos\x18\x03 \x01(\v2\x14.conf.v1.NacosConfigH\x00R\x05nacos\x12;\n" +
+	"\n" +
+	"kubernetes\x18\x04 \x01(\v2\x19.conf.v1.KubernetesConfigH\x00R\n" +
+	"kubernetesB\v\n" +
 	"\tdiscovery\"\x9c\x01\n" +
 	"\x06Config\x12/\n" +
 	"\x06consul\x18\x01 \x01(\v2\x15.conf.v1.ConsulConfigH\x00R\x06consul\x12)\n" +
@@ -2065,7 +2150,7 @@ func file_conf_v1_conf_proto_rawDescGZIP() []byte {
 	return file_conf_v1_conf_proto_rawDescData
 }
 
-var file_conf_v1_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_conf_v1_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_conf_v1_conf_proto_goTypes = []any{
 	(*Bootstrap)(nil),           // 0: conf.v1.Bootstrap
 	(*TLSConfig)(nil),           // 1: conf.v1.TLSConfig
@@ -2073,80 +2158,83 @@ var file_conf_v1_conf_proto_goTypes = []any{
 	(*ConsulConfig)(nil),        // 3: conf.v1.ConsulConfig
 	(*EtcdConfig)(nil),          // 4: conf.v1.EtcdConfig
 	(*NacosConfig)(nil),         // 5: conf.v1.NacosConfig
-	(*Server)(nil),              // 6: conf.v1.Server
-	(*Client)(nil),              // 7: conf.v1.Client
-	(*Data)(nil),                // 8: conf.v1.Data
-	(*App)(nil),                 // 9: conf.v1.App
-	(*Registry)(nil),            // 10: conf.v1.Registry
-	(*Discovery)(nil),           // 11: conf.v1.Discovery
-	(*Config)(nil),              // 12: conf.v1.Config
-	(*Trace)(nil),               // 13: conf.v1.Trace
-	(*Metrics)(nil),             // 14: conf.v1.Metrics
-	(*Server_HTTP)(nil),         // 15: conf.v1.Server.HTTP
-	(*Server_GRPC)(nil),         // 16: conf.v1.Server.GRPC
-	(*Client_GRPC)(nil),         // 17: conf.v1.Client.GRPC
-	nil,                         // 18: conf.v1.Client.GrpcEntry
-	(*Data_Database)(nil),       // 19: conf.v1.Data.Database
-	(*Data_Redis)(nil),          // 20: conf.v1.Data.Redis
-	(*Data_Client)(nil),         // 21: conf.v1.Data.Client
-	(*Data_Client_HTTP)(nil),    // 22: conf.v1.Data.Client.HTTP
-	(*Data_Client_GRPC)(nil),    // 23: conf.v1.Data.Client.GRPC
-	(*App_Jwt)(nil),             // 24: conf.v1.App.Jwt
-	(*App_Log)(nil),             // 25: conf.v1.App.Log
-	nil,                         // 26: conf.v1.App.MetadataEntry
-	(*durationpb.Duration)(nil), // 27: google.protobuf.Duration
+	(*KubernetesConfig)(nil),    // 6: conf.v1.KubernetesConfig
+	(*Server)(nil),              // 7: conf.v1.Server
+	(*Client)(nil),              // 8: conf.v1.Client
+	(*Data)(nil),                // 9: conf.v1.Data
+	(*App)(nil),                 // 10: conf.v1.App
+	(*Registry)(nil),            // 11: conf.v1.Registry
+	(*Discovery)(nil),           // 12: conf.v1.Discovery
+	(*Config)(nil),              // 13: conf.v1.Config
+	(*Trace)(nil),               // 14: conf.v1.Trace
+	(*Metrics)(nil),             // 15: conf.v1.Metrics
+	(*Server_HTTP)(nil),         // 16: conf.v1.Server.HTTP
+	(*Server_GRPC)(nil),         // 17: conf.v1.Server.GRPC
+	(*Client_GRPC)(nil),         // 18: conf.v1.Client.GRPC
+	nil,                         // 19: conf.v1.Client.GrpcEntry
+	(*Data_Database)(nil),       // 20: conf.v1.Data.Database
+	(*Data_Redis)(nil),          // 21: conf.v1.Data.Redis
+	(*Data_Client)(nil),         // 22: conf.v1.Data.Client
+	(*Data_Client_HTTP)(nil),    // 23: conf.v1.Data.Client.HTTP
+	(*Data_Client_GRPC)(nil),    // 24: conf.v1.Data.Client.GRPC
+	(*App_Jwt)(nil),             // 25: conf.v1.App.Jwt
+	(*App_Log)(nil),             // 26: conf.v1.App.Log
+	nil,                         // 27: conf.v1.App.MetadataEntry
+	(*durationpb.Duration)(nil), // 28: google.protobuf.Duration
 }
 var file_conf_v1_conf_proto_depIdxs = []int32{
-	9,  // 0: conf.v1.Bootstrap.app:type_name -> conf.v1.App
-	6,  // 1: conf.v1.Bootstrap.server:type_name -> conf.v1.Server
-	7,  // 2: conf.v1.Bootstrap.client:type_name -> conf.v1.Client
-	8,  // 3: conf.v1.Bootstrap.data:type_name -> conf.v1.Data
-	10, // 4: conf.v1.Bootstrap.registry:type_name -> conf.v1.Registry
-	11, // 5: conf.v1.Bootstrap.discovery:type_name -> conf.v1.Discovery
-	12, // 6: conf.v1.Bootstrap.config:type_name -> conf.v1.Config
-	13, // 7: conf.v1.Bootstrap.trace:type_name -> conf.v1.Trace
-	14, // 8: conf.v1.Bootstrap.metrics:type_name -> conf.v1.Metrics
-	27, // 9: conf.v1.CORS.max_age:type_name -> google.protobuf.Duration
-	27, // 10: conf.v1.ConsulConfig.timeout:type_name -> google.protobuf.Duration
-	27, // 11: conf.v1.EtcdConfig.timeout:type_name -> google.protobuf.Duration
-	27, // 12: conf.v1.NacosConfig.timeout:type_name -> google.protobuf.Duration
-	15, // 13: conf.v1.Server.http:type_name -> conf.v1.Server.HTTP
-	16, // 14: conf.v1.Server.grpc:type_name -> conf.v1.Server.GRPC
-	18, // 15: conf.v1.Client.grpc:type_name -> conf.v1.Client.GrpcEntry
-	19, // 16: conf.v1.Data.database:type_name -> conf.v1.Data.Database
-	20, // 17: conf.v1.Data.redis:type_name -> conf.v1.Data.Redis
-	21, // 18: conf.v1.Data.client:type_name -> conf.v1.Data.Client
-	24, // 19: conf.v1.App.jwt:type_name -> conf.v1.App.Jwt
-	25, // 20: conf.v1.App.log:type_name -> conf.v1.App.Log
-	26, // 21: conf.v1.App.metadata:type_name -> conf.v1.App.MetadataEntry
+	10, // 0: conf.v1.Bootstrap.app:type_name -> conf.v1.App
+	7,  // 1: conf.v1.Bootstrap.server:type_name -> conf.v1.Server
+	8,  // 2: conf.v1.Bootstrap.client:type_name -> conf.v1.Client
+	9,  // 3: conf.v1.Bootstrap.data:type_name -> conf.v1.Data
+	11, // 4: conf.v1.Bootstrap.registry:type_name -> conf.v1.Registry
+	12, // 5: conf.v1.Bootstrap.discovery:type_name -> conf.v1.Discovery
+	13, // 6: conf.v1.Bootstrap.config:type_name -> conf.v1.Config
+	14, // 7: conf.v1.Bootstrap.trace:type_name -> conf.v1.Trace
+	15, // 8: conf.v1.Bootstrap.metrics:type_name -> conf.v1.Metrics
+	28, // 9: conf.v1.CORS.max_age:type_name -> google.protobuf.Duration
+	28, // 10: conf.v1.ConsulConfig.timeout:type_name -> google.protobuf.Duration
+	28, // 11: conf.v1.EtcdConfig.timeout:type_name -> google.protobuf.Duration
+	28, // 12: conf.v1.NacosConfig.timeout:type_name -> google.protobuf.Duration
+	16, // 13: conf.v1.Server.http:type_name -> conf.v1.Server.HTTP
+	17, // 14: conf.v1.Server.grpc:type_name -> conf.v1.Server.GRPC
+	19, // 15: conf.v1.Client.grpc:type_name -> conf.v1.Client.GrpcEntry
+	20, // 16: conf.v1.Data.database:type_name -> conf.v1.Data.Database
+	21, // 17: conf.v1.Data.redis:type_name -> conf.v1.Data.Redis
+	22, // 18: conf.v1.Data.client:type_name -> conf.v1.Data.Client
+	25, // 19: conf.v1.App.jwt:type_name -> conf.v1.App.Jwt
+	26, // 20: conf.v1.App.log:type_name -> conf.v1.App.Log
+	27, // 21: conf.v1.App.metadata:type_name -> conf.v1.App.MetadataEntry
 	3,  // 22: conf.v1.Registry.consul:type_name -> conf.v1.ConsulConfig
 	4,  // 23: conf.v1.Registry.etcd:type_name -> conf.v1.EtcdConfig
 	5,  // 24: conf.v1.Registry.nacos:type_name -> conf.v1.NacosConfig
-	3,  // 25: conf.v1.Discovery.consul:type_name -> conf.v1.ConsulConfig
-	4,  // 26: conf.v1.Discovery.etcd:type_name -> conf.v1.EtcdConfig
-	5,  // 27: conf.v1.Discovery.nacos:type_name -> conf.v1.NacosConfig
-	3,  // 28: conf.v1.Config.consul:type_name -> conf.v1.ConsulConfig
-	4,  // 29: conf.v1.Config.etcd:type_name -> conf.v1.EtcdConfig
-	5,  // 30: conf.v1.Config.nacos:type_name -> conf.v1.NacosConfig
-	27, // 31: conf.v1.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	1,  // 32: conf.v1.Server.HTTP.tls:type_name -> conf.v1.TLSConfig
-	2,  // 33: conf.v1.Server.HTTP.cors:type_name -> conf.v1.CORS
-	27, // 34: conf.v1.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	1,  // 35: conf.v1.Server.GRPC.tls:type_name -> conf.v1.TLSConfig
-	1,  // 36: conf.v1.Client.GRPC.tls:type_name -> conf.v1.TLSConfig
-	17, // 37: conf.v1.Client.GrpcEntry.value:type_name -> conf.v1.Client.GRPC
-	27, // 38: conf.v1.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
-	27, // 39: conf.v1.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	27, // 40: conf.v1.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	23, // 41: conf.v1.Data.Client.grpc:type_name -> conf.v1.Data.Client.GRPC
-	22, // 42: conf.v1.Data.Client.http:type_name -> conf.v1.Data.Client.HTTP
-	27, // 43: conf.v1.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
-	27, // 44: conf.v1.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
-	45, // [45:45] is the sub-list for method output_type
-	45, // [45:45] is the sub-list for method input_type
-	45, // [45:45] is the sub-list for extension type_name
-	45, // [45:45] is the sub-list for extension extendee
-	0,  // [0:45] is the sub-list for field type_name
+	6,  // 25: conf.v1.Registry.kubernetes:type_name -> conf.v1.KubernetesConfig
+	3,  // 26: conf.v1.Discovery.consul:type_name -> conf.v1.ConsulConfig
+	4,  // 27: conf.v1.Discovery.etcd:type_name -> conf.v1.EtcdConfig
+	5,  // 28: conf.v1.Discovery.nacos:type_name -> conf.v1.NacosConfig
+	6,  // 29: conf.v1.Discovery.kubernetes:type_name -> conf.v1.KubernetesConfig
+	3,  // 30: conf.v1.Config.consul:type_name -> conf.v1.ConsulConfig
+	4,  // 31: conf.v1.Config.etcd:type_name -> conf.v1.EtcdConfig
+	5,  // 32: conf.v1.Config.nacos:type_name -> conf.v1.NacosConfig
+	28, // 33: conf.v1.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	1,  // 34: conf.v1.Server.HTTP.tls:type_name -> conf.v1.TLSConfig
+	2,  // 35: conf.v1.Server.HTTP.cors:type_name -> conf.v1.CORS
+	28, // 36: conf.v1.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	1,  // 37: conf.v1.Server.GRPC.tls:type_name -> conf.v1.TLSConfig
+	1,  // 38: conf.v1.Client.GRPC.tls:type_name -> conf.v1.TLSConfig
+	18, // 39: conf.v1.Client.GrpcEntry.value:type_name -> conf.v1.Client.GRPC
+	28, // 40: conf.v1.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
+	28, // 41: conf.v1.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	28, // 42: conf.v1.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	24, // 43: conf.v1.Data.Client.grpc:type_name -> conf.v1.Data.Client.GRPC
+	23, // 44: conf.v1.Data.Client.http:type_name -> conf.v1.Data.Client.HTTP
+	28, // 45: conf.v1.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	28, // 46: conf.v1.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	47, // [47:47] is the sub-list for method output_type
+	47, // [47:47] is the sub-list for method input_type
+	47, // [47:47] is the sub-list for extension type_name
+	47, // [47:47] is the sub-list for extension extendee
+	0,  // [0:47] is the sub-list for field type_name
 }
 
 func init() { file_conf_v1_conf_proto_init() }
@@ -2154,17 +2242,19 @@ func file_conf_v1_conf_proto_init() {
 	if File_conf_v1_conf_proto != nil {
 		return
 	}
-	file_conf_v1_conf_proto_msgTypes[10].OneofWrappers = []any{
+	file_conf_v1_conf_proto_msgTypes[11].OneofWrappers = []any{
 		(*Registry_Consul)(nil),
 		(*Registry_Etcd)(nil),
 		(*Registry_Nacos)(nil),
+		(*Registry_Kubernetes)(nil),
 	}
-	file_conf_v1_conf_proto_msgTypes[11].OneofWrappers = []any{
+	file_conf_v1_conf_proto_msgTypes[12].OneofWrappers = []any{
 		(*Discovery_Consul)(nil),
 		(*Discovery_Etcd)(nil),
 		(*Discovery_Nacos)(nil),
+		(*Discovery_Kubernetes)(nil),
 	}
-	file_conf_v1_conf_proto_msgTypes[12].OneofWrappers = []any{
+	file_conf_v1_conf_proto_msgTypes[13].OneofWrappers = []any{
 		(*Config_Consul)(nil),
 		(*Config_Etcd)(nil),
 		(*Config_Nacos)(nil),
@@ -2175,7 +2265,7 @@ func file_conf_v1_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_conf_v1_conf_proto_rawDesc), len(file_conf_v1_conf_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -49,6 +49,6 @@ func NewGRPCServer(c *conf.Server, logger log.Logger, hello *service.SayHelloSer
 	}
 
 	srv := grpc.NewServer(opts...)
-	sayhellov1.RegisterSayHelloServer(srv, hello)
+	sayhellov1.RegisterSayHelloServiceServer(srv, hello)
 	return srv
 }

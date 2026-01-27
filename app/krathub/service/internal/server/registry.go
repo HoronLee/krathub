@@ -31,6 +31,8 @@ func NewRegistrar(cfg *conf.Registry) kr.Registrar {
 		return registrar
 	case *conf.Registry_Nacos:
 		return registry.NewNacosRegistry(c.Nacos)
+	case *conf.Registry_Kubernetes:
+		return registry.NewKubernetesRegistry(c.Kubernetes)
 	default:
 		return nil
 	}

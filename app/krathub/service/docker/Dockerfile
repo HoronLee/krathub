@@ -1,24 +1,34 @@
-FROM golang:latest AS builder
+# Build stage
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS builder
 
-COPY . /src
+ARG TARGETOS=linux
+ARG TARGETARCH
+
+RUN apk add --no-cache make git
+
 WORKDIR /src
 
-RUN GOPROXY=https://goproxy.cn make build
+COPY go.mod go.sum ./
+RUN go mod download
 
-FROM debian:stable-slim
+COPY . .
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		ca-certificates  \
-        netbase \
-        && rm -rf /var/lib/apt/lists/ \
-        && apt-get autoremove -y && apt-get autoclean -y
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-s -w" -o /src/bin/krathub ./app/krathub/service/cmd/server
 
-COPY --from=builder /src/bin/krathub /app/krathub
+# Runtime stage
+FROM alpine:3.19
+
+RUN apk add --no-cache ca-certificates tzdata
 
 WORKDIR /app
 
-EXPOSE 8000
-EXPOSE 9000
-VOLUME /data/conf
+COPY --from=builder /src/bin/krathub /app/krathub
 
-CMD ["./krathub", "-conf", "/data/conf"]
+# HTTP and gRPC ports
+EXPOSE 8000 8001
+
+VOLUME /app/configs
+
+ENV TZ=Asia/Shanghai
+
+CMD ["./krathub", "-conf", "/app/configs"]

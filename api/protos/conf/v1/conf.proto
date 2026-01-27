@@ -82,6 +82,11 @@ message NacosConfig {
   string data_id = 8; // 数据ID (仅 Config 使用)
 }
 
+// Kubernetes 配置
+message KubernetesConfig {
+  bool enable = 1; // 是否启用 K8s 服务发现/注册（在 Pod 中运行时设为 true）
+}
+
 // =============================================================================
 // 网络通信配置
 // =============================================================================
@@ -194,6 +199,7 @@ message Registry {
     ConsulConfig consul = 1; // Consul 配置
     EtcdConfig etcd = 2; // Etcd 配置
     NacosConfig nacos = 3; // Nacos 配置
+    KubernetesConfig kubernetes = 4; // Kubernetes 配置
   }
 }
 
@@ -203,6 +209,7 @@ message Discovery {
     ConsulConfig consul = 1; // Consul 配置
     EtcdConfig etcd = 2; // Etcd 配置
     NacosConfig nacos = 3; // Nacos 配置
+    KubernetesConfig kubernetes = 4; // Kubernetes 配置
   }
 }
 

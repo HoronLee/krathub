@@ -1049,6 +1049,108 @@ var _ interface {
 	ErrorName() string
 } = NacosConfigValidationError{}
 
+// Validate checks the field values on KubernetesConfig with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *KubernetesConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KubernetesConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// KubernetesConfigMultiError, or nil if none found.
+func (m *KubernetesConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KubernetesConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Enable
+
+	if len(errors) > 0 {
+		return KubernetesConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// KubernetesConfigMultiError is an error wrapping multiple validation errors
+// returned by KubernetesConfig.ValidateAll() if the designated constraints
+// aren't met.
+type KubernetesConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KubernetesConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KubernetesConfigMultiError) AllErrors() []error { return m }
+
+// KubernetesConfigValidationError is the validation error returned by
+// KubernetesConfig.Validate if the designated constraints aren't met.
+type KubernetesConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KubernetesConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KubernetesConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KubernetesConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KubernetesConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KubernetesConfigValidationError) ErrorName() string { return "KubernetesConfigValidationError" }
+
+// Error satisfies the builtin error interface
+func (e KubernetesConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKubernetesConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KubernetesConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KubernetesConfigValidationError{}
+
 // Validate checks the field values on Server with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1844,6 +1946,47 @@ func (m *Registry) validate(all bool) error {
 			}
 		}
 
+	case *Registry_Kubernetes:
+		if v == nil {
+			err := RegistryValidationError{
+				field:  "Registry",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKubernetes()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, RegistryValidationError{
+						field:  "Kubernetes",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, RegistryValidationError{
+						field:  "Kubernetes",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKubernetes()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return RegistryValidationError{
+					field:  "Kubernetes",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -2065,6 +2208,47 @@ func (m *Discovery) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return DiscoveryValidationError{
 					field:  "Nacos",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *Discovery_Kubernetes:
+		if v == nil {
+			err := DiscoveryValidationError{
+				field:  "Discovery",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKubernetes()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, DiscoveryValidationError{
+						field:  "Kubernetes",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, DiscoveryValidationError{
+						field:  "Kubernetes",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKubernetes()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return DiscoveryValidationError{
+					field:  "Kubernetes",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}

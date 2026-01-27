@@ -1,16 +1,21 @@
 services:
   krathub:
+    build:
+      context: ../../../..
+      dockerfile: app/krathub/service/docker/Dockerfile
     image: krathub:latest
     container_name: krathub
+    restart: unless-stopped
     environment:
-      - DB_DRIVER=postgres
-      - DB_SOURCE=host=db user=krathub password=krathub dbname=krathub port=5432 sslmode=disable
-      - RADDR=redis:6379
+      - TZ=Asia/Shanghai
     volumes:
-      - ./data/conf:/data/conf
+      - ./configs:/app/configs:ro
+      - ./logs:/app/logs
     ports:
       - "8000:8000"
-      - "8001:9000"
+      - "8001:8001"
+    networks:
+      - krathub-network
     depends_on:
       db:
         condition: service_healthy
@@ -18,31 +23,44 @@ services:
         condition: service_healthy
 
   db:
-    image: postgres:18.1-alpine
+    image: postgres:18-alpine
     container_name: krathub_db
+    restart: unless-stopped
     environment:
       POSTGRES_DB: krathub
       POSTGRES_USER: krathub
       POSTGRES_PASSWORD: krathub
+      TZ: Asia/Shanghai
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U krathub -d krathub"]
       interval: 10s
       timeout: 5s
       retries: 5
     volumes:
-      - ./data/db:/var/lib/postgresql/data
-      - ./data/initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
+      - krathub-db-data:/var/lib/postgresql/data
+      - ../manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - krathub-network
 
   redis:
-    image: redis:latest
+    image: redis:7-alpine
     container_name: krathub_redis
-    command: redis-server --requirepass redisKrathub
+    restart: unless-stopped
+    command: redis-server --requirepass krathub_redis_pwd --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "redisKrathub", "ping"]
+      test: ["CMD", "redis-cli", "-a", "krathub_redis_pwd", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
     volumes:
-      - ./data/redis:/data
+      - krathub-redis-data:/data
+    networks:
+      - krathub-network
+
+networks:
+  krathub-network:
+    driver: bridge
+
+volumes:
+  krathub-db-data:
+  krathub-redis-data:

@@ -140,7 +140,7 @@ else
 	@echo "No cmd/server directory found, skipping wire for $(SERVICE_NAME)"
 endif
 
-# generate protobuf api code (Go + Python)
+# generate protobuf api code
 api:
 	@cd ../../../api && \
 	buf generate
