@@ -51,24 +51,11 @@ make init
 
 ```shell
 # 复制配置示例文件
-cp app/krathub/service/configs/config-example.yaml app/krathub/service/configs/config.yaml
+cp api/protos/conf/v1/config-example.yaml app/krathub/service/configs/config.yaml
 
 # 根据需要修改配置
 vim app/krathub/service/configs/config.yaml
 ```
-
-### 生成代码并启动
-
-```shell
-# 生成所有代码（protobuf、wire、openapi）
-make gen
-
-# 构建并运行 krathub 服务
-cd app/krathub/service
-make run
-```
-
-服务启动后，HTTP 服务将监听在 `0.0.0.0:9000`，gRPC 服务将监听在 `0.0.0.0:9001` (以默认配置为例)。
 
 ### 启动依赖服务
 
@@ -86,6 +73,7 @@ docker run -d -p 3306:3306 \
 ```
 
 然后修改配置文件中的数据库和 Redis 连接信息。
+```shell
 vim app/krathub/service/configs/config.yaml
 ```
 
@@ -100,53 +88,58 @@ cd app/krathub/service
 make run
 ```
 
-服务启动后，HTTP 服务将监听在 `0.0.0.0:9000`，gRPC 服务将监听在 `0.0.0.0:9001` (以默认配置为例)。
+服务启动后，HTTP 服务将监听在 `0.0.0.0:8000`，gRPC 服务将监听在 `0.0.0.0:8001` (以默认配置为例)。
 
 ## 📁 项目结构
 
 ```
 .
-├── api/                          # Protobuf API 定义和生成代码
-│   ├── buf.gen.yaml             # Buf 代码生成配置（Go 代码）
-│   ├── buf.work.yaml            # Buf workspace 配置
-│   ├── buf.{service}.openapi.gen.yaml  # 各服务的 OpenAPI 生成配置
-│   ├── gen/                     # 生成的 Go 代码
-│   │   └── go/                  # Go protobuf 代码
-│   └── protos/                  # Proto 源文件
-│       ├── buf.yaml             # Proto 依赖配置
-│       ├── conf/v1/             # 配置定义
-│       ├── krathub/service/v1/  # Krathub HTTP 接口（i_*.proto）
-│       ├── auth/service/v1/     # Auth gRPC 服务
-│       ├── user/service/v1/     # User gRPC 服务
-│       ├── test/service/v1/     # Test gRPC 服务
-│       └── sayhello/service/v1/ # SayHello 独立微服务
+├── api/                                # Protobuf API 定义与代码生成相关配置
+│   ├── buf.gen.yaml                    # Buf 代码生成配置（Go）
+│   ├── buf.work.yaml                   # Buf workspace 配置
+│   ├── buf.{service}.openapi.gen.yaml  # 各服务 OpenAPI 生成配置
+│   ├── gen/                            # 生成的代码
+│   │   └── go/                         # 生成的 Go protobuf 代码
+│   └── protos/                         # Proto 源文件
+│       ├── buf.yaml                    # Proto 依赖配置
+│       ├── conf/v1/                    # 配置定义（proto）与配置示例
+│       ├── krathub/service/v1/         # Krathub HTTP 接口（i_*.proto）
+│       ├── auth/service/v1/            # Auth gRPC 服务
+│       ├── user/service/v1/            # User gRPC 服务
+│       ├── test/service/v1/            # Test gRPC 服务
+│       └── sayhello/service/v1/        # SayHello 独立微服务
 │
-├── app/                         # 微服务应用目录
-│   ├── krathub/service/         # Krathub 主服务
-│   │   ├── cmd/server/          # 服务启动入口
-│   │   ├── internal/            # 内部实现（不对外暴露）
-│   │   │   ├── biz/            # 业务逻辑层
-│   │   │   ├── data/           # 数据访问层
-│   │   │   ├── server/         # gRPC/HTTP 服务器配置
-│   │   │   └── service/        # Service 层实现
-│   │   ├── configs/            # 服务配置文件
-│   │   ├── bin/                # 编译输出目录
-│   │   ├── openapi.yaml        # 生成的 OpenAPI 文档
-│   │   └── Makefile            # 服务级 Makefile（include app.mk）
+├── app/                                # 微服务应用目录
+│   ├── krathub/service/                # Krathub 主服务
+│   │   ├── cmd/server/                 # 服务启动入口
+│   │   ├── internal/                   # 内部实现（不对外暴露）
+│   │   │   ├── biz/                    # 业务逻辑层
+│   │   │   ├── data/                   # 数据访问层
+│   │   │   ├── server/                 # gRPC/HTTP 服务器配置
+│   │   │   └── service/                # Service 层实现
+│   │   ├── configs/                    # 服务配置文件（运行时 config.yaml）
+│   │   ├── bin/                        # 编译输出目录
+│   │   ├── openapi.yaml                # 生成的 OpenAPI 文档
+│   │   └── Makefile                    # 服务级 Makefile（include app.mk）
 │   │
-│   └── sayhello/service/        # SayHello 独立微服务（示例）
-│       ├── openapi.yaml        # 生成的 OpenAPI 文档
-│       └── Makefile            # 服务级 Makefile
+│   └── sayhello/service/               # SayHello 独立微服务（示例）
+│       ├── openapi.yaml                # 生成的 OpenAPI 文档
+│       └── Makefile                    # 服务级 Makefile
 │
-├── app.mk                       # 通用服务 Makefile（所有服务共享）
-├── Makefile                     # 根目录 Makefile（管理所有服务）
-├── pkg/                         # 可在项目内部共享的通用库
-├── manifest/                    # 部署相关文件
-│   ├── SQL/                    # 数据库脚本
-│   ├── docker/                 # Docker 配置
-│   └── kubernetes/             # K8s 配置
-└── examples/                    # 示例项目
+├── manifest/                           # 部署相关文件
+│   ├── SQL/                            # 数据库脚本
+│   ├── docker/                         # Docker 配置
+│   └── kubernetes/                     # K8s 配置
+│
+├── pkg/                                # 项目内部共享的通用库
+├── examples/                           # 示例项目
+│
+├── .env.example                        # 环境变量示例（需复制为 .env）
+├── .env                                # 本地环境变量（建议加入 .gitignore）
+├── app.mk                              # 通用服务 Makefile（所有服务共享）
+└── Makefile                            # 根目录 Makefile（管理所有服务
 ```
+
 
 ### Proto 文件组织规范
 
