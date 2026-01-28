@@ -5,6 +5,7 @@ import (
 	"github.com/horonlee/krathub/pkg/middleware/cors"
 )
 
+// TODO: 在服务中彻底放弃对pkg中CORS中间件的封装，即pkg中的Middleware方法直接接受api/gen/go/conf/v1/conf.pb.go中的配置，所有空字段的检测等操作都在外部包完成，然后直接可以在server/http.go中传入实际配置来应用。
 // CORS 从配置文件创建 CORS 选项
 func CORS(corsConfig *conf.CORS) cors.Options {
 	if corsConfig == nil || !corsConfig.GetEnable() {
