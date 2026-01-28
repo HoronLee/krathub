@@ -1,0 +1,27 @@
+server:
+  http:
+    addr: "0.0.0.0:8000"
+    timeout: 10s
+  grpc:
+    addr: "0.0.0.0:8001"
+    timeout: 10s
+
+data:
+  database:
+    driver: "postgres"
+    source: "host=db user=krathub password=krathub dbname=krathub port=5432 sslmode=disable"
+  redis:
+    addr: "redis:6379"
+    password: "krathub_redis_pwd"
+    db: 0
+
+app:
+  name: krathub-container
+  env: "prod"
+  jwt:
+    access_secret: "krathub_access_secret_change_me"
+    refresh_secret: "krathub_refresh_secret_change_me"
+    access_expire: 3600
+    refresh_expire: 604800
+  log:
+    level: 0

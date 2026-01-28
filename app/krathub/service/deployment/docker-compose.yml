@@ -2,7 +2,7 @@ services:
   krathub:
     build:
       context: ../../../..
-      dockerfile: app/krathub/service/docker/Dockerfile
+      dockerfile: app/krathub/service/Dockerfile
     image: krathub:latest
     container_name: krathub
     restart: unless-stopped

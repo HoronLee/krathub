@@ -3,6 +3,7 @@ FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS builder
 
 ARG TARGETOS=linux
 ARG TARGETARCH
+ARG SERVICE_NAME=krathub
 
 RUN apk add --no-cache make git
 
@@ -13,16 +14,18 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-s -w" -o /src/bin/krathub ./app/krathub/service/cmd/server
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-s -w" -o /src/bin/${SERVICE_NAME} ./app/${SERVICE_NAME}/service/cmd/server
 
 # Runtime stage
 FROM alpine:3.19
+
+ARG SERVICE_NAME=krathub
 
 RUN apk add --no-cache ca-certificates tzdata
 
 WORKDIR /app
 
-COPY --from=builder /src/bin/krathub /app/krathub
+COPY --from=builder /src/bin/${SERVICE_NAME} /app/${SERVICE_NAME}
 
 # HTTP and gRPC ports
 EXPOSE 8000 8001
@@ -30,5 +33,6 @@ EXPOSE 8000 8001
 VOLUME /app/configs
 
 ENV TZ=Asia/Shanghai
+ENV SERVICE_NAME=${SERVICE_NAME}
 
-CMD ["./krathub", "-conf", "/app/configs"]
+CMD ["/bin/sh", "-c", "/app/${SERVICE_NAME} -conf /app/configs"]

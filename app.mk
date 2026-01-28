@@ -76,7 +76,7 @@ APP_NAME          := $(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
 # Format: buf.{service_name}.openapi.gen.yaml
 OPENAPI_CONFIG := buf.$(SERVICE_NAME).openapi.gen.yaml
 
-.PHONY: build clean docker gen wire api openapi run app help env genDao
+.PHONY: build clean docker-build gen wire api openapi run app help env genDao
 
 # show environment variables
 env:
@@ -151,11 +151,11 @@ openapi:
 	buf generate --template $(OPENAPI_CONFIG)
 
 # build docker image
-docker:
+docker-build:
 	@docker build -t $(PROJECT_NAME)/$(APP_NAME) \
 				  --build-arg SERVICE_NAME=$(SERVICE_NAME) \
 				  --build-arg APP_VERSION=$(VERSION) \
-				  -f ../../../Dockerfile ../../../
+				  -f ./Dockerfile ../../../
 
 # show help
 help:

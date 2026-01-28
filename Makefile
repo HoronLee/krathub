@@ -52,7 +52,7 @@ RESET := \033[0m
 # ============================================================================
 
 .PHONY: help env init plugin cli dep vendor test cover vet lint
-.PHONY: wire ent gen api openapi build build_only all docker clean
+.PHONY: wire ent gen api openapi build build_only all docker-build clean
 
 # show environment variables
 env:
@@ -138,13 +138,13 @@ openapi:
 	@echo "$(GREEN)✓ OpenAPI documentation generated$(RESET)"
 
 # lint protobuf files
-lint.proto:
+lint-proto:
 	@echo "$(CYAN)Linting protobuf files...$(RESET)"
 	@cd $(API_DIR) && buf lint
 	@echo "$(GREEN)✓ Proto lint complete$(RESET)"
 
 # update buf dependencies
-buf.update:
+buf-update:
 	@echo "$(CYAN)Updating buf dependencies...$(RESET)"
 	@cd $(API_DIR)/protos && buf dep update
 	@echo "$(GREEN)✓ Buf dependencies updated$(RESET)"
@@ -174,10 +174,10 @@ all:
 	@echo "$(GREEN)✓ All services generated and built$(RESET)"
 
 # build docker images for all services
-docker:
+docker-build:
 	@echo "$(CYAN)Building Docker images...$(RESET)"
 	@$(foreach dir, $(dir $(realpath $(SRCS_MK))),\
-      cd $(dir) && make docker;\
+      cd $(dir) && make docker-build;\
     )
 	@echo "$(GREEN)✓ Docker images built$(RESET)"
 

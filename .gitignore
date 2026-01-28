@@ -31,10 +31,10 @@ Thumbs.db
 *.crt
 *.key
 *.log
+app/krathub/service/configs/config.yaml
 bin/
 logs/
 cache/
-config.yaml
 data.db
 examples/
 

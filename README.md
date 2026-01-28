@@ -280,7 +280,6 @@ make build
 
 #### 其他
 - `make clean` - 清理所有构建产物
-- `make docker` - 构建所有服务的 Docker 镜像
 - `make env` - 显示环境变量
 - `make help` - 显示帮助信息
 
@@ -304,13 +303,13 @@ make build
 
 #### 其他
 - `make clean` - 清理构建产物
-- `make docker` - 构建 Docker 镜像
+- `make docker-build` - 构建 Docker 镜像
 - `make env` - 显示环境变量
 
 ### Buf 相关命令
 
-- `make lint.proto` - 检查 proto 文件规范
-- `make buf.update` - 更新 buf 依赖
+- `make lint-proto` - 检查 proto 文件规范
+- `make buf-update` - 更新 buf 依赖
 
 ### 添加新服务
 
@@ -358,15 +357,15 @@ make openapi
 
 ## 🐳 Docker 支持
 
-项目提供完整的 Docker 支持：
+每个微服务都有独立的 Dockerfile，位于 `app/{service}/service/Dockerfile`。
 
 ```shell
 # 构建所有服务的 Docker 镜像
-make docker
+make docker-build
 
 # 构建单个服务的 Docker 镜像
 cd app/krathub/service
-make docker
+make docker-build
 ```
 
 ## 🔧 配置说明
