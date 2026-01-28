@@ -19,9 +19,9 @@ type Metrics struct {
 	Handler  http.Handler
 }
 
-func NewMetrics(c *conf.Metrics, logger log.Logger) (*Metrics, error) {
+func NewMetrics(c *conf.Metrics, app *conf.App, logger log.Logger) (*Metrics, error) {
 	if c == nil || !c.Enable {
-		log.NewHelper(pkglogger.WithModule(logger, "metrics/server/krathub-service")).Info("metrics config is empty, skip metrics init")
+		log.NewHelper(pkglogger.WithModule(logger, "metrics/server")).Info("metrics config is empty, skip metrics init")
 		return nil, nil
 	}
 
@@ -31,9 +31,9 @@ func NewMetrics(c *conf.Metrics, logger log.Logger) (*Metrics, error) {
 	}
 	provider := sdkmetric.NewMeterProvider(sdkmetric.WithReader(exporter))
 
-	meterName := "krathub"
-	if c.MeterName != "" {
-		meterName = c.MeterName
+	meterName := app.GetName()
+	if meterName == "" {
+		meterName = "unknown-service"
 	}
 	meter := provider.Meter(meterName)
 

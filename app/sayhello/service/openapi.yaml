@@ -16,8 +16,8 @@ paths:
     /SayHello:
         post:
             tags:
-                - SayHello
-            operationId: SayHello_Hello
+                - SayHelloService
+            operationId: SayHelloService_Hello
             requestBody:
                 content:
                     application/json:
@@ -67,4 +67,4 @@ components:
                     schema:
                         $ref: '#/components/schemas/KratosError'
 tags:
-    - name: SayHello
+    - name: SayHelloService

@@ -20,10 +20,11 @@ import (
 
 // Injectors from wire.go:
 
-func wireApp(confServer *conf.Server, logger log.Logger) (*kratos.App, func(), error) {
+func wireApp(confServer *conf.Server, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
+	registrar := server.NewRegistrar(registry)
 	sayHelloService := service.NewSayHelloService()
 	grpcServer := server.NewGRPCServer(confServer, logger, sayHelloService)
-	app := newApp(logger, grpcServer)
+	app := newApp(logger, registrar, grpcServer)
 	return app, func() {
 	}, nil
 }

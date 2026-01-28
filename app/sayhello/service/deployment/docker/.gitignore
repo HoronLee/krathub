@@ -1,0 +1,6 @@
+# Docker 相关文件
+logs/
+*.log
+
+# 数据卷（使用 named volumes，不需要本地目录）
+data/

@@ -98,9 +98,13 @@ func main() {
 	// 初始化服务名称、版本、元信息
 	if bc.App.Name != "" {
 		Name = bc.App.Name
+	} else {
+		bc.App.Name = Name
 	}
 	if bc.App.Version != "" {
 		Version = bc.App.Version
+	} else {
+		bc.App.Version = Version
 	}
 	Metadata = bc.App.Metadata
 	if Metadata == nil {

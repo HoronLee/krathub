@@ -102,23 +102,25 @@ func NewHTTPServer(
 		http.Middleware(middlewares...),
 		http.Logger(httpLogger),
 	}
-	if c.Http.Network != "" {
-		opts = append(opts, http.Network(c.Http.Network))
-	}
-	if c.Http.Addr != "" {
-		opts = append(opts, http.Address(c.Http.Addr))
-	}
-	if c.Http.Timeout != nil {
-		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
-	}
-	if c.Http.Cors != nil {
-		corsOptions := mwinter.CORS(c.Http.Cors)
-		if len(corsOptions.AllowedOrigins) > 0 {
-			opts = append(opts, http.Filter(cors.Middleware(corsOptions)))
-			httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
+	if c != nil && c.Http != nil {
+		if c.Http.Network != "" {
+			opts = append(opts, http.Network(c.Http.Network))
+		}
+		if c.Http.Addr != "" {
+			opts = append(opts, http.Address(c.Http.Addr))
+		}
+		if c.Http.Timeout != nil {
+			opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
+		}
+		if c.Http.Cors != nil {
+			corsOptions := mwinter.CORS(c.Http.Cors)
+			if len(corsOptions.AllowedOrigins) > 0 {
+				opts = append(opts, http.Filter(cors.Middleware(corsOptions)))
+				httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
+			}
 		}
 	}
-	if c.Http.Tls != nil && c.Http.Tls.Enable {
+	if c != nil && c.Http != nil && c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
 			httpLogger.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
 		}

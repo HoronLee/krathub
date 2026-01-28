@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 
 	"go.opentelemetry.io/otel"
@@ -33,7 +34,7 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "./configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
+func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -41,6 +42,7 @@ func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
 		kratos.Metadata(Metadata),
 		kratos.Logger(logger),
 		kratos.Server(gs),
+		kratos.Registrar(reg),
 	)
 }
 
@@ -106,7 +108,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, log)
+	app, cleanup, err := wireApp(bc.Server, bc.Registry, log)
 	if err != nil {
 		panic(err)
 	}

@@ -38,7 +38,7 @@ services:
       retries: 5
     volumes:
       - krathub-db-data:/var/lib/postgresql/data
-      - ../manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ../../manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - krathub-network
 
