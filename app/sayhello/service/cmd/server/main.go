@@ -36,7 +36,7 @@ func init() {
 
 func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.App {
 	return kratos.New(
-		kratos.ID(id+"TestService"),
+		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
 		kratos.Metadata(Metadata),

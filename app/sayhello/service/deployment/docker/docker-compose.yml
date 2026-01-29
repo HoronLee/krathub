@@ -1,0 +1,19 @@
+services:
+  sayhello:
+    build:
+      context: ../../../..
+      dockerfile: app/sayhello/service/Dockerfile
+    image: krathub-micro/sayhello-service:latest
+    container_name: sayhello
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./logs:/app/logs
+    networks:
+      - krathub-network
+
+networks:
+  krathub-network:
+    external: true

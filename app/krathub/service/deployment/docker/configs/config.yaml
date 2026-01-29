@@ -16,7 +16,6 @@ data:
     db: 0
 
 app:
-  name: krathub-container
   env: "prod"
   jwt:
     access_secret: "krathub_access_secret_change_me"
@@ -25,3 +24,15 @@ app:
     refresh_expire: 604800
   log:
     level: 0
+
+registry:
+  consul:
+    addr: "${REGISTRY_CONSUL_ADDR:host.docker.internal:8500}"
+    scheme: "${REGISTRY_CONSUL_SCHEME:http}"
+    datacenter: "${REGISTRY_CONSUL_DC:dc1}"
+
+discovery:
+  consul:
+    addr: "${DISCOVERY_CONSUL_ADDR:host.docker.internal:8500}"
+    scheme: "${DISCOVERY_CONSUL_SCHEME:http}"
+    datacenter: "${DISCOVERY_CONSUL_DC:dc1}"

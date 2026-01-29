@@ -27,9 +27,6 @@ WORKDIR /app
 
 COPY --from=builder /src/bin/${SERVICE_NAME} /app/${SERVICE_NAME}
 
-# HTTP and gRPC ports
-EXPOSE 8000 8001
-
 VOLUME /app/configs
 
 ENV TZ=Asia/Shanghai

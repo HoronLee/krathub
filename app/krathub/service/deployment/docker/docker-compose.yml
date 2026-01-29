@@ -3,7 +3,7 @@ services:
     build:
       context: ../../../..
       dockerfile: app/krathub/service/Dockerfile
-    image: krathub:latest
+    image: krathub-micro/krathub-service:latest
     container_name: krathub
     restart: unless-stopped
     environment:
@@ -59,7 +59,7 @@ services:
 
 networks:
   krathub-network:
-    driver: bridge
+    external: true
 
 volumes:
   krathub-db-data:
