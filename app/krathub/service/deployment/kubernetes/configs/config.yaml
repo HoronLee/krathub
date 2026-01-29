@@ -1,3 +1,18 @@
+server:
+  http:
+    addr: "${HADDR:0.0.0.0:8000}"
+  grpc:
+    addr: "${GADDR:0.0.0.0:8001}"
+  cors:
+    enable: true
+
+app:
+  env: "${ENV:prod}"
+  jwt:
+    secret_key: "krathub_default_secret_change_in_production"
+    expire: "24"
+    issuer: "krathub"
+
 data:
   database:
     driver: "postgres"
@@ -6,6 +21,9 @@ data:
     addr: "redis:6379"
     password: "krathub_redis_pwd"
     db: 0
+
+metrics:
+  enable: ${METRICS_ENABLE:true}
 
 registry:
   kubernetes:

@@ -106,13 +106,13 @@ registry:
 
   # 或者使用 Nacos 作为注册中心
   # nacos:
-  # addr: "${NACOSR_ADDR:127.0.0.1}"
-  # port: "${NACOSR_PORT:8848}"
-  # namespace: "${NACOSR_NAMESPACE:public}"
-  # group: "${NACOSR_GROUP:DEFAULT_GROUP}"
-  # username: "${NACOSR_USERNAME:nacos}"
-  # password: "${NACOSR_PASSWORD:nacos}"
-  # timeout: "${NACOSR_TIMEOUT:5s}"
+  #   addr: "${NACOSR_ADDR:127.0.0.1}"
+  #   port: "${NACOSR_PORT:8848}"
+  #   namespace: "${NACOSR_NAMESPACE:public}"
+  #   group: "${NACOSR_GROUP:DEFAULT_GROUP}"
+  #   username: "${NACOSR_USERNAME:nacos}"
+  #   password: "${NACOSR_PASSWORD:nacos}"
+  #   timeout: "${NACOSR_TIMEOUT:5s}"
 
 # 服务发现配置 - 用于服务发现，一般和注册中心配置相同
 discovery:

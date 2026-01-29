@@ -36,7 +36,7 @@ func init() {
 
 func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.App {
 	return kratos.New(
-		kratos.ID(id),
+		kratos.ID(id+"TestService"),
 		kratos.Name(Name),
 		kratos.Version(Version),
 		kratos.Metadata(Metadata),
@@ -86,7 +86,7 @@ func main() {
 		Name = "sayhello.service"
 	}
 	if Version == "" {
-		Version = "v0.1"
+		Version = "v1.0.0"
 	}
 
 	Metadata = bc.App.Metadata

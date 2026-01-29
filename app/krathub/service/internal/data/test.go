@@ -26,7 +26,7 @@ func NewTestRepo(data *Data, logger log.Logger) biz.TestRepo {
 func (r *testRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
-	connWrapper, err := r.data.client.CreateConn(ctx, client.GRPC, "hello")
+	connWrapper, err := r.data.client.CreateConn(ctx, client.GRPC, "sayhello.service")
 	if err != nil {
 		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err
