@@ -1,8 +1,3 @@
-# server:
-#   grpc:
-#     addr: "${GADDR:0.0.0.0:8080}"
-#     timeout: "${GTIMEHOUT:1s}"
-
 app:
   env: "${ENV:dev}"
   log:
