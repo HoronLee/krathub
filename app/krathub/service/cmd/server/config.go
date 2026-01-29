@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	cC "github.com/horonlee/krathub/pkg/governance/configCenter"
 
@@ -42,7 +44,6 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 	tempConfig.Close()
 
 	finalSources := []config.Source{
-		newDefaultConfigSource(),
 		file.NewSource(flagconf),
 	}
 
@@ -50,7 +51,9 @@ func loadConfig() (*conf.Bootstrap, config.Config, error) {
 		finalSources = append(finalSources, configCenterSource)
 	}
 
-	finalSources = append(finalSources, env.NewSource("KRATHUB_"))
+	// 从 Name 生成环境变量前缀: "krathub.service" -> "KRATHUB_"
+	envPrefix := strings.ToUpper(strings.TrimSuffix(Name, ".service")) + "_"
+	finalSources = append(finalSources, env.NewSource(envPrefix))
 
 	c := config.New(
 		config.WithSource(finalSources...),
