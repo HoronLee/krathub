@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	"time"
 
@@ -15,6 +16,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt/v5"
+	"gorm.io/gorm"
 )
 
 // AuthUsecase is a Auth usecase.
@@ -107,7 +109,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *po.User) (*po.Us
 		// 后续注册，用户名可以任意，但角色为 user
 		// 检查用户名是否已存在
 		existingUser, err := uc.repo.GetUserByUserName(ctx, user.Name)
-		if err != nil {
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, authpb.ErrorUserNotFound("failed to check username: %v", err)
 		}
 		if existingUser != nil {
@@ -118,7 +120,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *po.User) (*po.Us
 
 	// 检查邮箱是否已存在
 	existingEmail, err := uc.repo.GetUserByEmail(ctx, user.Email)
-	if err != nil {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, authpb.ErrorUserNotFound("failed to check email: %v", err)
 	}
 	if existingEmail != nil {

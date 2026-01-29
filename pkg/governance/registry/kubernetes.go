@@ -19,7 +19,9 @@ func NewKubernetesRegistry(c *conf.KubernetesConfig) registry.Registrar {
 		panic(fmt.Sprintf("failed to create kubernetes clientset: %v", err))
 	}
 
-	return kuberegistry.NewRegistry(clientset, k8s.GetCurrentNamespace())
+	reg := kuberegistry.NewRegistry(clientset, k8s.GetCurrentNamespace())
+	reg.Start()
+	return reg
 }
 
 func NewKubernetesDiscovery(c *conf.KubernetesConfig) registry.Discovery {
@@ -32,5 +34,7 @@ func NewKubernetesDiscovery(c *conf.KubernetesConfig) registry.Discovery {
 		panic(fmt.Sprintf("failed to create kubernetes clientset: %v", err))
 	}
 
-	return kuberegistry.NewRegistry(clientset, k8s.GetCurrentNamespace())
+	reg := kuberegistry.NewRegistry(clientset, k8s.GetCurrentNamespace())
+	reg.Start()
+	return reg
 }
