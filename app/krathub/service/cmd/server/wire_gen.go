@@ -19,7 +19,6 @@ import (
 )
 
 import (
-	_ "embed"
 	_ "go.uber.org/automaxprocs"
 )
 

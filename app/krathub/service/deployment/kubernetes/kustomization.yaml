@@ -8,6 +8,13 @@ resources:
   - service.yaml
   - configmap.yaml
 
+configMapGenerator:
+  - name: postgres-initdb
+    files:
+      - init.sql
+    options:
+      disableNameSuffixHash: true
+
 labels:
   - pairs:
       app.kubernetes.io/name: krathub

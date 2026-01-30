@@ -96,11 +96,11 @@ func NewHTTPServer(
 	user *service.UserService,
 	test *service.TestService,
 ) *http.Server {
-	httpLogger := logpkg.WithModule(logger, "http/server/krathub-service")
+	l := logpkg.WithModule(logger, "http/server/krathub-service")
 
 	var opts = []http.ServerOption{
 		http.Middleware(middlewares...),
-		http.Logger(httpLogger),
+		http.Logger(l),
 	}
 	if c != nil && c.Http != nil {
 		if c.Http.Network != "" {
@@ -114,16 +114,16 @@ func NewHTTPServer(
 		}
 		if cors.IsEnabled(c.Http.Cors) {
 			opts = append(opts, http.Filter(cors.Middleware(c.Http.Cors)))
-			httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", cors.GetAllowedOrigins(c.Http.Cors))
+			l.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", cors.GetAllowedOrigins(c.Http.Cors))
 		}
 	}
 	if c != nil && c.Http != nil && c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
-			httpLogger.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
+			l.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
 		}
 		cert, err := tls.LoadX509KeyPair(c.Http.Tls.CertPath, c.Http.Tls.KeyPath)
 		if err != nil {
-			httpLogger.Log(log.LevelFatal, "msg", "Server TLS: Failed to load key pair", "error", err)
+			l.Log(log.LevelFatal, "msg", "Server TLS: Failed to load key pair", "error", err)
 		}
 		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}
