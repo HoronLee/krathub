@@ -112,12 +112,9 @@ func NewHTTPServer(
 		if c.Http.Timeout != nil {
 			opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 		}
-		if c.Http.Cors != nil {
-			corsOptions := mwinter.CORS(c.Http.Cors)
-			if len(corsOptions.AllowedOrigins) > 0 {
-				opts = append(opts, http.Filter(cors.Middleware(corsOptions)))
-				httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", corsOptions.AllowedOrigins)
-			}
+		if cors.IsEnabled(c.Http.Cors) {
+			opts = append(opts, http.Filter(cors.Middleware(c.Http.Cors)))
+			httpLogger.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", cors.GetAllowedOrigins(c.Http.Cors))
 		}
 	}
 	if c != nil && c.Http != nil && c.Http.Tls != nil && c.Http.Tls.Enable {
