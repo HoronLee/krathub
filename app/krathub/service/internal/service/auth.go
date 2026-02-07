@@ -6,7 +6,6 @@ import (
 
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 )
 
 // AuthService is a auth service.
@@ -27,7 +26,7 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *authpb.SignupByEma
 		return nil, fmt.Errorf("password and confirm password do not match")
 	}
 	// 调用 biz 层
-	user, err := s.uc.SignupByEmail(ctx, &po.User{
+	user, err := s.uc.SignupByEmail(ctx, &biz.User{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
@@ -46,7 +45,7 @@ func (s *AuthService) SignupByEmail(ctx context.Context, req *authpb.SignupByEma
 
 // LoginByEmailPassword user login by email and password.
 func (s *AuthService) LoginByEmailPassword(ctx context.Context, req *authpb.LoginByEmailPasswordRequest) (*authpb.LoginByEmailPasswordResponse, error) {
-	user := &po.User{
+	user := &biz.User{
 		Email:    req.Email,
 		Password: req.Password,
 	}

@@ -48,6 +48,8 @@ openspec/
 .kilocode/
 .kiro/
 .opencode/
+.sisyphus/
+.claude/
 
 # Frontend
 # Logs
