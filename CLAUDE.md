@@ -1,8 +1,8 @@
 # CLAUDE.md - Krathub Development Guide
 
-Instructions for AI assistants working in this project.
+> **重要**: 永远使用中文回复
 
-无论何时，用中文回答
+Instructions for AI assistants working in this project.
 
 <!-- OPENSPEC:START -->
 ## OpenSpec Instructions
@@ -68,11 +68,19 @@ bun test:e2e e2e/example.spec.ts --project=chromium
 
 ```
 krathub/
-├── api/protos/              # Proto definitions (i_*.proto = HTTP, others = gRPC)
-├── api/gen/go/              # Generated Go code
-├── app/{service}/service/   # Microservices (cmd/, internal/biz|data|service|server/)
-├── pkg/                     # Shared packages (jwt, redis, logger, hash)
-└── app.mk                   # Common Makefile for services
+├── api/
+│   ├── protos/           # Proto 定义（i_*.proto=HTTP, 其他=gRPC）
+│   └── gen/go/           # 自动生成的代码（勿修改）
+├── app/
+│   └── {service}/service/
+│       ├── cmd/          # 服务入口
+│       ├── internal/     # DDD 三层架构
+│       │   ├── biz/      # 业务逻辑层
+│       │   ├── data/     # 数据访问层
+│       │   └── service/  # 接口实现层
+│       └── web/          # Vue 3 前端（仅 krathub）
+├── pkg/                  # 共享库（jwt, redis, logger, middleware, governance）
+└── openspec/             # OpenSpec 规范文档（可选）
 ```
 
 ## Code Style Guidelines
@@ -100,8 +108,12 @@ return userv1.ErrorUserNotFound("user not found: %v", err)
 return authv1.ErrorUnauthorized("user not authenticated")
 ```
 
-### Layered Architecture
-`service/` → `biz/` → `data/` (handlers → business logic → repository)
+### DDD 分层架构
+- **Service 层**: API 接口实现、参数验证、DTO 转换
+- **Biz 层**: 业务逻辑、UseCase、领域模型、Repository 接口定义
+- **Data 层**: Repository 实现、数据访问（GORM）、缓存（Redis）
+
+**依赖规则**: Service → Biz → Data（单向依赖，严禁反向引用）
 
 ### TypeScript/Vue
 - Use `<script setup lang="ts">` for components
@@ -138,6 +150,30 @@ if err != nil {
 ## Development Workflow
 
 1. Define API in `api/protos/` → 2. `make gen` → 3. Implement biz → data → service → 4. `make wire` → 5. `make test` → 6. `make run`
+
+## ⚠️ 禁止事项
+
+- ❌ **不要修改生成的代码**: `api/gen/go/`、`wire_gen.go`、`*.pb.go` 等
+- ❌ **不要跳过代码生成**: 修改 proto 后必须 `make gen`，修改 DI 后必须 `make wire`
+- ❌ **不要在 Go 中使用 `panic()`**: 使用 Kratos 错误类型（如 `userv1.ErrorUserNotFound`）
+- ❌ **不要在 TypeScript 中使用 `as any` 或 `@ts-ignore`**
+- ❌ **不要提交生成的文件**: 已在 `.gitignore` 中配置
+- ❌ **不要跨层调用**: Service 层不能直接调用 Data 层，必须通过 Biz 层
+
+## 📚 详细文档引用
+
+遇到以下情况时，应主动查阅对应的 `AGENTS.md` 获取详细指导：
+
+| 场景 | 查阅文档 |
+|------|---------|
+| 项目概览、开发工作流 | `AGENTS.md` (根目录) |
+| 修改 API 定义 | `api/AGENTS.md`、`api/protos/AGENTS.md` |
+| 实现业务逻辑（DDD） | `app/krathub/service/internal/AGENTS.md` |
+| Wire 依赖注入 | `app/AGENTS.md` |
+| 前端开发 | `app/krathub/service/web/AGENTS.md` |
+| 修改共享库 | `pkg/AGENTS.md` 和对应子目录文档 |
+
+**提示**: AGENTS.md 包含详细的代码示例、架构图、最佳实践和常见问题解答。
 
 ## Common Pitfalls
 
