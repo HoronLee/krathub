@@ -50,6 +50,7 @@ openspec/
 .opencode/
 .sisyphus/
 .claude/
+.omc/
 
 # Frontend
 # Logs
