@@ -68,6 +68,7 @@ func NewHTTPMiddleware(
 	userWhitelist := mwpkg.NewWhiteList(mwpkg.Exact,
 		krathubv1.OperationUserServiceCurrentUserInfo,
 		krathubv1.OperationUserServiceUpdateUser,
+		krathubv1.OperationAuthServiceLogout,
 		krathubv1.OperationTestServicePrivateTest,
 	)
 
