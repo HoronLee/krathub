@@ -34,7 +34,7 @@ func NewHTTPMiddleware(
 	logger log.Logger,
 	authJWT mwinter.AuthJWT,
 ) HTTPMiddleware {
-	httpLogger := logpkg.WithModule(logger, "http/server/krathub-service")
+	httpLogger := logpkg.With(logger, logpkg.WithModule("http/server/krathub-service"))
 
 	var ms []middleware.Middleware
 	ms = append(ms,
@@ -97,7 +97,7 @@ func NewHTTPServer(
 	user *service.UserService,
 	test *service.TestService,
 ) *http.Server {
-	l := logpkg.WithModule(logger, "http/server/krathub-service")
+	l := logpkg.With(logger, logpkg.WithModule("http/server/krathub-service"))
 
 	var opts = []http.ServerOption{
 		http.Middleware(middlewares...),

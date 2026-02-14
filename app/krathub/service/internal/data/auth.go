@@ -24,7 +24,7 @@ type authRepo struct {
 func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 	return &authRepo{
 		data:   data,
-		log:    log.NewHelper(pkglogger.WithModule(logger, "auth/data/krathub-service")),
+		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("auth/data/krathub-service"))),
 		mapper: mapper.New[biz.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }

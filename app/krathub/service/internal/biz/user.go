@@ -29,7 +29,7 @@ type UserUsecase struct {
 func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, authRepo AuthRepo) *UserUsecase {
 	uc := &UserUsecase{
 		repo:     repo,
-		log:      log.NewHelper(pkglogger.WithModule(logger, "user/biz/krathub-service")),
+		log:      log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("user/biz/krathub-service"))),
 		cfg:      cfg,
 		authRepo: authRepo,
 	}

@@ -89,7 +89,7 @@ func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 
 	return &Client{
 		rdb: rdb,
-		log: log.NewHelper(pkglogger.WithModule(logger, "redis/pkg/krathub-service")),
+		log: log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("redis/pkg/krathub-service"))),
 	}, cleanup, nil
 }
 

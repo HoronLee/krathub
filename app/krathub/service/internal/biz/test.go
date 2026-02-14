@@ -19,7 +19,7 @@ type TestUsecase struct {
 func NewTestUsecase(repo TestRepo, logger log.Logger) *TestUsecase {
 	return &TestUsecase{
 		repo: repo,
-		log:  log.NewHelper(pkglogger.WithModule(logger, "test/biz/krathub-service")),
+		log:  log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("test/biz/krathub-service"))),
 	}
 }
 

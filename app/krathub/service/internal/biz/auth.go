@@ -40,7 +40,7 @@ func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecas
 
 	uc := &AuthUsecase{
 		repo:       repo,
-		log:        log.NewHelper(pkglogger.WithModule(logger, "auth/biz/krathub-service")),
+		log:        log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("auth/biz/krathub-service"))),
 		cfg:        cfg,
 		accessJWT:  accessJWTService,
 		refreshJWT: refreshJWTService,

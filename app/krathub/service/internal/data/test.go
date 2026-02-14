@@ -19,7 +19,7 @@ type testRepo struct {
 func NewTestRepo(data *Data, logger log.Logger) biz.TestRepo {
 	return &testRepo{
 		data: data,
-		log:  log.NewHelper(pkglogger.WithModule(logger, "test/data/krathub-service")),
+		log:  log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("test/data/krathub-service"))),
 	}
 }
 

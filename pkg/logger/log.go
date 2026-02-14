@@ -173,9 +173,30 @@ func (l *ZapLogger) GetGormLogger(module string) GormLogger {
 	}
 }
 
-// WithModule 为logger添加module键值对
+// Option 日志配置选项函数类型
+type Option func(keyvals *[]any)
+
+// WithModule 返回一个添加 module 字段的 Option
 // module命名规范: "[组件]/[层]/[服务名]"
 // 例如: "redis/data/krathub-service", "auth/biz/krathub-service"
-func WithModule(logger log.Logger, module string) log.Logger {
-	return log.With(logger, "module", module)
+func WithModule(module string) Option {
+	return func(keyvals *[]any) {
+		*keyvals = append(*keyvals, "module", module)
+	}
+}
+
+// WithField 返回一个添加自定义字段的 Option
+func WithField(key string, value any) Option {
+	return func(keyvals *[]any) {
+		*keyvals = append(*keyvals, key, value)
+	}
+}
+
+// With 应用一系列 Option 到 logger 上
+func With(logger log.Logger, opts ...Option) log.Logger {
+	keyvals := make([]any, 0)
+	for _, opt := range opts {
+		opt(&keyvals)
+	}
+	return log.With(logger, keyvals...)
 }

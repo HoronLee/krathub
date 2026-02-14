@@ -38,7 +38,7 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, client client.Client,
 	dao.SetDefault(db)
 	return &Data{
 		query:  dao.Q,
-		log:    log.NewHelper(pkglogger.WithModule(logger, "data/data/krathub-service")),
+		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("data/data/krathub-service"))),
 		client: client,
 		redis:  redisClient,
 	}, cleanup, nil
@@ -84,5 +84,5 @@ func NewRedis(cfg *conf.Data, logger log.Logger) (*redis.Client, func(), error) 
 		return nil, nil, errors.New("redis configuration is required")
 	}
 
-	return redis.NewClient(redisConfig, pkglogger.WithModule(logger, "redis/data/krathub-service"))
+	return redis.NewClient(redisConfig, pkglogger.With(logger, pkglogger.WithModule("redis/data/krathub-service")))
 }

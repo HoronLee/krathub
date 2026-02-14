@@ -28,7 +28,7 @@ func NewClient(
 		dataCfg:   dataCfg,
 		traceCfg:  traceCfg,
 		discovery: discovery,
-		logger:    pkglogger.WithModule(logger, "client/client/krathub-service"),
+		logger:    pkglogger.With(logger, pkglogger.WithModule("client/client/krathub-service")),
 	}, nil
 }
 

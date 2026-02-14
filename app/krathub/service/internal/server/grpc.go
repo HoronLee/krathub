@@ -28,7 +28,7 @@ func NewGRPCMiddleware(
 	m *Metrics,
 	logger log.Logger,
 ) GRPCMiddleware {
-	grpcLogger := logpkg.WithModule(logger, "grpc/server/krathub-service")
+	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/krathub-service"))
 
 	var ms []middleware.Middleware
 	ms = append(ms,
@@ -60,7 +60,7 @@ func NewGRPCServer(
 	middlewares GRPCMiddleware,
 	logger log.Logger,
 ) *grpc.Server {
-	grpcLogger := logpkg.WithModule(logger, "grpc/server/krathub-service")
+	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/krathub-service"))
 
 	opts := []grpc.ServerOption{
 		grpc.Middleware(middlewares...),

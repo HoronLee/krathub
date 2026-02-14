@@ -21,7 +21,7 @@ type Metrics struct {
 
 func NewMetrics(c *conf.Metrics, app *conf.App, logger log.Logger) (*Metrics, error) {
 	if c == nil || !c.Enable {
-		log.NewHelper(pkglogger.WithModule(logger, "metrics/server")).Info("metrics config is empty, skip metrics init")
+		log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("metrics/server"))).Info("metrics config is empty, skip metrics init")
 		return nil, nil
 	}
 

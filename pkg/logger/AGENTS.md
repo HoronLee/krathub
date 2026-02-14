@@ -22,9 +22,18 @@ l := logger.NewLogger(&logger.Config{
 })
 ```
 
-### 2. 添加模块信息
+### 2. 使用 Option 模式添加字段
 ```go
-helper := log.NewHelper(logger.WithModule(l, "auth/biz"))
+// 仅添加 module
+helper := log.NewHelper(logger.With(l, logger.WithModule("auth/biz")))
+helper.Info("service started")
+
+// 添加多个字段
+helper := log.NewHelper(logger.With(l, 
+    logger.WithModule("auth/biz"),
+    logger.WithField("version", "v1.0.0"),
+    logger.WithField("instance", "node-1"),
+))
 helper.Info("service started")
 ```
 

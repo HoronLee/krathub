@@ -21,7 +21,7 @@ type userRepo struct {
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{
 		data:   data,
-		log:    log.NewHelper(pkglogger.WithModule(logger, "user/data/krathub-service")),
+		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("user/data/krathub-service"))),
 		mapper: mapper.New[biz.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }
