@@ -32,7 +32,9 @@ func setupTestAuthRepo(t *testing.T) (*authRepo, func()) {
 	})
 
 	redisClient, redisCleanup, err := redis.NewClient(cfg, testLogger)
-	require.NoError(t, err, "Failed to create Redis client for testing")
+	if err != nil {
+		t.Skipf("redis not available: %v", err)
+	}
 
 	// 清理测试数据库
 	ctx := context.Background()
