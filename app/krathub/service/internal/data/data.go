@@ -45,7 +45,12 @@ func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, client client.Client,
 }
 
 func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
-	gormLogger := l.(*pkglogger.ZapLogger).GetGormLogger("gorm/data/krathub-service")
+	gormLogger := pkglogger.GormLoggerFrom(l, "gorm/data/krathub-service")
+	dbLog := log.NewHelper(pkglogger.With(
+		l,
+		pkglogger.WithModule("data/db/krathub-service"),
+		pkglogger.WithField("operation", "NewDB"),
+	))
 
 	var dialector gorm.Dialector
 	switch strings.ToLower(cfg.Database.GetDriver()) {
@@ -71,7 +76,7 @@ func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
 		}
 		if i < maxRetries-1 {
 			delay := time.Duration(1<<uint(i)) * time.Second
-			log.NewHelper(l).Warnf("database connection failed (attempt %d/%d), retrying in %v: %v", i+1, maxRetries, delay, err)
+			dbLog.Warnf("database connection failed (attempt %d/%d), retrying in %v: %v", i+1, maxRetries, delay, err)
 			time.Sleep(delay)
 		}
 	}
