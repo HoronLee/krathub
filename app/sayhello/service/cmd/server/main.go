@@ -1,24 +1,17 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"os"
 
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/observability"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
-	"go.opentelemetry.io/otel/sdk/resource"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -44,31 +37,6 @@ func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.
 		kratos.Server(gs),
 		kratos.Registrar(reg),
 	)
-}
-
-func initTracerProvider(c *conf.Trace, env string) error {
-	if c == nil || c.Endpoint == "" {
-		return nil
-	}
-
-	exporter, err := otlptracegrpc.New(context.Background(),
-		otlptracegrpc.WithEndpoint(c.Endpoint),
-		otlptracegrpc.WithInsecure(),
-	)
-	if err != nil {
-		return err
-	}
-	tp := tracesdk.NewTracerProvider(
-		tracesdk.WithSampler(tracesdk.ParentBased(tracesdk.TraceIDRatioBased(1.0))),
-		tracesdk.WithBatcher(exporter),
-		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(Name),
-			attribute.String("exporter", "otlp"),
-			attribute.String("env", env),
-		)),
-	)
-	otel.SetTracerProvider(tp)
-	return nil
 }
 
 func main() {
@@ -104,9 +72,11 @@ func main() {
 		Compress:   bc.App.Log.Compress,
 	})
 
-	if err := initTracerProvider(bc.Trace, bc.App.Env); err != nil {
+	traceCleanup, err := observability.InitTracerProvider(bc.Trace, Name, bc.App.Env)
+	if err != nil {
 		panic(err)
 	}
+	defer traceCleanup()
 
 	app, cleanup, err := wireApp(bc.Server, bc.Registry, log)
 	if err != nil {
