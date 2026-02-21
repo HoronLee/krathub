@@ -138,7 +138,7 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 		return nil, fmt.Errorf("failed to create grpc client for service %s: %w", serviceName, err)
 	}
 
-	logger.Log(log.LevelDebug, "msg", "successfully created grpc client",
+	logger.Log(log.LevelInfo, "msg", "successfully created grpc client",
 		"service_name", serviceName, "endpoint", endpoint)
 
 	return conn, nil
