@@ -2,6 +2,8 @@ package redis
 
 import (
 	"context"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -11,12 +13,32 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func testRedisAddr() string {
+	if addr := os.Getenv("REDIS_TEST_ADDR"); addr != "" {
+		return addr
+	}
+	return "127.0.0.1:6379"
+}
+
+func testRedisPassword() string {
+	return os.Getenv("REDIS_TEST_PASSWORD")
+}
+
+func testRedisDB(defaultDB int) int {
+	if db := os.Getenv("REDIS_TEST_DB"); db != "" {
+		if parsed, err := strconv.Atoi(db); err == nil {
+			return parsed
+		}
+	}
+	return defaultDB
+}
+
 // setupTestRedis 设置测试用的Redis客户端
 func setupTestRedis(t *testing.T) (*Client, func()) {
 	cfg := &Config{
-		Addr:         "localhost:6379",
-		Password:     "114514",
-		DB:           1, // 使用测试数据库
+		Addr:         testRedisAddr(),
+		Password:     testRedisPassword(),
+		DB:           testRedisDB(1), // 使用测试数据库
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
@@ -37,9 +59,9 @@ func setupTestRedis(t *testing.T) (*Client, func()) {
 
 func TestNewClient_Success(t *testing.T) {
 	cfg := &Config{
-		Addr:         "localhost:6379",
-		Password:     "114514",
-		DB:           1,
+		Addr:         testRedisAddr(),
+		Password:     testRedisPassword(),
+		DB:           testRedisDB(1),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
