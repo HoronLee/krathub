@@ -1,21 +1,22 @@
 module github.com/horonlee/krathub
 
-go 1.25.3
+go 1.26.0
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20251209175733-2a1774d88802.1
 	github.com/glebarez/sqlite v1.11.0
-	github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20251015020953-cdff24709025
-	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20251015020953-cdff24709025
-	github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20251015020953-cdff24709025
-	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20251015020953-cdff24709025
+	github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20260105075216-c7a58ff59f80
+	github.com/go-kratos/kratos/contrib/config/nacos/v2 v2.0.0-20260105075216-c7a58ff59f80
+	github.com/go-kratos/kratos/contrib/middleware/validate/v2 v2.0.0-20260105075216-c7a58ff59f80
+	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20260105075216-c7a58ff59f80
 	github.com/go-kratos/kratos/contrib/registry/kubernetes/v2 v2.0.0-20260105075216-c7a58ff59f80
-	github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20251015020953-cdff24709025
+	github.com/go-kratos/kratos/contrib/registry/nacos/v2 v2.0.0-20260105075216-c7a58ff59f80
 	github.com/go-kratos/kratos/v2 v2.9.2
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/gnostic v0.7.1
 	github.com/google/wire v0.7.0
 	github.com/hashicorp/consul/api v1.33.0
+	github.com/jinzhu/copier v0.4.0
 	github.com/nacos-group/nacos-sdk-go v1.1.6
 	github.com/prometheus/client_golang v1.23.2
 	github.com/redis/go-redis/v9 v9.17.2
@@ -97,7 +98,6 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.6.0 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
-	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
