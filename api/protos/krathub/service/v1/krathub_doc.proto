@@ -21,22 +21,6 @@ option (gnostic.openapi.v3.document) = {
   }
 
   components: {
-    security_schemes: {
-      additional_properties: [
-        {
-          name: "BearerAuth"
-          value: {
-            security_scheme: {
-              type: "http"
-              scheme: "bearer"
-              bearer_format: "JWT"
-              description: "JWT 认证令牌"
-            }
-          }
-        }
-      ]
-    }
-
     schemas: {
       additional_properties: [
         {

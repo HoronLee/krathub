@@ -2,6 +2,7 @@ package configCenter
 
 import (
 	"context"
+	"os"
 	"reflect"
 	"testing"
 	"time"
@@ -13,7 +14,15 @@ import (
 
 const testKey = "/kratos/test/config"
 
+func shouldRunEtcdIntegration() bool {
+	return os.Getenv("RUN_ETCD_INTEGRATION_TESTS") == "1"
+}
+
 func TestConfig(t *testing.T) {
+	if !shouldRunEtcdIntegration() {
+		t.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration tests")
+	}
+
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"127.0.0.1:2379"},
 		DialTimeout: time.Second,
@@ -74,6 +83,10 @@ func TestConfig(t *testing.T) {
 }
 
 func TestExtToFormat(t *testing.T) {
+	if !shouldRunEtcdIntegration() {
+		t.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration tests")
+	}
+
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"127.0.0.1:2379"},
 		DialTimeout: time.Second,
@@ -181,6 +194,10 @@ func TestEtcdWithPrefix(t *testing.T) {
 }
 
 func TestNewEtcdConfigSource(t *testing.T) {
+	if !shouldRunEtcdIntegration() {
+		t.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration tests")
+	}
+
 	config := &conf.EtcdConfig{
 		Endpoints: []string{"127.0.0.1:2379"},
 		Key:       "/test/config",
@@ -219,6 +236,10 @@ func TestSourceNilConfig(t *testing.T) {
 }
 
 func TestWatcher(t *testing.T) {
+	if !shouldRunEtcdIntegration() {
+		t.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration tests")
+	}
+
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"127.0.0.1:2379"},
 		DialTimeout: time.Second,

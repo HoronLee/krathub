@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
+	paginationpb "github.com/horonlee/krathub/api/gen/go/pagination/v1"
 	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
@@ -32,6 +33,48 @@ func (s *UserService) CurrentUserInfo(ctx context.Context, req *userpb.CurrentUs
 		Name: user.Name,
 		Role: user.Role,
 	}, nil
+}
+
+func (s *UserService) ListUsers(ctx context.Context, req *userpb.ListUsersRequest) (*userpb.ListUsersResponse, error) {
+	users, pagination, err := s.uc.ListUsers(ctx, req.GetPagination())
+	if err != nil {
+		return nil, err
+	}
+
+	respUsers := make([]*userpb.UserInfo, 0, len(users))
+	for _, user := range users {
+		respUsers = append(respUsers, &userpb.UserInfo{
+			Id:       user.ID,
+			Name:     user.Name,
+			Email:    user.Email,
+			Phone:    safeString(user.Phone),
+			Avatar:   safeString(user.Avatar),
+			Bio:      safeString(user.Bio),
+			Location: safeString(user.Location),
+			Website:  safeString(user.Website),
+			Role:     user.Role,
+		})
+	}
+
+	if pagination == nil {
+		pagination = &paginationpb.PaginationResponse{
+			Mode: &paginationpb.PaginationResponse_Page{
+				Page: &paginationpb.PagePaginationResponse{},
+			},
+		}
+	}
+
+	return &userpb.ListUsersResponse{
+		Users:      respUsers,
+		Pagination: pagination,
+	}, nil
+}
+
+func safeString(v *string) string {
+	if v == nil {
+		return ""
+	}
+	return *v
 }
 
 // UpdateUser 更新用户信息

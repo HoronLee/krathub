@@ -101,10 +101,6 @@ func NewHTTPServer(
 	var opts = []http.ServerOption{
 		http.Middleware(middlewares...),
 		http.Logger(l),
-		// 统一成功响应结构：将业务返回包装成固定 JSON 形态。
-		http.ResponseEncoder(EncodeResponse),
-		// 统一错误响应结构：将 Kratos/普通错误映射为固定 JSON 形态。
-		http.ErrorEncoder(EncodeError),
 	}
 	if c != nil && c.Http != nil {
 		if c.Http.Network != "" {

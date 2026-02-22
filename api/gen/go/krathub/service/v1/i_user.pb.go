@@ -7,7 +7,6 @@
 package krathubpb
 
 import (
-	_ "github.com/google/gnostic/openapiv3"
 	v1 "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -27,50 +26,43 @@ var File_krathub_service_v1_i_user_proto protoreflect.FileDescriptor
 
 const file_krathub_service_v1_i_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1fkrathub/service/v1/i_user.proto\x12\x12krathub.service.v1\x1a$gnostic/openapi/v3/annotations.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1auser/service/v1/user.proto2\xb4\x04\n" +
-	"\vUserService\x12\x90\x01\n" +
-	"\x0fCurrentUserInfo\x12'.user.service.v1.CurrentUserInfoRequest\x1a(.user.service.v1.CurrentUserInfoResponse\"*\xbaG\x12Z\x10\n" +
-	"\x0e\n" +
+	"\x1fkrathub/service/v1/i_user.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1auser/service/v1/user.proto2\xc4\x04\n" +
+	"\vUserService\x12{\n" +
+	"\x0fCurrentUserInfo\x12'.user.service.v1.CurrentUserInfoRequest\x1a(.user.service.v1.CurrentUserInfoResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/info\x12e\n" +
+	"\tListUsers\x12!.user.service.v1.ListUsersRequest\x1a\".user.service.v1.ListUsersResponse\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/users\x12q\n" +
 	"\n" +
-	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/info\x12\x86\x01\n" +
+	"UpdateUser\x12\".user.service.v1.UpdateUserRequest\x1a#.user.service.v1.UpdateUserResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12i\n" +
+	"\bSaveUser\x12 .user.service.v1.SaveUserRequest\x1a!.user.service.v1.SaveUserResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12s\n" +
 	"\n" +
-	"UpdateUser\x12\".user.service.v1.UpdateUserRequest\x1a#.user.service.v1.UpdateUserResponse\"/\xbaG\x12Z\x10\n" +
-	"\x0e\n" +
-	"\n" +
-	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12~\n" +
-	"\bSaveUser\x12 .user.service.v1.SaveUserRequest\x1a!.user.service.v1.SaveUserResponse\"-\xbaG\x12Z\x10\n" +
-	"\x0e\n" +
-	"\n" +
-	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12\x88\x01\n" +
-	"\n" +
-	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a#.user.service.v1.DeleteUserResponse\"1\xbaG\x12Z\x10\n" +
-	"\x0e\n" +
-	"\n" +
-	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B\xd3\x01\n" +
+	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a#.user.service.v1.DeleteUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B\xd3\x01\n" +
 	"\x16com.krathub.service.v1B\n" +
 	"IUserProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubpb\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 
 var file_krathub_service_v1_i_user_proto_goTypes = []any{
 	(*v1.CurrentUserInfoRequest)(nil),  // 0: user.service.v1.CurrentUserInfoRequest
-	(*v1.UpdateUserRequest)(nil),       // 1: user.service.v1.UpdateUserRequest
-	(*v1.SaveUserRequest)(nil),         // 2: user.service.v1.SaveUserRequest
-	(*v1.DeleteUserRequest)(nil),       // 3: user.service.v1.DeleteUserRequest
-	(*v1.CurrentUserInfoResponse)(nil), // 4: user.service.v1.CurrentUserInfoResponse
-	(*v1.UpdateUserResponse)(nil),      // 5: user.service.v1.UpdateUserResponse
-	(*v1.SaveUserResponse)(nil),        // 6: user.service.v1.SaveUserResponse
-	(*v1.DeleteUserResponse)(nil),      // 7: user.service.v1.DeleteUserResponse
+	(*v1.ListUsersRequest)(nil),        // 1: user.service.v1.ListUsersRequest
+	(*v1.UpdateUserRequest)(nil),       // 2: user.service.v1.UpdateUserRequest
+	(*v1.SaveUserRequest)(nil),         // 3: user.service.v1.SaveUserRequest
+	(*v1.DeleteUserRequest)(nil),       // 4: user.service.v1.DeleteUserRequest
+	(*v1.CurrentUserInfoResponse)(nil), // 5: user.service.v1.CurrentUserInfoResponse
+	(*v1.ListUsersResponse)(nil),       // 6: user.service.v1.ListUsersResponse
+	(*v1.UpdateUserResponse)(nil),      // 7: user.service.v1.UpdateUserResponse
+	(*v1.SaveUserResponse)(nil),        // 8: user.service.v1.SaveUserResponse
+	(*v1.DeleteUserResponse)(nil),      // 9: user.service.v1.DeleteUserResponse
 }
 var file_krathub_service_v1_i_user_proto_depIdxs = []int32{
 	0, // 0: krathub.service.v1.UserService.CurrentUserInfo:input_type -> user.service.v1.CurrentUserInfoRequest
-	1, // 1: krathub.service.v1.UserService.UpdateUser:input_type -> user.service.v1.UpdateUserRequest
-	2, // 2: krathub.service.v1.UserService.SaveUser:input_type -> user.service.v1.SaveUserRequest
-	3, // 3: krathub.service.v1.UserService.DeleteUser:input_type -> user.service.v1.DeleteUserRequest
-	4, // 4: krathub.service.v1.UserService.CurrentUserInfo:output_type -> user.service.v1.CurrentUserInfoResponse
-	5, // 5: krathub.service.v1.UserService.UpdateUser:output_type -> user.service.v1.UpdateUserResponse
-	6, // 6: krathub.service.v1.UserService.SaveUser:output_type -> user.service.v1.SaveUserResponse
-	7, // 7: krathub.service.v1.UserService.DeleteUser:output_type -> user.service.v1.DeleteUserResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	1, // 1: krathub.service.v1.UserService.ListUsers:input_type -> user.service.v1.ListUsersRequest
+	2, // 2: krathub.service.v1.UserService.UpdateUser:input_type -> user.service.v1.UpdateUserRequest
+	3, // 3: krathub.service.v1.UserService.SaveUser:input_type -> user.service.v1.SaveUserRequest
+	4, // 4: krathub.service.v1.UserService.DeleteUser:input_type -> user.service.v1.DeleteUserRequest
+	5, // 5: krathub.service.v1.UserService.CurrentUserInfo:output_type -> user.service.v1.CurrentUserInfoResponse
+	6, // 6: krathub.service.v1.UserService.ListUsers:output_type -> user.service.v1.ListUsersResponse
+	7, // 7: krathub.service.v1.UserService.UpdateUser:output_type -> user.service.v1.UpdateUserResponse
+	8, // 8: krathub.service.v1.UserService.SaveUser:output_type -> user.service.v1.SaveUserResponse
+	9, // 9: krathub.service.v1.UserService.DeleteUser:output_type -> user.service.v1.DeleteUserResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

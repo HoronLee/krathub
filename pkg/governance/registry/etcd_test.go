@@ -2,6 +2,7 @@ package registry
 
 import (
 	"context"
+	"os"
 	"testing"
 	"time"
 
@@ -11,8 +12,16 @@ import (
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 )
 
+func shouldRunEtcdIntegration() bool {
+	return os.Getenv("RUN_ETCD_INTEGRATION_TESTS") == "1"
+}
+
 // TestEtcdRegistryAndDiscovery 测试 etcd 注册和发现功能
 func TestEtcdRegistryAndDiscovery(t *testing.T) {
+	if !shouldRunEtcdIntegration() {
+		t.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration tests")
+	}
+
 	// 创建 etcd 客户端
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"127.0.0.1:2379"},
@@ -116,6 +125,10 @@ func TestEtcdRegistryAndDiscovery(t *testing.T) {
 
 // TestEtcdConfigConversion 测试配置转换
 func TestEtcdConfigConversion(t *testing.T) {
+	if !shouldRunEtcdIntegration() {
+		t.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration tests")
+	}
+
 	// 创建测试配置
 	cfg := &conf.EtcdConfig{
 		Endpoints: []string{"127.0.0.1:2379", "127.0.0.1:2380"},
@@ -159,6 +172,10 @@ func TestEtcdConfigConversion(t *testing.T) {
 
 // BenchmarkEtcdServiceDiscovery 性能基准测试
 func BenchmarkEtcdServiceDiscovery(b *testing.B) {
+	if !shouldRunEtcdIntegration() {
+		b.Skip("set RUN_ETCD_INTEGRATION_TESTS=1 to run etcd integration benchmark")
+	}
+
 	// 创建 etcd 客户端
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"127.0.0.1:2379"},

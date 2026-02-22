@@ -1,11 +1,16 @@
 package registry
 
 import (
+	"os"
 	"testing"
 
 	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/stretchr/testify/assert"
 )
+
+func shouldRunKubernetesIntegration() bool {
+	return os.Getenv("RUN_K8S_INTEGRATION_TESTS") == "1"
+}
 
 func TestNewKubernetesRegistry(t *testing.T) {
 	t.Run("nil config returns nil", func(t *testing.T) {
@@ -20,6 +25,10 @@ func TestNewKubernetesRegistry(t *testing.T) {
 	})
 
 	t.Run("enable true creates registry", func(t *testing.T) {
+		if !shouldRunKubernetesIntegration() {
+			t.Skip("set RUN_K8S_INTEGRATION_TESTS=1 to run kubernetes integration test")
+		}
+
 		cfg := &conf.KubernetesConfig{Enable: true}
 
 		defer func() {
@@ -46,6 +55,10 @@ func TestNewKubernetesDiscovery(t *testing.T) {
 	})
 
 	t.Run("enable true creates discovery", func(t *testing.T) {
+		if !shouldRunKubernetesIntegration() {
+			t.Skip("set RUN_K8S_INTEGRATION_TESTS=1 to run kubernetes integration test")
+		}
+
 		cfg := &conf.KubernetesConfig{Enable: true}
 
 		defer func() {

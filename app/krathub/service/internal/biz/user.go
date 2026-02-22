@@ -5,6 +5,7 @@ import (
 
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
+	paginationpb "github.com/horonlee/krathub/api/gen/go/pagination/v1"
 	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	"github.com/horonlee/krathub/pkg/jwt"
@@ -18,6 +19,7 @@ type UserRepo interface {
 	GetUserById(context.Context, int64) (*entity.User, error)
 	DeleteUser(context.Context, *entity.User) (*entity.User, error)
 	UpdateUser(context.Context, *entity.User) (*entity.User, error)
+	ListUsers(context.Context, int32, int32) ([]*entity.User, int64, error)
 }
 
 type UserUsecase struct {
@@ -100,6 +102,37 @@ func (uc *UserUsecase) SaveUser(ctx context.Context, user *entity.User) (*entity
 		return nil, userpb.ErrorSaveUserFailed("failed to save user: %v", err)
 	}
 	return savedUser, nil
+}
+
+func (uc *UserUsecase) ListUsers(ctx context.Context, pagination *paginationpb.PaginationRequest) ([]*entity.User, *paginationpb.PaginationResponse, error) {
+	page := int32(1)
+	pageSize := int32(20)
+
+	if pagination != nil {
+		if pageMode := pagination.GetPage(); pageMode != nil {
+			if pageMode.Page > 0 {
+				page = pageMode.Page
+			}
+			if pageMode.PageSize > 0 {
+				pageSize = pageMode.PageSize
+			}
+		}
+	}
+
+	users, total, err := uc.repo.ListUsers(ctx, page, pageSize)
+	if err != nil {
+		return nil, nil, userpb.ErrorUserNotFound("failed to list users: %v", err)
+	}
+
+	return users, &paginationpb.PaginationResponse{
+		Mode: &paginationpb.PaginationResponse_Page{
+			Page: &paginationpb.PagePaginationResponse{
+				Total:    total,
+				Page:     page,
+				PageSize: pageSize,
+			},
+		},
+	}, nil
 }
 
 func (uc *UserUsecase) DeleteUser(ctx context.Context, user *entity.User) (success bool, err error) {

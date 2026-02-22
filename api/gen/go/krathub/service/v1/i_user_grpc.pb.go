@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	UserService_CurrentUserInfo_FullMethodName = "/krathub.service.v1.UserService/CurrentUserInfo"
+	UserService_ListUsers_FullMethodName       = "/krathub.service.v1.UserService/ListUsers"
 	UserService_UpdateUser_FullMethodName      = "/krathub.service.v1.UserService/UpdateUser"
 	UserService_SaveUser_FullMethodName        = "/krathub.service.v1.UserService/SaveUser"
 	UserService_DeleteUser_FullMethodName      = "/krathub.service.v1.UserService/DeleteUser"
@@ -33,6 +34,7 @@ const (
 // User HTTP 服务 - 用于 OpenAPI 生成
 type UserServiceClient interface {
 	CurrentUserInfo(ctx context.Context, in *v1.CurrentUserInfoRequest, opts ...grpc.CallOption) (*v1.CurrentUserInfoResponse, error)
+	ListUsers(ctx context.Context, in *v1.ListUsersRequest, opts ...grpc.CallOption) (*v1.ListUsersResponse, error)
 	UpdateUser(ctx context.Context, in *v1.UpdateUserRequest, opts ...grpc.CallOption) (*v1.UpdateUserResponse, error)
 	SaveUser(ctx context.Context, in *v1.SaveUserRequest, opts ...grpc.CallOption) (*v1.SaveUserResponse, error)
 	DeleteUser(ctx context.Context, in *v1.DeleteUserRequest, opts ...grpc.CallOption) (*v1.DeleteUserResponse, error)
@@ -50,6 +52,16 @@ func (c *userServiceClient) CurrentUserInfo(ctx context.Context, in *v1.CurrentU
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(v1.CurrentUserInfoResponse)
 	err := c.cc.Invoke(ctx, UserService_CurrentUserInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ListUsers(ctx context.Context, in *v1.ListUsersRequest, opts ...grpc.CallOption) (*v1.ListUsersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(v1.ListUsersResponse)
+	err := c.cc.Invoke(ctx, UserService_ListUsers_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,6 +105,7 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *v1.DeleteUserReq
 // User HTTP 服务 - 用于 OpenAPI 生成
 type UserServiceServer interface {
 	CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoResponse, error)
+	ListUsers(context.Context, *v1.ListUsersRequest) (*v1.ListUsersResponse, error)
 	UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserResponse, error)
 	SaveUser(context.Context, *v1.SaveUserRequest) (*v1.SaveUserResponse, error)
 	DeleteUser(context.Context, *v1.DeleteUserRequest) (*v1.DeleteUserResponse, error)
@@ -108,6 +121,9 @@ type UnimplementedUserServiceServer struct{}
 
 func (UnimplementedUserServiceServer) CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CurrentUserInfo not implemented")
+}
+func (UnimplementedUserServiceServer) ListUsers(context.Context, *v1.ListUsersRequest) (*v1.ListUsersResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListUsers not implemented")
 }
 func (UnimplementedUserServiceServer) UpdateUser(context.Context, *v1.UpdateUserRequest) (*v1.UpdateUserResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateUser not implemented")
@@ -153,6 +169,24 @@ func _UserService_CurrentUserInfo_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).CurrentUserInfo(ctx, req.(*v1.CurrentUserInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.ListUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_ListUsers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListUsers(ctx, req.(*v1.ListUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -221,6 +255,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CurrentUserInfo",
 			Handler:    _UserService_CurrentUserInfo_Handler,
+		},
+		{
+			MethodName: "ListUsers",
+			Handler:    _UserService_ListUsers_Handler,
 		},
 		{
 			MethodName: "UpdateUser",

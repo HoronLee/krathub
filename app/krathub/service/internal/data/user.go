@@ -86,3 +86,23 @@ func (r *userRepo) UpdateUser(ctx context.Context, user *entity.User) (*entity.U
 	}
 	return r.mapper.ToDomain(poUser), nil
 }
+
+func (r *userRepo) ListUsers(ctx context.Context, page int32, pageSize int32) ([]*entity.User, int64, error) {
+	offset := int((page - 1) * pageSize)
+	limit := int(pageSize)
+
+	poUsers, total, err := r.data.query.User.
+		WithContext(ctx).
+		Order(r.data.query.User.ID.Desc()).
+		FindByPage(offset, limit)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	users := make([]*entity.User, 0, len(poUsers))
+	for _, poUser := range poUsers {
+		users = append(users, r.mapper.ToDomain(poUser))
+	}
+
+	return users, total, nil
+}

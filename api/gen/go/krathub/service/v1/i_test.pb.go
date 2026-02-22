@@ -7,7 +7,6 @@
 package krathubpb
 
 import (
-	_ "github.com/google/gnostic/openapiv3"
 	v1 "github.com/horonlee/krathub/api/gen/go/test/service/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -27,14 +26,11 @@ var File_krathub_service_v1_i_test_proto protoreflect.FileDescriptor
 
 const file_krathub_service_v1_i_test_proto_rawDesc = "" +
 	"\n" +
-	"\x1fkrathub/service/v1/i_test.proto\x12\x12krathub.service.v1\x1a$gnostic/openapi/v3/annotations.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1atest/service/v1/test.proto2\xdc\x02\n" +
+	"\x1fkrathub/service/v1/i_test.proto\x12\x12krathub.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1atest/service/v1/test.proto2\xc6\x02\n" +
 	"\vTestService\x12a\n" +
 	"\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/test/Hello\x12]\n" +
-	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/test/test\x12\x8a\x01\n" +
-	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponse\"0\xbaG\x12Z\x10\n" +
-	"\x0e\n" +
-	"\n" +
-	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/test/privateB\xd3\x01\n" +
+	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/test/test\x12u\n" +
+	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/test/privateB\xd3\x01\n" +
 	"\x16com.krathub.service.v1B\n" +
 	"ITestProtoP\x01ZCgithub.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubpb\xa2\x02\x03KSX\xaa\x02\x12Krathub.Service.V1\xca\x02\x12Krathub\\Service\\V1\xe2\x02\x1eKrathub\\Service\\V1\\GPBMetadata\xea\x02\x14Krathub::Service::V1b\x06proto3"
 

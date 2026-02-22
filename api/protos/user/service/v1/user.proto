@@ -4,6 +4,7 @@ package user.service.v1;
 
 import "buf/validate/validate.proto";
 import "errors/errors.proto";
+import "pagination/v1/pagination.proto";
 
 option java_multiple_files = true;
 option java_outer_classname = "UserProtoV1";
@@ -26,9 +27,22 @@ enum ErrorReason {
 // User gRPC 服务 - 纯 gRPC 接口
 service UserService {
   rpc CurrentUserInfo(CurrentUserInfoRequest) returns (CurrentUserInfoResponse);
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
   rpc SaveUser(SaveUserRequest) returns (SaveUserResponse);
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message UserInfo {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string avatar = 5;
+  string bio = 6;
+  string location = 7;
+  string website = 8;
+  string role = 9;
 }
 
 message CurrentUserInfoRequest {}
@@ -37,6 +51,15 @@ message CurrentUserInfoResponse {
   int64 id = 1;
   string name = 2;
   string role = 3;
+}
+
+message ListUsersRequest {
+  pagination.PaginationRequest pagination = 1;
+}
+
+message ListUsersResponse {
+  repeated UserInfo users = 1;
+  pagination.PaginationResponse pagination = 2;
 }
 
 message DeleteUserRequest {
