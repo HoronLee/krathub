@@ -9,7 +9,7 @@
 package sayhellopb
 
 import (
-	_ "google.golang.org/genproto/googleapis/api/annotations"
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -118,13 +118,13 @@ var File_sayhello_service_v1_sayhello_proto protoreflect.FileDescriptor
 
 const file_sayhello_service_v1_sayhello_proto_rawDesc = "" +
 	"\n" +
-	"\"sayhello/service/v1/sayhello.proto\x12\x13sayhello.service.v1\x1a\x1cgoogle/api/annotations.proto\"*\n" +
-	"\fHelloRequest\x12\x1a\n" +
-	"\bgreeting\x18\x01 \x01(\tR\bgreeting\"%\n" +
+	"\"sayhello/service/v1/sayhello.proto\x12\x13sayhello.service.v1\x1a\x1bbuf/validate/validate.proto\"2\n" +
+	"\fHelloRequest\x12\"\n" +
+	"\bgreeting\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bgreeting\"%\n" +
 	"\rHelloResponse\x12\x14\n" +
-	"\x05reply\x18\x01 \x01(\tR\x05reply2w\n" +
-	"\x0fSayHelloService\x12d\n" +
-	"\x05Hello\x12!.sayhello.service.v1.HelloRequest\x1a\".sayhello.service.v1.HelloResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/SayHelloB\xdd\x01\n" +
+	"\x05reply\x18\x01 \x01(\tR\x05reply2c\n" +
+	"\x0fSayHelloService\x12P\n" +
+	"\x05Hello\x12!.sayhello.service.v1.HelloRequest\x1a\".sayhello.service.v1.HelloResponse\"\x00B\xdd\x01\n" +
 	"\x17com.sayhello.service.v1B\rSayhelloProtoP\x01ZEgithub.com/horonlee/krathub/api/gen/go/sayhello/service/v1;sayhellopb\xa2\x02\x03SSX\xaa\x02\x13Sayhello.Service.V1\xca\x02\x13Sayhello\\Service\\V1\xe2\x02\x1fSayhello\\Service\\V1\\GPBMetadata\xea\x02\x15Sayhello::Service::V1b\x06proto3"
 
 var (
