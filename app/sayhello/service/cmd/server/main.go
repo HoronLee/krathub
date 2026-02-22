@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
@@ -26,7 +27,7 @@ var (
 	Name     string
 	Version  string
 	flagconf string
-	id, _    = os.Hostname()
+	id       string
 	Metadata map[string]string
 )
 
@@ -93,6 +94,9 @@ func main() {
 	if Metadata == nil {
 		Metadata = make(map[string]string)
 	}
+
+	hostname, _ := os.Hostname()
+	id = fmt.Sprintf("%s-%s", Name, hostname)
 
 	log := logger.NewLogger(&logger.Config{
 		Env:        bc.App.Env,

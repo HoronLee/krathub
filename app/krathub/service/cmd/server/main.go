@@ -34,7 +34,7 @@ var (
 	// flagconf is the config flag.
 	flagconf string
 	// id is the id of the instance.
-	id, _ = os.Hostname()
+	id string
 	// Metadata is the service metadata.
 	Metadata map[string]string
 )
@@ -110,6 +110,9 @@ func main() {
 	if Metadata == nil {
 		Metadata = make(map[string]string)
 	}
+
+	hostname, _ := os.Hostname()
+	id = fmt.Sprintf("%s-%s", Name, hostname)
 
 	// 初始化日志
 	// 如果未配置日志文件名，则使用默认值

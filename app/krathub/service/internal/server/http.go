@@ -3,15 +3,6 @@ package server
 import (
 	"crypto/tls"
 
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	krathubv1 "github.com/horonlee/krathub/api/gen/go/krathub/service/v1"
-	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
-	mwinter "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
-	"github.com/horonlee/krathub/app/krathub/service/internal/service"
-	logpkg "github.com/horonlee/krathub/pkg/logger"
-	mwpkg "github.com/horonlee/krathub/pkg/middleware"
-	"github.com/horonlee/krathub/pkg/middleware/cors"
-
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -22,6 +13,14 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/horonlee/krathub/api/gen/go/conf/v1"
+	krathubv1 "github.com/horonlee/krathub/api/gen/go/krathub/service/v1"
+	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
+	mwinter "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
+	"github.com/horonlee/krathub/app/krathub/service/internal/service"
+	logpkg "github.com/horonlee/krathub/pkg/logger"
+	mwpkg "github.com/horonlee/krathub/pkg/middleware"
+	"github.com/horonlee/krathub/pkg/middleware/cors"
 )
 
 // HTTPMiddleware 用于 Wire 注入的中间件切片包装类型
@@ -102,6 +101,10 @@ func NewHTTPServer(
 	var opts = []http.ServerOption{
 		http.Middleware(middlewares...),
 		http.Logger(l),
+		// 统一成功响应结构：将业务返回包装成固定 JSON 形态。
+		http.ResponseEncoder(EncodeResponse),
+		// 统一错误响应结构：将 Kratos/普通错误映射为固定 JSON 形态。
+		http.ErrorEncoder(EncodeError),
 	}
 	if c != nil && c.Http != nil {
 		if c.Http.Network != "" {
