@@ -6,6 +6,7 @@ import (
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
+	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	"github.com/horonlee/krathub/pkg/jwt"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
@@ -13,10 +14,10 @@ import (
 )
 
 type UserRepo interface {
-	SaveUser(context.Context, *User) (*User, error)
-	GetUserById(context.Context, int64) (*User, error)
-	DeleteUser(context.Context, *User) (*User, error)
-	UpdateUser(context.Context, *User) (*User, error)
+	SaveUser(context.Context, *entity.User) (*entity.User, error)
+	GetUserById(context.Context, int64) (*entity.User, error)
+	DeleteUser(context.Context, *entity.User) (*entity.User, error)
+	UpdateUser(context.Context, *entity.User) (*entity.User, error)
 }
 
 type UserUsecase struct {
@@ -36,7 +37,7 @@ func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, authRepo Au
 	return uc
 }
 
-func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*User, error) {
+func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*entity.User, error) {
 	// 从context中获取当前登录用户信息
 	claims, ok := jwt.FromContext[UserClaims](ctx)
 	if !ok {
@@ -44,7 +45,7 @@ func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*User, error) {
 	}
 
 	// 直接使用JWT中的信息构建用户模型，避免数据库查询
-	user := &User{
+	user := &entity.User{
 		ID:   claims.ID,
 		Name: claims.Name,
 		Role: claims.Role,
@@ -53,7 +54,7 @@ func (uc *UserUsecase) CurrentUserInfo(ctx context.Context) (*User, error) {
 	return user, nil
 }
 
-func (uc *UserUsecase) UpdateUser(ctx context.Context, user *User) (*User, error) {
+func (uc *UserUsecase) UpdateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	// 获取原始用户信息
 	origUser, err := uc.repo.GetUserById(ctx, user.ID)
 	if err != nil {
@@ -89,7 +90,7 @@ func (uc *UserUsecase) UpdateUser(ctx context.Context, user *User) (*User, error
 	return updatedUser, nil
 }
 
-func (uc *UserUsecase) SaveUser(ctx context.Context, user *User) (*User, error) {
+func (uc *UserUsecase) SaveUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	if err := uc.checkUserExists(ctx, user); err != nil {
 		return nil, err
 	}
@@ -101,7 +102,7 @@ func (uc *UserUsecase) SaveUser(ctx context.Context, user *User) (*User, error) 
 	return savedUser, nil
 }
 
-func (uc *UserUsecase) DeleteUser(ctx context.Context, user *User) (success bool, err error) {
+func (uc *UserUsecase) DeleteUser(ctx context.Context, user *entity.User) (success bool, err error) {
 	_, err = uc.repo.DeleteUser(ctx, user)
 	if err != nil {
 		return false, userpb.ErrorDeleteUserFailed("failed to delete user: %v", err)
@@ -109,7 +110,7 @@ func (uc *UserUsecase) DeleteUser(ctx context.Context, user *User) (success bool
 	return true, nil
 }
 
-func (uc *UserUsecase) checkUserExists(ctx context.Context, user *User) error {
+func (uc *UserUsecase) checkUserExists(ctx context.Context, user *entity.User) error {
 	if existingUser, err := uc.authRepo.GetUserByUserName(ctx, user.Name); err != nil {
 		return authpb.ErrorUserNotFound("failed to check username: %v", err)
 	} else if existingUser != nil {

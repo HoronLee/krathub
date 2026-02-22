@@ -9,6 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
+	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
@@ -18,20 +19,20 @@ import (
 type authRepo struct {
 	data   *Data
 	log    *log.Helper
-	mapper *mapper.CopierMapper[biz.User, po.User]
+	mapper *mapper.CopierMapper[entity.User, po.User]
 }
 
 func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 	return &authRepo{
 		data:   data,
 		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("auth/data/krathub-service"))),
-		mapper: mapper.New[biz.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
+		mapper: mapper.New[entity.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }
 
 // 数据库操作方法
 
-func (r *authRepo) SaveUser(ctx context.Context, user *biz.User) (*biz.User, error) {
+func (r *authRepo) SaveUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
@@ -48,7 +49,7 @@ func (r *authRepo) SaveUser(ctx context.Context, user *biz.User) (*biz.User, err
 	return r.mapper.ToDomain(poUser), nil
 }
 
-func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*biz.User, error) {
+func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*entity.User, error) {
 	poUser, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.Name.Eq(name)).First()
 	if err != nil {
 		return nil, err
@@ -56,7 +57,7 @@ func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*biz.Use
 	return r.mapper.ToDomain(poUser), nil
 }
 
-func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*biz.User, error) {
+func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*entity.User, error) {
 	poUser, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.Email.Eq(email)).First()
 	if err != nil {
 		return nil, err
@@ -64,7 +65,7 @@ func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*biz.User,
 	return r.mapper.ToDomain(poUser), nil
 }
 
-func (r *authRepo) GetUserByID(ctx context.Context, id int64) (*biz.User, error) {
+func (r *authRepo) GetUserByID(ctx context.Context, id int64) (*entity.User, error) {
 	poUser, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.ID.Eq(id)).First()
 	if err != nil {
 		return nil, err

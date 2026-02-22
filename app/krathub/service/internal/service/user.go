@@ -8,6 +8,7 @@ import (
 	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
+	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
 )
 
@@ -58,7 +59,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequ
 		}
 	}
 
-	user := &biz.User{
+	user := &entity.User{
 		ID:       req.Id,
 		Name:     req.Name,
 		Email:    req.Email,
@@ -81,7 +82,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequ
 
 // SaveUser 保存用户
 func (s *UserService) SaveUser(ctx context.Context, req *userpb.SaveUserRequest) (*userpb.SaveUserResponse, error) {
-	user := &biz.User{
+	user := &entity.User{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
@@ -101,7 +102,7 @@ func (s *UserService) SaveUser(ctx context.Context, req *userpb.SaveUserRequest)
 
 // DeleteUser 删除用户
 func (s *UserService) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
-	success, err := s.uc.DeleteUser(ctx, &biz.User{
+	success, err := s.uc.DeleteUser(ctx, &entity.User{
 		ID: req.Id,
 	})
 	if err != nil {

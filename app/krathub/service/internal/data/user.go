@@ -6,6 +6,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
+	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
@@ -15,18 +16,18 @@ import (
 type userRepo struct {
 	data   *Data
 	log    *log.Helper
-	mapper *mapper.CopierMapper[biz.User, po.User]
+	mapper *mapper.CopierMapper[entity.User, po.User]
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{
 		data:   data,
 		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("user/data/krathub-service"))),
-		mapper: mapper.New[biz.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
+		mapper: mapper.New[entity.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }
 
-func (r *userRepo) SaveUser(ctx context.Context, user *biz.User) (*biz.User, error) {
+func (r *userRepo) SaveUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
@@ -45,7 +46,7 @@ func (r *userRepo) SaveUser(ctx context.Context, user *biz.User) (*biz.User, err
 	return r.mapper.ToDomain(poUser), nil
 }
 
-func (r *userRepo) GetUserById(ctx context.Context, id int64) (*biz.User, error) {
+func (r *userRepo) GetUserById(ctx context.Context, id int64) (*entity.User, error) {
 	poUser, err := r.data.query.User.
 		WithContext(ctx).
 		Where(r.data.query.User.ID.Eq(id)).
@@ -56,7 +57,7 @@ func (r *userRepo) GetUserById(ctx context.Context, id int64) (*biz.User, error)
 	return r.mapper.ToDomain(poUser), nil
 }
 
-func (r *userRepo) DeleteUser(ctx context.Context, user *biz.User) (*biz.User, error) {
+func (r *userRepo) DeleteUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	poUser := r.mapper.ToEntity(user)
 	_, err := r.data.query.User.
 		WithContext(ctx).
@@ -67,7 +68,7 @@ func (r *userRepo) DeleteUser(ctx context.Context, user *biz.User) (*biz.User, e
 	return user, nil
 }
 
-func (r *userRepo) UpdateUser(ctx context.Context, user *biz.User) (*biz.User, error) {
+func (r *userRepo) UpdateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		bcryptPassword, err := hash.BcryptHash(user.Password)
 		if err != nil {
