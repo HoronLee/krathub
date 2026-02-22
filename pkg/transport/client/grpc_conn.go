@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
+	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -80,6 +81,7 @@ func (g *GrpcConn) reset() error {
 // createGrpcConnection 创建gRPC连接的内部函数
 func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf.Data,
 	traceCfg *conf.Trace, discovery registry.Discovery, logger log.Logger) (gogrpc.ClientConnInterface, error) {
+	setupLogger := pkglogger.With(logger, pkglogger.WithField("operation", "createGrpcConnection"))
 
 	// 默认超时时间
 	timeout := 5 * time.Second
@@ -93,7 +95,7 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 			}
 			if c.Endpoint != "" {
 				endpoint = c.Endpoint
-				logger.Log(log.LevelInfo, "msg", "using configured endpoint",
+				setupLogger.Log(log.LevelInfo, "msg", "using configured endpoint",
 					"service_name", serviceName, "endpoint", endpoint)
 			}
 			break
@@ -133,12 +135,12 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 	}
 
 	if err != nil {
-		logger.Log(log.LevelError, "msg", "failed to create grpc client",
+		setupLogger.Log(log.LevelError, "msg", "failed to create grpc client",
 			"service_name", serviceName, "error", err)
 		return nil, fmt.Errorf("failed to create grpc client for service %s: %w", serviceName, err)
 	}
 
-	logger.Log(log.LevelDebug, "msg", "successfully created grpc client",
+	setupLogger.Log(log.LevelInfo, "msg", "successfully created grpc client",
 		"service_name", serviceName, "endpoint", endpoint)
 
 	return conn, nil

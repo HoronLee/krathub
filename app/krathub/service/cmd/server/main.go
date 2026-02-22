@@ -1,14 +1,12 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"os"
 
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-
 	"github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/observability"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -16,12 +14,6 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
-	"go.opentelemetry.io/otel/sdk/resource"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -53,36 +45,6 @@ func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server, hs *http
 		kratos.Server(gs, hs),
 		kratos.Registrar(reg),
 	)
-}
-
-// 设置全局trace
-func initTracerProvider(c *conf.Trace, env string) error {
-	if c == nil || c.Endpoint == "" {
-		return nil
-	}
-
-	// 创建 exporter
-	exporter, err := otlptracegrpc.New(context.Background(),
-		otlptracegrpc.WithEndpoint(c.Endpoint),
-		otlptracegrpc.WithInsecure(),
-	)
-	if err != nil {
-		return err
-	}
-	tp := tracesdk.NewTracerProvider(
-		// 将基于父span的采样率设置为100%
-		tracesdk.WithSampler(tracesdk.ParentBased(tracesdk.TraceIDRatioBased(1.0))),
-		// 始终确保在生产中批量处理
-		tracesdk.WithBatcher(exporter),
-		// 在资源中记录有关此应用程序的信息
-		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(Name),
-			attribute.String("exporter", "otlp"),
-			attribute.String("env", env),
-		)),
-	)
-	otel.SetTracerProvider(tp)
-	return nil
 }
 
 func main() {
@@ -129,10 +91,11 @@ func main() {
 		Compress:   bc.App.Log.Compress,
 	})
 
-	// 初始化链路追踪
-	if err := initTracerProvider(bc.Trace, bc.App.Env); err != nil {
+	traceCleanup, err := observability.InitTracerProvider(bc.Trace, Name, bc.App.Env)
+	if err != nil {
 		panic(err)
 	}
+	defer traceCleanup()
 
 	// 初始化服务
 	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, bc.Metrics, log)

@@ -7,12 +7,16 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
+	kratoslog "github.com/go-kratos/kratos/v2/log"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 )
+
+var gormLoggerFallbackWarnOnce sync.Once
 
 // GormLogger 操作对象，实现 gormlogger.Interface
 type GormLogger struct {
@@ -104,4 +108,18 @@ func (l GormLogger) logger() *zap.Logger {
 		}
 	}
 	return l.ZapLogger
+}
+
+func GormLoggerFrom(logger kratoslog.Logger, module string) gormlogger.Interface {
+	if zapLogger, ok := logger.(*ZapLogger); ok {
+		return zapLogger.GetGormLogger(module)
+	}
+
+	gormLoggerFallbackWarnOnce.Do(func() {
+		if logger != nil {
+			kratoslog.NewHelper(logger).Warnf("fallback to default gorm logger because logger type %T does not support GetGormLogger", logger)
+		}
+	})
+
+	return gormlogger.Default.LogMode(gormlogger.Warn)
 }

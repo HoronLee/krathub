@@ -12,39 +12,9 @@ info:
         name: MIT License
         url: https://github.com/horonlee/krathub/blob/main/LICENSE
     version: "1.0"
-paths:
-    /SayHello:
-        post:
-            tags:
-                - SayHelloService
-            operationId: SayHelloService_Hello
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/HelloRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HelloResponse'
+paths: {}
 components:
     schemas:
-        HelloRequest:
-            type: object
-            properties:
-                greeting:
-                    type: string
-            description: HelloRequest 是 Hello 服务的请求消息
-        HelloResponse:
-            type: object
-            properties:
-                reply:
-                    type: string
-            description: HelloResponse 是 Hello 服务的响应消息
         KratosError:
             type: object
             properties:
@@ -66,5 +36,3 @@ components:
                 application/json:
                     schema:
                         $ref: '#/components/schemas/KratosError'
-tags:
-    - name: SayHelloService

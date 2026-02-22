@@ -24,10 +24,6 @@ func NewTestUsecase(repo TestRepo, logger log.Logger) *TestUsecase {
 }
 
 func (uc *TestUsecase) Hello(ctx context.Context, in string) (string, error) {
-	greeting := "World"
-	if in != "" {
-		greeting = in
-	}
-	uc.log.Debugf("Saying hello with greeting: %s", greeting)
-	return uc.repo.Hello(ctx, greeting)
+	uc.log.Debugf("Saying hello with greeting: %s", in)
+	return uc.repo.Hello(ctx, in)
 }

@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package sayhello.service.v1;
 
-import "google/api/annotations.proto";
+import "buf/validate/validate.proto";
 
 option java_multiple_files = true;
 option java_outer_classname = "SayHelloProtoV1";
@@ -11,17 +11,12 @@ option java_package = "dev.krathub.api.sayhello.v1";
 
 // SayHello 定义一个简单的 Hello 服务
 service SayHelloService {
-  rpc Hello(HelloRequest) returns (HelloResponse) {
-    option (google.api.http) = {
-      post: "/SayHello"
-      body: "*"
-    };
-  }
+  rpc Hello(HelloRequest) returns (HelloResponse) {}
 }
 
 // HelloRequest 是 Hello 服务的请求消息
 message HelloRequest {
-  string greeting = 1;
+  string greeting = 1 [(buf.validate.field).required = true];
 }
 
 // HelloResponse 是 Hello 服务的响应消息

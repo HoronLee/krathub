@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -65,31 +66,54 @@ func NewConfigFromProto(cfg *conf.Data_Redis) *Config {
 }
 
 func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
+	if cfg == nil {
+		return nil, nil, errors.New("redis config is nil")
+	}
+
+	dialTimeout := cfg.DialTimeout
+	if dialTimeout == 0 {
+		dialTimeout = DefaultDialTimeout
+	}
+	readTimeout := cfg.ReadTimeout
+	if readTimeout == 0 {
+		readTimeout = DefaultReadTimeout
+	}
+	writeTimeout := cfg.WriteTimeout
+	if writeTimeout == 0 {
+		writeTimeout = DefaultWriteTimeout
+	}
+
+	baseLogger := pkglogger.With(logger, pkglogger.WithModule("redis/pkg/krathub-service"))
+	setupLog := log.NewHelper(pkglogger.With(baseLogger, pkglogger.WithField("operation", "NewClient")))
+	cleanupLog := log.NewHelper(pkglogger.With(baseLogger, pkglogger.WithField("operation", "cleanup")))
+
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         cfg.Addr,
 		Username:     cfg.Username,
 		Password:     cfg.Password,
 		DB:           cfg.DB,
-		DialTimeout:  cfg.DialTimeout,
-		ReadTimeout:  cfg.ReadTimeout,
-		WriteTimeout: cfg.WriteTimeout,
+		DialTimeout:  dialTimeout,
+		ReadTimeout:  readTimeout,
+		WriteTimeout: writeTimeout,
 	})
 
 	// 使用带超时的 context 进行连接测试
-	ctx, cancel := context.WithTimeout(context.Background(), cfg.DialTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), dialTimeout)
 	defer cancel()
 	if err := rdb.Ping(ctx).Err(); err != nil {
+		setupLog.Errorf("redis ping failed: %v", err)
 		return nil, nil, err
 	}
+	setupLog.Infof("redis client initialized")
 
 	cleanup := func() {
-		log.NewHelper(logger).Info("closing redis connection")
+		cleanupLog.Infof("closing redis connection")
 		rdb.Close()
 	}
 
 	return &Client{
 		rdb: rdb,
-		log: log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("redis/pkg/krathub-service"))),
+		log: log.NewHelper(baseLogger),
 	}, cleanup, nil
 }
 

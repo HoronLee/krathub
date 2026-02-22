@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
 	"testing"
 	"time"
@@ -15,13 +16,33 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func testRedisAddr() string {
+	if addr := os.Getenv("REDIS_TEST_ADDR"); addr != "" {
+		return addr
+	}
+	return "127.0.0.1:6379"
+}
+
+func testRedisPassword() string {
+	return os.Getenv("REDIS_TEST_PASSWORD")
+}
+
+func testRedisDB(defaultDB int) int {
+	if db := os.Getenv("REDIS_TEST_DB"); db != "" {
+		if parsed, err := strconv.Atoi(db); err == nil {
+			return parsed
+		}
+	}
+	return defaultDB
+}
+
 // setupTestAuthRepo 设置测试用的AuthRepo
 func setupTestAuthRepo(t *testing.T) (*authRepo, func()) {
 	// 设置Redis客户端
 	cfg := &redis.Config{
-		Addr:         "localhost:6379",
-		Password:     "114514",
-		DB:           2, // 使用专门的测试数据库
+		Addr:         testRedisAddr(),
+		Password:     testRedisPassword(),
+		DB:           testRedisDB(2), // 使用专门的测试数据库
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
@@ -32,7 +53,9 @@ func setupTestAuthRepo(t *testing.T) (*authRepo, func()) {
 	})
 
 	redisClient, redisCleanup, err := redis.NewClient(cfg, testLogger)
-	require.NoError(t, err, "Failed to create Redis client for testing")
+	if err != nil {
+		t.Skipf("redis not available: %v", err)
+	}
 
 	// 清理测试数据库
 	ctx := context.Background()
