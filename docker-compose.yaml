@@ -1,0 +1,111 @@
+services:
+  consul:
+    image: consul:1.15.4
+    container_name: krathub_consul
+    restart: unless-stopped
+    command:
+      - agent
+      - -server
+      - -ui
+      - -node=consul-server-1
+      - -bootstrap-expect=1
+      - -client=0.0.0.0
+      - -data-dir=/consul/data
+    healthcheck:
+      test: ["CMD", "consul", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    volumes:
+      - krathub-consul-data:/consul/data
+    networks:
+      - krathub-network
+
+  krathub:
+    image: krathub-micro/krathub-service:latest
+    container_name: krathub
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./app/krathub/service/deployment/docker/configs:/app/configs:ro
+      - krathub-logs:/app/logs
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    depends_on:
+      consul:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - krathub-network
+
+  sayhello:
+    image: krathub-micro/sayhello-service:latest
+    container_name: sayhello
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./app/sayhello/service/deployment/docker/configs:/app/configs:ro
+      - sayhello-logs:/app/logs
+    depends_on:
+      consul:
+        condition: service_healthy
+    networks:
+      - krathub-network
+
+  db:
+    image: postgres:18-alpine
+    container_name: krathub_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: krathub
+      POSTGRES_USER: krathub
+      POSTGRES_PASSWORD: krathub
+      TZ: Asia/Shanghai
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U krathub -d krathub"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - krathub-db-data:/var/lib/postgresql/data
+      - ./app/krathub/service/manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - krathub-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: krathub_redis
+    restart: unless-stopped
+    command: redis-server --requirepass krathub_redis_pwd --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "krathub_redis_pwd", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "6379:6379"
+    volumes:
+      - krathub-redis-data:/data
+    networks:
+      - krathub-network
+
+volumes:
+  krathub-consul-data:
+  krathub-db-data:
+  krathub-redis-data:
+  krathub-logs:
+  sayhello-logs:
+
+networks:
+  krathub-network:

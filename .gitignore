@@ -39,6 +39,7 @@ cache/
 data.db
 examples/
 /server
+tmp/
 
 # Develop tools
 .vscode/

@@ -156,6 +156,17 @@ make test          # 运行所有测试
 make lint          # 代码检查（golangci-lint）
 make clean         # 清理构建产物
 make docker-build  # 构建所有 Docker 镜像
+make compose.build      # 构建生产镜像（krathub + sayhello）
+make compose.up         # 启动生产 compose 全栈（consul + db + redis + services）
+make compose.rebuild    # 重建生产镜像并启动生产 compose 全栈
+make compose.ps         # 查看生产 compose 状态
+make compose.logs       # 查看生产 compose 日志
+make compose.down       # 停止生产 compose 全栈
+make compose.dev.build  # 构建 Air 开发镜像（根 compose 分层）
+make compose.dev.up     # 启动 Air 热重载开发容器（krathub + sayhello）
+make compose.dev.ps     # 查看 Air 开发容器状态
+make compose.dev.logs   # 查看 Air 开发容器日志
+make compose.dev.down   # 停止 Air 开发容器
 ```
 
 **服务级命令**（在 `app/{service}/service/` 下执行）：
@@ -328,6 +339,7 @@ if err != nil {
 ### 常见陷阱
 - 忘记运行 `make gen` 导致代码不同步
 - 忘记运行 `make wire` 导致依赖注入失败
+- 使用 Air 开发时把 `make gen` 放进 Air 启动命令，导致文件变更触发重启循环（正确流程：先宿主机 `make gen`，再 `make compose.dev.up`）
 - 前端 E2E 测试需要先运行 `npx playwright install` 安装浏览器
 - 测试需要外部服务时使用 `t.Skipf()` 优雅跳过
 - 不要提交生成的代码（已在 `.gitignore` 中）

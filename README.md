@@ -88,6 +88,25 @@ cd app/krathub/service
 make run
 ```
 
+### 使用 Compose + Air 开发（推荐）
+
+```shell
+# 先在宿主机生成代码（避免 Air 触发生成导致重启循环）
+make gen
+
+# 构建 Air 开发镜像
+make compose.dev.build
+
+# 启动双服务热重载开发环境（krathub + sayhello）
+make compose.dev.up
+
+# 查看实时日志
+make compose.dev.logs
+
+# 停止开发环境
+make compose.dev.down
+```
+
 服务启动后，HTTP 服务将监听在 `0.0.0.0:8000`，gRPC 服务将监听在 `0.0.0.0:8001` (以默认配置为例)。
 
 ## 📁 项目结构
@@ -275,6 +294,17 @@ make build
 - `make clean` - 清理所有构建产物
 - `make env` - 显示环境变量
 - `make help` - 显示帮助信息
+- `make compose.dev.build` - 构建 Air 开发镜像（基于 `docker-compose.yaml` + `docker-compose.dev.yaml`）
+- `make compose.dev.up` - 启动 Air 热重载开发容器
+- `make compose.dev.ps` - 查看 Air 开发容器状态
+- `make compose.dev.logs` - 查看 Air 开发容器日志
+- `make compose.dev.down` - 停止 Air 开发容器
+- `make compose.build` - 构建生产镜像（krathub + sayhello）
+- `make compose.up` - 启动生产 compose 全栈（中间件 + 微服务）
+- `make compose.rebuild` - 重建生产镜像并启动生产 compose 全栈
+- `make compose.ps` - 查看生产 compose 服务状态
+- `make compose.logs` - 查看生产 compose 服务日志
+- `make compose.down` - 停止生产 compose 全栈
 
 ### 服务级命令（在服务目录下执行）
 
@@ -351,6 +381,12 @@ make openapi
 ## 🐳 Docker 支持
 
 每个微服务都有独立的 Dockerfile，位于 `app/{service}/service/Dockerfile`。
+
+项目根目录采用两份 Compose 文件：
+
+- `docker-compose.yaml`：生产部署编排（中间件 + 微服务，按镜像运行）
+- `docker-compose.dev.yaml`：开发覆盖层（仅替换 Go 服务为 Air 热重载）
+- `Dockerfile.air`：开发热重载镜像
 
 ```shell
 # 构建所有服务的 Docker 镜像

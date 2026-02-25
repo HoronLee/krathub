@@ -47,12 +47,21 @@ YELLOW := \033[0;33m
 CYAN := \033[0;36m
 RESET := \033[0m
 
+# Docker compose
+COMPOSE := docker compose
+COMPOSE_FILES := -f docker-compose.yaml
+COMPOSE_DEV_FILES := -f docker-compose.yaml -f docker-compose.dev.yaml
+MICROSERVICES := krathub sayhello
+INFRA_SERVICES := consul db redis
+
 # ============================================================================
 # MAIN TARGETS
 # ============================================================================
 
 .PHONY: help env init plugin cli dep vendor test cover vet lint
 .PHONY: wire ent gen api openapi build build_only all docker-build clean
+.PHONY: compose.build compose.up compose.rebuild compose.down compose.ps compose.logs
+.PHONY: compose.dev.build compose.dev.up compose.dev.ps compose.dev.down compose.dev.logs
 
 # show environment variables
 env:
@@ -190,6 +199,61 @@ docker-build:
     )
 	@echo "$(GREEN)✓ Docker images built$(RESET)"
 
+# build Air-based development images for microservices
+compose.dev.build:
+	@echo "$(CYAN)Compose dev build: $(MICROSERVICES)$(RESET)"
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) build $(MICROSERVICES)
+	@echo "$(GREEN)✓ Compose dev images built$(RESET)"
+
+# build production images for microservices
+compose.build:
+	@echo "$(CYAN)Build production images: $(MICROSERVICES)$(RESET)"
+	@docker build -f app/krathub/service/Dockerfile -t krathub-micro/krathub-service:latest .
+	@docker build -f app/sayhello/service/Dockerfile -t krathub-micro/sayhello-service:latest .
+	@echo "$(GREEN)✓ Production images built$(RESET)"
+
+# start production compose stack (infra + microservices)
+compose.up:
+	@echo "$(CYAN)Compose up (prod): $(INFRA_SERVICES) $(MICROSERVICES)$(RESET)"
+	@$(COMPOSE) $(COMPOSE_FILES) up -d $(INFRA_SERVICES) $(MICROSERVICES)
+	@echo "$(GREEN)✓ Production compose services started$(RESET)"
+
+# rebuild production images and restart production compose stack
+compose.rebuild:
+	@$(MAKE) compose.build
+	@$(MAKE) compose.up
+	@echo "$(GREEN)✓ Production compose services rebuilt and started$(RESET)"
+
+# stop production compose stack
+compose.down:
+	@$(COMPOSE) $(COMPOSE_FILES) stop $(INFRA_SERVICES) $(MICROSERVICES)
+
+# show production compose stack status
+compose.ps:
+	@$(COMPOSE) $(COMPOSE_FILES) ps $(INFRA_SERVICES) $(MICROSERVICES)
+
+# tail logs for production compose stack
+compose.logs:
+	@$(COMPOSE) $(COMPOSE_FILES) logs -f $(INFRA_SERVICES) $(MICROSERVICES)
+
+# start Air-based development containers in background
+compose.dev.up:
+	@echo "$(CYAN)Compose dev up (Air): $(MICROSERVICES)$(RESET)"
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) up -d $(MICROSERVICES)
+	@echo "$(GREEN)✓ Compose dev services started$(RESET)"
+
+# tail logs for Air-based development containers
+compose.dev.logs:
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) logs -f $(MICROSERVICES)
+
+# show Air-based development containers status
+compose.dev.ps:
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) ps $(MICROSERVICES)
+
+# stop Air-based development containers
+compose.dev.down:
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) stop $(MICROSERVICES)
+
 # clean build artifacts
 clean:
 	@echo "$(CYAN)Cleaning build artifacts...$(RESET)"
@@ -209,7 +273,7 @@ help:
 	@echo " make [target]"
 	@echo ""
 	@echo "Targets:"
-	@awk '/^[a-zA-Z\-_0-9]+:/ { \
+	@awk '/^[a-zA-Z\-_0-9\.]+:/ { \
 	helpMessage = match(lastLine, /^# (.*)/); \
 		if (helpMessage) { \
 			helpCommand = substr($$1, 0, index($$1, ":")-1); \

@@ -1,0 +1,32 @@
+services:
+  krathub:
+    build:
+      context: .
+      dockerfile: Dockerfile.air
+    working_dir: /workspace/app/krathub/service
+    command: ["air", "-c", ".air.toml"]
+    environment:
+      GOMODCACHE: /go/pkg/mod
+      GOCACHE: /go/cache
+    volumes:
+      - ./:/workspace
+      - krathub_go_mod_cache:/go/pkg/mod
+      - krathub_go_build_cache:/go/cache
+
+  sayhello:
+    build:
+      context: .
+      dockerfile: Dockerfile.air
+    working_dir: /workspace/app/sayhello/service
+    command: ["air", "-c", ".air.toml"]
+    environment:
+      GOMODCACHE: /go/pkg/mod
+      GOCACHE: /go/cache
+    volumes:
+      - ./:/workspace
+      - krathub_go_mod_cache:/go/pkg/mod
+      - krathub_go_build_cache:/go/cache
+
+volumes:
+  krathub_go_mod_cache:
+  krathub_go_build_cache:
