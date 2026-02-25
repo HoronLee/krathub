@@ -1,7 +1,7 @@
 # AGENTS.md - app/ 微服务实现层
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-09 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
 
 ## 目录概述
 
@@ -39,8 +39,10 @@ krathub/service/
 │   ├── data/           # 数据访问层（Repository 实现）
 │   │   ├── auth.go     # 认证数据访问
 │   │   ├── user.go     # 用户数据访问
-│   │   ├── data.go     # 数据层初始化（DB, Redis 连接）
-│   │   └── po/         # GORM GEN 生成的持久化对象
+│   │   ├── data.go     # 数据层初始化（DB, Redis, Ent Client）
+│   │   ├── schema/     # Ent Schema 定义
+│   │   ├── ent/        # Ent 生成代码
+│   │   └── gorm/po/    # GORM GEN 生成的持久化对象（并行保留）
 │   ├── service/        # 服务层（API 接口实现）
 │   │   ├── auth.go     # Auth gRPC 服务实现
 │   │   ├── user.go     # User gRPC 服务实现
@@ -119,7 +121,7 @@ Krathub 采用经典的 DDD 分层架构，各层职责明确，依赖方向单�
 ┌─────────────────▼───────────────────────────┐
 │  数据访问层 (data/)                         │
 │  - Repository 接口实现                      │
-│  - 数据库访问（GORM）                        │
+│  - 数据库访问（Ent 为默认，GORM GEN 并行保留）│
 │  - Redis 缓存                               │
 │  - 外部服务客户端                            │
 └─────────────────────────────────────────────┘
@@ -247,7 +249,7 @@ package data
 
 import (
     "github.com/horonlee/krathub/app/krathub/service/internal/biz"
-    "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
+    "github.com/horonlee/krathub/app/krathub/service/internal/data/gorm/po"
 )
 
 // Repository 实现
@@ -893,7 +895,7 @@ web/
 - 所有组件必须类型化
 - API 调用必须定义接口类型
 
-### 使用 GORM GEN 生成 DAO
+### 使用 Ent / GORM GEN 双 ORM
 
 **场景**：为数据库表生成类型安全的 DAO
 
@@ -901,7 +903,7 @@ web/
 
 1. **配置 GORM GEN**
 ```go
-// internal/data/gen.go
+// cmd/genDao/genDao.go
 //go:build ignore
 
 package main
@@ -914,8 +916,9 @@ import (
 
 func main() {
     g := gen.NewGenerator(gen.Config{
-        OutPath: "./internal/data/po",  // 输出目录
-        Mode:    gen.WithoutContext | gen.WithDefaultQuery,
+        OutPath:      "./internal/data/gorm/dao",  // DAO 输出目录
+        ModelPkgPath: "./internal/data/gorm/po",   // PO 输出目录
+        Mode:         gen.WithDefaultQuery | gen.WithQueryInterface,
     })
 
     // 连接数据库
@@ -938,13 +941,14 @@ func main() {
 2. **运行生成**
 ```bash
 cd app/krathub/service
-make genDao  # 或 go run internal/data/gen.go
+make genDao  # 或 go run ./cmd/genDao -conf ./configs
+make genEnt  # 生成 Ent 代码（schema -> ent）
 ```
 
 3. **使用生成的 DAO**
 ```go
 // internal/data/data.go
-import "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
+    import "github.com/horonlee/krathub/app/krathub/service/internal/data/gorm/po"
 
 type Data struct {
     DB      *gorm.DB
@@ -1176,7 +1180,7 @@ if err != nil {
 
 **外部依赖**：
 - Kratos v2 框架
-- GORM + GORM GEN（ORM）
+- Ent + GORM GEN（双 ORM）
 - Wire（依赖注入）
 - Redis（缓存）
 - 数据库驱动（MySQL/PostgreSQL/SQLite）

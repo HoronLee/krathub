@@ -3,11 +3,13 @@ package data
 import (
 	"context"
 
+	"entgo.io/ent/dialect/sql"
 	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
-	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
+	dataent "github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
+	entuser "github.com/horonlee/krathub/app/krathub/service/internal/data/ent/user"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/mapper"
@@ -16,14 +18,14 @@ import (
 type userRepo struct {
 	data   *Data
 	log    *log.Helper
-	mapper *mapper.CopierMapper[entity.User, po.User]
+	mapper *mapper.CopierMapper[entity.User, dataent.User]
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{
 		data:   data,
 		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("user/data/krathub-service"))),
-		mapper: mapper.New[entity.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
+		mapper: mapper.New[entity.User, dataent.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }
 
@@ -35,33 +37,40 @@ func (r *userRepo) SaveUser(ctx context.Context, user *entity.User) (*entity.Use
 		}
 		user.Password = bcryptPassword
 	}
-	poUser := r.mapper.ToEntity(user)
-	err := r.data.query.User.
-		WithContext(ctx).
-		Save(poUser)
+	entUser := r.mapper.ToEntity(user)
+	b := r.data.entClient.User.Create().
+		SetName(entUser.Name).
+		SetEmail(entUser.Email).
+		SetPassword(entUser.Password).
+		SetNillablePhone(entUser.Phone).
+		SetNillableAvatar(entUser.Avatar).
+		SetNillableBio(entUser.Bio).
+		SetNillableLocation(entUser.Location).
+		SetNillableWebsite(entUser.Website).
+		SetRole(entUser.Role)
+
+	if entUser.ID > 0 {
+		b.SetID(entUser.ID)
+	}
+
+	created, err := b.Save(ctx)
 	if err != nil {
 		r.log.Errorf("SaveUser failed: %v", err)
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(created), nil
 }
 
 func (r *userRepo) GetUserById(ctx context.Context, id int64) (*entity.User, error) {
-	poUser, err := r.data.query.User.
-		WithContext(ctx).
-		Where(r.data.query.User.ID.Eq(id)).
-		First()
+	entUser, err := r.data.entClient.User.Query().Where(entuser.IDEQ(id)).Only(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(entUser), nil
 }
 
 func (r *userRepo) DeleteUser(ctx context.Context, user *entity.User) (*entity.User, error) {
-	poUser := r.mapper.ToEntity(user)
-	_, err := r.data.query.User.
-		WithContext(ctx).
-		Delete(poUser)
+	err := r.data.entClient.User.DeleteOneID(user.ID).Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -76,33 +85,43 @@ func (r *userRepo) UpdateUser(ctx context.Context, user *entity.User) (*entity.U
 		}
 		user.Password = bcryptPassword
 	}
-	poUser := r.mapper.ToEntity(user)
-	_, err := r.data.query.User.
-		WithContext(ctx).
-		Where(r.data.query.User.ID.Eq(user.ID)).
-		Updates(poUser)
+	entUser := r.mapper.ToEntity(user)
+	updated, err := r.data.entClient.User.UpdateOneID(user.ID).
+		SetName(entUser.Name).
+		SetEmail(entUser.Email).
+		SetPassword(entUser.Password).
+		SetNillablePhone(entUser.Phone).
+		SetNillableAvatar(entUser.Avatar).
+		SetNillableBio(entUser.Bio).
+		SetNillableLocation(entUser.Location).
+		SetNillableWebsite(entUser.Website).
+		SetRole(entUser.Role).
+		Save(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(updated), nil
 }
 
 func (r *userRepo) ListUsers(ctx context.Context, page int32, pageSize int32) ([]*entity.User, int64, error) {
 	offset := int((page - 1) * pageSize)
 	limit := int(pageSize)
 
-	poUsers, total, err := r.data.query.User.
-		WithContext(ctx).
-		Order(r.data.query.User.ID.Desc()).
-		FindByPage(offset, limit)
+	query := r.data.entClient.User.Query().Order(entuser.ByID(sql.OrderDesc()))
+	total, err := query.Clone().Count(ctx)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	users := make([]*entity.User, 0, len(poUsers))
-	for _, poUser := range poUsers {
-		users = append(users, r.mapper.ToDomain(poUser))
+	entUsers, err := query.Offset(offset).Limit(limit).All(ctx)
+	if err != nil {
+		return nil, 0, err
 	}
 
-	return users, total, nil
+	users := make([]*entity.User, 0, len(entUsers))
+	for _, entUser := range entUsers {
+		users = append(users, r.mapper.ToDomain(entUser))
+	}
+
+	return users, int64(total), nil
 }

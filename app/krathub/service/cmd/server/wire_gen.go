@@ -40,6 +40,10 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	if err != nil {
 		return nil, nil, err
 	}
+	entClient, err := data.NewEntClient(db, confData, app, logger)
+	if err != nil {
+		return nil, nil, err
+	}
 	registryDiscovery := data.NewDiscovery(discovery)
 	clientClient, err := client.NewClient(confData, trace, registryDiscovery, logger)
 	if err != nil {
@@ -49,7 +53,7 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	if err != nil {
 		return nil, nil, err
 	}
-	dataData, cleanup2, err := data.NewData(db, confData, logger, clientClient, redisClient)
+	dataData, cleanup2, err := data.NewData(entClient, confData, logger, clientClient, redisClient)
 	if err != nil {
 		cleanup()
 		return nil, nil, err

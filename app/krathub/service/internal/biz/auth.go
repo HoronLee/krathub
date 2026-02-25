@@ -4,19 +4,18 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
-	"errors"
 	"time"
 
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
+	dataent "github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	jwtpkg "github.com/horonlee/krathub/pkg/jwt"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/golang-jwt/jwt/v5"
-	"gorm.io/gorm"
 )
 
 // AuthUsecase is a Auth usecase.
@@ -109,7 +108,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *entity.User) (*e
 		// 后续注册，用户名可以任意，但角色为 user
 		// 检查用户名是否已存在
 		existingUser, err := uc.repo.GetUserByUserName(ctx, user.Name)
-		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		if err != nil && !dataent.IsNotFound(err) {
 			return nil, authpb.ErrorUserNotFound("failed to check username: %v", err)
 		}
 		if existingUser != nil {
@@ -120,7 +119,7 @@ func (uc *AuthUsecase) SignupByEmail(ctx context.Context, user *entity.User) (*e
 
 	// 检查邮箱是否已存在
 	existingEmail, err := uc.repo.GetUserByEmail(ctx, user.Email)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !dataent.IsNotFound(err) {
 		return nil, authpb.ErrorUserNotFound("failed to check email: %v", err)
 	}
 	if existingEmail != nil {

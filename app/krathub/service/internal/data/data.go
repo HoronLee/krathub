@@ -5,8 +5,10 @@ import (
 	"strings"
 	"time"
 
+	"entgo.io/ent/dialect"
+	entsql "entgo.io/ent/dialect/sql"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
+	"github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/redis"
 	"github.com/horonlee/krathub/pkg/transport/client"
@@ -20,28 +22,60 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewDiscovery, NewDB, NewRedis, NewData, NewAuthRepo, NewUserRepo, NewTestRepo)
+var ProviderSet = wire.NewSet(NewDiscovery, NewDB, NewEntClient, NewRedis, NewData, NewAuthRepo, NewUserRepo, NewTestRepo)
 
 // Data .
 type Data struct {
-	query  *dao.Query
-	log    *log.Helper
-	client client.Client
-	redis  *redis.Client
+	entClient *ent.Client
+	log       *log.Helper
+	client    client.Client
+	redis     *redis.Client
 }
 
 // NewData .
-func NewData(db *gorm.DB, c *conf.Data, logger log.Logger, client client.Client, redisClient *redis.Client) (*Data, func(), error) {
+func NewData(entClient *ent.Client, c *conf.Data, logger log.Logger, client client.Client, redisClient *redis.Client) (*Data, func(), error) {
+	_ = c
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
+		if err := entClient.Close(); err != nil {
+			log.NewHelper(logger).Warnf("failed to close ent client: %v", err)
+		}
 	}
-	dao.SetDefault(db)
 	return &Data{
-		query:  dao.Q,
-		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("data/data/krathub-service"))),
-		client: client,
-		redis:  redisClient,
+		entClient: entClient,
+		log:       log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("data/data/krathub-service"))),
+		client:    client,
+		redis:     redisClient,
 	}, cleanup, nil
+}
+
+func NewEntClient(db *gorm.DB, cfg *conf.Data, app *conf.App, logger log.Logger) (*ent.Client, error) {
+	dbConn, err := db.DB()
+	if err != nil {
+		return nil, err
+	}
+
+	opts := []ent.Option{
+		ent.Driver(entsql.OpenDB(entDialect(cfg.Database.GetDriver()), dbConn)),
+		ent.Log(pkglogger.EntLogFuncFrom(logger, "ent/data/krathub-service")),
+	}
+	if strings.EqualFold(app.GetEnv(), "dev") {
+		opts = append(opts, ent.Debug())
+	}
+
+	client := ent.NewClient(opts...)
+	return client, nil
+}
+
+func entDialect(driver string) string {
+	switch strings.ToLower(driver) {
+	case "mysql":
+		return dialect.MySQL
+	case "postgres", "postgresql":
+		return dialect.Postgres
+	default:
+		return dialect.SQLite
+	}
 }
 
 func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {

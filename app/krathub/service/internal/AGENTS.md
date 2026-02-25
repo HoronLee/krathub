@@ -1,7 +1,7 @@
 # AGENTS.md - internal/ DDD 分层架构实现
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-09 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
 
 ## 目录概述
 
@@ -31,9 +31,11 @@ internal/
 │   ├── user.go            # UserRepo 接口实现
 │   ├── test.go            # TestRepo 接口实现
 │   ├── auth_property_test.go  # 属性测试示例
-│   ├── po/                # GORM GEN 生成的持久化对象（PO）
+│   ├── schema/            # Ent Schema 定义（手写）
+│   ├── ent/               # Ent 生成代码
+│   ├── gorm/po/           # GORM GEN 生成的持久化对象（PO）
 │   │   └── *.gen.go       # 自动生成的数据模型
-│   ├── dao/               # GORM GEN 生成的 DAO
+│   ├── gorm/dao/          # GORM GEN 生成的 DAO（并行保留）
 │   │   ├── gen.go         # DAO 生成配置
 │   │   └── *.gen.go       # 自动生成的查询接口
 │   └── README.md          # Data 层说明文档
@@ -89,7 +91,7 @@ internal/
 │  数据访问层（internal/data/）                                │
 │  职责：Repository 接口实现，数据持久化，外部服务调用          │
 │  - authRepo, userRepo, testRepo（实现 biz 层定义的接口）     │
-│  - GORM GEN DAO 封装（类型安全的数据库操作）                  │
+│  - Ent 默认仓储 + GORM GEN DAO 并行保留                        │
 │  - Redis 缓存操作                                            │
 │  - gRPC 客户端（服务间调用）                                  │
 │  - PO（持久化对象）↔ DO（领域对象）转换                      │
@@ -247,8 +249,10 @@ var ProviderSet = wire.NewSet(
 - `auth.go` - AuthRepo 接口实现
 - `user.go` - UserRepo 接口实现
 - `test.go` - TestRepo 接口实现
-- `po/` - GORM GEN 生成的持久化对象（自动生成，不要手动编辑）
-- `dao/` - GORM GEN 生成的 DAO（自动生成，不要手动编辑）
+- `schema/` - Ent Schema 定义（手写）
+- `ent/` - Ent 生成代码（自动生成，不要手动编辑）
+- `gorm/po/` - GORM GEN 生成的持久化对象（自动生成，不要手动编辑）
+- `gorm/dao/` - GORM GEN 生成的 DAO（自动生成，不要手动编辑）
 
 **典型结构**：
 ```go
@@ -331,7 +335,7 @@ import (
     "github.com/google/wire"
     "gorm.io/gorm"
 
-    dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
+    dao "github.com/horonlee/krathub/app/krathub/service/internal/data/gorm/dao"
     "github.com/horonlee/krathub/pkg/redis"
 )
 
@@ -772,8 +776,8 @@ import (
 
 func main() {
     g := gen.NewGenerator(gen.Config{
-        OutPath: "./internal/data/dao",  // DAO 输出目录
-        OutFile: "./internal/data/po",   // PO 输出目录
+        OutPath: "./internal/data/gorm/dao",  // DAO 输出目录
+        OutFile: "./internal/data/gorm/po",   // PO 输出目录
         Mode:    gen.WithoutContext | gen.WithDefaultQuery,
     })
 
@@ -947,7 +951,7 @@ go test -v -run TestAuthUsecase_Login ./internal/biz/
 ### 代码组织
 - 每个业务模块一个文件（如 `auth.go`, `user.go`）
 - 所有 ProviderSet 定义在 `<layer>.go` 文件中（如 `biz.go`, `data.go`）
-- 生成的代码（`po/*.gen.go`, `dao/*.gen.go`）不要手动编辑
+- 生成的代码（`gorm/po/*.gen.go`, `gorm/dao/*.gen.go`）不要手动编辑
 
 ### 依赖注入
 - 构造函数必须返回接口类型（而非具体类型）

@@ -1,7 +1,7 @@
 # AGENTS.md - app/krathub/service/ 主服务实现
 
 <!-- Parent: ../../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-09 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
 
 ## 目录概述
 
@@ -40,9 +40,11 @@ app/krathub/service/
 │   │   ├── auth.go       # Auth Repository 实现
 │   │   ├── user.go       # User Repository 实现
 │   │   ├── test.go       # Test Repository 实现
-│   │   ├── po/           # GORM GEN 生成的持久化对象（PO）
+│   │   ├── schema/       # Ent Schema 定义
+│   │   ├── ent/          # Ent 生成代码
+│   │   ├── gorm/po/      # GORM GEN 生成的持久化对象（PO）
 │   │   │   └── *.gen.go  # 自动生成的数据模型
-│   │   ├── dao/          # GORM GEN 生成的 DAO
+│   │   ├── gorm/dao/     # GORM GEN 生成的 DAO（并行保留）
 │   │   │   ├── gen.go    # DAO 生成配置
 │   │   │   └── *.gen.go  # 自动生成的查询接口
 │   │   └── README.md     # Data 层说明
@@ -131,7 +133,7 @@ Krathub 采用经典的 DDD（领域驱动设计）三层架构，层间依赖�
 ┌─────────────────▼───────────────────────────────────────┐
 │  数据访问层（internal/data/）                            │
 │  - 实现 biz 层定义的 Repository 接口                     │
-│  - 数据库访问（GORM + GORM GEN）                         │
+│  - 数据库访问（Ent 默认 + GORM GEN 并行保留）             │
 │  - Redis 缓存操作                                        │
 │  - 外部服务客户端（gRPC 服务间调用）                      │
 │  - PO（持久化对象）↔ DO（领域对象）转换                  │
@@ -329,7 +331,7 @@ var ProviderSet = wire.NewSet(
 
 **特征**：
 - 实现 biz 层定义的 Repository 接口
-- 数据库访问（使用 GORM + GORM GEN）
+- 数据库访问（默认使用 Ent，保留 GORM GEN 工具链）
 - 缓存访问（使用 Redis）
 - 外部服务调用（gRPC 客户端）
 - PO（持久化对象）与 DO（领域对象）转换
@@ -344,7 +346,7 @@ import (
 
     "github.com/go-kratos/kratos/v2/log"
     "github.com/horonlee/krathub/app/krathub/service/internal/biz"
-    "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
+    "github.com/horonlee/krathub/app/krathub/service/internal/data/gorm/po"
     "gorm.io/gorm"
 )
 
@@ -416,7 +418,7 @@ import (
     "github.com/google/wire"
     "gorm.io/gorm"
 
-    dao "github.com/horonlee/krathub/app/krathub/service/internal/data/dao"
+    dao "github.com/horonlee/krathub/app/krathub/service/internal/data/gorm/dao"
     "github.com/horonlee/krathub/pkg/redis"
 )
 
@@ -933,8 +935,8 @@ import (
 
 func main() {
     g := gen.NewGenerator(gen.Config{
-        OutPath: "./internal/data/dao",  // DAO 输出目录
-        OutFile: "./internal/data/po",   // PO 输出目录
+        OutPath: "./internal/data/gorm/dao",  // DAO 输出目录
+        OutFile: "./internal/data/gorm/po",   // PO 输出目录
         Mode:    gen.WithoutContext | gen.WithDefaultQuery,
     })
 
@@ -953,6 +955,7 @@ func main() {
 ```bash
 cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
 make genDao
+make genEnt
 ```
 
 ### 使用生成的 DAO
@@ -1256,7 +1259,7 @@ kubectl apply -f deployment/kubernetes/
 ### 代码生成
 - 修改 `.proto` 文件后必须运行根目录的 `make gen`
 - 修改 `wire.go` 后必须运行服务目录的 `make wire`
-- 生成的代码（`wire_gen.go`, `dao/*.gen.go`, `po/*.gen.go`）不要手动编辑
+- 生成的代码（`wire_gen.go`, `ent/`, `gorm/dao/*.gen.go`, `gorm/po/*.gen.go`）不要手动编辑
 
 ### 依赖注入
 - 每个构造函数应返回接口类型（而非具体类型）
@@ -1285,7 +1288,7 @@ kubectl apply -f deployment/kubernetes/
 
 **外部依赖**：
 - Kratos v2 框架
-- GORM + GORM GEN
+- Ent + GORM GEN（双 ORM）
 - Wire
 - Redis
 - 数据库驱动（MySQL/PostgreSQL/SQLite）

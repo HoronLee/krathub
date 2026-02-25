@@ -85,6 +85,7 @@ cli:
 	@go install github.com/bufbuild/buf/cmd/buf@latest
 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	@go install github.com/google/wire/cmd/wire@latest
+	@go install entgo.io/ent/cmd/ent@latest
 	@echo "$(GREEN)✓ CLI tools installed$(RESET)"
 
 # download dependencies of module
@@ -119,8 +120,16 @@ wire:
     )
 	@echo "$(GREEN)✓ Wire code generated$(RESET)"
 
+# generate ent code for services that define data/generate.go
+ent:
+	@echo "$(CYAN)Generating ent code for all services...$(RESET)"
+	@$(foreach dir, $(dir $(realpath $(SRCS_MK))),\
+      cd $(dir) && make genEnt;\
+    )
+	@echo "$(GREEN)✓ Ent code generated$(RESET)"
+
 # generate all code
-gen: wire api openapi
+gen: wire api openapi ent
 	@echo "$(GREEN)✓ All code generated$(RESET)"
 
 # generate protobuf api go code
@@ -150,7 +159,7 @@ buf-update:
 	@echo "$(GREEN)✓ Buf dependencies updated$(RESET)"
 
 # build all service applications
-build: api openapi
+build: api openapi ent
 	@echo "$(CYAN)Building all services...$(RESET)"
 	@$(foreach dir, $(dir $(realpath $(SRCS_MK))),\
       cd $(dir) && make build;\

@@ -10,7 +10,8 @@ import (
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
-	po "github.com/horonlee/krathub/app/krathub/service/internal/data/po"
+	dataent "github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
+	entuser "github.com/horonlee/krathub/app/krathub/service/internal/data/ent/user"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/mapper"
@@ -19,14 +20,14 @@ import (
 type authRepo struct {
 	data   *Data
 	log    *log.Helper
-	mapper *mapper.CopierMapper[entity.User, po.User]
+	mapper *mapper.CopierMapper[entity.User, dataent.User]
 }
 
 func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
 	return &authRepo{
 		data:   data,
 		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("auth/data/krathub-service"))),
-		mapper: mapper.New[entity.User, po.User]().RegisterConverters(mapper.AllBuiltinConverters()),
+		mapper: mapper.New[entity.User, dataent.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }
 
@@ -40,37 +41,48 @@ func (r *authRepo) SaveUser(ctx context.Context, user *entity.User) (*entity.Use
 		}
 		user.Password = bcryptPassword
 	}
-	poUser := r.mapper.ToEntity(user)
-	err := r.data.query.User.WithContext(ctx).Create(poUser)
+	entUser := r.mapper.ToEntity(user)
+	created, err := r.data.entClient.User.
+		Create().
+		SetName(entUser.Name).
+		SetEmail(entUser.Email).
+		SetPassword(entUser.Password).
+		SetNillablePhone(entUser.Phone).
+		SetNillableAvatar(entUser.Avatar).
+		SetNillableBio(entUser.Bio).
+		SetNillableLocation(entUser.Location).
+		SetNillableWebsite(entUser.Website).
+		SetRole(entUser.Role).
+		Save(ctx)
 	if err != nil {
 		r.log.Errorf("SaveUser failed: %v", err)
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(created), nil
 }
 
 func (r *authRepo) GetUserByUserName(ctx context.Context, name string) (*entity.User, error) {
-	poUser, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.Name.Eq(name)).First()
+	entUser, err := r.data.entClient.User.Query().Where(entuser.NameEQ(name)).Only(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(entUser), nil
 }
 
 func (r *authRepo) GetUserByEmail(ctx context.Context, email string) (*entity.User, error) {
-	poUser, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.Email.Eq(email)).First()
+	entUser, err := r.data.entClient.User.Query().Where(entuser.EmailEQ(email)).Only(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(entUser), nil
 }
 
 func (r *authRepo) GetUserByID(ctx context.Context, id int64) (*entity.User, error) {
-	poUser, err := r.data.query.User.WithContext(ctx).Where(r.data.query.User.ID.Eq(id)).First()
+	entUser, err := r.data.entClient.User.Query().Where(entuser.IDEQ(id)).Only(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return r.mapper.ToDomain(poUser), nil
+	return r.mapper.ToDomain(entUser), nil
 }
 
 // TokenStore methods implementation

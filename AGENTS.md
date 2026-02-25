@@ -1,6 +1,6 @@
 # AGENTS.md - Krathub 项目根目录
 
-<!-- Generated: 2026-02-09 | Updated: 2026-02-09 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
 
 ## 项目概述
 
@@ -17,7 +17,7 @@ Krathub 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了�
 - **框架**: Kratos v2 (微服务框架)
 - **API 定义**: Protobuf + Buf (现代化 Protobuf 工具链)
 - **依赖注入**: Wire (编译时 DI)
-- **ORM**: GORM + GORM GEN
+- **ORM**: Ent + GORM GEN（双 ORM 并行支持）
 - **前端**: Vue 3 + Vite (位于 `app/krathub/service/web/`)
 - **服务治理**: Consul / Nacos / etcd
 - **可观测性**: Prometheus + Jaeger
@@ -51,7 +51,7 @@ Keep this managed block so 'openspec update' can refresh the instructions.
   - `make test` - 运行所有测试
   - `make lint` - 代码检查
 - **app.mk** - 服务级通用 Makefile，被所有微服务共享
-  - 定义了服务级的 `run`, `build`, `wire`, `genDao` 等命令
+  - 定义了服务级的 `run`, `build`, `wire`, `genDao`, `genEnt` 等命令
   - 所有服务通过 `include ../../../app.mk` 复用构建逻辑
 
 ### Go 项目配置
@@ -169,6 +169,7 @@ OpenSpec 变更管理系统，用于结构化跟踪架构变更和提案。
 ```bash
 make init          # 初始化开发环境
 make gen           # 生成所有代码（api + wire + openapi）
+make ent           # 聚合生成所有服务的 Ent 代码
 make build         # 构建所有服务
 make test          # 运行所有测试
 make lint          # 代码检查（golangci-lint）
@@ -182,6 +183,7 @@ make run           # 运行服务（含代码生成）
 make build         # 构建服务
 make wire          # 生成 Wire 代码
 make genDao        # 生成 GORM GEN PO/DAO
+make genEnt        # 生成 Ent 代码
 make test          # 运行测试
 make docker-build  # 构建 Docker 镜像
 ```
