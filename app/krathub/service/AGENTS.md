@@ -82,8 +82,7 @@ app/krathub/service/
 ├── configs/             # 配置文件
 │   └── config.yaml      # 服务配置（数据库、Redis、注册中心等）
 ├── deployment/          # 部署配置
-│   ├── docker/         # Docker Compose
-│   │   └── docker-compose.yml
+│   ├── docker/         # Docker 部署资源（configs/logs）
 │   └── kubernetes/     # Kubernetes 清单
 │       ├── deployment.yaml
 │       ├── service.yaml
