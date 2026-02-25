@@ -291,7 +291,7 @@ make build
 - `make openapi` - 生成 OpenAPI 文档
 - `make wire` - 生成 wire 代码
 - `make ent` - 生成 ent 代码（如果使用 ent）
-- `make genDao` - 生成 GORM GEN 的 PO 和 DAO 代码（如果使用 gorm-gen）
+- `make gen.dao` - 生成 GORM GEN 的 PO 和 DAO 代码（如果使用 gorm-gen）
 - `make gen` - 生成所有代码
 
 #### 其他

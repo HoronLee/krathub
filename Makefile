@@ -124,7 +124,7 @@ wire:
 ent:
 	@echo "$(CYAN)Generating ent code for all services...$(RESET)"
 	@$(foreach dir, $(dir $(realpath $(SRCS_MK))),\
-      cd $(dir) && make genEnt;\
+      cd $(dir) && make gen.ent;\
     )
 	@echo "$(GREEN)✓ Ent code generated$(RESET)"
 

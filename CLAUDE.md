@@ -42,7 +42,7 @@ make lint          # Run golangci-lint
 ```bash
 make run           # Run service
 make wire          # Generate wire code
-make genDao        # Generate GORM GEN PO/DAO
+make gen.dao       # Generate GORM GEN PO/DAO
 ```
 
 ### Frontend (`app/krathub/service/web/`)

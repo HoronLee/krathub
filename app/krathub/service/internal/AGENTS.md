@@ -794,7 +794,7 @@ func main() {
 2. **运行生成**
 ```bash
 cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
-make genDao
+make gen.dao
 ```
 
 3. **使用生成的 DAO**

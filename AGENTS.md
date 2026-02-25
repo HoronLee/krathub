@@ -51,7 +51,7 @@ Keep this managed block so 'openspec update' can refresh the instructions.
   - `make test` - 运行所有测试
   - `make lint` - 代码检查
 - **app.mk** - 服务级通用 Makefile，被所有微服务共享
-  - 定义了服务级的 `run`, `build`, `wire`, `genDao`, `genEnt` 等命令
+  - 定义了服务级的 `run`, `build`, `wire`, `gen.dao`, `gen.ent` 等命令
   - 所有服务通过 `include ../../../app.mk` 复用构建逻辑
 
 ### Go 项目配置
@@ -182,8 +182,8 @@ make docker-build  # 构建所有 Docker 镜像
 make run           # 运行服务（含代码生成）
 make build         # 构建服务
 make wire          # 生成 Wire 代码
-make genDao        # 生成 GORM GEN PO/DAO
-make genEnt        # 生成 Ent 代码
+make gen.dao       # 生成 GORM GEN PO/DAO
+make gen.ent       # 生成 Ent 代码
 make test          # 运行测试
 make docker-build  # 构建 Docker 镜像
 ```

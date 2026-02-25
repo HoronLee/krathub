@@ -941,8 +941,8 @@ func main() {
 2. **运行生成**
 ```bash
 cd app/krathub/service
-make genDao  # 或 go run ./cmd/genDao -conf ./configs
-make genEnt  # 生成 Ent 代码（schema -> ent）
+make gen.dao  # 或 go run ./cmd/genDao -conf ./configs
+make gen.ent  # 生成 Ent 代码（schema -> ent）
 ```
 
 3. **使用生成的 DAO**
