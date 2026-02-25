@@ -5,6 +5,7 @@ import (
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	logpkg "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -25,7 +26,7 @@ type GRPCMiddleware []middleware.Middleware
 // NewGRPCMiddleware 创建 gRPC 中间件
 func NewGRPCMiddleware(
 	trace *conf.Trace,
-	m *Metrics,
+	m *telemetry.Metrics,
 	logger log.Logger,
 ) GRPCMiddleware {
 	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/krathub-service"))

@@ -15,6 +15,7 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/server"
 	"github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 	"github.com/horonlee/krathub/pkg/transport/client"
 )
 
@@ -27,14 +28,14 @@ import (
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
 	registrar := server.NewRegistrar(registry)
-	serverMetrics, err := server.NewMetrics(metrics, app, logger)
+	telemetryMetrics, err := telemetry.NewMetrics(metrics, app, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	grpcMiddleware := server.NewGRPCMiddleware(trace, serverMetrics, logger)
+	grpcMiddleware := server.NewGRPCMiddleware(trace, telemetryMetrics, logger)
 	grpcServer := server.NewGRPCServer(confServer, grpcMiddleware, logger)
 	authJWT := middleware.NewAuthMiddleware(app)
-	httpMiddleware := server.NewHTTPMiddleware(trace, serverMetrics, logger, authJWT)
+	httpMiddleware := server.NewHTTPMiddleware(trace, telemetryMetrics, logger, authJWT)
 	db, err := data.NewDB(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -62,7 +63,7 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.
 	testRepo := data.NewTestRepo(dataData, logger)
 	testUsecase := biz.NewTestUsecase(testRepo, logger)
 	testService := service.NewTestService(testUsecase)
-	httpServer := server.NewHTTPServer(confServer, httpMiddleware, serverMetrics, logger, authService, userService, testService)
+	httpServer := server.NewHTTPServer(confServer, httpMiddleware, telemetryMetrics, logger, authService, userService, testService)
 	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup2()

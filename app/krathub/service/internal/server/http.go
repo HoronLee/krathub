@@ -2,7 +2,6 @@ package server
 
 import (
 	"crypto/tls"
-
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -21,6 +20,7 @@ import (
 	logpkg "github.com/horonlee/krathub/pkg/logger"
 	mwpkg "github.com/horonlee/krathub/pkg/middleware"
 	"github.com/horonlee/krathub/pkg/middleware/cors"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 )
 
 // HTTPMiddleware 用于 Wire 注入的中间件切片包装类型
@@ -29,7 +29,7 @@ type HTTPMiddleware []middleware.Middleware
 // NewHTTPMiddleware 创建 HTTP 中间件（使用白名单机制）
 func NewHTTPMiddleware(
 	trace *conf.Trace,
-	m *Metrics,
+	m *telemetry.Metrics,
 	logger log.Logger,
 	authJWT mwinter.AuthJWT,
 ) HTTPMiddleware {
@@ -90,7 +90,7 @@ func NewHTTPMiddleware(
 func NewHTTPServer(
 	c *conf.Server,
 	middlewares HTTPMiddleware,
-	m *Metrics,
+	m *telemetry.Metrics,
 	logger log.Logger,
 	auth *service.AuthService,
 	user *service.UserService,

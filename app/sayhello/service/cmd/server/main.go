@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/horonlee/krathub/pkg/governance/observability"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"	
 	"github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
@@ -76,7 +76,7 @@ func main() {
 		Compress:   bc.App.Log.Compress,
 	})
 
-	traceCleanup, err := observability.InitTracerProvider(bc.Trace, Name, bc.App.Env)
+	traceCleanup, err := telemetry.InitTracerProvider(bc.Trace, Name, bc.App.Env)
 	if err != nil {
 		panic(err)
 	}
