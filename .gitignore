@@ -38,6 +38,7 @@ logs/
 cache/
 data.db
 examples/
+/server
 
 # Develop tools
 .vscode/
