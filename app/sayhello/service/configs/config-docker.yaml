@@ -1,10 +1,19 @@
 app:
+  name: "sayhello.service"
+  version: "v1.0.0"
   env: "${ENV:prod}"
   log:
     level: "${LOG_LEVEL:0}"
+    filename: "/app/logs/sayhello.service.log"
     max_size: "${LOG_MAX_SIZE:20}"
     max_age: "${LOG_MAX_AGE:30}"
     max_backups: "${LOG_MAX_BACKUPS:10}"
+
+trace:
+  endpoint: "otel-collector:4317"
+
+metrics:
+  enable: true
 
 registry:
   consul:

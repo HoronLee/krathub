@@ -16,6 +16,8 @@ data:
     db: 0
 
 app:
+  name: "krathub.service"
+  version: "v1.0.0"
   env: "prod"
   jwt:
     access_secret: "krathub_access_secret_change_me"
@@ -24,6 +26,13 @@ app:
     refresh_expire: 604800
   log:
     level: 0
+    filename: "/app/logs/krathub.service.log"
+
+trace:
+  endpoint: "otel-collector:4317"
+
+metrics:
+  enable: true
 
 registry:
   consul:

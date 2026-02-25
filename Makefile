@@ -52,7 +52,7 @@ COMPOSE := docker compose
 COMPOSE_FILES := -f docker-compose.yaml
 COMPOSE_DEV_FILES := -f docker-compose.yaml -f docker-compose.dev.yaml
 MICROSERVICES := krathub sayhello
-INFRA_SERVICES := consul db redis
+INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 
 # ============================================================================
 # MAIN TARGETS

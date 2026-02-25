@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -78,23 +79,42 @@ func (g *GrpcConn) reset() error {
 	return nil
 }
 
+// GetGRPCConn 创建并提取指定服务的 gRPC 连接接口。
+func GetGRPCConn(ctx context.Context, c Client, serviceName string) (gogrpc.ClientConnInterface, error) {
+	connWrapper, err := c.CreateConn(ctx, GRPC, serviceName)
+	if err != nil {
+		return nil, err
+	}
+
+	conn, ok := connWrapper.Value().(gogrpc.ClientConnInterface)
+	if !ok {
+		return nil, fmt.Errorf("unexpected grpc connection type: %T", connWrapper.Value())
+	}
+
+	return conn, nil
+}
+
 // createGrpcConnection 创建gRPC连接的内部函数
 func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf.Data,
 	traceCfg *conf.Trace, discovery registry.Discovery, logger log.Logger) (gogrpc.ClientConnInterface, error) {
 	setupLogger := pkglogger.With(logger, pkglogger.WithField("operation", "createGrpcConnection"))
 
-	// 默认超时时间
 	timeout := 5 * time.Second
-	endpoint := fmt.Sprintf("discovery:///%s", serviceName)
+	defaultEndpoint := fmt.Sprintf("discovery:///%s", serviceName)
+	endpoint := defaultEndpoint
 
-	// 尝试获取服务特定配置
-	for _, c := range dataCfg.Client.GetGrpc() {
-		if c.ServiceName == serviceName {
-			if c.Timeout != nil {
-				timeout = c.Timeout.AsDuration()
+	if dataCfg != nil && dataCfg.Client != nil {
+		for _, c := range dataCfg.Client.GetGrpc() {
+			if c == nil || c.ServiceName != serviceName {
+				continue
 			}
-			if c.Endpoint != "" {
-				endpoint = c.Endpoint
+			if cfgTimeout := c.GetTimeout(); cfgTimeout != nil {
+				if d := cfgTimeout.AsDuration(); d > 0 {
+					timeout = d
+				}
+			}
+			if configuredEndpoint := strings.TrimSpace(c.GetEndpoint()); configuredEndpoint != "" {
+				endpoint = configuredEndpoint
 				setupLogger.Log(log.LevelInfo, "msg", "using configured endpoint",
 					"service_name", serviceName, "endpoint", endpoint)
 			}
@@ -102,37 +122,26 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 		}
 	}
 
-	// 准备中间件
-	middleware := []middleware.Middleware{
+	mds := []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Client(logger),
 		circuitbreaker.Client(),
 	}
 
 	if traceCfg != nil && traceCfg.Endpoint != "" {
-		middleware = append(middleware, tracing.Client())
+		mds = append(mds, tracing.Client())
 	}
 
-	// 创建gRPC连接
-	var conn *gogrpc.ClientConn
-	var err error
-
-	if endpoint == fmt.Sprintf("discovery:///%s", serviceName) && discovery != nil {
-		conn, err = grpc.DialInsecure(
-			ctx,
-			grpc.WithEndpoint(endpoint),
-			grpc.WithDiscovery(discovery),
-			grpc.WithTimeout(timeout),
-			grpc.WithMiddleware(middleware...),
-		)
-	} else {
-		conn, err = grpc.DialInsecure(
-			ctx,
-			grpc.WithEndpoint(endpoint),
-			grpc.WithTimeout(timeout),
-			grpc.WithMiddleware(middleware...),
-		)
+	opts := []grpc.ClientOption{
+		grpc.WithEndpoint(endpoint),
+		grpc.WithTimeout(timeout),
+		grpc.WithMiddleware(mds...),
 	}
+	if endpoint == defaultEndpoint && discovery != nil {
+		opts = append(opts, grpc.WithDiscovery(discovery))
+	}
+
+	conn, err := grpc.DialInsecure(ctx, opts...)
 
 	if err != nil {
 		setupLogger.Log(log.LevelError, "msg", "failed to create grpc client",
@@ -141,7 +150,7 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 	}
 
 	setupLogger.Log(log.LevelInfo, "msg", "successfully created grpc client",
-		"service_name", serviceName, "endpoint", endpoint)
+		"service_name", serviceName, "endpoint", endpoint, "timeout", timeout.String())
 
 	return conn, nil
 }

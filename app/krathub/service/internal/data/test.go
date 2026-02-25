@@ -8,7 +8,6 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	pkglogger "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/transport/client"
-	gogrpc "google.golang.org/grpc"
 )
 
 type testRepo struct {
@@ -26,13 +25,11 @@ func NewTestRepo(data *Data, logger log.Logger) biz.TestRepo {
 func (r *testRepo) Hello(ctx context.Context, in string) (string, error) {
 	r.log.Debugf("Saying hello with greeting: %s", in)
 
-	connWrapper, err := r.data.client.CreateConn(ctx, client.GRPC, "sayhello.service")
+	conn, err := client.GetGRPCConn(ctx, r.data.client, "sayhello.service")
 	if err != nil {
 		r.log.Errorf("Failed to create grpc connection: %v", err)
 		return "", err
 	}
-
-	conn := connWrapper.Value().(gogrpc.ClientConnInterface)
 
 	helloClient := sayhellopb.NewSayHelloServiceClient(conn)
 	ret, err := helloClient.Hello(ctx, &sayhellopb.HelloRequest{Greeting: in})
@@ -40,5 +37,5 @@ func (r *testRepo) Hello(ctx context.Context, in string) (string, error) {
 		r.log.Errorf("Failed to say hello: %v", err)
 		return "", err
 	}
-	return ret.Reply, nil
+	return ret.GetReply(), nil
 }

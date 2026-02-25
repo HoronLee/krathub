@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: krathub-observability
+    orgId: 1
+    folder: Krathub
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

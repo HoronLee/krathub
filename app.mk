@@ -75,6 +75,8 @@ APP_NAME          := $(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
 # Detect service-specific OpenAPI config file
 # Format: buf.{service_name}.openapi.gen.yaml
 OPENAPI_CONFIG := buf.$(SERVICE_NAME).openapi.gen.yaml
+CONF ?= ./configs/config.yaml
+RUN_DEPS ?= api openapi
 
 .PHONY: build clean docker-build gen wire api openapi run app help env gen.dao gen.ent
 
@@ -111,8 +113,8 @@ else
 endif
 
 # run application
-run: api openapi
-	-@go run $(GOFLAGS) -ldflags "$(LDFLAGS)" ./cmd/server -conf ./configs
+run: $(RUN_DEPS)
+	-@go run $(GOFLAGS) -ldflags "$(LDFLAGS)" ./cmd/server -conf $(CONF)
 
 # build service app
 app: api openapi wire build

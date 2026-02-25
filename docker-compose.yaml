@@ -28,10 +28,11 @@ services:
     image: krathub-micro/krathub-service:latest
     container_name: krathub
     restart: unless-stopped
+    command: ["/app/krathub", "-conf", "/app/configs/config-docker.yaml"]
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - ./app/krathub/service/deployment/docker/configs:/app/configs:ro
+      - ./app/krathub/service/configs/config-docker.yaml:/app/configs/config-docker.yaml:ro
       - krathub-logs:/app/logs
     ports:
       - "8000:8000"
@@ -43,6 +44,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      otel-collector:
+        condition: service_started
     networks:
       - krathub-network
 
@@ -50,14 +53,97 @@ services:
     image: krathub-micro/sayhello-service:latest
     container_name: sayhello
     restart: unless-stopped
+    command: ["/app/sayhello", "-conf", "/app/configs/config-docker.yaml"]
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - ./app/sayhello/service/deployment/docker/configs:/app/configs:ro
+      - ./app/sayhello/service/configs/config-docker.yaml:/app/configs/config-docker.yaml:ro
       - sayhello-logs:/app/logs
     depends_on:
       consul:
         condition: service_healthy
+      otel-collector:
+        condition: service_started
+    networks:
+      - krathub-network
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: krathub_jaeger
+    restart: unless-stopped
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"
+      - "14269:14269"
+    networks:
+      - krathub-network
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: krathub_otel_collector
+    user: "0:0"
+    restart: unless-stopped
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./manifests/otel/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+      - krathub-logs:/var/log/krathub:ro
+      - sayhello-logs:/var/log/sayhello:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    depends_on:
+      - jaeger
+      - loki
+    networks:
+      - krathub-network
+
+  loki:
+    image: grafana/loki:latest
+    container_name: krathub_loki
+    restart: unless-stopped
+    command: ["-config.file=/etc/loki/config.yaml"]
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./manifests/loki/loki.yaml:/etc/loki/config.yaml:ro
+      - krathub-loki-data:/loki
+    networks:
+      - krathub-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: krathub_prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./manifests/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - krathub-prometheus-data:/prometheus
+    networks:
+      - krathub-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: krathub_grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:-admin}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:-admin}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./manifests/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./manifests/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - krathub-grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki
+      - jaeger
     networks:
       - krathub-network
 
@@ -104,6 +190,9 @@ volumes:
   krathub-consul-data:
   krathub-db-data:
   krathub-redis-data:
+  krathub-loki-data:
+  krathub-prometheus-data:
+  krathub-grafana-data:
   krathub-logs:
   sayhello-logs:
 

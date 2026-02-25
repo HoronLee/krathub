@@ -11,7 +11,7 @@ Krathub 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了�
 - 统一的代码生成和构建流程（通过 `app.mk` 共享）
 - 双协议支持（gRPC + HTTP）及自动 OpenAPI 文档生成
 - 完善的服务治理（注册发现、配置中心、链路追踪）
-- 生产级可观测性（Prometheus + Jaeger）
+- 生产级可观测性（OTel Collector + Jaeger + Loki + Prometheus + Grafana）
 
 **技术栈**：
 - **框架**: Kratos v2 (微服务框架)
@@ -20,7 +20,7 @@ Krathub 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了�
 - **ORM**: Ent + GORM GEN（双 ORM 并行支持）
 - **前端**: Vue 3 + Vite (位于 `app/krathub/service/web/`)
 - **服务治理**: Consul / Nacos / etcd
-- **可观测性**: Prometheus + Jaeger
+- **可观测性**: OTel Collector + Jaeger + Loki + Prometheus + Grafana
 
 ## 关键文件
 
@@ -157,7 +157,7 @@ make lint          # 代码检查（golangci-lint）
 make clean         # 清理构建产物
 make docker-build  # 构建所有 Docker 镜像
 make compose.build      # 构建生产镜像（krathub + sayhello）
-make compose.up         # 启动生产 compose 全栈（consul + db + redis + services）
+make compose.up         # 启动生产 compose 全栈（consul + db + redis + observability + services）
 make compose.rebuild    # 重建生产镜像并启动生产 compose 全栈
 make compose.ps         # 查看生产 compose 状态
 make compose.logs       # 查看生产 compose 日志

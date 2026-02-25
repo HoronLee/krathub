@@ -17,7 +17,7 @@ Krathub 是一个基于 Go Kratos 框架的微服务项目示例。它展示了�
 - **通用工具链**: 提供 `app.mk` 通用 Makefile，所有服务共享统一的构建流程
 - **认证鉴权**: 内置 JWT 中间件，方便实现用户认证
 - **容器化**: 提供 `Dockerfile` 和 `docker-compose.yml`，轻松实现容器化部署
-- **可观测性**: 已集成 `Metrics` (Prometheus) 和 `Trace` (Jaeger) 的基础配置
+- **可观测性**: 内置 OTel Collector + Jaeger + Loki + Prometheus + Grafana 全链路观测栈
 
 ## 📖 项目文档
 
@@ -300,7 +300,7 @@ make build
 - `make compose.dev.logs` - 查看 Air 开发容器日志
 - `make compose.dev.down` - 停止 Air 开发容器
 - `make compose.build` - 构建生产镜像（krathub + sayhello）
-- `make compose.up` - 启动生产 compose 全栈（中间件 + 微服务）
+- `make compose.up` - 启动生产 compose 全栈（中间件 + 观测栈 + 微服务）
 - `make compose.rebuild` - 重建生产镜像并启动生产 compose 全栈
 - `make compose.ps` - 查看生产 compose 服务状态
 - `make compose.logs` - 查看生产 compose 服务日志
@@ -387,6 +387,7 @@ make openapi
 - `docker-compose.yaml`：生产部署编排（中间件 + 微服务，按镜像运行）
 - `docker-compose.dev.yaml`：开发覆盖层（仅替换 Go 服务为 Air 热重载）
 - `Dockerfile.air`：开发热重载镜像
+- 观测组件默认端口：Grafana `3001`、Prometheus `9090`、Jaeger `16686`、Loki `3100`、OTel `4317/4318`
 
 ```shell
 # 构建所有服务的 Docker 镜像

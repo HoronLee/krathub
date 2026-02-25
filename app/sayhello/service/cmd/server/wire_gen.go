@@ -12,6 +12,7 @@ import (
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/sayhello/service/internal/server"
 	"github.com/horonlee/krathub/app/sayhello/service/internal/service"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 )
 
 import (
@@ -20,11 +21,15 @@ import (
 
 // Injectors from wire.go:
 
-func wireApp(confServer *conf.Server, registry *conf.Registry, logger log.Logger) (*kratos.App, func(), error) {
+func wireApp(confServer *conf.Server, registry *conf.Registry, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
 	registrar := server.NewRegistrar(registry)
+	telemetryMetrics, err := telemetry.NewMetrics(metrics, app, logger)
+	if err != nil {
+		return nil, nil, err
+	}
 	sayHelloService := service.NewSayHelloService()
-	grpcServer := server.NewGRPCServer(confServer, logger, sayHelloService)
-	app := newApp(logger, registrar, grpcServer)
-	return app, func() {
+	grpcServer := server.NewGRPCServer(confServer, trace, telemetryMetrics, logger, sayHelloService)
+	kratosApp := newApp(logger, registrar, grpcServer)
+	return kratosApp, func() {
 	}, nil
 }

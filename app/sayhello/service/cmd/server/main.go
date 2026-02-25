@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/horonlee/krathub/pkg/governance/telemetry"	
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 	"github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
@@ -82,7 +82,7 @@ func main() {
 	}
 	defer traceCleanup()
 
-	app, cleanup, err := wireApp(bc.Server, bc.Registry, log)
+	app, cleanup, err := wireApp(bc.Server, bc.Registry, bc.App, bc.Trace, bc.Metrics, log)
 	if err != nil {
 		panic(err)
 	}

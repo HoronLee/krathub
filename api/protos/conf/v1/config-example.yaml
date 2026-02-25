@@ -192,8 +192,7 @@ config:
 
 # 链路追踪配置
 trace:
-  # 使用 Jaeger 作为链路追踪
-  endpoint: "${TRACE_JAEGER_ENDPOINT:otlp.jaeger.r430.com:30080}"
+  endpoint: "${TRACE_ENDPOINT:localhost:4317}"
 # 监控配置
 metrics:
   enable: ${METRICS_ENABLE:true}

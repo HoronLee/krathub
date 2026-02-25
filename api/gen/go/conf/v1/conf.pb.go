@@ -27,7 +27,6 @@ type Bootstrap struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	App           *App                   `protobuf:"bytes,1,opt,name=app,proto3" json:"app,omitempty"`             // 应用基础配置
 	Server        *Server                `protobuf:"bytes,2,opt,name=server,proto3" json:"server,omitempty"`       // 服务端配置
-	Client        *Client                `protobuf:"bytes,3,opt,name=client,proto3" json:"client,omitempty"`       // 客户端配置
 	Data          *Data                  `protobuf:"bytes,4,opt,name=data,proto3" json:"data,omitempty"`           // 数据源配置
 	Registry      *Registry              `protobuf:"bytes,5,opt,name=registry,proto3" json:"registry,omitempty"`   // 注册中心配置
 	Discovery     *Discovery             `protobuf:"bytes,6,opt,name=discovery,proto3" json:"discovery,omitempty"` // 服务发现配置
@@ -78,13 +77,6 @@ func (x *Bootstrap) GetApp() *App {
 func (x *Bootstrap) GetServer() *Server {
 	if x != nil {
 		return x.Server
-	}
-	return nil
-}
-
-func (x *Bootstrap) GetClient() *Client {
-	if x != nil {
-		return x.Client
 	}
 	return nil
 }
@@ -1981,17 +1973,16 @@ var File_conf_v1_conf_proto protoreflect.FileDescriptor
 
 const file_conf_v1_conf_proto_rawDesc = "" +
 	"\n" +
-	"\x12conf/v1/conf.proto\x12\aconf.v1\x1a\x1egoogle/protobuf/duration.proto\"\xfc\x02\n" +
+	"\x12conf/v1/conf.proto\x12\aconf.v1\x1a\x1egoogle/protobuf/duration.proto\"\xd9\x02\n" +
 	"\tBootstrap\x12\x1e\n" +
 	"\x03app\x18\x01 \x01(\v2\f.conf.v1.AppR\x03app\x12'\n" +
-	"\x06server\x18\x02 \x01(\v2\x0f.conf.v1.ServerR\x06server\x12'\n" +
-	"\x06client\x18\x03 \x01(\v2\x0f.conf.v1.ClientR\x06client\x12!\n" +
+	"\x06server\x18\x02 \x01(\v2\x0f.conf.v1.ServerR\x06server\x12!\n" +
 	"\x04data\x18\x04 \x01(\v2\r.conf.v1.DataR\x04data\x12-\n" +
 	"\bregistry\x18\x05 \x01(\v2\x11.conf.v1.RegistryR\bregistry\x120\n" +
 	"\tdiscovery\x18\x06 \x01(\v2\x12.conf.v1.DiscoveryR\tdiscovery\x12'\n" +
 	"\x06config\x18\a \x01(\v2\x0f.conf.v1.ConfigR\x06config\x12$\n" +
 	"\x05trace\x18\b \x01(\v2\x0e.conf.v1.TraceR\x05trace\x12*\n" +
-	"\ametrics\x18\t \x01(\v2\x10.conf.v1.MetricsR\ametrics\"t\n" +
+	"\ametrics\x18\t \x01(\v2\x10.conf.v1.MetricsR\ametricsJ\x04\b\x03\x10\x04\"t\n" +
 	"\tTLSConfig\x12\x16\n" +
 	"\x06enable\x18\x01 \x01(\bR\x06enable\x12\x1b\n" +
 	"\tcert_path\x18\x02 \x01(\tR\bcertPath\x12\x19\n" +
@@ -2185,56 +2176,55 @@ var file_conf_v1_conf_proto_goTypes = []any{
 var file_conf_v1_conf_proto_depIdxs = []int32{
 	10, // 0: conf.v1.Bootstrap.app:type_name -> conf.v1.App
 	7,  // 1: conf.v1.Bootstrap.server:type_name -> conf.v1.Server
-	8,  // 2: conf.v1.Bootstrap.client:type_name -> conf.v1.Client
-	9,  // 3: conf.v1.Bootstrap.data:type_name -> conf.v1.Data
-	11, // 4: conf.v1.Bootstrap.registry:type_name -> conf.v1.Registry
-	12, // 5: conf.v1.Bootstrap.discovery:type_name -> conf.v1.Discovery
-	13, // 6: conf.v1.Bootstrap.config:type_name -> conf.v1.Config
-	14, // 7: conf.v1.Bootstrap.trace:type_name -> conf.v1.Trace
-	15, // 8: conf.v1.Bootstrap.metrics:type_name -> conf.v1.Metrics
-	28, // 9: conf.v1.CORS.max_age:type_name -> google.protobuf.Duration
-	28, // 10: conf.v1.ConsulConfig.timeout:type_name -> google.protobuf.Duration
-	28, // 11: conf.v1.EtcdConfig.timeout:type_name -> google.protobuf.Duration
-	28, // 12: conf.v1.NacosConfig.timeout:type_name -> google.protobuf.Duration
-	16, // 13: conf.v1.Server.http:type_name -> conf.v1.Server.HTTP
-	17, // 14: conf.v1.Server.grpc:type_name -> conf.v1.Server.GRPC
-	19, // 15: conf.v1.Client.grpc:type_name -> conf.v1.Client.GrpcEntry
-	20, // 16: conf.v1.Data.database:type_name -> conf.v1.Data.Database
-	21, // 17: conf.v1.Data.redis:type_name -> conf.v1.Data.Redis
-	22, // 18: conf.v1.Data.client:type_name -> conf.v1.Data.Client
-	25, // 19: conf.v1.App.jwt:type_name -> conf.v1.App.Jwt
-	26, // 20: conf.v1.App.log:type_name -> conf.v1.App.Log
-	27, // 21: conf.v1.App.metadata:type_name -> conf.v1.App.MetadataEntry
-	3,  // 22: conf.v1.Registry.consul:type_name -> conf.v1.ConsulConfig
-	4,  // 23: conf.v1.Registry.etcd:type_name -> conf.v1.EtcdConfig
-	5,  // 24: conf.v1.Registry.nacos:type_name -> conf.v1.NacosConfig
-	6,  // 25: conf.v1.Registry.kubernetes:type_name -> conf.v1.KubernetesConfig
-	3,  // 26: conf.v1.Discovery.consul:type_name -> conf.v1.ConsulConfig
-	4,  // 27: conf.v1.Discovery.etcd:type_name -> conf.v1.EtcdConfig
-	5,  // 28: conf.v1.Discovery.nacos:type_name -> conf.v1.NacosConfig
-	6,  // 29: conf.v1.Discovery.kubernetes:type_name -> conf.v1.KubernetesConfig
-	3,  // 30: conf.v1.Config.consul:type_name -> conf.v1.ConsulConfig
-	4,  // 31: conf.v1.Config.etcd:type_name -> conf.v1.EtcdConfig
-	5,  // 32: conf.v1.Config.nacos:type_name -> conf.v1.NacosConfig
-	28, // 33: conf.v1.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	1,  // 34: conf.v1.Server.HTTP.tls:type_name -> conf.v1.TLSConfig
-	2,  // 35: conf.v1.Server.HTTP.cors:type_name -> conf.v1.CORS
-	28, // 36: conf.v1.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	1,  // 37: conf.v1.Server.GRPC.tls:type_name -> conf.v1.TLSConfig
-	1,  // 38: conf.v1.Client.GRPC.tls:type_name -> conf.v1.TLSConfig
-	18, // 39: conf.v1.Client.GrpcEntry.value:type_name -> conf.v1.Client.GRPC
-	28, // 40: conf.v1.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
-	28, // 41: conf.v1.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	28, // 42: conf.v1.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	24, // 43: conf.v1.Data.Client.grpc:type_name -> conf.v1.Data.Client.GRPC
-	23, // 44: conf.v1.Data.Client.http:type_name -> conf.v1.Data.Client.HTTP
-	28, // 45: conf.v1.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
-	28, // 46: conf.v1.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
-	47, // [47:47] is the sub-list for method output_type
-	47, // [47:47] is the sub-list for method input_type
-	47, // [47:47] is the sub-list for extension type_name
-	47, // [47:47] is the sub-list for extension extendee
-	0,  // [0:47] is the sub-list for field type_name
+	9,  // 2: conf.v1.Bootstrap.data:type_name -> conf.v1.Data
+	11, // 3: conf.v1.Bootstrap.registry:type_name -> conf.v1.Registry
+	12, // 4: conf.v1.Bootstrap.discovery:type_name -> conf.v1.Discovery
+	13, // 5: conf.v1.Bootstrap.config:type_name -> conf.v1.Config
+	14, // 6: conf.v1.Bootstrap.trace:type_name -> conf.v1.Trace
+	15, // 7: conf.v1.Bootstrap.metrics:type_name -> conf.v1.Metrics
+	28, // 8: conf.v1.CORS.max_age:type_name -> google.protobuf.Duration
+	28, // 9: conf.v1.ConsulConfig.timeout:type_name -> google.protobuf.Duration
+	28, // 10: conf.v1.EtcdConfig.timeout:type_name -> google.protobuf.Duration
+	28, // 11: conf.v1.NacosConfig.timeout:type_name -> google.protobuf.Duration
+	16, // 12: conf.v1.Server.http:type_name -> conf.v1.Server.HTTP
+	17, // 13: conf.v1.Server.grpc:type_name -> conf.v1.Server.GRPC
+	19, // 14: conf.v1.Client.grpc:type_name -> conf.v1.Client.GrpcEntry
+	20, // 15: conf.v1.Data.database:type_name -> conf.v1.Data.Database
+	21, // 16: conf.v1.Data.redis:type_name -> conf.v1.Data.Redis
+	22, // 17: conf.v1.Data.client:type_name -> conf.v1.Data.Client
+	25, // 18: conf.v1.App.jwt:type_name -> conf.v1.App.Jwt
+	26, // 19: conf.v1.App.log:type_name -> conf.v1.App.Log
+	27, // 20: conf.v1.App.metadata:type_name -> conf.v1.App.MetadataEntry
+	3,  // 21: conf.v1.Registry.consul:type_name -> conf.v1.ConsulConfig
+	4,  // 22: conf.v1.Registry.etcd:type_name -> conf.v1.EtcdConfig
+	5,  // 23: conf.v1.Registry.nacos:type_name -> conf.v1.NacosConfig
+	6,  // 24: conf.v1.Registry.kubernetes:type_name -> conf.v1.KubernetesConfig
+	3,  // 25: conf.v1.Discovery.consul:type_name -> conf.v1.ConsulConfig
+	4,  // 26: conf.v1.Discovery.etcd:type_name -> conf.v1.EtcdConfig
+	5,  // 27: conf.v1.Discovery.nacos:type_name -> conf.v1.NacosConfig
+	6,  // 28: conf.v1.Discovery.kubernetes:type_name -> conf.v1.KubernetesConfig
+	3,  // 29: conf.v1.Config.consul:type_name -> conf.v1.ConsulConfig
+	4,  // 30: conf.v1.Config.etcd:type_name -> conf.v1.EtcdConfig
+	5,  // 31: conf.v1.Config.nacos:type_name -> conf.v1.NacosConfig
+	28, // 32: conf.v1.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	1,  // 33: conf.v1.Server.HTTP.tls:type_name -> conf.v1.TLSConfig
+	2,  // 34: conf.v1.Server.HTTP.cors:type_name -> conf.v1.CORS
+	28, // 35: conf.v1.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	1,  // 36: conf.v1.Server.GRPC.tls:type_name -> conf.v1.TLSConfig
+	1,  // 37: conf.v1.Client.GRPC.tls:type_name -> conf.v1.TLSConfig
+	18, // 38: conf.v1.Client.GrpcEntry.value:type_name -> conf.v1.Client.GRPC
+	28, // 39: conf.v1.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
+	28, // 40: conf.v1.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	28, // 41: conf.v1.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	24, // 42: conf.v1.Data.Client.grpc:type_name -> conf.v1.Data.Client.GRPC
+	23, // 43: conf.v1.Data.Client.http:type_name -> conf.v1.Data.Client.HTTP
+	28, // 44: conf.v1.Data.Client.HTTP.timeout:type_name -> google.protobuf.Duration
+	28, // 45: conf.v1.Data.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	46, // [46:46] is the sub-list for method output_type
+	46, // [46:46] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func init() { file_conf_v1_conf_proto_init() }

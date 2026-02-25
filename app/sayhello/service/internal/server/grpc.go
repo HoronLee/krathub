@@ -6,23 +6,35 @@ import (
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/sayhello/service/internal/service"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
+	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	gogrpc "google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
 
-func NewGRPCServer(c *conf.Server, logger log.Logger, hello *service.SayHelloService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.Metrics, logger log.Logger, hello *service.SayHelloService) *grpc.Server {
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
 		logging.Server(logger),
 		validate.ProtoValidate(),
+	}
+	if trace != nil && trace.Endpoint != "" {
+		mds = append(mds, tracing.Server())
+	}
+	if metricsRuntime != nil {
+		mds = append(mds, metrics.Server(
+			metrics.WithSeconds(metricsRuntime.Seconds),
+			metrics.WithRequests(metricsRuntime.Requests),
+		))
 	}
 
 	var opts = []grpc.ServerOption{

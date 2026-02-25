@@ -13,7 +13,7 @@ option go_package = "github.com/horonlee/krathub/api/gen/go/conf/v1;conf";
 message Bootstrap {
   App app = 1; // 应用基础配置
   Server server = 2; // 服务端配置
-  Client client = 3; // 客户端配置
+  reserved 3; // 历史字段：顶层 client（已废弃，保留编号避免兼容性问题）
   Data data = 4; // 数据源配置
   Registry registry = 5; // 注册中心配置
   Discovery discovery = 6; // 服务发现配置

@@ -3,7 +3,7 @@ tmp_dir = "tmp"
 
 [build]
 cmd = "go build -o ./tmp/server ./cmd/server"
-entrypoint = ["./tmp/server", "-conf", "./deployment/docker/configs/config.yaml"]
+entrypoint = ["./tmp/server", "-conf", "./configs/config-docker.yaml"]
 include_ext = ["go", "yaml", "yml", "json"]
 exclude_dir = ["tmp", "bin", ".git"]
 exclude_regex = ["_test\\.go"]
