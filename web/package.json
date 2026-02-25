@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "gen:proto": "cd ../api && buf generate --template buf.krathub.typescript.gen.yaml",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",

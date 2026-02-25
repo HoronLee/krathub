@@ -11,7 +11,7 @@
           <el-tab-pane label="登录" name="login">
             <el-form @submit.prevent="handleLogin">
               <el-form-item label="邮箱">
-                <el-input v-model="loginId" placeholder="请输入用户名或邮箱" />
+                <el-input v-model="email" placeholder="请输入邮箱" />
               </el-form-item>
               <el-form-item label="密码">
                 <el-input
@@ -93,7 +93,7 @@ import { api } from "@/utils/api";
 
 const authStore = useAuthStore();
 const activeTab = ref("login");
-const loginId = ref("");
+const email = ref("");
 const password = ref("");
 const loading = ref(false);
 const signupForm = reactive({
@@ -104,17 +104,27 @@ const signupForm = reactive({
 });
 
 const handleLogin = async () => {
-  if (!loginId.value || !password.value) {
-    ElMessage.warning("请输入用户名和密码");
+  if (!email.value || !password.value) {
+    ElMessage.warning("请输入邮箱和密码");
     return;
   }
 
   loading.value = true;
   try {
-    const { token } = await api.login(loginId.value, password.value);
+    const loginResult = await api.login(email.value, password.value);
+    const token = loginResult.accessToken;
+
+    if (!token) {
+      throw new Error("登录成功但未返回 access token");
+    }
+
     authStore.setToken(token);
     const userInfo = await api.getCurrentUser(token);
-    authStore.setUser(userInfo);
+    authStore.setUser({
+      id: String(userInfo.id ?? ""),
+      name: userInfo.name ?? "",
+      role: userInfo.role ?? "",
+    });
     ElMessage.success("登录成功");
   } catch (error: unknown) {
     ElMessage.error(error instanceof Error ? error.message : "登录失败");
@@ -144,7 +154,7 @@ const handleSignup = async () => {
     );
     ElMessage.success("注册成功，请登录");
     activeTab.value = "login";
-    loginId.value = signupForm.email;
+    email.value = signupForm.email;
   } catch (error: unknown) {
     ElMessage.error(error instanceof Error ? error.message : "注册失败");
   } finally {
@@ -161,7 +171,11 @@ onMounted(async () => {
   if (authStore.token) {
     try {
       const userInfo = await api.getCurrentUser(authStore.token);
-      authStore.setUser(userInfo);
+      authStore.setUser({
+        id: String(userInfo.id ?? ""),
+        name: userInfo.name ?? "",
+        role: userInfo.role ?? "",
+      });
     } catch {
       authStore.logout();
     }

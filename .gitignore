@@ -71,6 +71,8 @@ dist-ssr
 coverage
 *.local
 
+/web/.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

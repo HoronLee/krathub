@@ -1,5 +1,4 @@
 app:
-  name: sayhello.service
   env: "${ENV:prod}"
   log:
     level: "${LOG_LEVEL:-1}"
