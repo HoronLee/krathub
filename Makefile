@@ -59,7 +59,7 @@ INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 # ============================================================================
 
 .PHONY: help env init plugin cli dep vendor test cover vet lint
-.PHONY: wire ent gen api openapi build build_only all docker-build clean
+.PHONY: wire ent gen api api-go api-ts openapi build build_only all docker-build clean
 .PHONY: compose.build compose.up compose.rebuild compose.down compose.ps compose.logs
 .PHONY: compose.dev.build compose.dev.up compose.dev.ps compose.dev.down compose.dev.logs
 
@@ -142,11 +142,19 @@ ent:
 gen: wire api openapi ent
 	@echo "$(GREEN)✓ All code generated$(RESET)"
 
+# generate protobuf api code (go + ts)
+api: api-go api-ts
+	@echo "$(GREEN)✓ Protobuf code generated $(RESET)"
+
 # generate protobuf api go code
-api:
+api-go:
 	@echo "$(CYAN)Generating protobuf code ...$(RESET)"
 	@cd $(API_DIR) && buf generate
-	@echo "$(GREEN)✓ Protobuf code generated $(RESET)"
+
+# generate protobuf api typescript code for web
+api-ts:
+	@echo "$(CYAN)Generating protobuf TypeScript code ...$(RESET)"
+	@cd $(API_DIR) && buf generate --template buf.krathub.typescript.gen.yaml
 
 # generate protobuf api OpenAPI v3 docs for all services
 openapi:
