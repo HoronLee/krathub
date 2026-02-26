@@ -59,8 +59,22 @@ func setupTestAuthRepo(t *testing.T) (*authRepo, func()) {
 
 	// 清理测试数据库
 	ctx := context.Background()
-	redisClient.Del(ctx, "refresh_token:*")
-	redisClient.Del(ctx, "user_tokens:*")
+	cleanupByPattern := func(pattern string) {
+		keys, err := redisClient.Keys(ctx, pattern)
+		if err != nil {
+			t.Logf("failed to list redis keys by pattern %q: %v", pattern, err)
+			return
+		}
+		if len(keys) == 0 {
+			return
+		}
+		if err := redisClient.Del(ctx, keys...); err != nil {
+			t.Logf("failed to delete redis keys by pattern %q: %v", pattern, err)
+		}
+	}
+
+	cleanupByPattern("refresh_token:*")
+	cleanupByPattern("user_tokens:*")
 
 	// 创建Data结构体
 	data := &Data{
@@ -75,8 +89,8 @@ func setupTestAuthRepo(t *testing.T) (*authRepo, func()) {
 
 	cleanup := func() {
 		// 清理测试数据
-		redisClient.Del(ctx, "refresh_token:*")
-		redisClient.Del(ctx, "user_tokens:*")
+		cleanupByPattern("refresh_token:*")
+		cleanupByPattern("user_tokens:*")
 		redisCleanup()
 	}
 
