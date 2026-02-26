@@ -129,7 +129,9 @@ func TestEtcdBoundaryConditions(t *testing.T) {
 		}
 
 		// 清理
-		reg.Deregister(ctx, service)
+		if err := reg.Deregister(ctx, service); err != nil {
+			t.Logf("cleanup deregister failed: %v", err)
+		}
 	})
 
 	t.Run("ConcurrentAccess", func(t *testing.T) {
@@ -235,7 +237,11 @@ func TestEtcdWatcherResilience(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create watcher: %v", err)
 	}
-	defer watcher.Stop()
+	defer func() {
+		if err := watcher.Stop(); err != nil {
+			t.Logf("watcher stop failed: %v", err)
+		}
+	}()
 
 	// 测试监听器的基本功能
 	service := &registry.ServiceInstance{
@@ -249,7 +255,11 @@ func TestEtcdWatcherResilience(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to register service: %v", err)
 	}
-	defer reg.Deregister(ctx, service)
+	defer func() {
+		if err := reg.Deregister(ctx, service); err != nil {
+			t.Logf("cleanup deregister failed: %v", err)
+		}
+	}()
 
 	// 监听器应该检测到变化
 	select {

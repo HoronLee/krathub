@@ -8,7 +8,6 @@ import (
 	"time"
 
 	clientv3 "go.etcd.io/etcd/client/v3"
-	"google.golang.org/grpc"
 
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
@@ -262,7 +261,6 @@ func NewEtcdClient(cfg *conf.EtcdConfig) (*clientv3.Client, error) {
 		etcdConfig.DialTimeout = cfg.Timeout.AsDuration()
 	} else {
 		etcdConfig.DialTimeout = 5 * time.Second
-		etcdConfig.DialOptions = []grpc.DialOption{grpc.WithBlock()}
 	}
 
 	// 创建 etcd 客户端

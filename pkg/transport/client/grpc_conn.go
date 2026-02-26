@@ -64,21 +64,6 @@ func (g *GrpcConn) GetType() ConnType {
 	return GRPC
 }
 
-// reset 实际关闭连接（由工厂管理）
-func (g *GrpcConn) reset() error {
-	g.mu.Lock()
-	defer g.mu.Unlock()
-
-	if g.conn != nil {
-		if closer, ok := g.conn.(interface{ Close() error }); ok {
-			err := closer.Close()
-			g.conn = nil
-			return err
-		}
-	}
-	return nil
-}
-
 // GetGRPCConn 创建并提取指定服务的 gRPC 连接接口。
 func GetGRPCConn(ctx context.Context, c Client, serviceName string) (gogrpc.ClientConnInterface, error) {
 	connWrapper, err := c.CreateConn(ctx, GRPC, serviceName)

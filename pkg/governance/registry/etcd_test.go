@@ -100,7 +100,11 @@ func TestEtcdRegistryAndDiscovery(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create watcher: %v", err)
 	}
-	defer watcher.Stop()
+	defer func() {
+		if err := watcher.Stop(); err != nil {
+			t.Logf("watcher stop failed: %v", err)
+		}
+	}()
 
 	// 测试注销服务
 	err = reg.Deregister(ctx, serviceInstance)
@@ -205,7 +209,11 @@ func BenchmarkEtcdServiceDiscovery(b *testing.B) {
 		b.Skipf("Skipping benchmark: could not register service: %v", err)
 		return
 	}
-	defer reg.Deregister(ctx, serviceInstance)
+	defer func() {
+		if err := reg.Deregister(ctx, serviceInstance); err != nil {
+			b.Logf("cleanup deregister failed: %v", err)
+		}
+	}()
 
 	// 等待注册生效
 	time.Sleep(1 * time.Second)
