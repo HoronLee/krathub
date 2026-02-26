@@ -24,6 +24,10 @@ ROOT_DIR    := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 API_DIR     := api
 PKG_DIR     := pkg
 
+# Buf generation templates (auto-discovery by naming convention)
+BUF_GO_GEN_TEMPLATES := $(notdir $(wildcard $(API_DIR)/buf.*.go.gen.yaml))
+BUF_TS_GEN_TEMPLATES := $(notdir $(wildcard $(API_DIR)/buf.*.typescript.gen.yaml))
+
 # Find all service Makefiles in app directory
 SRCS_MK := $(foreach dir, app, $(wildcard $(dir)/*/*/Makefile))
 
@@ -149,12 +153,29 @@ api: api-go api-ts
 # generate protobuf api go code
 api-go:
 	@echo "$(CYAN)Generating protobuf code ...$(RESET)"
-	@cd $(API_DIR) && buf generate
+	@cd $(API_DIR) && \
+	if [ -z "$(strip $(BUF_GO_GEN_TEMPLATES))" ]; then \
+		echo "No buf.*.go.gen.yaml found, fallback to buf.gen.yaml"; \
+		buf generate; \
+	else \
+		for tpl in $(BUF_GO_GEN_TEMPLATES); do \
+			echo "Generating protobuf Go code via $$tpl"; \
+			buf generate --template "$$tpl"; \
+		done; \
+	fi
 
 # generate protobuf api typescript code for web
 api-ts:
 	@echo "$(CYAN)Generating protobuf TypeScript code ...$(RESET)"
-	@cd $(API_DIR) && buf generate --template buf.micro-forge.typescript.gen.yaml
+	@cd $(API_DIR) && \
+	if [ -z "$(strip $(BUF_TS_GEN_TEMPLATES))" ]; then \
+		echo "No buf.*.typescript.gen.yaml found, skip TypeScript generation"; \
+	else \
+		for tpl in $(BUF_TS_GEN_TEMPLATES); do \
+			echo "Generating protobuf TypeScript code via $$tpl"; \
+			buf generate --template "$$tpl"; \
+		done; \
+	fi
 
 # generate protobuf api OpenAPI v3 docs for all services
 openapi:
