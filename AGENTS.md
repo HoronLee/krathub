@@ -1,6 +1,6 @@
 # AGENTS.md - micro-forge 项目根目录
 
-<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-27 -->
 
 ## 项目概述
 
@@ -53,6 +53,8 @@ Protobuf API 定义的中心目录，包含所有 proto 文件和生成的代码
 
 **关键文件**：
 - `buf.gen.yaml` - Buf 代码生成配置（Go protobuf 代码）
+- `buf.{name}.go.gen.yaml` - Go 代码生成模板（根 Makefile 自动扫描执行）
+- `buf.{name}.typescript.gen.yaml` - TypeScript 代码生成模板（根 Makefile 自动扫描执行）
 - `buf.work.yaml` - Buf workspace 配置
 - `buf.{service}.openapi.gen.yaml` - 各服务 OpenAPI 生成配置
 
@@ -168,6 +170,10 @@ make compose.dev.ps     # 查看 Air 开发容器状态
 make compose.dev.logs   # 查看 Air 开发容器日志
 make compose.dev.down   # 停止 Air 开发容器
 ```
+
+`make api` 执行规则（自动扫描）：
+- Go：执行 `api/buf.*.go.gen.yaml`；若无匹配文件，回退执行 `api/buf.gen.yaml`
+- TypeScript：执行 `api/buf.*.typescript.gen.yaml`；若无匹配文件，跳过 TS 生成
 
 **服务级命令**（在 `app/{service}/service/` 下执行）：
 ```bash
@@ -324,6 +330,7 @@ if err != nil {
 - 修改 proto 文件后必须运行 `make gen` 重新生成代码
 - 修改 Wire 配置后必须运行 `make wire` 重新生成 `wire_gen.go`
 - 生成的代码不应手动编辑，会在下次生成时被覆盖
+- 新增 API 生成模板请使用命名：`api/buf.<name>.go.gen.yaml`、`api/buf.<name>.typescript.gen.yaml`，以便 `make api` 自动发现
 
 ### 配置管理
 - 每个服务有独立的 `configs/config.yaml`

@@ -34,6 +34,8 @@ micro-forge 是一个基于 **Go Kratos v2** 的微服务示例项目，采用 *
 │   ├── protos/
 │   ├── gen/go/
 │   ├── buf.gen.yaml
+│   ├── buf.*.go.gen.yaml
+│   ├── buf.*.typescript.gen.yaml
 │   └── buf.*.openapi.gen.yaml
 ├── app/
 │   ├── micro-forge/service/         # 主服务（DDD 分层）
@@ -160,6 +162,10 @@ make compose.dev.logs
 make compose.dev.down
 ```
 
+`make api` 的模板执行约定：
+- Go 代码生成自动扫描 `api/buf.*.go.gen.yaml` 并逐个执行；若未找到则回退到 `api/buf.gen.yaml`
+- TypeScript 代码生成自动扫描 `api/buf.*.typescript.gen.yaml` 并逐个执行；若未找到则跳过 TS 生成
+
 ### 服务级命令（示例：`app/micro-forge/service/`）
 
 ```bash
@@ -214,6 +220,7 @@ bun lint
 - 不要手动编辑生成代码（如 `api/gen/go/`、`wire_gen.go`、`openapi.yaml`）
 - 修改 Proto 后务必执行 `make gen`
 - 修改 Wire 配置后务必重新生成（`make wire` 或 `make gen`）
+- 新增 API 代码生成模板时请遵循命名：`api/buf.<name>.go.gen.yaml` 或 `api/buf.<name>.typescript.gen.yaml`，`make api` 会自动发现并执行
 
 ## 🤝 贡献
 

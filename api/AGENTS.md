@@ -1,7 +1,7 @@
 # AGENTS.md - API 定义层
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-27 -->
 
 ## 目的
 
@@ -24,12 +24,14 @@
 
 ### Buf 配置文件
 
-- **buf.gen.yaml** - Buf 代码生成主配置
+- **buf.{name}.go.gen.yaml** - Buf Go 代码生成模板（推荐）
   - 配置 Go protobuf 代码生成插件（protoc-gen-go, protoc-gen-go-grpc）
   - 配置 Kratos 插件（protoc-gen-go-http, protoc-gen-go-errors）
   - 配置参数验证插件（protoc-gen-validate）
   - 管理 `go_package` 路径映射（使用 managed mode）
   - 支持 Python 代码生成（已注释）
+
+- **buf.gen.yaml** - Buf Go 代码生成回退模板（兼容保留）
 
 - **buf.work.yaml** - Buf workspace 配置
   - 定义 workspace 目录列表
@@ -47,7 +49,7 @@
 
 - **生成的代码不提交**：`gen/` 目录已加入 `.gitignore`
 - **所有修改从 proto 开始**：修改 proto 后必须运行 `make gen`
-- **包名映射规则**：在 `buf.gen.yaml` 中统一管理，避免包名冲突
+- **包名映射规则**：在 `buf.{name}.go.gen.yaml` 中统一管理，避免包名冲突
 
 ## 子目录结构
 
@@ -301,8 +303,8 @@ message Article {
 ```
 
 ```bash
-# 2. 在 buf.gen.yaml 中添加 go_package 映射
-# 编辑 api/buf.gen.yaml，在 override 部分添加：
+# 2. 在 buf.<name>.go.gen.yaml 中添加 go_package 映射
+# 编辑 api/buf.<name>.go.gen.yaml，在 override 部分添加：
 ```
 
 ```yaml
@@ -440,15 +442,16 @@ make gen
 ```
 
 该命令会依次执行：
-1. `buf generate --template api/buf.gen.yaml api/protos` - 生成 Go 代码
-2. `buf generate --template api/buf.micro-forge.openapi.gen.yaml api/protos` - 生成 micro-forge OpenAPI
-3. `buf generate --template api/buf.sayhello.openapi.gen.yaml api/protos` - 生成 SayHello OpenAPI
+1. 自动扫描并执行 `api/buf.*.go.gen.yaml`（若无匹配则回退 `api/buf.gen.yaml`）- 生成 Go 代码
+2. 自动扫描并执行 `api/buf.*.typescript.gen.yaml`（若无匹配则跳过）- 生成 TypeScript 代码
+3. `buf generate --template api/buf.micro-forge.openapi.gen.yaml api/protos` - 生成 micro-forge OpenAPI
+4. `buf generate --template api/buf.sayhello.openapi.gen.yaml api/protos` - 生成 SayHello OpenAPI
 
 **仅生成特定服务的代码**：
 
 ```bash
-# 仅生成 Go 代码
-buf generate --template api/buf.gen.yaml api/protos
+# 仅生成 Go 代码（推荐使用具名模板）
+buf generate --template api/buf.micro-forge.go.gen.yaml api/protos
 
 # 仅生成 micro-forge OpenAPI
 buf generate --template api/buf.micro-forge.openapi.gen.yaml api/protos
@@ -491,7 +494,7 @@ make gen
 **错误信息**：`duplicate go_package path`
 
 **解决方案**：
-检查 `api/buf.gen.yaml` 中的 `override` 配置，确保每个服务有唯一的包名：
+检查 `api/buf.<name>.go.gen.yaml` 中的 `override` 配置，确保每个服务有唯一的包名：
 
 ```yaml
 override:
@@ -739,7 +742,7 @@ enum ErrorReason {
 
 添加新服务时需要：
 - [ ] 创建 `protos/{service}/service/v1/{service}.proto`
-- [ ] 在 `buf.gen.yaml` 添加 `go_package` 映射
+- [ ] 在 `buf.<name>.go.gen.yaml` 添加 `go_package` 映射
 - [ ] 创建 `buf.{service}.openapi.gen.yaml`（如需 OpenAPI）
 - [ ] 运行 `make gen` 生成代码
 - [ ] 在服务中实现接口
