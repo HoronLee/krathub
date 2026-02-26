@@ -68,7 +68,7 @@
           "refId": "A"
         }
       ],
-      "title": "Krathub Request Rate",
+      "title": "micro-forge Request Rate",
       "type": "timeseries"
     }
   ],
@@ -76,7 +76,7 @@
   "schemaVersion": 39,
   "style": "dark",
   "tags": [
-    "krathub",
+    "micro-forge",
     "observability"
   ],
   "templating": {
@@ -88,8 +88,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Krathub Overview",
-  "uid": "krathub-overview",
+  "title": "micro-forge Overview",
+  "uid": "micro-forge-overview",
   "version": 1,
   "weekStart": ""
 }

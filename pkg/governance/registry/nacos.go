@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-kratos/kratos/contrib/registry/nacos/v2"
 	"github.com/go-kratos/kratos/v2/registry"
-	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
+	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"

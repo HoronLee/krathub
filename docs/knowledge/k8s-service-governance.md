@@ -9,7 +9,7 @@
 ```mermaid
 graph TD
     subgraph Kubernetes Cluster
-        A[krathub Pod] -- 1. Watch Pods --> KAPI[K8s API Server]
+        A[micro-forge Pod] -- 1. Watch Pods --> KAPI[K8s API Server]
         B[sayhello Pod] -- 2. Patch Labels --> KAPI
         KAPI -- 3. Push Events --> A
         A -- 4. gRPC Call (Pod IP) --> B

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: krathub
+  name: micro-forge
   labels:
-    app.kubernetes.io/name: krathub
-    app.kubernetes.io/part-of: krathub
+    app.kubernetes.io/name: micro-forge
+    app.kubernetes.io/part-of: micro-forge

@@ -1,5 +1,5 @@
 # ============================================================================
-# Makefile for Krathub Project
+# Makefile for micro-forge Project
 # ============================================================================
 # Based on go-wind-admin project structure
 # ============================================================================
@@ -51,7 +51,7 @@ RESET := \033[0m
 COMPOSE := docker compose
 COMPOSE_FILES := -f docker-compose.yaml
 COMPOSE_DEV_FILES := -f docker-compose.yaml -f docker-compose.dev.yaml
-MICROSERVICES := krathub sayhello
+MICROSERVICES := micro-forge sayhello
 INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 
 # ============================================================================
@@ -139,7 +139,7 @@ ent:
 	@echo "$(GREEN)✓ Ent code generated$(RESET)"
 
 # generate all code
-gen: wire api openapi ent
+gen: api openapi wire ent
 	@echo "$(GREEN)✓ All code generated$(RESET)"
 
 # generate protobuf api code (go + ts)
@@ -154,7 +154,7 @@ api-go:
 # generate protobuf api typescript code for web
 api-ts:
 	@echo "$(CYAN)Generating protobuf TypeScript code ...$(RESET)"
-	@cd $(API_DIR) && buf generate --template buf.krathub.typescript.gen.yaml
+	@cd $(API_DIR) && buf generate --template buf.micro-forge.typescript.gen.yaml
 
 # generate protobuf api OpenAPI v3 docs for all services
 openapi:
@@ -217,8 +217,8 @@ compose.dev.build:
 # build production images for microservices
 compose.build:
 	@echo "$(CYAN)Build production images: $(MICROSERVICES)$(RESET)"
-	@docker build -f app/krathub/service/Dockerfile -t krathub-micro/krathub-service:latest .
-	@docker build -f app/sayhello/service/Dockerfile -t krathub-micro/sayhello-service:latest .
+	@docker build -f app/micro-forge/service/Dockerfile -t micro-forge-micro/micro-forge-service:latest .
+	@docker build -f app/sayhello/service/Dockerfile -t micro-forge-micro/sayhello-service:latest .
 	@echo "$(GREEN)✓ Production images built$(RESET)"
 
 # start production compose stack (infra + microservices)
@@ -275,7 +275,7 @@ clean:
 # show help
 help:
 	@echo ""
-	@echo "$(CYAN)Krathub Development Environment$(RESET)"
+	@echo "$(CYAN)micro-forge Development Environment$(RESET)"
 	@echo "$(CYAN)=================================$(RESET)"
 	@echo ""
 	@echo "Usage:"

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/horonlee/krathub/pkg/governance/telemetry"
-	"github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
+	"github.com/horonlee/micro-forge/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

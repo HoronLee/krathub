@@ -1,6 +1,6 @@
 # SayHello Service
 
-A minimal example microservice for the Krathub project, demonstrating a simple gRPC service implementation.
+A minimal example microservice for the micro-forge project, demonstrating a simple gRPC service implementation.
 
 ## Features
 

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
+	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 

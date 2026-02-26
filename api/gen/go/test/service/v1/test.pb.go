@@ -287,8 +287,8 @@ const file_test_service_v1_test_proto_rawDesc = "" +
 	"\vTestService\x12F\n" +
 	"\x05Hello\x12\x1d.test.service.v1.HelloRequest\x1a\x1e.test.service.v1.HelloResponse\x12C\n" +
 	"\x04Test\x12\x1c.test.service.v1.TestRequest\x1a\x1d.test.service.v1.TestResponse\x12X\n" +
-	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponseB\xbd\x01\n" +
-	"\x13com.test.service.v1B\tTestProtoP\x01Z=github.com/horonlee/krathub/api/gen/go/test/service/v1;testpb\xa2\x02\x03TSX\xaa\x02\x0fTest.Service.V1\xca\x02\x0fTest\\Service\\V1\xe2\x02\x1bTest\\Service\\V1\\GPBMetadata\xea\x02\x11Test::Service::V1b\x06proto3"
+	"\vPrivateTest\x12#.test.service.v1.PrivateTestRequest\x1a$.test.service.v1.PrivateTestResponseB\xc1\x01\n" +
+	"\x13com.test.service.v1B\tTestProtoP\x01ZAgithub.com/horonlee/micro-forge/api/gen/go/test/service/v1;testpb\xa2\x02\x03TSX\xaa\x02\x0fTest.Service.V1\xca\x02\x0fTest\\Service\\V1\xe2\x02\x1bTest\\Service\\V1\\GPBMetadata\xea\x02\x11Test::Service::V1b\x06proto3"
 
 var (
 	file_test_service_v1_test_proto_rawDescOnce sync.Once

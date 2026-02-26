@@ -13,7 +13,7 @@
 
 ### 1. 从配置初始化
 ```go
-import "github.com/horonlee/krathub/pkg/redis"
+import "github.com/horonlee/micro-forge/pkg/redis"
 
 cfg := &redis.Config{Addr: "localhost:6379", DB: 0}
 client, cleanup, err := redis.NewClient(cfg, logger)

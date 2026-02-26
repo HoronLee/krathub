@@ -3,11 +3,11 @@ package server
 import (
 	"crypto/tls"
 
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
-	"github.com/horonlee/krathub/app/sayhello/service/internal/service"
-	"github.com/horonlee/krathub/pkg/governance/telemetry"
-	"github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	sayhellov1 "github.com/horonlee/micro-forge/api/gen/go/sayhello/service/v1"
+	"github.com/horonlee/micro-forge/app/sayhello/service/internal/service"
+	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
+	"github.com/horonlee/micro-forge/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/middleware"

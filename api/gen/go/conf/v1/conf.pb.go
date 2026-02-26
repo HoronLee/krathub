@@ -2126,8 +2126,8 @@ const file_conf_v1_conf_proto_rawDesc = "" +
 	"\aMetrics\x12\x16\n" +
 	"\x06enable\x18\x01 \x01(\bR\x06enable\x12\x1d\n" +
 	"\n" +
-	"meter_name\x18\x02 \x01(\tR\tmeterNameB\x8a\x01\n" +
-	"\vcom.conf.v1B\tConfProtoP\x01Z3github.com/horonlee/krathub/api/gen/go/conf/v1;conf\xa2\x02\x03CXX\xaa\x02\aConf.V1\xca\x02\aConf\\V1\xe2\x02\x13Conf\\V1\\GPBMetadata\xea\x02\bConf::V1b\x06proto3"
+	"meter_name\x18\x02 \x01(\tR\tmeterNameB\x8e\x01\n" +
+	"\vcom.conf.v1B\tConfProtoP\x01Z7github.com/horonlee/micro-forge/api/gen/go/conf/v1;conf\xa2\x02\x03CXX\xaa\x02\aConf.V1\xca\x02\aConf\\V1\xe2\x02\x13Conf\\V1\\GPBMetadata\xea\x02\bConf::V1b\x06proto3"
 
 var (
 	file_conf_v1_conf_proto_rawDescOnce sync.Once

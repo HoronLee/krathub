@@ -11,7 +11,7 @@ import (
 func TestGormLoggerFrom_ZapLogger(t *testing.T) {
 	base := NewLogger(&Config{Env: "test"})
 
-	gormLog := GormLoggerFrom(base, "gorm/test/krathub-service")
+	gormLog := GormLoggerFrom(base, "gorm/test/micro-forge-service")
 	if gormLog == nil {
 		t.Fatal("expected non-nil gorm logger")
 	}
@@ -24,7 +24,7 @@ func TestGormLoggerFrom_ZapLogger(t *testing.T) {
 func TestGormLoggerFrom_Fallback(t *testing.T) {
 	std := kratoslog.NewStdLogger(os.Stdout)
 
-	gormLog := GormLoggerFrom(std, "gorm/test/krathub-service")
+	gormLog := GormLoggerFrom(std, "gorm/test/micro-forge-service")
 	if gormLog == nil {
 		t.Fatal("expected non-nil fallback gorm logger")
 	}

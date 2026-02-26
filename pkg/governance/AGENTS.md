@@ -20,7 +20,7 @@
 
 ### Etcd 注册中心初始化
 ```go
-import "github.com/horonlee/krathub/pkg/governance/registry"
+import "github.com/horonlee/micro-forge/pkg/governance/registry"
 
 reg, err := registry.NewEtcdRegistry(etcdConfig)
 if err != nil {

@@ -5,15 +5,15 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
-  filelog/krathub:
+  filelog/micro-forge:
     include:
-      - /var/log/krathub/krathub.service.log
+      - /var/log/micro-forge/micro-forge.service.log
     start_at: end
     include_file_path: true
     operators:
       - type: json_parser
     resource:
-      service.name: krathub.service
+      service.name: micro-forge.service
   filelog/sayhello:
     include:
       - /var/log/sayhello/sayhello.service.log
@@ -54,6 +54,6 @@ service:
       processors: [batch]
       exporters: [otlp/jaeger, debug]
     logs:
-      receivers: [filelog/krathub, filelog/sayhello]
+      receivers: [filelog/micro-forge, filelog/sayhello]
       processors: [attributes/log_hints, batch]
       exporters: [otlphttp/loki, debug]

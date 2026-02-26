@@ -14,10 +14,10 @@ spec:
       labels:
         app: sayhello
     spec:
-      serviceAccountName: krathub-service-account
+      serviceAccountName: micro-forge-service-account
       containers:
         - name: sayhello
-          image: krathub-micro/sayhello-service:latest
+          image: micro-forge-micro/sayhello-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: grpc

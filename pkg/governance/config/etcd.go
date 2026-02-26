@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/config"
-	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
+	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 

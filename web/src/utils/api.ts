@@ -1,11 +1,11 @@
 import {
-  createKrathubClients,
+  createmicroforgeClients,
   type authservicev1_LoginByEmailPasswordResponse,
   type authservicev1_SignupByEmailResponse,
   type userservicev1_CurrentUserInfoResponse,
 } from "@/service/request/clients";
 
-const publicClients = createKrathubClients();
+const publicClients = createmicroforgeClients();
 
 export const api = {
   login(
@@ -29,8 +29,10 @@ export const api = {
     });
   },
 
-  getCurrentUser(token: string): Promise<userservicev1_CurrentUserInfoResponse> {
-    const clients = createKrathubClients({ getAccessToken: () => token });
+  getCurrentUser(
+    token: string,
+  ): Promise<userservicev1_CurrentUserInfoResponse> {
+    const clients = createmicroforgeClients({ getAccessToken: () => token });
     return clients.user.CurrentUserInfo({});
   },
 };

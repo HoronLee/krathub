@@ -1,7 +1,7 @@
 services:
   consul:
     image: consul:1.15.4
-    container_name: krathub_consul
+    container_name: micro-forge_consul
     restart: unless-stopped
     command:
       - agent
@@ -20,20 +20,20 @@ services:
       - "8500:8500"
       - "8600:8600/udp"
     volumes:
-      - krathub-consul-data:/consul/data
+      - micro-forge-consul-data:/consul/data
     networks:
-      - krathub-network
+      - micro-forge-network
 
-  krathub:
-    image: krathub-micro/krathub-service:latest
-    container_name: krathub
+  micro-forge:
+    image: micro-forge-micro/micro-forge-service:latest
+    container_name: micro-forge
     restart: unless-stopped
-    command: ["/app/krathub", "-conf", "/app/configs/config-docker.yaml"]
+    command: ["/app/micro-forge", "-conf", "/app/configs/config-docker.yaml"]
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - ./app/krathub/service/configs/config-docker.yaml:/app/configs/config-docker.yaml:ro
-      - krathub-logs:/app/logs
+      - ./app/micro-forge/service/configs/config-docker.yaml:/app/configs/config-docker.yaml:ro
+      - micro-forge-logs:/app/logs
     ports:
       - "8000:8000"
       - "8001:8001"
@@ -47,10 +47,10 @@ services:
       otel-collector:
         condition: service_started
     networks:
-      - krathub-network
+      - micro-forge-network
 
   sayhello:
-    image: krathub-micro/sayhello-service:latest
+    image: micro-forge-micro/sayhello-service:latest
     container_name: sayhello
     restart: unless-stopped
     command: ["/app/sayhello", "-conf", "/app/configs/config-docker.yaml"]
@@ -65,11 +65,11 @@ services:
       otel-collector:
         condition: service_started
     networks:
-      - krathub-network
+      - micro-forge-network
 
   jaeger:
     image: jaegertracing/all-in-one:latest
-    container_name: krathub_jaeger
+    container_name: micro-forge_jaeger
     restart: unless-stopped
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
@@ -77,17 +77,17 @@ services:
       - "16686:16686"
       - "14269:14269"
     networks:
-      - krathub-network
+      - micro-forge-network
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
-    container_name: krathub_otel_collector
+    container_name: micro-forge_otel_collector
     user: "0:0"
     restart: unless-stopped
     command: ["--config=/etc/otelcol/config.yaml"]
     volumes:
       - ./manifests/otel/otel-collector.yaml:/etc/otelcol/config.yaml:ro
-      - krathub-logs:/var/log/krathub:ro
+      - micro-forge-logs:/var/log/micro-forge:ro
       - sayhello-logs:/var/log/sayhello:ro
     ports:
       - "4317:4317"
@@ -96,24 +96,24 @@ services:
       - jaeger
       - loki
     networks:
-      - krathub-network
+      - micro-forge-network
 
   loki:
     image: grafana/loki:latest
-    container_name: krathub_loki
+    container_name: micro-forge_loki
     restart: unless-stopped
     command: ["-config.file=/etc/loki/config.yaml"]
     ports:
       - "3100:3100"
     volumes:
       - ./manifests/loki/loki.yaml:/etc/loki/config.yaml:ro
-      - krathub-loki-data:/loki
+      - micro-forge-loki-data:/loki
     networks:
-      - krathub-network
+      - micro-forge-network
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: krathub_prometheus
+    container_name: micro-forge_prometheus
     restart: unless-stopped
     command:
       - --config.file=/etc/prometheus/prometheus.yml
@@ -122,13 +122,13 @@ services:
       - "9090:9090"
     volumes:
       - ./manifests/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - krathub-prometheus-data:/prometheus
+      - micro-forge-prometheus-data:/prometheus
     networks:
-      - krathub-network
+      - micro-forge-network
 
   grafana:
     image: grafana/grafana:latest
-    container_name: krathub_grafana
+    container_name: micro-forge_grafana
     restart: unless-stopped
     environment:
       GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:-admin}"
@@ -139,62 +139,62 @@ services:
     volumes:
       - ./manifests/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./manifests/grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - krathub-grafana-data:/var/lib/grafana
+      - micro-forge-grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
       - loki
       - jaeger
     networks:
-      - krathub-network
+      - micro-forge-network
 
   db:
     image: postgres:18-alpine
-    container_name: krathub_db
+    container_name: micro-forge_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: krathub
-      POSTGRES_USER: krathub
-      POSTGRES_PASSWORD: krathub
+      POSTGRES_DB: micro-forge
+      POSTGRES_USER: micro-forge
+      POSTGRES_PASSWORD: micro-forge
       TZ: Asia/Shanghai
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U krathub -d krathub"]
+      test: ["CMD-SHELL", "pg_isready -U micro-forge -d micro-forge"]
       interval: 10s
       timeout: 5s
       retries: 5
     ports:
       - "5432:5432"
     volumes:
-      - krathub-db-data:/var/lib/postgresql/data
-      - ./app/krathub/service/manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - micro-forge-db-data:/var/lib/postgresql/data
+      - ./app/micro-forge/service/manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
-      - krathub-network
+      - micro-forge-network
 
   redis:
     image: redis:7-alpine
-    container_name: krathub_redis
+    container_name: micro-forge_redis
     restart: unless-stopped
-    command: redis-server --requirepass krathub_redis_pwd --appendonly yes
+    command: redis-server --requirepass micro-forge_redis_pwd --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "krathub_redis_pwd", "ping"]
+      test: ["CMD", "redis-cli", "-a", "micro-forge_redis_pwd", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
     ports:
       - "6379:6379"
     volumes:
-      - krathub-redis-data:/data
+      - micro-forge-redis-data:/data
     networks:
-      - krathub-network
+      - micro-forge-network
 
 volumes:
-  krathub-consul-data:
-  krathub-db-data:
-  krathub-redis-data:
-  krathub-loki-data:
-  krathub-prometheus-data:
-  krathub-grafana-data:
-  krathub-logs:
+  micro-forge-consul-data:
+  micro-forge-db-data:
+  micro-forge-redis-data:
+  micro-forge-loki-data:
+  micro-forge-prometheus-data:
+  micro-forge-grafana-data:
+  micro-forge-logs:
   sayhello-logs:
 
 networks:
-  krathub-network:
+  micro-forge-network:

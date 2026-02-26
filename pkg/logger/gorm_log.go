@@ -3,7 +3,7 @@ package logger
 import (
 	"context"
 	"errors"
-	"github.com/horonlee/krathub/pkg/helpers"
+	"github.com/horonlee/micro-forge/pkg/helpers"
 	"path/filepath"
 	"runtime"
 	"strings"

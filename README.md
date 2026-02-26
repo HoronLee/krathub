@@ -1,8 +1,8 @@
-# Krathub
+# micro-forge
 
 简体中文
 
-Krathub 是一个基于 **Go Kratos v2** 的微服务示例项目，采用 **DDD 分层** 与 **契约优先（Proto First）** 的开发方式，覆盖从 API 定义、代码生成、服务开发到可观测性与容器化部署的完整链路。
+micro-forge 是一个基于 **Go Kratos v2** 的微服务示例项目，采用 **DDD 分层** 与 **契约优先（Proto First）** 的开发方式，覆盖从 API 定义、代码生成、服务开发到可观测性与容器化部署的完整链路。
 
 ## ✨ 核心能力
 
@@ -36,7 +36,7 @@ Krathub 是一个基于 **Go Kratos v2** 的微服务示例项目，采用 **DDD
 │   ├── buf.gen.yaml
 │   └── buf.*.openapi.gen.yaml
 ├── app/
-│   ├── krathub/service/         # 主服务（DDD 分层）
+│   ├── micro-forge/service/         # 主服务（DDD 分层）
 │   └── sayhello/service/        # 独立示例服务
 ├── pkg/                         # 项目共享库
 ├── web/                         # Vue 3 前端项目（根目录）
@@ -65,14 +65,14 @@ make init
 ### 2) 克隆与基础配置
 
 ```bash
-git clone https://github.com/horonlee/krathub.git
-cd krathub
+git clone https://github.com/horonlee/micro-forge.git
+cd micro-forge
 
 # 复制示例配置（主服务）
-cp api/protos/conf/v1/config-example.yaml app/krathub/service/configs/config.yaml
+cp api/protos/conf/v1/config-example.yaml app/micro-forge/service/configs/config.yaml
 ```
 
-按需修改 `app/krathub/service/configs/config.yaml` 中的数据库、Redis、注册中心等配置。
+按需修改 `app/micro-forge/service/configs/config.yaml` 中的数据库、Redis、注册中心等配置。
 
 ### 3) 生成代码
 
@@ -87,7 +87,7 @@ make gen
 **方式 A：直接运行主服务**
 
 ```bash
-cd app/krathub/service
+cd app/micro-forge/service
 make run
 ```
 
@@ -160,7 +160,7 @@ make compose.dev.logs
 make compose.dev.down
 ```
 
-### 服务级命令（示例：`app/krathub/service/`）
+### 服务级命令（示例：`app/micro-forge/service/`）
 
 ```bash
 make run
@@ -188,7 +188,7 @@ bun lint
 
 ## 📦 配置说明
 
-- 主服务配置：`app/krathub/service/configs/config.yaml`
+- 主服务配置：`app/micro-forge/service/configs/config.yaml`
 - 示例配置：`api/protos/conf/v1/config-example.yaml`
 - 支持环境变量覆盖默认值（详见示例配置中的 `${VAR:default}` 写法）
 

@@ -32,7 +32,7 @@ Thumbs.db
 *.crt
 *.key
 *.log
-app/krathub/service/configs/config.yaml
+app/micro-forge/service/configs/config.yaml
 bin/
 logs/
 cache/

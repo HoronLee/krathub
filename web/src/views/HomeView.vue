@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 py-12 px-4">
     <div class="max-w-md mx-auto">
-      <h1 class="text-3xl font-bold text-center mb-8">欢迎来到 KratHub</h1>
+      <h1 class="text-3xl font-bold text-center mb-8">欢迎来到 micro-forge</h1>
 
       <div
         v-if="!authStore.isAuthenticated()"

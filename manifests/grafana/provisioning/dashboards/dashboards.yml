@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: krathub-observability
+  - name: micro-forge-observability
     orgId: 1
-    folder: Krathub
+    folder: micro-forge
     type: file
     disableDeletion: false
     editable: true

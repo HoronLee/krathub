@@ -1,15 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: krathub
+namespace: micro-forge
 
 resources:
   - namespace.yaml
   - rbac.yaml
-  - ../../app/krathub/service/deployment/kubernetes
+  - ../../app/micro-forge/service/deployment/kubernetes
   - ../../app/sayhello/service/deployment/kubernetes
 
 labels:
   - pairs:
-      app.kubernetes.io/part-of: krathub
+      app.kubernetes.io/part-of: micro-forge
     includeSelectors: false

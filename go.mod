@@ -1,4 +1,4 @@
-module github.com/horonlee/krathub
+module github.com/horonlee/micro-forge
 
 go 1.26.0
 

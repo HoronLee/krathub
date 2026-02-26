@@ -17,25 +17,25 @@ managed:
 
   override:
     - file_option: go_package_prefix
-      value: github.com/horonlee/krathub/api/gen/go
+      value: github.com/horonlee/micro-forge/api/gen/go
 
     # per-directory go_package options
     # value第一部分是生成代码的包路径，第二部分是go包名。
     - file_option: go_package
       path: auth/service/v1
-      value: github.com/horonlee/krathub/api/gen/go/auth/service/v1;authpb
+      value: github.com/horonlee/micro-forge/api/gen/go/auth/service/v1;authpb
     - file_option: go_package
       path: user/service/v1
-      value: github.com/horonlee/krathub/api/gen/go/user/service/v1;userpb
+      value: github.com/horonlee/micro-forge/api/gen/go/user/service/v1;userpb
     - file_option: go_package
       path: test/service/v1
-      value: github.com/horonlee/krathub/api/gen/go/test/service/v1;testpb
+      value: github.com/horonlee/micro-forge/api/gen/go/test/service/v1;testpb
     - file_option: go_package
-      path: krathub/service/v1
-      value: github.com/horonlee/krathub/api/gen/go/krathub/service/v1;krathubpb
+      path: micro-forge/service/v1
+      value: github.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1;microforgepb
     - file_option: go_package
       path: sayhello/service/v1
-      value: github.com/horonlee/krathub/api/gen/go/sayhello/service/v1;sayhellopb
+      value: github.com/horonlee/micro-forge/api/gen/go/sayhello/service/v1;sayhellopb
 
 plugins:
   # generate go struct code

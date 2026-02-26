@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/pkg/logger"
+	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	"github.com/horonlee/micro-forge/pkg/logger"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -82,7 +82,7 @@ func NewClient(cfg *Config, l logger.Logger) (*Client, func(), error) {
 		writeTimeout = DefaultWriteTimeout
 	}
 
-	baseLogger := logger.With(l, logger.WithModule("redis/pkg/krathub-service"))
+	baseLogger := logger.With(l, logger.WithModule("redis/pkg/micro-forge-service"))
 	setupLog := logger.NewHelper(baseLogger, logger.WithField("operation", "NewClient"))
 	cleanupLog := logger.NewHelper(baseLogger, logger.WithField("operation", "cleanup"))
 

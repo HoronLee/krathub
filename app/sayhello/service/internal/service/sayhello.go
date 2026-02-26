@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
+	sayhellov1 "github.com/horonlee/micro-forge/api/gen/go/sayhello/service/v1"
 )
 
 type SayHelloService struct {

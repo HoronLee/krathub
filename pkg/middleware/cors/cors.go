@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
+	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 )
 
 // options 包含 CORS 中间件的内部配置选项

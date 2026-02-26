@@ -3,21 +3,21 @@ import {
   createUserServiceClient,
   type AuthService,
   type UserService,
-} from "../gen/krathub/service/v1";
+} from "../gen/micro_forge/service/v1";
 
 import {
   createRequestHandler,
   type RequestHandlerOptions,
 } from "./requestHandler";
 
-export type KrathubClients = {
+export type microforgeClients = {
   auth: AuthService;
   user: UserService;
 };
 
-export function createKrathubClients(
+export function createmicroforgeClients(
   options: RequestHandlerOptions = {},
-): KrathubClients {
+): microforgeClients {
   const handler = createRequestHandler(options);
   return {
     auth: createAuthServiceClient(handler),
@@ -25,4 +25,4 @@ export function createKrathubClients(
   };
 }
 
-export * from "../gen/krathub/service/v1";
+export * from "../gen/micro_forge/service/v1";

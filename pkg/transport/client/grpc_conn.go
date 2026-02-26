@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	"github.com/horonlee/micro-forge/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/circuitbreaker"

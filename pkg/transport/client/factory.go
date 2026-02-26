@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	"github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	"github.com/horonlee/micro-forge/pkg/logger"
 )
 
 type client struct {
@@ -26,7 +26,7 @@ func NewClient(
 		dataCfg:   dataCfg,
 		traceCfg:  traceCfg,
 		discovery: discovery,
-		logger:    logger.With(l, logger.WithModule("client/client/krathub-service")),
+		logger:    logger.With(l, logger.WithModule("client/client/micro-forge-service")),
 	}, nil
 }
 

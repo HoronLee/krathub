@@ -14,7 +14,7 @@ managed:
 
   override:
     - file_option: go_package_prefix
-      value: github.com/horonlee/krathub/api/gen/go
+      value: github.com/horonlee/micro-forge/api/gen/go
 
 inputs:
   - directory: protos

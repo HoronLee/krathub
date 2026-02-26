@@ -607,8 +607,8 @@ const file_auth_service_v1_auth_proto_rawDesc = "" +
 	"\rSignupByEmail\x12%.auth.service.v1.SignupByEmailRequest\x1a&.auth.service.v1.SignupByEmailResponse\x12s\n" +
 	"\x14LoginByEmailPassword\x12,.auth.service.v1.LoginByEmailPasswordRequest\x1a-.auth.service.v1.LoginByEmailPasswordResponse\x12[\n" +
 	"\fRefreshToken\x12$.auth.service.v1.RefreshTokenRequest\x1a%.auth.service.v1.RefreshTokenResponse\x12I\n" +
-	"\x06Logout\x12\x1e.auth.service.v1.LogoutRequest\x1a\x1f.auth.service.v1.LogoutResponseB\xbd\x01\n" +
-	"\x13com.auth.service.v1B\tAuthProtoP\x01Z=github.com/horonlee/krathub/api/gen/go/auth/service/v1;authpb\xa2\x02\x03ASX\xaa\x02\x0fAuth.Service.V1\xca\x02\x0fAuth\\Service\\V1\xe2\x02\x1bAuth\\Service\\V1\\GPBMetadata\xea\x02\x11Auth::Service::V1b\x06proto3"
+	"\x06Logout\x12\x1e.auth.service.v1.LogoutRequest\x1a\x1f.auth.service.v1.LogoutResponseB\xc1\x01\n" +
+	"\x13com.auth.service.v1B\tAuthProtoP\x01ZAgithub.com/horonlee/micro-forge/api/gen/go/auth/service/v1;authpb\xa2\x02\x03ASX\xaa\x02\x0fAuth.Service.V1\xca\x02\x0fAuth\\Service\\V1\xe2\x02\x1bAuth\\Service\\V1\\GPBMetadata\xea\x02\x11Auth::Service::V1b\x06proto3"
 
 var (
 	file_auth_service_v1_auth_proto_rawDescOnce sync.Once

@@ -1,17 +1,17 @@
 services:
-  krathub:
+  micro-forge:
     build:
       context: .
       dockerfile: Dockerfile.air
-    working_dir: /workspace/app/krathub/service
+    working_dir: /workspace/app/micro-forge/service
     command: ["air", "-c", ".air.toml"]
     environment:
       GOMODCACHE: /go/pkg/mod
       GOCACHE: /go/cache
     volumes:
       - ./:/workspace
-      - krathub_go_mod_cache:/go/pkg/mod
-      - krathub_go_build_cache:/go/cache
+      - micro-forge_go_mod_cache:/go/pkg/mod
+      - micro-forge_go_build_cache:/go/cache
 
   sayhello:
     build:
@@ -24,9 +24,9 @@ services:
       GOCACHE: /go/cache
     volumes:
       - ./:/workspace
-      - krathub_go_mod_cache:/go/pkg/mod
-      - krathub_go_build_cache:/go/cache
+      - micro-forge_go_mod_cache:/go/pkg/mod
+      - micro-forge_go_build_cache:/go/cache
 
 volumes:
-  krathub_go_mod_cache:
-  krathub_go_build_cache:
+  micro-forge_go_mod_cache:
+  micro-forge_go_build_cache:
