@@ -97,7 +97,7 @@ func GetGRPCConn(ctx context.Context, c Client, serviceName string) (gogrpc.Clie
 // createGrpcConnection 创建gRPC连接的内部函数
 func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf.Data,
 	traceCfg *conf.Trace, discovery registry.Discovery, logger log.Logger) (gogrpc.ClientConnInterface, error) {
-	setupLogger := pkglogger.With(logger, pkglogger.WithField("operation", "createGrpcConnection"))
+	setupLogger := log.NewHelper(pkglogger.With(logger, pkglogger.WithField("operation", "createGrpcConnection")))
 
 	timeout := 5 * time.Second
 	defaultEndpoint := fmt.Sprintf("discovery:///%s", serviceName)
@@ -115,8 +115,7 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 			}
 			if configuredEndpoint := strings.TrimSpace(c.GetEndpoint()); configuredEndpoint != "" {
 				endpoint = configuredEndpoint
-				setupLogger.Log(log.LevelInfo, "msg", "using configured endpoint",
-					"service_name", serviceName, "endpoint", endpoint)
+				setupLogger.Infof("using configured endpoint: service_name=%s endpoint=%s", serviceName, endpoint)
 			}
 			break
 		}
@@ -144,13 +143,11 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 	conn, err := grpc.DialInsecure(ctx, opts...)
 
 	if err != nil {
-		setupLogger.Log(log.LevelError, "msg", "failed to create grpc client",
-			"service_name", serviceName, "error", err)
+		setupLogger.Errorf("failed to create grpc client: service_name=%s error=%v", serviceName, err)
 		return nil, fmt.Errorf("failed to create grpc client for service %s: %w", serviceName, err)
 	}
 
-	setupLogger.Log(log.LevelInfo, "msg", "successfully created grpc client",
-		"service_name", serviceName, "endpoint", endpoint, "timeout", timeout.String())
+	setupLogger.Infof("successfully created grpc client: service_name=%s endpoint=%s timeout=%s", serviceName, endpoint, timeout.String())
 
 	return conn, nil
 }

@@ -21,6 +21,7 @@ import (
 )
 
 func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.Metrics, logger log.Logger, hello *service.SayHelloService) *grpc.Server {
+	helper := log.NewHelper(logger)
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
@@ -56,7 +57,7 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.
 	if c != nil && c.Grpc != nil && c.Grpc.Tls != nil && c.Grpc.Tls.Enable {
 		cert, err := tls.LoadX509KeyPair(c.Grpc.Tls.CertPath, c.Grpc.Tls.KeyPath)
 		if err != nil {
-			logger.Log(log.LevelFatal, "msg", "gRPC Server TLS: Failed to load key pair", "error", err)
+			helper.Fatalf("gRPC Server TLS: Failed to load key pair: %v", err)
 		}
 		creds := credentials.NewTLS(&tls.Config{Certificates: []tls.Certificate{cert}})
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))

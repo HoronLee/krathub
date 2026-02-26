@@ -17,10 +17,10 @@ import (
 	"github.com/horonlee/krathub/app/krathub/service/internal/consts"
 	mwinter "github.com/horonlee/krathub/app/krathub/service/internal/server/middleware"
 	"github.com/horonlee/krathub/app/krathub/service/internal/service"
+	"github.com/horonlee/krathub/pkg/governance/telemetry"
 	logpkg "github.com/horonlee/krathub/pkg/logger"
 	mwpkg "github.com/horonlee/krathub/pkg/middleware"
 	"github.com/horonlee/krathub/pkg/middleware/cors"
-	"github.com/horonlee/krathub/pkg/governance/telemetry"
 )
 
 // HTTPMiddleware 用于 Wire 注入的中间件切片包装类型
@@ -97,6 +97,7 @@ func NewHTTPServer(
 	test *service.TestService,
 ) *http.Server {
 	l := logpkg.With(logger, logpkg.WithModule("http/server/krathub-service"))
+	helper := log.NewHelper(l)
 
 	var opts = []http.ServerOption{
 		http.Middleware(middlewares...),
@@ -114,16 +115,16 @@ func NewHTTPServer(
 		}
 		if cors.IsEnabled(c.Http.Cors) {
 			opts = append(opts, http.Filter(cors.Middleware(c.Http.Cors)))
-			l.Log(log.LevelInfo, "msg", "CORS middleware enabled", "allowed_origins", cors.GetAllowedOrigins(c.Http.Cors))
+			helper.Infof("CORS middleware enabled: allowed_origins=%v", cors.GetAllowedOrigins(c.Http.Cors))
 		}
 	}
 	if c != nil && c.Http != nil && c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
-			l.Log(log.LevelFatal, "msg", "Server TLS: can't find TLS key pairs")
+			helper.Fatal("Server TLS: can't find TLS key pairs")
 		}
 		cert, err := tls.LoadX509KeyPair(c.Http.Tls.CertPath, c.Http.Tls.KeyPath)
 		if err != nil {
-			l.Log(log.LevelFatal, "msg", "Server TLS: Failed to load key pair", "error", err)
+			helper.Fatalf("Server TLS: Failed to load key pair: %v", err)
 		}
 		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}

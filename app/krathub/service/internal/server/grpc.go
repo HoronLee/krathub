@@ -4,8 +4,8 @@ import (
 	"crypto/tls"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	logpkg "github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/governance/telemetry"
+	logpkg "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -62,6 +62,7 @@ func NewGRPCServer(
 	logger log.Logger,
 ) *grpc.Server {
 	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/krathub-service"))
+	helper := log.NewHelper(grpcLogger)
 
 	opts := []grpc.ServerOption{
 		grpc.Middleware(middlewares...),
@@ -81,7 +82,7 @@ func NewGRPCServer(
 	if c != nil && c.Grpc != nil && c.Grpc.Tls != nil && c.Grpc.Tls.Enable {
 		cert, err := tls.LoadX509KeyPair(c.Grpc.Tls.CertPath, c.Grpc.Tls.KeyPath)
 		if err != nil {
-			grpcLogger.Log(log.LevelFatal, "msg", "gRPC Server TLS: Failed to load key pair", "error", err)
+			helper.Fatalf("gRPC Server TLS: Failed to load key pair: %v", err)
 		}
 		creds := credentials.NewTLS(&tls.Config{Certificates: []tls.Certificate{cert}})
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))
