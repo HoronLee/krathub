@@ -9,9 +9,7 @@ import (
 	userpb "github.com/horonlee/krathub/api/gen/go/user/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	"github.com/horonlee/krathub/pkg/jwt"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
-
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/horonlee/krathub/pkg/logger"
 )
 
 type UserRepo interface {
@@ -24,15 +22,15 @@ type UserRepo interface {
 
 type UserUsecase struct {
 	repo     UserRepo
-	log      *log.Helper
+	log      *logger.Helper
 	cfg      *conf.App
 	authRepo AuthRepo // 改为依赖 AuthRepo
 }
 
-func NewUserUsecase(repo UserRepo, logger log.Logger, cfg *conf.App, authRepo AuthRepo) *UserUsecase {
+func NewUserUsecase(repo UserRepo, l logger.Logger, cfg *conf.App, authRepo AuthRepo) *UserUsecase {
 	uc := &UserUsecase{
 		repo:     repo,
-		log:      log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("user/biz/krathub-service"))),
+		log:      logger.NewHelper(l, logger.WithModule("user/biz/krathub-service")),
 		cfg:      cfg,
 		authRepo: authRepo,
 	}

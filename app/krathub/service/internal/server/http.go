@@ -3,7 +3,6 @@ package server
 import (
 	"crypto/tls"
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -30,7 +29,7 @@ type HTTPMiddleware []middleware.Middleware
 func NewHTTPMiddleware(
 	trace *conf.Trace,
 	m *telemetry.Metrics,
-	logger log.Logger,
+	logger logpkg.Logger,
 	authJWT mwinter.AuthJWT,
 ) HTTPMiddleware {
 	httpLogger := logpkg.With(logger, logpkg.WithModule("http/server/krathub-service"))
@@ -91,13 +90,13 @@ func NewHTTPServer(
 	c *conf.Server,
 	middlewares HTTPMiddleware,
 	m *telemetry.Metrics,
-	logger log.Logger,
+	logger logpkg.Logger,
 	auth *service.AuthService,
 	user *service.UserService,
 	test *service.TestService,
 ) *http.Server {
 	l := logpkg.With(logger, logpkg.WithModule("http/server/krathub-service"))
-	helper := log.NewHelper(l)
+	helper := logpkg.NewHelper(l)
 
 	var opts = []http.ServerOption{
 		http.Middleware(middlewares...),

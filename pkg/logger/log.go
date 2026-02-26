@@ -14,6 +14,9 @@ import (
 
 var _ log.Logger = (*ZapLogger)(nil)
 
+type Logger = log.Logger
+type Helper = log.Helper
+
 type ZapLogger struct {
 	log  *zap.Logger
 	Sync func() error
@@ -135,6 +138,13 @@ func NewLogger(c *Config) log.Logger {
 
 	zapLogger := zap.New(core, opts...)
 	return &ZapLogger{log: zapLogger, Sync: zapLogger.Sync}
+}
+
+func NewHelper(logger Logger, opts ...Option) *Helper {
+	if len(opts) > 0 {
+		logger = With(logger, opts...)
+	}
+	return log.NewHelper(logger)
 }
 
 // Log 实现log接口

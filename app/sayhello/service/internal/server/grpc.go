@@ -7,9 +7,9 @@ import (
 	sayhellov1 "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/sayhello/service/internal/service"
 	"github.com/horonlee/krathub/pkg/governance/telemetry"
+	"github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -20,12 +20,12 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.Metrics, logger log.Logger, hello *service.SayHelloService) *grpc.Server {
-	helper := log.NewHelper(logger)
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.Metrics, l logger.Logger, hello *service.SayHelloService) *grpc.Server {
+	helper := logger.NewHelper(l)
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{
 		recovery.Recovery(),
-		logging.Server(logger),
+		logging.Server(l),
 		validate.ProtoValidate(),
 	}
 	if trace != nil && trace.Endpoint != "" {

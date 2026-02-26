@@ -3,10 +3,9 @@ package telemetry
 import (
 	"net/http"
 
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/otel/exporters/prometheus"
 	"go.opentelemetry.io/otel/metric"
@@ -19,9 +18,9 @@ type Metrics struct {
 	Handler  http.Handler
 }
 
-func NewMetrics(c *conf.Metrics, app *conf.App, logger log.Logger) (*Metrics, error) {
+func NewMetrics(c *conf.Metrics, app *conf.App, l logger.Logger) (*Metrics, error) {
 	if c == nil || !c.Enable {
-		log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("metrics/telemetry"))).Info("metrics config is empty, skip metrics init")
+		logger.NewHelper(l, logger.WithModule("metrics/telemetry")).Info("metrics config is empty, skip metrics init")
 		return nil, nil
 	}
 

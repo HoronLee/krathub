@@ -5,9 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/log"
 	conf "github.com/horonlee/krathub/api/gen/go/conf/v1"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -19,7 +18,7 @@ const (
 
 type Client struct {
 	rdb *redis.Client
-	log *log.Helper
+	log *logger.Helper
 }
 
 type Config struct {
@@ -65,7 +64,7 @@ func NewConfigFromProto(cfg *conf.Data_Redis) *Config {
 	return config
 }
 
-func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
+func NewClient(cfg *Config, l logger.Logger) (*Client, func(), error) {
 	if cfg == nil {
 		return nil, nil, errors.New("redis config is nil")
 	}
@@ -83,9 +82,9 @@ func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 		writeTimeout = DefaultWriteTimeout
 	}
 
-	baseLogger := pkglogger.With(logger, pkglogger.WithModule("redis/pkg/krathub-service"))
-	setupLog := log.NewHelper(pkglogger.With(baseLogger, pkglogger.WithField("operation", "NewClient")))
-	cleanupLog := log.NewHelper(pkglogger.With(baseLogger, pkglogger.WithField("operation", "cleanup")))
+	baseLogger := logger.With(l, logger.WithModule("redis/pkg/krathub-service"))
+	setupLog := logger.NewHelper(baseLogger, logger.WithField("operation", "NewClient"))
+	cleanupLog := logger.NewHelper(baseLogger, logger.WithField("operation", "cleanup"))
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         cfg.Addr,
@@ -113,7 +112,7 @@ func NewClient(cfg *Config, logger log.Logger) (*Client, func(), error) {
 
 	return &Client{
 		rdb: rdb,
-		log: log.NewHelper(baseLogger),
+		log: logger.NewHelper(baseLogger),
 	}, cleanup, nil
 }
 

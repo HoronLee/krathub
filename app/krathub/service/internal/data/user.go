@@ -4,27 +4,26 @@ import (
 	"context"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/go-kratos/kratos/v2/log"
 
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	dataent "github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
 	entuser "github.com/horonlee/krathub/app/krathub/service/internal/data/ent/user"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/mapper"
 )
 
 type userRepo struct {
 	data   *Data
-	log    *log.Helper
+	log    *logger.Helper
 	mapper *mapper.CopierMapper[entity.User, dataent.User]
 }
 
-func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
+func NewUserRepo(data *Data, l logger.Logger) biz.UserRepo {
 	return &userRepo{
 		data:   data,
-		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("user/data/krathub-service"))),
+		log:    logger.NewHelper(l, logger.WithModule("user/data/krathub-service")),
 		mapper: mapper.New[entity.User, dataent.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }

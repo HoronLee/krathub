@@ -6,27 +6,25 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/log"
-
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	dataent "github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
 	entuser "github.com/horonlee/krathub/app/krathub/service/internal/data/ent/user"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/mapper"
 )
 
 type authRepo struct {
 	data   *Data
-	log    *log.Helper
+	log    *logger.Helper
 	mapper *mapper.CopierMapper[entity.User, dataent.User]
 }
 
-func NewAuthRepo(data *Data, logger log.Logger) biz.AuthRepo {
+func NewAuthRepo(data *Data, l logger.Logger) biz.AuthRepo {
 	return &authRepo{
 		data:   data,
-		log:    log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("auth/data/krathub-service"))),
+		log:    logger.NewHelper(l, logger.WithModule("auth/data/krathub-service")),
 		mapper: mapper.New[entity.User, dataent.User]().RegisterConverters(mapper.AllBuiltinConverters()),
 	}
 }

@@ -9,12 +9,11 @@ import (
 	entsql "entgo.io/ent/dialect/sql"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/redis"
 	"github.com/horonlee/krathub/pkg/transport/client"
 
 	"github.com/glebarez/sqlite"
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -27,29 +26,29 @@ var ProviderSet = wire.NewSet(NewDiscovery, NewDB, NewEntClient, NewRedis, NewDa
 // Data .
 type Data struct {
 	entClient *ent.Client
-	log       *log.Helper
+	log       *logger.Helper
 	client    client.Client
 	redis     *redis.Client
 }
 
 // NewData .
-func NewData(entClient *ent.Client, c *conf.Data, logger log.Logger, client client.Client, redisClient *redis.Client) (*Data, func(), error) {
+func NewData(entClient *ent.Client, c *conf.Data, l logger.Logger, client client.Client, redisClient *redis.Client) (*Data, func(), error) {
 	_ = c
 	cleanup := func() {
-		log.NewHelper(logger).Info("closing the data resources")
+		logger.NewHelper(l).Info("closing the data resources")
 		if err := entClient.Close(); err != nil {
-			log.NewHelper(logger).Warnf("failed to close ent client: %v", err)
+			logger.NewHelper(l).Warnf("failed to close ent client: %v", err)
 		}
 	}
 	return &Data{
 		entClient: entClient,
-		log:       log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("data/data/krathub-service"))),
+		log:       logger.NewHelper(l, logger.WithModule("data/data/krathub-service")),
 		client:    client,
 		redis:     redisClient,
 	}, cleanup, nil
 }
 
-func NewEntClient(db *gorm.DB, cfg *conf.Data, app *conf.App, logger log.Logger) (*ent.Client, error) {
+func NewEntClient(db *gorm.DB, cfg *conf.Data, app *conf.App, l logger.Logger) (*ent.Client, error) {
 	dbConn, err := db.DB()
 	if err != nil {
 		return nil, err
@@ -57,7 +56,7 @@ func NewEntClient(db *gorm.DB, cfg *conf.Data, app *conf.App, logger log.Logger)
 
 	opts := []ent.Option{
 		ent.Driver(entsql.OpenDB(entDialect(cfg.Database.GetDriver()), dbConn)),
-		ent.Log(pkglogger.EntLogFuncFrom(logger, "ent/data/krathub-service")),
+		ent.Log(logger.EntLogFuncFrom(l, "ent/data/krathub-service")),
 	}
 	if strings.EqualFold(app.GetEnv(), "dev") {
 		opts = append(opts, ent.Debug())
@@ -78,13 +77,12 @@ func entDialect(driver string) string {
 	}
 }
 
-func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
-	gormLogger := pkglogger.GormLoggerFrom(l, "gorm/data/krathub-service")
-	dbLog := log.NewHelper(pkglogger.With(
-		l,
-		pkglogger.WithModule("data/db/krathub-service"),
-		pkglogger.WithField("operation", "NewDB"),
-	))
+func NewDB(cfg *conf.Data, l logger.Logger) (*gorm.DB, error) {
+	gormLogger := logger.GormLoggerFrom(l, "gorm/data/krathub-service")
+	dbLog := logger.NewHelper(l,
+		logger.WithModule("data/db/krathub-service"),
+		logger.WithField("operation", "NewDB"),
+	)
 
 	var dialector gorm.Dialector
 	switch strings.ToLower(cfg.Database.GetDriver()) {
@@ -117,11 +115,11 @@ func NewDB(cfg *conf.Data, l log.Logger) (*gorm.DB, error) {
 	return nil, err
 }
 
-func NewRedis(cfg *conf.Data, logger log.Logger) (*redis.Client, func(), error) {
+func NewRedis(cfg *conf.Data, l logger.Logger) (*redis.Client, func(), error) {
 	redisConfig := redis.NewConfigFromProto(cfg.Redis)
 	if redisConfig == nil {
 		return nil, nil, errors.New("redis configuration is required")
 	}
 
-	return redis.NewClient(redisConfig, pkglogger.With(logger, pkglogger.WithModule("redis/data/krathub-service")))
+	return redis.NewClient(redisConfig, logger.With(l, logger.WithModule("redis/data/krathub-service")))
 }

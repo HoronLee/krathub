@@ -8,7 +8,6 @@ import (
 	logpkg "github.com/horonlee/krathub/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -27,7 +26,7 @@ type GRPCMiddleware []middleware.Middleware
 func NewGRPCMiddleware(
 	trace *conf.Trace,
 	m *telemetry.Metrics,
-	logger log.Logger,
+	logger logpkg.Logger,
 ) GRPCMiddleware {
 	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/krathub-service"))
 
@@ -59,10 +58,10 @@ func NewGRPCMiddleware(
 func NewGRPCServer(
 	c *conf.Server,
 	middlewares GRPCMiddleware,
-	logger log.Logger,
+	logger logpkg.Logger,
 ) *grpc.Server {
 	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/krathub-service"))
-	helper := log.NewHelper(grpcLogger)
+	helper := logpkg.NewHelper(grpcLogger)
 
 	opts := []grpc.ServerOption{
 		grpc.Middleware(middlewares...),

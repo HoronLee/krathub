@@ -6,22 +6,20 @@ import (
 	"encoding/hex"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	authpb "github.com/horonlee/krathub/api/gen/go/auth/service/v1"
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz/entity"
 	dataent "github.com/horonlee/krathub/app/krathub/service/internal/data/ent"
 	"github.com/horonlee/krathub/pkg/helpers/hash"
 	jwtpkg "github.com/horonlee/krathub/pkg/jwt"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
-
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/golang-jwt/jwt/v5"
+	"github.com/horonlee/krathub/pkg/logger"
 )
 
 // AuthUsecase is a Auth usecase.
 type AuthUsecase struct {
 	repo            AuthRepo
-	log             *log.Helper
+	log             *logger.Helper
 	cfg             *conf.App
 	adminRegistered bool                    // 是否已经注册了 admin 用户
 	accessJWT       *jwtpkg.JWT[UserClaims] // Access Token JWT service
@@ -29,7 +27,7 @@ type AuthUsecase struct {
 }
 
 // NewAuthUsecase new an auth usecase.
-func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecase {
+func NewAuthUsecase(repo AuthRepo, l logger.Logger, cfg *conf.App) *AuthUsecase {
 	accessJWTService := jwtpkg.NewJWT[UserClaims](&jwtpkg.Config{
 		SecretKey: cfg.Jwt.AccessSecret,
 	})
@@ -40,7 +38,7 @@ func NewAuthUsecase(repo AuthRepo, logger log.Logger, cfg *conf.App) *AuthUsecas
 
 	uc := &AuthUsecase{
 		repo:       repo,
-		log:        log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("auth/biz/krathub-service"))),
+		log:        logger.NewHelper(l, logger.WithModule("auth/biz/krathub-service")),
 		cfg:        cfg,
 		accessJWT:  accessJWTService,
 		refreshJWT: refreshJWTService,

@@ -9,9 +9,8 @@ import (
 	"time"
 
 	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/circuitbreaker"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -81,8 +80,8 @@ func GetGRPCConn(ctx context.Context, c Client, serviceName string) (gogrpc.Clie
 
 // createGrpcConnection 创建gRPC连接的内部函数
 func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf.Data,
-	traceCfg *conf.Trace, discovery registry.Discovery, logger log.Logger) (gogrpc.ClientConnInterface, error) {
-	setupLogger := log.NewHelper(pkglogger.With(logger, pkglogger.WithField("operation", "createGrpcConnection")))
+	traceCfg *conf.Trace, discovery registry.Discovery, l logger.Logger) (gogrpc.ClientConnInterface, error) {
+	setupLogger := logger.NewHelper(l, logger.WithField("operation", "createGrpcConnection"))
 
 	timeout := 5 * time.Second
 	defaultEndpoint := fmt.Sprintf("discovery:///%s", serviceName)
@@ -108,7 +107,7 @@ func createGrpcConnection(ctx context.Context, serviceName string, dataCfg *conf
 
 	mds := []middleware.Middleware{
 		recovery.Recovery(),
-		logging.Client(logger),
+		logging.Client(l),
 		circuitbreaker.Client(),
 	}
 

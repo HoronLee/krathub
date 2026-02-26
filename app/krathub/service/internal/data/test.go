@@ -3,22 +3,21 @@ package data
 import (
 	"context"
 
-	"github.com/go-kratos/kratos/v2/log"
 	sayhellopb "github.com/horonlee/krathub/api/gen/go/sayhello/service/v1"
 	"github.com/horonlee/krathub/app/krathub/service/internal/biz"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 	"github.com/horonlee/krathub/pkg/transport/client"
 )
 
 type testRepo struct {
 	data *Data
-	log  *log.Helper
+	log  *logger.Helper
 }
 
-func NewTestRepo(data *Data, logger log.Logger) biz.TestRepo {
+func NewTestRepo(data *Data, l logger.Logger) biz.TestRepo {
 	return &testRepo{
 		data: data,
-		log:  log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("test/data/krathub-service"))),
+		log:  logger.NewHelper(l, logger.WithModule("test/data/krathub-service")),
 	}
 }
 

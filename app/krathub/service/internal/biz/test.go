@@ -3,8 +3,7 @@ package biz
 import (
 	"context"
 
-	"github.com/go-kratos/kratos/v2/log"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
+	"github.com/horonlee/krathub/pkg/logger"
 )
 
 type TestRepo interface {
@@ -13,13 +12,13 @@ type TestRepo interface {
 
 type TestUsecase struct {
 	repo TestRepo
-	log  *log.Helper
+	log  *logger.Helper
 }
 
-func NewTestUsecase(repo TestRepo, logger log.Logger) *TestUsecase {
+func NewTestUsecase(repo TestRepo, l logger.Logger) *TestUsecase {
 	return &TestUsecase{
 		repo: repo,
-		log:  log.NewHelper(pkglogger.With(logger, pkglogger.WithModule("test/biz/krathub-service"))),
+		log:  logger.NewHelper(l, logger.WithModule("test/biz/krathub-service")),
 	}
 }
 

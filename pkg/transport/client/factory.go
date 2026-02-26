@@ -4,31 +4,29 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/horonlee/krathub/api/gen/go/conf/v1"
-	pkglogger "github.com/horonlee/krathub/pkg/logger"
-
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
+	"github.com/horonlee/krathub/api/gen/go/conf/v1"
+	"github.com/horonlee/krathub/pkg/logger"
 )
 
 type client struct {
 	dataCfg   *conf.Data
 	traceCfg  *conf.Trace
 	discovery registry.Discovery
-	logger    log.Logger
+	logger    logger.Logger
 }
 
 func NewClient(
 	dataCfg *conf.Data,
 	traceCfg *conf.Trace,
 	discovery registry.Discovery,
-	logger log.Logger,
+	l logger.Logger,
 ) (Client, error) {
 	return &client{
 		dataCfg:   dataCfg,
 		traceCfg:  traceCfg,
 		discovery: discovery,
-		logger:    pkglogger.With(logger, pkglogger.WithModule("client/client/krathub-service")),
+		logger:    logger.With(l, logger.WithModule("client/client/krathub-service")),
 	}, nil
 }
 
