@@ -1,7 +1,7 @@
 # AGENTS.md - app/krathub/service/ 主服务实现
 
 <!-- Parent: ../../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
 
 ## 目录概述
 
@@ -10,7 +10,7 @@
 **核心特点**：
 - 多业务模块单体：在单一进程内组织多个领域模块，降低分布式复杂度
 - 完整的 DDD 分层：严格遵循业务逻辑层（biz）、数据访问层（data）、服务层（service）三层架构
-- 前后端分离：包含独立的 Vue 3 + Vite 前端应用（`web/` 目录）
+- 前后端分离：前端应用位于仓库根目录 `web/`
 - 双协议支持：同时提供 gRPC 和 HTTP 接口，自动生成 OpenAPI 文档
 - 生产级配置：完整的 Kubernetes、Docker、配置中心等部署方案
 
@@ -65,20 +65,6 @@ app/krathub/service/
 │   │       └── AuthJWT.go     # JWT 认证中间件
 │   └── consts/           # 常量定义
 │       └── user.go       # 用户相关常量
-├── web/                  # Vue 3 前端应用（独立项目）
-│   ├── src/             # 前端源码
-│   │   ├── components/  # Vue 组件
-│   │   ├── views/       # 页面组件
-│   │   ├── router/      # Vue Router 路由
-│   │   ├── stores/      # Pinia 状态管理
-│   │   ├── api/         # API 客户端
-│   │   └── __tests__/   # Vitest 单元测试
-│   ├── e2e/             # Playwright E2E 测试
-│   ├── public/          # 静态资源
-│   ├── vite.config.ts   # Vite 构建配置
-│   ├── playwright.config.ts  # Playwright 配置
-│   ├── package.json     # 前端依赖
-│   └── README.md        # 前端文档
 ├── configs/             # 配置文件
 │   └── config.yaml      # 服务配置（数据库、Redis、注册中心等）
 ├── deployment/          # 部署配置
@@ -686,7 +672,7 @@ var ProviderSet = wire.NewSet(
 )
 
 # 3. 运行 make wire 重新生成代码
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make wire
 ```
 
@@ -743,7 +729,7 @@ func NewAuthUsecase(repo AuthRepo, jwt *jwt.Manager, logger log.Logger) *AuthUse
 vim cmd/server/wire.go
 
 # 2. 运行 Wire 代码生成
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make wire
 
 # 3. 查看生成的代码（验证依赖关系）
@@ -757,7 +743,7 @@ make run
 
 ### 项目概述
 
-`web/` 目录包含一个独立的 Vue 3 + Vite 前端应用，采用现代化的前端技术栈。
+仓库根目录 `web/` 包含一个独立的 Vue 3 + Vite 前端应用，采用现代化的前端技术栈。
 
 **技术栈**：
 - **框架**：Vue 3（Composition API）
@@ -795,7 +781,7 @@ web/
 ### 常用命令
 
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/web
+cd /Users/horonlee/projects/go/krathub/web
 
 # 安装依赖
 bun install
@@ -952,7 +938,7 @@ func main() {
 
 **运行生成**：
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make gen.dao
 make gen.ent
 ```
@@ -988,14 +974,14 @@ func (r *userRepo) GetByID(ctx context.Context, id uint64) (*biz.User, error) {
 1. **定义 Proto API**
 ```bash
 # 创建 proto 文件
-mkdir -p /Users/horonlee/projects/micro-service/krathub/api/protos/product/service/v1
+mkdir -p /Users/horonlee/projects/go/krathub/api/protos/product/service/v1
 
 # 编写 product.proto（定义 gRPC 服务）
 ```
 
 2. **生成代码**
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub
+cd /Users/horonlee/projects/go/krathub
 make gen
 ```
 
@@ -1084,7 +1070,7 @@ func NewGRPCServer(
 
 8. **重新生成 Wire 代码**
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make wire
 ```
 
@@ -1097,16 +1083,16 @@ make run
 
 ```bash
 # 1. 修改 proto 文件
-vim /Users/horonlee/projects/micro-service/krathub/api/protos/auth/service/v1/auth.proto
+vim /Users/horonlee/projects/go/krathub/api/protos/auth/service/v1/auth.proto
 
 # 2. 生成代码（在项目根目录）
-cd /Users/horonlee/projects/micro-service/krathub
+cd /Users/horonlee/projects/go/krathub
 make gen
 
 # 3. 实现业务逻辑（biz → data → service）
 
 # 4. 重新生成 Wire（在服务目录）
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make wire
 
 # 5. 运行服务
@@ -1120,10 +1106,10 @@ make test
 
 ```bash
 # 查看生成的 Wire 代码
-cat /Users/horonlee/projects/micro-service/krathub/app/krathub/service/cmd/server/wire_gen.go
+cat /Users/horonlee/projects/go/krathub/app/krathub/service/cmd/server/wire_gen.go
 
 # 检查 Wire 依赖图
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/cmd/server
+cd /Users/horonlee/projects/go/krathub/app/krathub/service/cmd/server
 wire show
 
 # 验证 gRPC 接口
@@ -1131,10 +1117,10 @@ grpcurl -plaintext localhost:9000 list
 grpcurl -plaintext localhost:9000 auth.service.v1.Auth/Login
 
 # 查看 OpenAPI 文档
-cat /Users/horonlee/projects/micro-service/krathub/app/krathub/service/openapi.yaml
+cat /Users/horonlee/projects/go/krathub/app/krathub/service/openapi.yaml
 
 # 查看日志
-tail -f /Users/horonlee/projects/micro-service/krathub/app/krathub/service/logs/krathub.service.log
+tail -f /Users/horonlee/projects/go/krathub/app/krathub/service/logs/krathub.service.log
 ```
 
 ## 测试开发
@@ -1223,7 +1209,7 @@ func TestUserRepo_Create(t *testing.T) {
 ### 启动服务
 
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 
 # 配置文件（首次）
 cp ../../../api/protos/conf/v1/config-example.yaml configs/config.yaml
@@ -1236,7 +1222,7 @@ make run
 ### 前端开发
 
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/web
+cd /Users/horonlee/projects/go/krathub/web
 
 bun install
 bun dev
@@ -1246,7 +1232,7 @@ bun dev
 
 ```bash
 # Docker 构建
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make docker-build
 
 # Kubernetes 部署
@@ -1278,12 +1264,12 @@ kubectl apply -f deployment/kubernetes/
 ## 依赖关系
 
 **上游依赖**（本目录依赖的其他目录）：
-- `/Users/horonlee/projects/micro-service/krathub/api/gen/go/` - 生成的 protobuf Go 代码
-- `/Users/horonlee/projects/micro-service/krathub/pkg/` - 共享库（jwt, redis, logger 等）
-- `/Users/horonlee/projects/micro-service/krathub/api/protos/conf/v1/` - 配置文件定义
+- `/Users/horonlee/projects/go/krathub/api/gen/go/` - 生成的 protobuf Go 代码
+- `/Users/horonlee/projects/go/krathub/pkg/` - 共享库（jwt, redis, logger 等）
+- `/Users/horonlee/projects/go/krathub/api/protos/conf/v1/` - 配置文件定义
 
 **下游依赖**（依赖本目录的其他目录）：
-- `/Users/horonlee/projects/micro-service/krathub/deployment/` - 部署配置
+- `/Users/horonlee/projects/go/krathub/deployment/` - 部署配置
 
 **外部依赖**：
 - Kratos v2 框架

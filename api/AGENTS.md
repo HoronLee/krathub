@@ -1,7 +1,7 @@
 # AGENTS.md - API 定义层
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-09 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
 
 ## 目的
 
@@ -232,7 +232,7 @@ message Article {
 
 ```bash
 # 2. 生成代码
-cd /Users/horonlee/projects/micro-service/krathub
+cd /Users/horonlee/projects/go/krathub
 make gen
 
 # 3. 验证生成结果

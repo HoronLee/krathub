@@ -1,7 +1,7 @@
 # AGENTS.md - internal/ DDD 分层架构实现
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
 
 ## 目录概述
 
@@ -569,11 +569,11 @@ const (
 1. **定义 Proto API**（在 `api/protos/` 目录）
 ```bash
 # 创建并编辑 proto 文件
-mkdir -p /Users/horonlee/projects/micro-service/krathub/api/protos/product/service/v1
-vim /Users/horonlee/projects/micro-service/krathub/api/protos/product/service/v1/product.proto
+mkdir -p /Users/horonlee/projects/go/krathub/api/protos/product/service/v1
+vim /Users/horonlee/projects/go/krathub/api/protos/product/service/v1/product.proto
 
 # 生成代码
-cd /Users/horonlee/projects/micro-service/krathub
+cd /Users/horonlee/projects/go/krathub
 make gen
 ```
 
@@ -704,7 +704,7 @@ func NewGRPCServer(
 
 6. **重新生成 Wire 代码**
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make wire
 ```
 
@@ -793,7 +793,7 @@ func main() {
 
 2. **运行生成**
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make gen.dao
 ```
 
@@ -895,7 +895,7 @@ func TestAuthUsecase_Login(t *testing.T) {
 
 3. **运行测试**
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 go test ./internal/biz/... -v
 ```
 
@@ -905,10 +905,10 @@ go test ./internal/biz/... -v
 
 ```bash
 # 1. 修改 proto 文件（在 api/protos/ 目录）
-vim /Users/horonlee/projects/micro-service/krathub/api/protos/auth/service/v1/auth.proto
+vim /Users/horonlee/projects/go/krathub/api/protos/auth/service/v1/auth.proto
 
 # 2. 生成代码（在项目根目录）
-cd /Users/horonlee/projects/micro-service/krathub
+cd /Users/horonlee/projects/go/krathub
 make gen
 
 # 3. 实现业务逻辑（biz → data → service）
@@ -918,7 +918,7 @@ make gen
 # 编辑 internal/biz/biz.go, internal/data/data.go, internal/service/service.go
 
 # 5. 重新生成 Wire（在服务目录）
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service
+cd /Users/horonlee/projects/go/krathub/app/krathub/service
 make wire
 
 # 6. 运行服务
@@ -932,10 +932,10 @@ make test
 
 ```bash
 # 查看生成的 Wire 代码
-cat /Users/horonlee/projects/micro-service/krathub/app/krathub/service/cmd/server/wire_gen.go
+cat /Users/horonlee/projects/go/krathub/app/krathub/service/cmd/server/wire_gen.go
 
 # 检查 Wire 依赖图
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/cmd/server
+cd /Users/horonlee/projects/go/krathub/app/krathub/service/cmd/server
 wire show
 
 # 运行单个包的测试
@@ -971,11 +971,11 @@ go test -v -run TestAuthUsecase_Login ./internal/biz/
 ## 依赖关系
 
 **上游依赖**（本目录依赖的其他目录）：
-- `/Users/horonlee/projects/micro-service/krathub/api/gen/go/` - 生成的 protobuf Go 代码
-- `/Users/horonlee/projects/micro-service/krathub/pkg/` - 共享库（jwt, redis, logger, hash 等）
+- `/Users/horonlee/projects/go/krathub/api/gen/go/` - 生成的 protobuf Go 代码
+- `/Users/horonlee/projects/go/krathub/pkg/` - 共享库（jwt, redis, logger, hash 等）
 
 **下游依赖**（依赖本目录的其他目录）：
-- `/Users/horonlee/projects/micro-service/krathub/app/krathub/service/cmd/` - 服务入口（使用 Wire 生成的代码）
+- `/Users/horonlee/projects/go/krathub/app/krathub/service/cmd/` - 服务入口（使用 Wire 生成的代码）
 
 **外部依赖**：
 - Kratos v2 框架

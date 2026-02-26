@@ -1,6 +1,6 @@
 # AGENTS.md - Krathub 项目根目录
 
-<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
 
 ## 项目概述
 
@@ -18,7 +18,7 @@ Krathub 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了�
 - **API 定义**: Protobuf + Buf (现代化 Protobuf 工具链)
 - **依赖注入**: Wire (编译时 DI)
 - **ORM**: Ent + GORM GEN（双 ORM 并行支持）
-- **前端**: Vue 3 + Vite (位于 `app/krathub/service/web/`)
+- **前端**: Vue 3 + Vite (位于仓库根目录 `web/`)
 - **服务治理**: Consul / Nacos / etcd
 - **可观测性**: OTel Collector + Jaeger + Loki + Prometheus + Grafana
 
@@ -93,8 +93,8 @@ Protobuf API 定义的中心目录，包含所有 proto 文件和生成的代码
 
 **当前服务**：
 - `krathub/service/` - 主服务（包含 auth, user, test 等模块）
-  - 包含 Vue 3 前端：`web/`（使用 Vite + TypeScript）
 - `sayhello/service/` - 独立微服务示例
+- `web/` - 根目录前端应用（Vue 3 + Vite + TypeScript）
 
 ### `pkg/` - 共享库
 项目内部共享的通用库，可被所有微服务复用。
@@ -180,7 +180,7 @@ make test          # 运行测试
 make docker-build  # 构建 Docker 镜像
 ```
 
-**前端命令**（在 `app/krathub/service/web/` 下执行）：
+**前端命令**（在仓库根目录 `web/` 下执行）：
 ```bash
 bun install && bun dev  # 开发服务器
 bun test:unit           # Vitest 单元测试

@@ -1,11 +1,11 @@
 # AGENTS.md - web/ Vue 3 前端应用
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-09 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
 
 ## 目录概述
 
-`app/krathub/service/web/` 是 Krathub 项目的前端应用，采用现代化的 Vue 3 技术栈。这是一个独立的前端项目，通过 HTTP API 与后端服务通信，支持开发热重载、单元测试和端到端测试。
+`web/` 是 Krathub 项目的前端应用，采用现代化的 Vue 3 技术栈。这是一个独立的前端项目，通过 HTTP API 与后端服务通信，支持开发热重载、单元测试和端到端测试。
 
 **核心价值**：
 - 现代化技术栈：Vue 3 Composition API + TypeScript + Vite
@@ -74,7 +74,7 @@ web/
 ### 开发
 
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/web
+cd /Users/horonlee/projects/go/krathub/web
 
 # 安装依赖
 bun install
@@ -867,7 +867,7 @@ interface ImportMeta {
 
 ```bash
 # 1. 启动开发服务器
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/web
+cd /Users/horonlee/projects/go/krathub/web
 bun dev
 
 # 2. 新建组件（手动创建）
@@ -946,7 +946,7 @@ bun build --mode analyze
 ## 依赖关系
 
 **上游依赖**（本目录依赖的其他目录）：
-- `/Users/horonlee/projects/micro-service/krathub/app/krathub/service/` - 后端 API 服务（通过 HTTP 调用）
+- `/Users/horonlee/projects/go/krathub/app/krathub/service/` - 后端 API 服务（通过 HTTP 调用）
 
 **外部依赖**：
 - Vue 3 框架
@@ -993,7 +993,7 @@ touch src/views/AboutView.vue
 
 **运行开发服务器**：
 ```bash
-cd /Users/horonlee/projects/micro-service/krathub/app/krathub/service/web
+cd /Users/horonlee/projects/go/krathub/web
 bun install  # 首次安装依赖
 bun dev      # 启动开发服务器
 ```

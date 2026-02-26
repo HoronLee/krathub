@@ -1,7 +1,7 @@
 # AGENTS.md - app/ 微服务实现层
 
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-09 | Updated: 2026-02-25 -->
+<!-- Generated: 2026-02-09 | Updated: 2026-02-26 -->
 
 ## 目录概述
 
@@ -20,7 +20,6 @@
 
 **特点**：
 - 多模块单体：在一个进程内组织多个业务域
-- 包含前端：`web/` 目录下的 Vue 3 + Vite 应用
 - 同时支持 HTTP 和 gRPC 协议
 - 生产级配置：包含 K8s manifests, Docker 配置等
 
@@ -51,11 +50,6 @@ krathub/service/
 │   │   ├── grpc.go     # gRPC 服务器配置
 │   │   └── http.go     # HTTP 服务器配置
 │   └── consts/         # 常量定义
-├── web/                # Vue 3 前端应用
-│   ├── src/            # 前端源码
-│   ├── e2e/            # Playwright E2E 测试
-│   ├── vite.config.ts  # Vite 配置
-│   └── package.json    # 前端依赖
 ├── configs/            # 配置文件
 │   └── config.yaml     # 服务配置（数据库、Redis、注册中心等）
 ├── deployment/         # 部署配置
@@ -843,11 +837,11 @@ make wire
 
 ### 前端开发（Vue 3）
 
-**位置**：`app/krathub/service/web/`
+**位置**：仓库根目录 `web/`
 
 **常用命令**：
 ```bash
-cd app/krathub/service/web
+cd web
 
 # 安装依赖
 bun install
