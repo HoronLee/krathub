@@ -17,7 +17,7 @@ spec:
       serviceAccountName: micro-forge-service-account
       containers:
         - name: sayhello
-          image: micro-forge-micro/sayhello-service:latest
+          image: micro-forge/sayhello-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: grpc

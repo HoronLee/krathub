@@ -18,7 +18,7 @@ data:
 app:
   name: "micro-forge.service"
   version: "v1.0.0"
-  env: "prod"
+  env: "dev"
   jwt:
     access_secret: "micro-forge_access_secret_change_me"
     refresh_secret: "micro-forge_refresh_secret_change_me"

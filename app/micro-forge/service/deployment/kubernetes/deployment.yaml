@@ -40,7 +40,7 @@ spec:
               echo "Redis is ready!"
       containers:
         - name: micro-forge
-          image: micro-forge-micro/micro-forge-service:latest
+          image: micro-forge/micro-forge-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

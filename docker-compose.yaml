@@ -25,7 +25,7 @@ services:
       - micro-forge-network
 
   micro-forge:
-    image: micro-forge-micro/micro-forge-service:latest
+    image: micro-forge/micro-forge-service:latest
     container_name: micro-forge
     restart: unless-stopped
     command: ["/app/micro-forge", "-conf", "/app/configs/config-docker.yaml"]
@@ -50,7 +50,7 @@ services:
       - micro-forge-network
 
   sayhello:
-    image: micro-forge-micro/sayhello-service:latest
+    image: micro-forge/sayhello-service:latest
     container_name: sayhello
     restart: unless-stopped
     command: ["/app/sayhello", "-conf", "/app/configs/config-docker.yaml"]
