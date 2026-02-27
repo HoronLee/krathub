@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/horonlee/micro-forge/pkg/config"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
 	"github.com/horonlee/micro-forge/pkg/logger"
 
@@ -36,13 +37,13 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "./configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server, hs *http.Server) *kratos.App {
+func newApp(l log.Logger, reg registry.Registrar, gs *grpc.Server, hs *http.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
 		kratos.Metadata(Metadata),
-		kratos.Logger(logger),
+		kratos.Logger(l),
 		kratos.Server(gs, hs),
 		kratos.Registrar(reg),
 	)
@@ -52,7 +53,7 @@ func main() {
 	flag.Parse()
 
 	// 加载配置
-	bc, c, err := loadConfig()
+	bc, c, err := config.LoadBootstrap(flagconf, Name)
 	if err != nil {
 		panic(err)
 	}

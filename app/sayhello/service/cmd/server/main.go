@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/horonlee/micro-forge/pkg/config"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
 	"github.com/horonlee/micro-forge/pkg/logger"
 
@@ -18,8 +19,8 @@ import (
 )
 
 var (
-	Name     string
-	Version  string
+	Name     = "sayhello.service"
+	Version  = "v1.0.0"
 	flagconf string
 	id       string
 	Metadata map[string]string
@@ -29,13 +30,13 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "./configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.App {
+func newApp(l log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
 		kratos.Metadata(Metadata),
-		kratos.Logger(logger),
+		kratos.Logger(l),
 		kratos.Server(gs),
 		kratos.Registrar(reg),
 	)
@@ -44,19 +45,21 @@ func newApp(logger log.Logger, reg registry.Registrar, gs *grpc.Server) *kratos.
 func main() {
 	flag.Parse()
 
-	bc, c, err := loadConfig()
+	bc, c, err := config.LoadBootstrap(flagconf, Name)
 	if err != nil {
 		panic(err)
 	}
 	defer c.Close()
 
-	Name = bc.App.Name
-	Version = bc.App.Version
-	if Name == "" {
-		Name = "sayhello.service"
+	if bc.App.Name != "" {
+		Name = bc.App.Name
+	} else {
+		bc.App.Name = Name
 	}
-	if Version == "" {
-		Version = "v1.0.0"
+	if bc.App.Version != "" {
+		Version = bc.App.Version
+	} else {
+		bc.App.Version = Version
 	}
 
 	Metadata = bc.App.Metadata
