@@ -1,13 +1,18 @@
+server:
+  grpc:
+    addr: "0.0.0.0:9001"
+    timeout: 10s
+
 app:
-  name: "${APP_NAME:sayhello.service}"
-  version: "${APP_VERSION:v1.0.0}"
-  env: "${ENV:dev}"
+  name: "sayhello.service"
+  version: "v1.0.0"
+  env: "dev"
   log:
-    level: "${LOG_LEVEL:-1}"
-    filename: "${LOG_FILENAME:sayhello.log}"
-    max_size: "${LOG_MAX_SIZE:20}"
-    max_age: "${LOG_MAX_AGE:30}"
-    max_backups: "${LOG_MAX_BACKUPS:10}"
+    level: 0
+    filename: "./logs/sayhello.service.log"
+    max_size: 20
+    max_age: 30
+    max_backups: 10
 
 registry:
   consul:

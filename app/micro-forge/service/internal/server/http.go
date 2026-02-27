@@ -36,17 +36,15 @@ func NewHTTPMiddleware(
 	httpLogger := logpkg.With(logger, logpkg.WithModule("http/server/micro-forge-service"))
 
 	var ms []middleware.Middleware
+	ms = append(ms, recovery.Recovery())
+	if trace != nil && trace.Endpoint != "" {
+		ms = append(ms, tracing.Server())
+	}
 	ms = append(ms,
-		recovery.Recovery(),
 		logging.Server(httpLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
 	)
-
-	if trace != nil && trace.Endpoint != "" {
-		ms = append(ms, tracing.Server())
-	}
-
 	if m != nil {
 		ms = append(ms, metrics.Server(
 			metrics.WithSeconds(m.Seconds),

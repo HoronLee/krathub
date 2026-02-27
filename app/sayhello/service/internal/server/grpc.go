@@ -23,14 +23,14 @@ import (
 func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.Metrics, l logger.Logger, hello *service.SayHelloService) *grpc.Server {
 	helper := logger.NewHelper(l)
 	var mds []middleware.Middleware
-	mds = []middleware.Middleware{
-		recovery.Recovery(),
-		logging.Server(l),
-		validate.ProtoValidate(),
-	}
+	mds = []middleware.Middleware{recovery.Recovery()}
 	if trace != nil && trace.Endpoint != "" {
 		mds = append(mds, tracing.Server())
 	}
+	mds = append(mds,
+		logging.Server(l),
+		validate.ProtoValidate(),
+	)
 	if metricsRuntime != nil {
 		mds = append(mds, metrics.Server(
 			metrics.WithSeconds(metricsRuntime.Seconds),

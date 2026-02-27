@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/horonlee/micro-forge/pkg/governance/telemetry"	
+	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
 	"github.com/horonlee/micro-forge/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
@@ -81,7 +82,7 @@ func main() {
 	if bc.App.Log.Filename == "" {
 		bc.App.Log.Filename = fmt.Sprintf("./logs/%s.log", Name)
 	}
-	log := logger.NewLogger(&logger.Config{
+	appLogger := logger.NewLogger(&logger.Config{
 		Env:        bc.App.Env,
 		Level:      bc.App.Log.Level,
 		Filename:   bc.App.Log.Filename,
@@ -90,6 +91,12 @@ func main() {
 		MaxAge:     bc.App.Log.MaxAge,
 		Compress:   bc.App.Log.Compress,
 	})
+	appLogger = log.With(
+		appLogger,
+		"service", Name,
+		"trace_id", tracing.TraceID(),
+		"span_id", tracing.SpanID(),
+	)
 
 	traceCleanup, err := telemetry.InitTracerProvider(bc.Trace, Name, bc.App.Env)
 	if err != nil {
@@ -98,7 +105,7 @@ func main() {
 	defer traceCleanup()
 
 	// 初始化服务
-	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, bc.Metrics, log)
+	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, bc.Metrics, appLogger)
 	if err != nil {
 		panic(err)
 	}

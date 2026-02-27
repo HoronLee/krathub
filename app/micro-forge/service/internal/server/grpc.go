@@ -31,19 +31,15 @@ func NewGRPCMiddleware(
 	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/micro-forge-service"))
 
 	var ms []middleware.Middleware
+	ms = append(ms, recovery.Recovery())
+	if trace != nil && trace.Endpoint != "" {
+		ms = append(ms, tracing.Server())
+	}
 	ms = append(ms,
-		recovery.Recovery(),
 		logging.Server(grpcLogger),
 		ratelimit.Server(),
 		validate.ProtoValidate(),
 	)
-
-	// 开启链路追踪
-	if trace != nil && trace.Endpoint != "" {
-		ms = append(ms, tracing.Server())
-	}
-
-	// 开启 metrics
 	if m != nil {
 		ms = append(ms, metrics.Server(
 			metrics.WithSeconds(m.Seconds),
