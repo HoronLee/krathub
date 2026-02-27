@@ -5,7 +5,7 @@ import (
 
 	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
-	logpkg "github.com/horonlee/micro-forge/pkg/logger"
+	"github.com/horonlee/micro-forge/pkg/logger"
 
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -26,9 +26,9 @@ type GRPCMiddleware []middleware.Middleware
 func NewGRPCMiddleware(
 	trace *conf.Trace,
 	m *telemetry.Metrics,
-	logger logpkg.Logger,
+	l logger.Logger,
 ) GRPCMiddleware {
-	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/micro-forge-service"))
+	grpcLogger := logger.With(l, logger.WithModule("grpc/server/micro-forge-service"))
 
 	var ms []middleware.Middleware
 	ms = append(ms, recovery.Recovery())
@@ -53,15 +53,15 @@ func NewGRPCMiddleware(
 // NewGRPCServer new a gRPC server.
 func NewGRPCServer(
 	c *conf.Server,
-	middlewares GRPCMiddleware,
-	logger logpkg.Logger,
+	mw GRPCMiddleware,
+	l logger.Logger,
 ) *grpc.Server {
-	grpcLogger := logpkg.With(logger, logpkg.WithModule("grpc/server/micro-forge-service"))
-	helper := logpkg.NewHelper(grpcLogger)
+	glog := logger.With(l, logger.WithModule("grpc/server/micro-forge-service"))
+	log := logger.NewHelper(glog)
 
 	opts := []grpc.ServerOption{
-		grpc.Middleware(middlewares...),
-		grpc.Logger(grpcLogger),
+		grpc.Middleware(mw...),
+		grpc.Logger(glog),
 	}
 	if c != nil && c.Grpc != nil {
 		if c.Grpc.Network != "" {
@@ -77,7 +77,7 @@ func NewGRPCServer(
 	if c != nil && c.Grpc != nil && c.Grpc.Tls != nil && c.Grpc.Tls.Enable {
 		cert, err := tls.LoadX509KeyPair(c.Grpc.Tls.CertPath, c.Grpc.Tls.KeyPath)
 		if err != nil {
-			helper.Fatalf("gRPC Server TLS: Failed to load key pair: %v", err)
+			log.Fatalf("gRPC Server TLS: Failed to load key pair: %v", err)
 		}
 		creds := credentials.NewTLS(&tls.Config{Certificates: []tls.Certificate{cert}})
 		opts = append(opts, grpc.Options(gogrpc.Creds(creds)))

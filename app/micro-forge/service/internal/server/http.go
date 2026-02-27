@@ -18,7 +18,7 @@ import (
 	mwinter "github.com/horonlee/micro-forge/app/micro-forge/service/internal/server/middleware"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
-	logpkg "github.com/horonlee/micro-forge/pkg/logger"
+	"github.com/horonlee/micro-forge/pkg/logger"
 	mwpkg "github.com/horonlee/micro-forge/pkg/middleware"
 	"github.com/horonlee/micro-forge/pkg/middleware/cors"
 )
@@ -30,10 +30,10 @@ type HTTPMiddleware []middleware.Middleware
 func NewHTTPMiddleware(
 	trace *conf.Trace,
 	m *telemetry.Metrics,
-	logger logpkg.Logger,
+	l logger.Logger,
 	authJWT mwinter.AuthJWT,
 ) HTTPMiddleware {
-	httpLogger := logpkg.With(logger, logpkg.WithModule("http/server/micro-forge-service"))
+	httpLogger := logger.With(l, logger.WithModule("http/server/micro-forge-service"))
 
 	var ms []middleware.Middleware
 	ms = append(ms, recovery.Recovery())
@@ -87,19 +87,19 @@ func NewHTTPMiddleware(
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(
 	c *conf.Server,
-	middlewares HTTPMiddleware,
+	mw HTTPMiddleware,
 	m *telemetry.Metrics,
-	logger logpkg.Logger,
+	l logger.Logger,
 	auth *service.AuthService,
 	user *service.UserService,
 	test *service.TestService,
 ) *http.Server {
-	l := logpkg.With(logger, logpkg.WithModule("http/server/micro-forge-service"))
-	helper := logpkg.NewHelper(l)
+	hlog := logger.With(l, logger.WithModule("http/server/micro-forge-service"))
+	log := logger.NewHelper(hlog)
 
 	var opts = []http.ServerOption{
-		http.Middleware(middlewares...),
-		http.Logger(l),
+		http.Middleware(mw...),
+		http.Logger(hlog),
 	}
 	if c != nil && c.Http != nil {
 		if c.Http.Network != "" {
@@ -113,16 +113,16 @@ func NewHTTPServer(
 		}
 		if cors.IsEnabled(c.Http.Cors) {
 			opts = append(opts, http.Filter(cors.Middleware(c.Http.Cors)))
-			helper.Infof("CORS middleware enabled: allowed_origins=%v", cors.GetAllowedOrigins(c.Http.Cors))
+			log.Infof("CORS middleware enabled: allowed_origins=%v", cors.GetAllowedOrigins(c.Http.Cors))
 		}
 	}
 	if c != nil && c.Http != nil && c.Http.Tls != nil && c.Http.Tls.Enable {
 		if c.Http.Tls.CertPath == "" || c.Http.Tls.KeyPath == "" {
-			helper.Fatal("Server TLS: can't find TLS key pairs")
+			log.Fatal("Server TLS: can't find TLS key pairs")
 		}
 		cert, err := tls.LoadX509KeyPair(c.Http.Tls.CertPath, c.Http.Tls.KeyPath)
 		if err != nil {
-			helper.Fatalf("Server TLS: Failed to load key pair: %v", err)
+			log.Fatalf("Server TLS: Failed to load key pair: %v", err)
 		}
 		opts = append(opts, http.TLSConfig(&tls.Config{Certificates: []tls.Certificate{cert}}))
 	}
