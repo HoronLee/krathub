@@ -2,6 +2,7 @@ package server
 
 import (
 	"crypto/tls"
+
 	"github.com/go-kratos/kratos/contrib/middleware/validate/v2"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
@@ -12,7 +13,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
-	microforgev1 "github.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1"
+	microforgev1 "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/consts"
 	mwinter "github.com/horonlee/micro-forge/app/micro-forge/service/internal/server/middleware"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"

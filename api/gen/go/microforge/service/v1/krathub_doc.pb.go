@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: micro_forge/service/v1/krathub_doc.proto
+// source: microforge/service/v1/krathub_doc.proto
 
 package servicev1
 
@@ -21,11 +21,11 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_micro_forge_service_v1_krathub_doc_proto protoreflect.FileDescriptor
+var File_microforge_service_v1_krathub_doc_proto protoreflect.FileDescriptor
 
-const file_micro_forge_service_v1_krathub_doc_proto_rawDesc = "" +
+const file_microforge_service_v1_krathub_doc_proto_rawDesc = "" +
 	"\n" +
-	"(micro_forge/service/v1/krathub_doc.proto\x12\x16micro_forge.service.v1\x1a$gnostic/openapi/v3/annotations.protoB\xfb\x05\xbaG\x87\x04\x12\xbf\x01\n" +
+	"'microforge/service/v1/krathub_doc.proto\x12\x15microforge.service.v1\x1a$gnostic/openapi/v3/annotations.protoB\xf9\x05\xbaG\x87\x04\x12\xbf\x01\n" +
 	"\x0fmicro-forge API\x12 micro-forge 微服务 API 文档\";\n" +
 	"\x10micro-forge Team\x12'https://github.com/horonlee/micro-forge*H\n" +
 	"\vMIT License\x129https://github.com/horonlee/micro-forge/blob/main/LICENSE2\x031.0*\xc2\x02\n" +
@@ -53,10 +53,10 @@ const file_micro_forge_service_v1_krathub_doc_proto_rawDesc = "" +
 	"\x10application/json\x12&\n" +
 	"$\x12\"\n" +
 	" #/components/schemas/KratosError\n" +
-	"\x1acom.micro_forge.service.v1B\x0fKrathubDocProtoP\x01ZKgithub.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1;servicev1\xa2\x02\x03MSX\xaa\x02\x15MicroForge.Service.V1\xca\x02\x15MicroForge\\Service\\V1\xe2\x02!MicroForge\\Service\\V1\\GPBMetadata\xea\x02\x17MicroForge::Service::V1b\x06proto3"
+	"\x19com.microforge.service.v1B\x0fKrathubDocProtoP\x01ZJgithub.com/horonlee/micro-forge/api/gen/go/microforge/service/v1;servicev1\xa2\x02\x03MSX\xaa\x02\x15Microforge.Service.V1\xca\x02\x15Microforge\\Service\\V1\xe2\x02!Microforge\\Service\\V1\\GPBMetadata\xea\x02\x17Microforge::Service::V1b\x06proto3"
 
-var file_micro_forge_service_v1_krathub_doc_proto_goTypes = []any{}
-var file_micro_forge_service_v1_krathub_doc_proto_depIdxs = []int32{
+var file_microforge_service_v1_krathub_doc_proto_goTypes = []any{}
+var file_microforge_service_v1_krathub_doc_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -64,25 +64,25 @@ var file_micro_forge_service_v1_krathub_doc_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_micro_forge_service_v1_krathub_doc_proto_init() }
-func file_micro_forge_service_v1_krathub_doc_proto_init() {
-	if File_micro_forge_service_v1_krathub_doc_proto != nil {
+func init() { file_microforge_service_v1_krathub_doc_proto_init() }
+func file_microforge_service_v1_krathub_doc_proto_init() {
+	if File_microforge_service_v1_krathub_doc_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_micro_forge_service_v1_krathub_doc_proto_rawDesc), len(file_micro_forge_service_v1_krathub_doc_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_microforge_service_v1_krathub_doc_proto_rawDesc), len(file_microforge_service_v1_krathub_doc_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_micro_forge_service_v1_krathub_doc_proto_goTypes,
-		DependencyIndexes: file_micro_forge_service_v1_krathub_doc_proto_depIdxs,
+		GoTypes:           file_microforge_service_v1_krathub_doc_proto_goTypes,
+		DependencyIndexes: file_microforge_service_v1_krathub_doc_proto_depIdxs,
 	}.Build()
-	File_micro_forge_service_v1_krathub_doc_proto = out.File
-	file_micro_forge_service_v1_krathub_doc_proto_goTypes = nil
-	file_micro_forge_service_v1_krathub_doc_proto_depIdxs = nil
+	File_microforge_service_v1_krathub_doc_proto = out.File
+	file_microforge_service_v1_krathub_doc_proto_goTypes = nil
+	file_microforge_service_v1_krathub_doc_proto_depIdxs = nil
 }

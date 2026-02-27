@@ -186,7 +186,7 @@ package micro-forge.service.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "github.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1;micro-forgepb";
+option go_package = "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1;micro-forgepb";
 
 // 文章服务 HTTP 接口
 service Article {
@@ -345,7 +345,7 @@ enum ErrorReason {
 
 生成后可在代码中使用：
 ```go
-import micro-forgepb "github.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1"
+import micro-forgepb "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1"
 
 return micro-forgepb.ErrorArticleNotFound("article id=%d not found", id)
 ```
@@ -636,7 +636,7 @@ git push origin feature/add-article-api
 **导入示例**：
 ```go
 import (
-    micro-forgepb "github.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1"
+    micro-forgepb "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1"
     authpb "github.com/horonlee/micro-forge/api/gen/go/auth/service/v1"
     userpb "github.com/horonlee/micro-forge/api/gen/go/user/service/v1"
 )

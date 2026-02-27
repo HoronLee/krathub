@@ -31,7 +31,7 @@ managed:
       value: github.com/horonlee/micro-forge/api/gen/go/test/service/v1;testpb
     - file_option: go_package
       path: micro-forge/service/v1
-      value: github.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1;microforgepb
+      value: github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1;microforgepb
     - file_option: go_package
       path: sayhello/service/v1
       value: github.com/horonlee/micro-forge/api/gen/go/sayhello/service/v1;sayhellopb

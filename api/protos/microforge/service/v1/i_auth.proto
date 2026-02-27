@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package micro_forge.service.v1;
+package microforge.service.v1;
 
 import "auth/service/v1/auth.proto";
 import "google/api/annotations.proto";

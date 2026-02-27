@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.9.2
 // - protoc             (unknown)
-// source: micro_forge/service/v1/i_user.proto
+// source: microforge/service/v1/i_user.proto
 
 package servicev1
 
@@ -20,11 +20,11 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUserServiceCurrentUserInfo = "/micro_forge.service.v1.UserService/CurrentUserInfo"
-const OperationUserServiceDeleteUser = "/micro_forge.service.v1.UserService/DeleteUser"
-const OperationUserServiceListUsers = "/micro_forge.service.v1.UserService/ListUsers"
-const OperationUserServiceSaveUser = "/micro_forge.service.v1.UserService/SaveUser"
-const OperationUserServiceUpdateUser = "/micro_forge.service.v1.UserService/UpdateUser"
+const OperationUserServiceCurrentUserInfo = "/microforge.service.v1.UserService/CurrentUserInfo"
+const OperationUserServiceDeleteUser = "/microforge.service.v1.UserService/DeleteUser"
+const OperationUserServiceListUsers = "/microforge.service.v1.UserService/ListUsers"
+const OperationUserServiceSaveUser = "/microforge.service.v1.UserService/SaveUser"
+const OperationUserServiceUpdateUser = "/microforge.service.v1.UserService/UpdateUser"
 
 type UserServiceHTTPServer interface {
 	CurrentUserInfo(context.Context, *v1.CurrentUserInfoRequest) (*v1.CurrentUserInfoResponse, error)

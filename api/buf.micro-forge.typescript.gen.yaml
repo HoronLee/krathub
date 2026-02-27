@@ -8,7 +8,7 @@ managed:
 inputs:
   - directory: protos
     paths:
-      - protos/micro_forge/service/v1
+      - protos/microforge/service/v1
       - protos/auth/service/v1
       - protos/user/service/v1
 

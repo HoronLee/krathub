@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.9.2
 // - protoc             (unknown)
-// source: micro_forge/service/v1/i_test.proto
+// source: microforge/service/v1/i_test.proto
 
 package servicev1
 
@@ -20,9 +20,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationTestServiceHello = "/micro_forge.service.v1.TestService/Hello"
-const OperationTestServicePrivateTest = "/micro_forge.service.v1.TestService/PrivateTest"
-const OperationTestServiceTest = "/micro_forge.service.v1.TestService/Test"
+const OperationTestServiceHello = "/microforge.service.v1.TestService/Hello"
+const OperationTestServicePrivateTest = "/microforge.service.v1.TestService/PrivateTest"
+const OperationTestServiceTest = "/microforge.service.v1.TestService/Test"
 
 type TestServiceHTTPServer interface {
 	Hello(context.Context, *v1.HelloRequest) (*v1.HelloResponse, error)

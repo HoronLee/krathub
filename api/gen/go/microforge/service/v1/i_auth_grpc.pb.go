@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             (unknown)
-// source: micro_forge/service/v1/i_auth.proto
+// source: microforge/service/v1/i_auth.proto
 
 package servicev1
 
@@ -20,10 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_SignupByEmail_FullMethodName        = "/micro_forge.service.v1.AuthService/SignupByEmail"
-	AuthService_LoginByEmailPassword_FullMethodName = "/micro_forge.service.v1.AuthService/LoginByEmailPassword"
-	AuthService_RefreshToken_FullMethodName         = "/micro_forge.service.v1.AuthService/RefreshToken"
-	AuthService_Logout_FullMethodName               = "/micro_forge.service.v1.AuthService/Logout"
+	AuthService_SignupByEmail_FullMethodName        = "/microforge.service.v1.AuthService/SignupByEmail"
+	AuthService_LoginByEmailPassword_FullMethodName = "/microforge.service.v1.AuthService/LoginByEmailPassword"
+	AuthService_RefreshToken_FullMethodName         = "/microforge.service.v1.AuthService/RefreshToken"
+	AuthService_Logout_FullMethodName               = "/microforge.service.v1.AuthService/Logout"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -215,7 +215,7 @@ func _AuthService_Logout_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "micro_forge.service.v1.AuthService",
+	ServiceName: "microforge.service.v1.AuthService",
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -236,5 +236,5 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "micro_forge/service/v1/i_auth.proto",
+	Metadata: "microforge/service/v1/i_auth.proto",
 }

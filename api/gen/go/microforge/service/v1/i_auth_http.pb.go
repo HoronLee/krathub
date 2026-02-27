@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.9.2
 // - protoc             (unknown)
-// source: micro_forge/service/v1/i_auth.proto
+// source: microforge/service/v1/i_auth.proto
 
 package servicev1
 
@@ -20,10 +20,10 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAuthServiceLoginByEmailPassword = "/micro_forge.service.v1.AuthService/LoginByEmailPassword"
-const OperationAuthServiceLogout = "/micro_forge.service.v1.AuthService/Logout"
-const OperationAuthServiceRefreshToken = "/micro_forge.service.v1.AuthService/RefreshToken"
-const OperationAuthServiceSignupByEmail = "/micro_forge.service.v1.AuthService/SignupByEmail"
+const OperationAuthServiceLoginByEmailPassword = "/microforge.service.v1.AuthService/LoginByEmailPassword"
+const OperationAuthServiceLogout = "/microforge.service.v1.AuthService/Logout"
+const OperationAuthServiceRefreshToken = "/microforge.service.v1.AuthService/RefreshToken"
+const OperationAuthServiceSignupByEmail = "/microforge.service.v1.AuthService/SignupByEmail"
 
 type AuthServiceHTTPServer interface {
 	LoginByEmailPassword(context.Context, *v1.LoginByEmailPasswordRequest) (*v1.LoginByEmailPasswordResponse, error)

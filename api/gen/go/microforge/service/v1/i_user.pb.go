@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: micro_forge/service/v1/i_user.proto
+// source: microforge/service/v1/i_user.proto
 
 package servicev1
 
@@ -22,11 +22,11 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_micro_forge_service_v1_i_user_proto protoreflect.FileDescriptor
+var File_microforge_service_v1_i_user_proto protoreflect.FileDescriptor
 
-const file_micro_forge_service_v1_i_user_proto_rawDesc = "" +
+const file_microforge_service_v1_i_user_proto_rawDesc = "" +
 	"\n" +
-	"#micro_forge/service/v1/i_user.proto\x12\x16micro_forge.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1auser/service/v1/user.proto2\xc4\x04\n" +
+	"\"microforge/service/v1/i_user.proto\x12\x15microforge.service.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1auser/service/v1/user.proto2\xc4\x04\n" +
 	"\vUserService\x12{\n" +
 	"\x0fCurrentUserInfo\x12'.user.service.v1.CurrentUserInfoRequest\x1a(.user.service.v1.CurrentUserInfoResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/user/info\x12e\n" +
 	"\tListUsers\x12!.user.service.v1.ListUsersRequest\x1a\".user.service.v1.ListUsersResponse\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/users\x12q\n" +
@@ -34,11 +34,11 @@ const file_micro_forge_service_v1_i_user_proto_rawDesc = "" +
 	"UpdateUser\x12\".user.service.v1.UpdateUserRequest\x1a#.user.service.v1.UpdateUserResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/user/update\x12i\n" +
 	"\bSaveUser\x12 .user.service.v1.SaveUserRequest\x1a!.user.service.v1.SaveUserResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/user/save\x12s\n" +
 	"\n" +
-	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a#.user.service.v1.DeleteUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B\xeb\x01\n" +
-	"\x1acom.micro_forge.service.v1B\n" +
-	"IUserProtoP\x01ZKgithub.com/horonlee/micro-forge/api/gen/go/micro_forge/service/v1;servicev1\xa2\x02\x03MSX\xaa\x02\x15MicroForge.Service.V1\xca\x02\x15MicroForge\\Service\\V1\xe2\x02!MicroForge\\Service\\V1\\GPBMetadata\xea\x02\x17MicroForge::Service::V1b\x06proto3"
+	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a#.user.service.v1.DeleteUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/v1/user/delete/{id}B\xe9\x01\n" +
+	"\x19com.microforge.service.v1B\n" +
+	"IUserProtoP\x01ZJgithub.com/horonlee/micro-forge/api/gen/go/microforge/service/v1;servicev1\xa2\x02\x03MSX\xaa\x02\x15Microforge.Service.V1\xca\x02\x15Microforge\\Service\\V1\xe2\x02!Microforge\\Service\\V1\\GPBMetadata\xea\x02\x17Microforge::Service::V1b\x06proto3"
 
-var file_micro_forge_service_v1_i_user_proto_goTypes = []any{
+var file_microforge_service_v1_i_user_proto_goTypes = []any{
 	(*v1.CurrentUserInfoRequest)(nil),  // 0: user.service.v1.CurrentUserInfoRequest
 	(*v1.ListUsersRequest)(nil),        // 1: user.service.v1.ListUsersRequest
 	(*v1.UpdateUserRequest)(nil),       // 2: user.service.v1.UpdateUserRequest
@@ -50,17 +50,17 @@ var file_micro_forge_service_v1_i_user_proto_goTypes = []any{
 	(*v1.SaveUserResponse)(nil),        // 8: user.service.v1.SaveUserResponse
 	(*v1.DeleteUserResponse)(nil),      // 9: user.service.v1.DeleteUserResponse
 }
-var file_micro_forge_service_v1_i_user_proto_depIdxs = []int32{
-	0, // 0: micro_forge.service.v1.UserService.CurrentUserInfo:input_type -> user.service.v1.CurrentUserInfoRequest
-	1, // 1: micro_forge.service.v1.UserService.ListUsers:input_type -> user.service.v1.ListUsersRequest
-	2, // 2: micro_forge.service.v1.UserService.UpdateUser:input_type -> user.service.v1.UpdateUserRequest
-	3, // 3: micro_forge.service.v1.UserService.SaveUser:input_type -> user.service.v1.SaveUserRequest
-	4, // 4: micro_forge.service.v1.UserService.DeleteUser:input_type -> user.service.v1.DeleteUserRequest
-	5, // 5: micro_forge.service.v1.UserService.CurrentUserInfo:output_type -> user.service.v1.CurrentUserInfoResponse
-	6, // 6: micro_forge.service.v1.UserService.ListUsers:output_type -> user.service.v1.ListUsersResponse
-	7, // 7: micro_forge.service.v1.UserService.UpdateUser:output_type -> user.service.v1.UpdateUserResponse
-	8, // 8: micro_forge.service.v1.UserService.SaveUser:output_type -> user.service.v1.SaveUserResponse
-	9, // 9: micro_forge.service.v1.UserService.DeleteUser:output_type -> user.service.v1.DeleteUserResponse
+var file_microforge_service_v1_i_user_proto_depIdxs = []int32{
+	0, // 0: microforge.service.v1.UserService.CurrentUserInfo:input_type -> user.service.v1.CurrentUserInfoRequest
+	1, // 1: microforge.service.v1.UserService.ListUsers:input_type -> user.service.v1.ListUsersRequest
+	2, // 2: microforge.service.v1.UserService.UpdateUser:input_type -> user.service.v1.UpdateUserRequest
+	3, // 3: microforge.service.v1.UserService.SaveUser:input_type -> user.service.v1.SaveUserRequest
+	4, // 4: microforge.service.v1.UserService.DeleteUser:input_type -> user.service.v1.DeleteUserRequest
+	5, // 5: microforge.service.v1.UserService.CurrentUserInfo:output_type -> user.service.v1.CurrentUserInfoResponse
+	6, // 6: microforge.service.v1.UserService.ListUsers:output_type -> user.service.v1.ListUsersResponse
+	7, // 7: microforge.service.v1.UserService.UpdateUser:output_type -> user.service.v1.UpdateUserResponse
+	8, // 8: microforge.service.v1.UserService.SaveUser:output_type -> user.service.v1.SaveUserResponse
+	9, // 9: microforge.service.v1.UserService.DeleteUser:output_type -> user.service.v1.DeleteUserResponse
 	5, // [5:10] is the sub-list for method output_type
 	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -68,25 +68,25 @@ var file_micro_forge_service_v1_i_user_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_micro_forge_service_v1_i_user_proto_init() }
-func file_micro_forge_service_v1_i_user_proto_init() {
-	if File_micro_forge_service_v1_i_user_proto != nil {
+func init() { file_microforge_service_v1_i_user_proto_init() }
+func file_microforge_service_v1_i_user_proto_init() {
+	if File_microforge_service_v1_i_user_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_micro_forge_service_v1_i_user_proto_rawDesc), len(file_micro_forge_service_v1_i_user_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_microforge_service_v1_i_user_proto_rawDesc), len(file_microforge_service_v1_i_user_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_micro_forge_service_v1_i_user_proto_goTypes,
-		DependencyIndexes: file_micro_forge_service_v1_i_user_proto_depIdxs,
+		GoTypes:           file_microforge_service_v1_i_user_proto_goTypes,
+		DependencyIndexes: file_microforge_service_v1_i_user_proto_depIdxs,
 	}.Build()
-	File_micro_forge_service_v1_i_user_proto = out.File
-	file_micro_forge_service_v1_i_user_proto_goTypes = nil
-	file_micro_forge_service_v1_i_user_proto_depIdxs = nil
+	File_microforge_service_v1_i_user_proto = out.File
+	file_microforge_service_v1_i_user_proto_goTypes = nil
+	file_microforge_service_v1_i_user_proto_depIdxs = nil
 }

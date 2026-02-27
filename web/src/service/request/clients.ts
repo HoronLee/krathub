@@ -3,7 +3,7 @@ import {
   createUserServiceClient,
   type AuthService,
   type UserService,
-} from "../gen/micro_forge/service/v1";
+} from "../gen/microforge/service/v1";
 
 import {
   createRequestHandler,
@@ -25,4 +25,4 @@ export function createmicroforgeClients(
   };
 }
 
-export * from "../gen/micro_forge/service/v1";
+export * from "../gen/microforge/service/v1";

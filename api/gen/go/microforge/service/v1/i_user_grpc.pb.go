@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             (unknown)
-// source: micro_forge/service/v1/i_user.proto
+// source: microforge/service/v1/i_user.proto
 
 package servicev1
 
@@ -20,11 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_CurrentUserInfo_FullMethodName = "/micro_forge.service.v1.UserService/CurrentUserInfo"
-	UserService_ListUsers_FullMethodName       = "/micro_forge.service.v1.UserService/ListUsers"
-	UserService_UpdateUser_FullMethodName      = "/micro_forge.service.v1.UserService/UpdateUser"
-	UserService_SaveUser_FullMethodName        = "/micro_forge.service.v1.UserService/SaveUser"
-	UserService_DeleteUser_FullMethodName      = "/micro_forge.service.v1.UserService/DeleteUser"
+	UserService_CurrentUserInfo_FullMethodName = "/microforge.service.v1.UserService/CurrentUserInfo"
+	UserService_ListUsers_FullMethodName       = "/microforge.service.v1.UserService/ListUsers"
+	UserService_UpdateUser_FullMethodName      = "/microforge.service.v1.UserService/UpdateUser"
+	UserService_SaveUser_FullMethodName        = "/microforge.service.v1.UserService/SaveUser"
+	UserService_DeleteUser_FullMethodName      = "/microforge.service.v1.UserService/DeleteUser"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -249,7 +249,7 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "micro_forge.service.v1.UserService",
+	ServiceName: "microforge.service.v1.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -274,5 +274,5 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "micro_forge/service/v1/i_user.proto",
+	Metadata: "microforge/service/v1/i_user.proto",
 }

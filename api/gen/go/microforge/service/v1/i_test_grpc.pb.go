@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             (unknown)
-// source: micro_forge/service/v1/i_test.proto
+// source: microforge/service/v1/i_test.proto
 
 package servicev1
 
@@ -20,9 +20,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TestService_Hello_FullMethodName       = "/micro_forge.service.v1.TestService/Hello"
-	TestService_Test_FullMethodName        = "/micro_forge.service.v1.TestService/Test"
-	TestService_PrivateTest_FullMethodName = "/micro_forge.service.v1.TestService/PrivateTest"
+	TestService_Hello_FullMethodName       = "/microforge.service.v1.TestService/Hello"
+	TestService_Test_FullMethodName        = "/microforge.service.v1.TestService/Test"
+	TestService_PrivateTest_FullMethodName = "/microforge.service.v1.TestService/PrivateTest"
 )
 
 // TestServiceClient is the client API for TestService service.
@@ -181,7 +181,7 @@ func _TestService_PrivateTest_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var TestService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "micro_forge.service.v1.TestService",
+	ServiceName: "microforge.service.v1.TestService",
 	HandlerType: (*TestServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -198,5 +198,5 @@ var TestService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "micro_forge/service/v1/i_test.proto",
+	Metadata: "microforge/service/v1/i_test.proto",
 }

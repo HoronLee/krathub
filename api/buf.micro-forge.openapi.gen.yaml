@@ -19,7 +19,7 @@ managed:
 inputs:
   - directory: protos
     paths:
-      - protos/micro_forge/service/v1 # 只生成 micro-forge 服务的 HTTP 接口（i_*.proto）
+      - protos/microforge/service/v1 # 只生成 micro-forge 服务的 HTTP 接口（i_*.proto）
 
 plugins:
   # generate openapi v3 yaml doc
