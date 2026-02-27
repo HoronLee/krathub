@@ -157,7 +157,6 @@ make build         # 构建所有服务
 make test          # 运行所有测试
 make lint          # 代码检查（golangci-lint）
 make clean         # 清理构建产物
-make docker-build  # 构建所有 Docker 镜像
 make compose.build      # 构建生产镜像（micro-forge + sayhello）
 make compose.up         # 启动生产 compose 全栈（consul + db + redis + observability + services）
 make compose.rebuild    # 重建生产镜像并启动生产 compose 全栈
@@ -183,7 +182,6 @@ make wire          # 生成 Wire 代码
 make gen.dao       # 生成 GORM GEN PO/DAO
 make gen.ent       # 生成 Ent 代码
 make test          # 运行测试
-make docker-build  # 构建 Docker 镜像
 ```
 
 **前端命令**（在仓库根目录 `web/` 下执行）：
@@ -387,8 +385,8 @@ make lint
 # 构建所有服务
 make build
 
-# 构建 Docker 镜像
-make docker-build
+# 构建生产镜像
+make compose.build
 
 # K8s 部署
 kubectl apply -f manifests/

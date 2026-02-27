@@ -78,7 +78,7 @@ OPENAPI_CONFIG := buf.$(SERVICE_NAME).openapi.gen.yaml
 CONF ?= ./configs/config.yaml
 RUN_DEPS ?= api openapi
 
-.PHONY: build clean docker-build gen wire api openapi run app help env gen.dao gen.ent
+.PHONY: build clean gen wire api openapi run app help env gen.dao gen.ent
 
 # show environment variables
 env:
@@ -157,13 +157,6 @@ api:
 openapi:
 	@cd ../../../api && \
 	buf generate --template $(OPENAPI_CONFIG)
-
-# build docker image
-docker-build:
-	@docker build -t $(PROJECT_NAME)/$(APP_NAME) \
-				  --build-arg SERVICE_NAME=$(SERVICE_NAME) \
-				  --build-arg APP_VERSION=$(VERSION) \
-				  -f ./Dockerfile ../../../
 
 # show help
 help:

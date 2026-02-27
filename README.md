@@ -178,7 +178,6 @@ make wire
 make gen.ent
 make gen.dao
 make openapi
-make docker-build
 ```
 
 ### 前端命令（`web/`）

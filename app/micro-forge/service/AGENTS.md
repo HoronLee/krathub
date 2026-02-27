@@ -1231,9 +1231,9 @@ bun dev
 ### 部署
 
 ```bash
-# Docker 构建
-cd /Users/horonlee/projects/go/micro-forge/app/micro-forge/service
-make docker-build
+# Compose 构建（仓库根目录）
+cd /Users/horonlee/projects/go/micro-forge
+make compose.build
 
 # Kubernetes 部署
 kubectl apply -f deployment/kubernetes/

@@ -1056,10 +1056,10 @@ func TestUserRepo_Create(t *testing.T) {
 
 ### 部署配置
 
-**Docker 构建**：
+**Compose 镜像构建**：
 ```bash
-cd app/micro-forge/service
-make docker-build  # 构建 Docker 镜像
+cd /Users/horonlee/projects/go/micro-forge
+make compose.build  # 构建生产镜像（micro-forge + sayhello）
 ```
 
 **Kubernetes 部署**：

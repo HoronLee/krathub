@@ -63,7 +63,7 @@ INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 # ============================================================================
 
 .PHONY: help env init plugin cli dep vendor test cover vet lint
-.PHONY: wire ent gen api api-go api-ts openapi build build_only all docker-build clean
+.PHONY: wire ent gen api api-go api-ts openapi build build_only all clean
 .PHONY: compose.build compose.up compose.rebuild compose.down compose.ps compose.logs
 .PHONY: compose.dev.build compose.dev.up compose.dev.ps compose.dev.down compose.dev.logs
 
@@ -221,20 +221,6 @@ all:
     )
 	@echo "$(GREEN)✓ All services generated and built$(RESET)"
 
-# build docker images for all services
-docker-build:
-	@echo "$(CYAN)Building Docker images...$(RESET)"
-	@$(foreach dir, $(dir $(realpath $(SRCS_MK))),\
-      cd $(dir) && make docker-build;\
-    )
-	@echo "$(GREEN)✓ Docker images built$(RESET)"
-
-# build Air-based development images for microservices
-compose.dev.build:
-	@echo "$(CYAN)Compose dev build: $(MICROSERVICES)$(RESET)"
-	@$(COMPOSE) $(COMPOSE_DEV_FILES) build $(MICROSERVICES)
-	@echo "$(GREEN)✓ Compose dev images built$(RESET)"
-
 # build production images for microservices
 compose.build:
 	@echo "$(CYAN)Build production images: $(MICROSERVICES)$(RESET)"
@@ -265,6 +251,12 @@ compose.ps:
 # tail logs for production compose stack
 compose.logs:
 	@$(COMPOSE) $(COMPOSE_FILES) logs -f $(INFRA_SERVICES) $(MICROSERVICES)
+
+# build Air-based development images for microservices
+compose.dev.build:
+		@echo "$(CYAN)Compose dev build: $(MICROSERVICES)$(RESET)"
+		@$(COMPOSE) $(COMPOSE_DEV_FILES) build $(MICROSERVICES)
+		@echo "$(GREEN)✓ Compose dev images built$(RESET)"
 
 # start Air-based development containers in background
 compose.dev.up:
