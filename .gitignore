@@ -32,7 +32,6 @@ Thumbs.db
 *.crt
 *.key
 *.log
-app/micro-forge/service/configs/config.yaml
 bin/
 logs/
 cache/
