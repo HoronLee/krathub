@@ -15,6 +15,7 @@ import (
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/server"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/server/middleware"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"
+	"github.com/horonlee/micro-forge/pkg/governance/registry"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
 	"github.com/horonlee/micro-forge/pkg/transport/client"
 )
@@ -26,8 +27,8 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, discovery *conf.Discovery, registry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
-	registrar := server.NewRegistrar(registry)
+func wireApp(confServer *conf.Server, discovery *conf.Discovery, confRegistry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
+	registrar := registry.NewRegistrar(confRegistry)
 	telemetryMetrics, err := telemetry.NewMetrics(metrics, app, logger)
 	if err != nil {
 		return nil, nil, err

@@ -25,7 +25,7 @@ type GRPCMiddleware []middleware.Middleware
 // NewGRPCMiddleware 创建 gRPC 中间件
 func NewGRPCMiddleware(
 	trace *conf.Trace,
-	m *telemetry.Metrics,
+	mtc *telemetry.Metrics,
 	l logger.Logger,
 ) GRPCMiddleware {
 	grpcLogger := logger.With(l, logger.WithModule("grpc/server/micro-forge-service"))
@@ -40,10 +40,10 @@ func NewGRPCMiddleware(
 		ratelimit.Server(),
 		validate.ProtoValidate(),
 	)
-	if m != nil {
+	if mtc != nil {
 		ms = append(ms, metrics.Server(
-			metrics.WithSeconds(m.Seconds),
-			metrics.WithRequests(m.Requests),
+			metrics.WithSeconds(mtc.Seconds),
+			metrics.WithRequests(mtc.Requests),
 		))
 	}
 

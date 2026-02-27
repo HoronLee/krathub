@@ -12,6 +12,7 @@ import (
 	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	"github.com/horonlee/micro-forge/app/sayhello/service/internal/server"
 	"github.com/horonlee/micro-forge/app/sayhello/service/internal/service"
+	"github.com/horonlee/micro-forge/pkg/governance/registry"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
 )
 
@@ -21,8 +22,8 @@ import (
 
 // Injectors from wire.go:
 
-func wireApp(confServer *conf.Server, registry *conf.Registry, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
-	registrar := server.NewRegistrar(registry)
+func wireApp(confServer *conf.Server, confRegistry *conf.Registry, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
+	registrar := registry.NewRegistrar(confRegistry)
 	telemetryMetrics, err := telemetry.NewMetrics(metrics, app, logger)
 	if err != nil {
 		return nil, nil, err

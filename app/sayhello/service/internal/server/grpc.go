@@ -20,7 +20,7 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.Metrics, l logger.Logger, hello *service.SayHelloService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, trace *conf.Trace, mtc *telemetry.Metrics, l logger.Logger, sayhello *service.SayHelloService) *grpc.Server {
 	helper := logger.NewHelper(l)
 	var mds []middleware.Middleware
 	mds = []middleware.Middleware{recovery.Recovery()}
@@ -31,10 +31,10 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.
 		logging.Server(l),
 		validate.ProtoValidate(),
 	)
-	if metricsRuntime != nil {
+	if mtc != nil {
 		mds = append(mds, metrics.Server(
-			metrics.WithSeconds(metricsRuntime.Seconds),
-			metrics.WithRequests(metricsRuntime.Requests),
+			metrics.WithSeconds(mtc.Seconds),
+			metrics.WithRequests(mtc.Requests),
 		))
 	}
 
@@ -64,6 +64,6 @@ func NewGRPCServer(c *conf.Server, trace *conf.Trace, metricsRuntime *telemetry.
 	}
 
 	srv := grpc.NewServer(opts...)
-	sayhellov1.RegisterSayHelloServiceServer(srv, hello)
+	sayhellov1.RegisterSayHelloServiceServer(srv, sayhello)
 	return srv
 }

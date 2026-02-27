@@ -88,7 +88,7 @@ func NewHTTPMiddleware(
 func NewHTTPServer(
 	c *conf.Server,
 	mw HTTPMiddleware,
-	m *telemetry.Metrics,
+	mtc *telemetry.Metrics,
 	l logger.Logger,
 	auth *service.AuthService,
 	user *service.UserService,
@@ -129,8 +129,8 @@ func NewHTTPServer(
 
 	srv := http.NewServer(opts...)
 
-	if m != nil {
-		srv.Handle("/metrics", m.Handler)
+	if mtc != nil {
+		srv.Handle("/metrics", mtc.Handler)
 	}
 
 	microforgev1.RegisterAuthServiceHTTPServer(srv, auth)
