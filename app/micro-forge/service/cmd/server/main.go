@@ -40,23 +40,11 @@ func newApp(identity bootstrap.SvcIdentity, l log.Logger, reg registry.Registrar
 func main() {
 	flag.Parse()
 
-	runtime, err := bootstrap.NewRuntime(flagconf, Name, Version)
+	err := bootstrap.BootstrapAndRun(flagconf, Name, Version, func(runtime *bootstrap.Runtime) (*kratos.App, func(), error) {
+		bc := runtime.Bootstrap
+		return wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, bc.Metrics, runtime.Identity, runtime.Logger)
+	})
 	if err != nil {
-		panic(err)
-	}
-	defer runtime.Close()
-
-	bc := runtime.Bootstrap
-
-	// 初始化服务
-	app, cleanup, err := wireApp(bc.Server, bc.Discovery, bc.Registry, bc.Data, bc.App, bc.Trace, bc.Metrics, runtime.Identity, runtime.Logger)
-	if err != nil {
-		panic(err)
-	}
-	defer cleanup()
-
-	// 启动服务并且等待停止信号
-	if err := bootstrap.Run(app); err != nil {
 		panic(err)
 	}
 }

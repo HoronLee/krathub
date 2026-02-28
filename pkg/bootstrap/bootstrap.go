@@ -1,8 +1,10 @@
 package bootstrap
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"time"
 
 	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	"github.com/horonlee/micro-forge/pkg/config"
@@ -14,6 +16,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 )
 
+// SvcIdentity 定义服务实例身份信息。
 type SvcIdentity struct {
 	Name     string
 	Version  string
@@ -21,6 +24,7 @@ type SvcIdentity struct {
 	Metadata map[string]string
 }
 
+// Runtime 聚合启动阶段产物与资源清理句柄。
 type Runtime struct {
 	Bootstrap *conf.Bootstrap
 	Identity  SvcIdentity
@@ -30,7 +34,39 @@ type Runtime struct {
 	traceCloser  func()
 }
 
-func NewRuntime(configPath, name, version string) (*Runtime, error) {
+// appBuilder 负责基于 Runtime 构造应用并返回清理函数。
+type appBuilder func(runtime *Runtime) (app *kratos.App, cleanup func(), err error)
+
+// runtimeFactory 负责创建 Runtime。
+type runtimeFactory func(configPath, name, version string) (*Runtime, error)
+
+// appRunner 负责运行应用主循环。
+type appRunner func(app *kratos.App) error
+
+// runner 封装启动链路中的可替换依赖。
+type runner struct {
+	newRuntime runtimeFactory
+	runApp     appRunner
+}
+
+var (
+	// 通过默认 runner 注入依赖，便于单测替换而不污染全局状态。
+	defaultRunner = newRunner(newRuntime, run)
+)
+
+// newRunner 创建 runner，空依赖会回退到默认实现。
+func newRunner(runtimeFactory runtimeFactory, appRunner appRunner) runner {
+	if runtimeFactory == nil {
+		runtimeFactory = newRuntime
+	}
+	if appRunner == nil {
+		appRunner = run
+	}
+	return runner{newRuntime: runtimeFactory, runApp: appRunner}
+}
+
+// newRuntime 加载配置并初始化日志、追踪与身份信息。
+func newRuntime(configPath, name, version string) (*Runtime, error) {
 	bc, c, err := config.LoadBootstrap(configPath, name)
 	if err != nil {
 		return nil, err
@@ -78,10 +114,12 @@ func NewRuntime(configPath, name, version string) (*Runtime, error) {
 	}, nil
 }
 
+// Close 释放 Runtime 关联的外部资源。
 func (r *Runtime) Close() {
 	if r == nil {
 		return
 	}
+	// 先关闭 tracer，确保 trace 在底层资源关闭前完成 flush。
 	if r.traceCloser != nil {
 		r.traceCloser()
 	}
@@ -90,16 +128,91 @@ func (r *Runtime) Close() {
 	}
 }
 
-func Run(app *kratos.App) error {
+// run 执行 kratos 应用。
+func run(app *kratos.App) error {
 	return app.Run()
 }
 
+// runWithRuntime 在已构造 Runtime 的前提下装配并运行应用。
+func (r runner) runWithRuntime(runtime *Runtime, builder appBuilder) error {
+	if runtime == nil {
+		return errors.New("runtime is nil")
+	}
+
+	logStage(runtime.Logger, "run_with_runtime_start", "service", runtime.Identity.Name, "version", runtime.Identity.Version)
+	startedAt := time.Now()
+	if builder == nil {
+		return errors.New("app builder is nil")
+	}
+
+	app, cleanup, err := builder(runtime)
+	if err != nil {
+		logStage(runtime.Logger, "run_with_runtime_failed", "reason", "build_app", "error", err.Error())
+		return err
+	}
+	if app == nil {
+		// app 为空说明启动装配链路异常，直接失败避免后续 panic。
+		logStage(runtime.Logger, "run_with_runtime_failed", "reason", "nil_app")
+		return errors.New("app is nil")
+	}
+	if cleanup != nil {
+		defer cleanup()
+	}
+
+	err = r.runApp(app)
+	if err != nil {
+		logStage(runtime.Logger, "run_with_runtime_failed", "reason", "run_app", "error", err.Error())
+		return err
+	}
+
+	logStage(runtime.Logger, "run_with_runtime_done", "duration", time.Since(startedAt).String())
+	return nil
+}
+
+// BootstrapAndRun 对外暴露统一启动入口。
+func BootstrapAndRun(configPath, name, version string, builder appBuilder) error {
+	return defaultRunner.bootstrapAndRun(configPath, name, version, builder)
+}
+
+// bootstrapAndRun 执行完整启动链路：构造 Runtime、运行应用、回收资源。
+func (r runner) bootstrapAndRun(configPath, name, version string, builder appBuilder) error {
+	runtime, err := r.newRuntime(configPath, name, version)
+	if err != nil {
+		return err
+	}
+	defer runtime.Close()
+	logStage(runtime.Logger, "bootstrap_start", "service", runtime.Identity.Name, "version", runtime.Identity.Version)
+	startedAt := time.Now()
+
+	err = r.runWithRuntime(runtime, builder)
+	if err != nil {
+		logStage(runtime.Logger, "bootstrap_failed", "error", err.Error())
+		return err
+	}
+
+	logStage(runtime.Logger, "bootstrap_done", "duration", time.Since(startedAt).String())
+	return nil
+}
+
+func logStage(l log.Logger, stage string, keyvals ...any) {
+	if l == nil {
+		return
+	}
+	fields := []any{"stage", stage}
+	if len(keyvals) > 0 {
+		fields = append(fields, keyvals...)
+	}
+	_ = l.Log(log.LevelInfo, fields...)
+}
+
+// resolveServiceIdentity 解析并回填服务身份默认值。
 func resolveServiceIdentity(defaultName, defaultVersion, hostname string, app *conf.App) SvcIdentity {
 	name := defaultName
 	version := defaultVersion
 	metadata := make(map[string]string)
 
 	if app != nil {
+		// 将默认身份信息回填到 app，保证下游 provider 读取到一致值。
 		if app.Name != "" {
 			name = app.Name
 		} else {
