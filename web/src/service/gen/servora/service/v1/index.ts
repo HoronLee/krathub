@@ -384,11 +384,6 @@ export type userservicev1_UserInfo = {
   id: number | undefined;
   name: string | undefined;
   email: string | undefined;
-  phone: string | undefined;
-  avatar: string | undefined;
-  bio: string | undefined;
-  location: string | undefined;
-  website: string | undefined;
   role: string | undefined;
 };
 
@@ -413,11 +408,6 @@ export type userservicev1_UpdateUserRequest = {
   name: string | undefined;
   email: string | undefined;
   password: string | undefined;
-  phone: string | undefined;
-  avatar: string | undefined;
-  bio: string | undefined;
-  location: string | undefined;
-  website: string | undefined;
   role: string | undefined;
 };
 
@@ -429,11 +419,6 @@ export type userservicev1_SaveUserRequest = {
   name: string | undefined;
   email: string | undefined;
   password: string | undefined;
-  phone: string | undefined;
-  avatar: string | undefined;
-  bio: string | undefined;
-  location: string | undefined;
-  website: string | undefined;
   role: string | undefined;
 };
 

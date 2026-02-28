@@ -38,76 +38,6 @@ func (_c *UserCreate) SetPassword(v string) *UserCreate {
 	return _c
 }
 
-// SetPhone sets the "phone" field.
-func (_c *UserCreate) SetPhone(v string) *UserCreate {
-	_c.mutation.SetPhone(v)
-	return _c
-}
-
-// SetNillablePhone sets the "phone" field if the given value is not nil.
-func (_c *UserCreate) SetNillablePhone(v *string) *UserCreate {
-	if v != nil {
-		_c.SetPhone(*v)
-	}
-	return _c
-}
-
-// SetAvatar sets the "avatar" field.
-func (_c *UserCreate) SetAvatar(v string) *UserCreate {
-	_c.mutation.SetAvatar(v)
-	return _c
-}
-
-// SetNillableAvatar sets the "avatar" field if the given value is not nil.
-func (_c *UserCreate) SetNillableAvatar(v *string) *UserCreate {
-	if v != nil {
-		_c.SetAvatar(*v)
-	}
-	return _c
-}
-
-// SetBio sets the "bio" field.
-func (_c *UserCreate) SetBio(v string) *UserCreate {
-	_c.mutation.SetBio(v)
-	return _c
-}
-
-// SetNillableBio sets the "bio" field if the given value is not nil.
-func (_c *UserCreate) SetNillableBio(v *string) *UserCreate {
-	if v != nil {
-		_c.SetBio(*v)
-	}
-	return _c
-}
-
-// SetLocation sets the "location" field.
-func (_c *UserCreate) SetLocation(v string) *UserCreate {
-	_c.mutation.SetLocation(v)
-	return _c
-}
-
-// SetNillableLocation sets the "location" field if the given value is not nil.
-func (_c *UserCreate) SetNillableLocation(v *string) *UserCreate {
-	if v != nil {
-		_c.SetLocation(*v)
-	}
-	return _c
-}
-
-// SetWebsite sets the "website" field.
-func (_c *UserCreate) SetWebsite(v string) *UserCreate {
-	_c.mutation.SetWebsite(v)
-	return _c
-}
-
-// SetNillableWebsite sets the "website" field if the given value is not nil.
-func (_c *UserCreate) SetNillableWebsite(v *string) *UserCreate {
-	if v != nil {
-		_c.SetWebsite(*v)
-	}
-	return _c
-}
-
 // SetRole sets the "role" field.
 func (_c *UserCreate) SetRole(v string) *UserCreate {
 	_c.mutation.SetRole(v)
@@ -231,31 +161,6 @@ func (_c *UserCreate) check() error {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
 		}
 	}
-	if v, ok := _c.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "User.phone": %w`, err)}
-		}
-	}
-	if v, ok := _c.mutation.Avatar(); ok {
-		if err := user.AvatarValidator(v); err != nil {
-			return &ValidationError{Name: "avatar", err: fmt.Errorf(`ent: validator failed for field "User.avatar": %w`, err)}
-		}
-	}
-	if v, ok := _c.mutation.Bio(); ok {
-		if err := user.BioValidator(v); err != nil {
-			return &ValidationError{Name: "bio", err: fmt.Errorf(`ent: validator failed for field "User.bio": %w`, err)}
-		}
-	}
-	if v, ok := _c.mutation.Location(); ok {
-		if err := user.LocationValidator(v); err != nil {
-			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "User.location": %w`, err)}
-		}
-	}
-	if v, ok := _c.mutation.Website(); ok {
-		if err := user.WebsiteValidator(v); err != nil {
-			return &ValidationError{Name: "website", err: fmt.Errorf(`ent: validator failed for field "User.website": %w`, err)}
-		}
-	}
 	if _, ok := _c.mutation.Role(); !ok {
 		return &ValidationError{Name: "role", err: errors.New(`ent: missing required field "User.role"`)}
 	}
@@ -313,26 +218,6 @@ func (_c *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 		_node.Password = value
-	}
-	if value, ok := _c.mutation.Phone(); ok {
-		_spec.SetField(user.FieldPhone, field.TypeString, value)
-		_node.Phone = &value
-	}
-	if value, ok := _c.mutation.Avatar(); ok {
-		_spec.SetField(user.FieldAvatar, field.TypeString, value)
-		_node.Avatar = &value
-	}
-	if value, ok := _c.mutation.Bio(); ok {
-		_spec.SetField(user.FieldBio, field.TypeString, value)
-		_node.Bio = &value
-	}
-	if value, ok := _c.mutation.Location(); ok {
-		_spec.SetField(user.FieldLocation, field.TypeString, value)
-		_node.Location = &value
-	}
-	if value, ok := _c.mutation.Website(); ok {
-		_spec.SetField(user.FieldWebsite, field.TypeString, value)
-		_node.Website = &value
 	}
 	if value, ok := _c.mutation.Role(); ok {
 		_spec.SetField(user.FieldRole, field.TypeString, value)

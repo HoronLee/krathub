@@ -70,106 +70,6 @@ func (_u *UserUpdate) SetNillablePassword(v *string) *UserUpdate {
 	return _u
 }
 
-// SetPhone sets the "phone" field.
-func (_u *UserUpdate) SetPhone(v string) *UserUpdate {
-	_u.mutation.SetPhone(v)
-	return _u
-}
-
-// SetNillablePhone sets the "phone" field if the given value is not nil.
-func (_u *UserUpdate) SetNillablePhone(v *string) *UserUpdate {
-	if v != nil {
-		_u.SetPhone(*v)
-	}
-	return _u
-}
-
-// ClearPhone clears the value of the "phone" field.
-func (_u *UserUpdate) ClearPhone() *UserUpdate {
-	_u.mutation.ClearPhone()
-	return _u
-}
-
-// SetAvatar sets the "avatar" field.
-func (_u *UserUpdate) SetAvatar(v string) *UserUpdate {
-	_u.mutation.SetAvatar(v)
-	return _u
-}
-
-// SetNillableAvatar sets the "avatar" field if the given value is not nil.
-func (_u *UserUpdate) SetNillableAvatar(v *string) *UserUpdate {
-	if v != nil {
-		_u.SetAvatar(*v)
-	}
-	return _u
-}
-
-// ClearAvatar clears the value of the "avatar" field.
-func (_u *UserUpdate) ClearAvatar() *UserUpdate {
-	_u.mutation.ClearAvatar()
-	return _u
-}
-
-// SetBio sets the "bio" field.
-func (_u *UserUpdate) SetBio(v string) *UserUpdate {
-	_u.mutation.SetBio(v)
-	return _u
-}
-
-// SetNillableBio sets the "bio" field if the given value is not nil.
-func (_u *UserUpdate) SetNillableBio(v *string) *UserUpdate {
-	if v != nil {
-		_u.SetBio(*v)
-	}
-	return _u
-}
-
-// ClearBio clears the value of the "bio" field.
-func (_u *UserUpdate) ClearBio() *UserUpdate {
-	_u.mutation.ClearBio()
-	return _u
-}
-
-// SetLocation sets the "location" field.
-func (_u *UserUpdate) SetLocation(v string) *UserUpdate {
-	_u.mutation.SetLocation(v)
-	return _u
-}
-
-// SetNillableLocation sets the "location" field if the given value is not nil.
-func (_u *UserUpdate) SetNillableLocation(v *string) *UserUpdate {
-	if v != nil {
-		_u.SetLocation(*v)
-	}
-	return _u
-}
-
-// ClearLocation clears the value of the "location" field.
-func (_u *UserUpdate) ClearLocation() *UserUpdate {
-	_u.mutation.ClearLocation()
-	return _u
-}
-
-// SetWebsite sets the "website" field.
-func (_u *UserUpdate) SetWebsite(v string) *UserUpdate {
-	_u.mutation.SetWebsite(v)
-	return _u
-}
-
-// SetNillableWebsite sets the "website" field if the given value is not nil.
-func (_u *UserUpdate) SetNillableWebsite(v *string) *UserUpdate {
-	if v != nil {
-		_u.SetWebsite(*v)
-	}
-	return _u
-}
-
-// ClearWebsite clears the value of the "website" field.
-func (_u *UserUpdate) ClearWebsite() *UserUpdate {
-	_u.mutation.ClearWebsite()
-	return _u
-}
-
 // SetRole sets the "role" field.
 func (_u *UserUpdate) SetRole(v string) *UserUpdate {
 	_u.mutation.SetRole(v)
@@ -248,31 +148,6 @@ func (_u *UserUpdate) check() error {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
 		}
 	}
-	if v, ok := _u.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "User.phone": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Avatar(); ok {
-		if err := user.AvatarValidator(v); err != nil {
-			return &ValidationError{Name: "avatar", err: fmt.Errorf(`ent: validator failed for field "User.avatar": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Bio(); ok {
-		if err := user.BioValidator(v); err != nil {
-			return &ValidationError{Name: "bio", err: fmt.Errorf(`ent: validator failed for field "User.bio": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Location(); ok {
-		if err := user.LocationValidator(v); err != nil {
-			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "User.location": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Website(); ok {
-		if err := user.WebsiteValidator(v); err != nil {
-			return &ValidationError{Name: "website", err: fmt.Errorf(`ent: validator failed for field "User.website": %w`, err)}
-		}
-	}
 	if v, ok := _u.mutation.Role(); ok {
 		if err := user.RoleValidator(v); err != nil {
 			return &ValidationError{Name: "role", err: fmt.Errorf(`ent: validator failed for field "User.role": %w`, err)}
@@ -301,36 +176,6 @@ func (_u *UserUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.Phone(); ok {
-		_spec.SetField(user.FieldPhone, field.TypeString, value)
-	}
-	if _u.mutation.PhoneCleared() {
-		_spec.ClearField(user.FieldPhone, field.TypeString)
-	}
-	if value, ok := _u.mutation.Avatar(); ok {
-		_spec.SetField(user.FieldAvatar, field.TypeString, value)
-	}
-	if _u.mutation.AvatarCleared() {
-		_spec.ClearField(user.FieldAvatar, field.TypeString)
-	}
-	if value, ok := _u.mutation.Bio(); ok {
-		_spec.SetField(user.FieldBio, field.TypeString, value)
-	}
-	if _u.mutation.BioCleared() {
-		_spec.ClearField(user.FieldBio, field.TypeString)
-	}
-	if value, ok := _u.mutation.Location(); ok {
-		_spec.SetField(user.FieldLocation, field.TypeString, value)
-	}
-	if _u.mutation.LocationCleared() {
-		_spec.ClearField(user.FieldLocation, field.TypeString)
-	}
-	if value, ok := _u.mutation.Website(); ok {
-		_spec.SetField(user.FieldWebsite, field.TypeString, value)
-	}
-	if _u.mutation.WebsiteCleared() {
-		_spec.ClearField(user.FieldWebsite, field.TypeString)
 	}
 	if value, ok := _u.mutation.Role(); ok {
 		_spec.SetField(user.FieldRole, field.TypeString, value)
@@ -397,106 +242,6 @@ func (_u *UserUpdateOne) SetNillablePassword(v *string) *UserUpdateOne {
 	if v != nil {
 		_u.SetPassword(*v)
 	}
-	return _u
-}
-
-// SetPhone sets the "phone" field.
-func (_u *UserUpdateOne) SetPhone(v string) *UserUpdateOne {
-	_u.mutation.SetPhone(v)
-	return _u
-}
-
-// SetNillablePhone sets the "phone" field if the given value is not nil.
-func (_u *UserUpdateOne) SetNillablePhone(v *string) *UserUpdateOne {
-	if v != nil {
-		_u.SetPhone(*v)
-	}
-	return _u
-}
-
-// ClearPhone clears the value of the "phone" field.
-func (_u *UserUpdateOne) ClearPhone() *UserUpdateOne {
-	_u.mutation.ClearPhone()
-	return _u
-}
-
-// SetAvatar sets the "avatar" field.
-func (_u *UserUpdateOne) SetAvatar(v string) *UserUpdateOne {
-	_u.mutation.SetAvatar(v)
-	return _u
-}
-
-// SetNillableAvatar sets the "avatar" field if the given value is not nil.
-func (_u *UserUpdateOne) SetNillableAvatar(v *string) *UserUpdateOne {
-	if v != nil {
-		_u.SetAvatar(*v)
-	}
-	return _u
-}
-
-// ClearAvatar clears the value of the "avatar" field.
-func (_u *UserUpdateOne) ClearAvatar() *UserUpdateOne {
-	_u.mutation.ClearAvatar()
-	return _u
-}
-
-// SetBio sets the "bio" field.
-func (_u *UserUpdateOne) SetBio(v string) *UserUpdateOne {
-	_u.mutation.SetBio(v)
-	return _u
-}
-
-// SetNillableBio sets the "bio" field if the given value is not nil.
-func (_u *UserUpdateOne) SetNillableBio(v *string) *UserUpdateOne {
-	if v != nil {
-		_u.SetBio(*v)
-	}
-	return _u
-}
-
-// ClearBio clears the value of the "bio" field.
-func (_u *UserUpdateOne) ClearBio() *UserUpdateOne {
-	_u.mutation.ClearBio()
-	return _u
-}
-
-// SetLocation sets the "location" field.
-func (_u *UserUpdateOne) SetLocation(v string) *UserUpdateOne {
-	_u.mutation.SetLocation(v)
-	return _u
-}
-
-// SetNillableLocation sets the "location" field if the given value is not nil.
-func (_u *UserUpdateOne) SetNillableLocation(v *string) *UserUpdateOne {
-	if v != nil {
-		_u.SetLocation(*v)
-	}
-	return _u
-}
-
-// ClearLocation clears the value of the "location" field.
-func (_u *UserUpdateOne) ClearLocation() *UserUpdateOne {
-	_u.mutation.ClearLocation()
-	return _u
-}
-
-// SetWebsite sets the "website" field.
-func (_u *UserUpdateOne) SetWebsite(v string) *UserUpdateOne {
-	_u.mutation.SetWebsite(v)
-	return _u
-}
-
-// SetNillableWebsite sets the "website" field if the given value is not nil.
-func (_u *UserUpdateOne) SetNillableWebsite(v *string) *UserUpdateOne {
-	if v != nil {
-		_u.SetWebsite(*v)
-	}
-	return _u
-}
-
-// ClearWebsite clears the value of the "website" field.
-func (_u *UserUpdateOne) ClearWebsite() *UserUpdateOne {
-	_u.mutation.ClearWebsite()
 	return _u
 }
 
@@ -591,31 +336,6 @@ func (_u *UserUpdateOne) check() error {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
 		}
 	}
-	if v, ok := _u.mutation.Phone(); ok {
-		if err := user.PhoneValidator(v); err != nil {
-			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "User.phone": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Avatar(); ok {
-		if err := user.AvatarValidator(v); err != nil {
-			return &ValidationError{Name: "avatar", err: fmt.Errorf(`ent: validator failed for field "User.avatar": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Bio(); ok {
-		if err := user.BioValidator(v); err != nil {
-			return &ValidationError{Name: "bio", err: fmt.Errorf(`ent: validator failed for field "User.bio": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Location(); ok {
-		if err := user.LocationValidator(v); err != nil {
-			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "User.location": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Website(); ok {
-		if err := user.WebsiteValidator(v); err != nil {
-			return &ValidationError{Name: "website", err: fmt.Errorf(`ent: validator failed for field "User.website": %w`, err)}
-		}
-	}
 	if v, ok := _u.mutation.Role(); ok {
 		if err := user.RoleValidator(v); err != nil {
 			return &ValidationError{Name: "role", err: fmt.Errorf(`ent: validator failed for field "User.role": %w`, err)}
@@ -661,36 +381,6 @@ func (_u *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
 	}
 	if value, ok := _u.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.Phone(); ok {
-		_spec.SetField(user.FieldPhone, field.TypeString, value)
-	}
-	if _u.mutation.PhoneCleared() {
-		_spec.ClearField(user.FieldPhone, field.TypeString)
-	}
-	if value, ok := _u.mutation.Avatar(); ok {
-		_spec.SetField(user.FieldAvatar, field.TypeString, value)
-	}
-	if _u.mutation.AvatarCleared() {
-		_spec.ClearField(user.FieldAvatar, field.TypeString)
-	}
-	if value, ok := _u.mutation.Bio(); ok {
-		_spec.SetField(user.FieldBio, field.TypeString, value)
-	}
-	if _u.mutation.BioCleared() {
-		_spec.ClearField(user.FieldBio, field.TypeString)
-	}
-	if value, ok := _u.mutation.Location(); ok {
-		_spec.SetField(user.FieldLocation, field.TypeString, value)
-	}
-	if _u.mutation.LocationCleared() {
-		_spec.ClearField(user.FieldLocation, field.TypeString)
-	}
-	if value, ok := _u.mutation.Website(); ok {
-		_spec.SetField(user.FieldWebsite, field.TypeString, value)
-	}
-	if _u.mutation.WebsiteCleared() {
-		_spec.ClearField(user.FieldWebsite, field.TypeString)
 	}
 	if value, ok := _u.mutation.Role(); ok {
 		_spec.SetField(user.FieldRole, field.TypeString, value)

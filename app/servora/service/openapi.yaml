@@ -377,16 +377,6 @@ components:
                     type: string
                 password:
                     type: string
-                phone:
-                    type: string
-                avatar:
-                    type: string
-                bio:
-                    type: string
-                location:
-                    type: string
-                website:
-                    type: string
                 role:
                     type: string
         SaveUserResponse:
@@ -440,16 +430,6 @@ components:
                     type: string
                 password:
                     type: string
-                phone:
-                    type: string
-                avatar:
-                    type: string
-                bio:
-                    type: string
-                location:
-                    type: string
-                website:
-                    type: string
                 role:
                     type: string
         UpdateUserResponse:
@@ -465,16 +445,6 @@ components:
                 name:
                     type: string
                 email:
-                    type: string
-                phone:
-                    type: string
-                avatar:
-                    type: string
-                bio:
-                    type: string
-                location:
-                    type: string
-                website:
                     type: string
                 role:
                     type: string

@@ -27,38 +27,18 @@ func init() {
 	userDescPassword := userFields[3].Descriptor()
 	// user.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	user.PasswordValidator = userDescPassword.Validators[0].(func(string) error)
-	// userDescPhone is the schema descriptor for phone field.
-	userDescPhone := userFields[4].Descriptor()
-	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	user.PhoneValidator = userDescPhone.Validators[0].(func(string) error)
-	// userDescAvatar is the schema descriptor for avatar field.
-	userDescAvatar := userFields[5].Descriptor()
-	// user.AvatarValidator is a validator for the "avatar" field. It is called by the builders before save.
-	user.AvatarValidator = userDescAvatar.Validators[0].(func(string) error)
-	// userDescBio is the schema descriptor for bio field.
-	userDescBio := userFields[6].Descriptor()
-	// user.BioValidator is a validator for the "bio" field. It is called by the builders before save.
-	user.BioValidator = userDescBio.Validators[0].(func(string) error)
-	// userDescLocation is the schema descriptor for location field.
-	userDescLocation := userFields[7].Descriptor()
-	// user.LocationValidator is a validator for the "location" field. It is called by the builders before save.
-	user.LocationValidator = userDescLocation.Validators[0].(func(string) error)
-	// userDescWebsite is the schema descriptor for website field.
-	userDescWebsite := userFields[8].Descriptor()
-	// user.WebsiteValidator is a validator for the "website" field. It is called by the builders before save.
-	user.WebsiteValidator = userDescWebsite.Validators[0].(func(string) error)
 	// userDescRole is the schema descriptor for role field.
-	userDescRole := userFields[9].Descriptor()
+	userDescRole := userFields[4].Descriptor()
 	// user.DefaultRole holds the default value on creation for the role field.
 	user.DefaultRole = userDescRole.Default.(string)
 	// user.RoleValidator is a validator for the "role" field. It is called by the builders before save.
 	user.RoleValidator = userDescRole.Validators[0].(func(string) error)
 	// userDescCreatedAt is the schema descriptor for created_at field.
-	userDescCreatedAt := userFields[10].Descriptor()
+	userDescCreatedAt := userFields[5].Descriptor()
 	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
 	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
 	// userDescUpdatedAt is the schema descriptor for updated_at field.
-	userDescUpdatedAt := userFields[11].Descriptor()
+	userDescUpdatedAt := userFields[6].Descriptor()
 	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
 	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.

@@ -86,12 +86,7 @@ type UserInfo struct {
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
-	Avatar        string                 `protobuf:"bytes,5,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	Bio           string                 `protobuf:"bytes,6,opt,name=bio,proto3" json:"bio,omitempty"`
-	Location      string                 `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
-	Website       string                 `protobuf:"bytes,8,opt,name=website,proto3" json:"website,omitempty"`
-	Role          string                 `protobuf:"bytes,9,opt,name=role,proto3" json:"role,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -143,41 +138,6 @@ func (x *UserInfo) GetName() string {
 func (x *UserInfo) GetEmail() string {
 	if x != nil {
 		return x.Email
-	}
-	return ""
-}
-
-func (x *UserInfo) GetPhone() string {
-	if x != nil {
-		return x.Phone
-	}
-	return ""
-}
-
-func (x *UserInfo) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *UserInfo) GetBio() string {
-	if x != nil {
-		return x.Bio
-	}
-	return ""
-}
-
-func (x *UserInfo) GetLocation() string {
-	if x != nil {
-		return x.Location
-	}
-	return ""
-}
-
-func (x *UserInfo) GetWebsite() string {
-	if x != nil {
-		return x.Website
 	}
 	return ""
 }
@@ -475,11 +435,6 @@ type UpdateUserRequest struct {
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
-	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
-	Avatar        string                 `protobuf:"bytes,6,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	Bio           string                 `protobuf:"bytes,7,opt,name=bio,proto3" json:"bio,omitempty"`
-	Location      string                 `protobuf:"bytes,8,opt,name=location,proto3" json:"location,omitempty"`
-	Website       string                 `protobuf:"bytes,9,opt,name=website,proto3" json:"website,omitempty"`
 	Role          string                 `protobuf:"bytes,10,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -543,41 +498,6 @@ func (x *UpdateUserRequest) GetPassword() string {
 	return ""
 }
 
-func (x *UpdateUserRequest) GetPhone() string {
-	if x != nil {
-		return x.Phone
-	}
-	return ""
-}
-
-func (x *UpdateUserRequest) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *UpdateUserRequest) GetBio() string {
-	if x != nil {
-		return x.Bio
-	}
-	return ""
-}
-
-func (x *UpdateUserRequest) GetLocation() string {
-	if x != nil {
-		return x.Location
-	}
-	return ""
-}
-
-func (x *UpdateUserRequest) GetWebsite() string {
-	if x != nil {
-		return x.Website
-	}
-	return ""
-}
-
 func (x *UpdateUserRequest) GetRole() string {
 	if x != nil {
 		return x.Role
@@ -634,11 +554,6 @@ type SaveUserRequest struct {
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
-	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
-	Avatar        string                 `protobuf:"bytes,5,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	Bio           string                 `protobuf:"bytes,6,opt,name=bio,proto3" json:"bio,omitempty"`
-	Location      string                 `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
-	Website       string                 `protobuf:"bytes,8,opt,name=website,proto3" json:"website,omitempty"`
 	Role          string                 `protobuf:"bytes,9,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -691,41 +606,6 @@ func (x *SaveUserRequest) GetEmail() string {
 func (x *SaveUserRequest) GetPassword() string {
 	if x != nil {
 		return x.Password
-	}
-	return ""
-}
-
-func (x *SaveUserRequest) GetPhone() string {
-	if x != nil {
-		return x.Phone
-	}
-	return ""
-}
-
-func (x *SaveUserRequest) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *SaveUserRequest) GetBio() string {
-	if x != nil {
-		return x.Bio
-	}
-	return ""
-}
-
-func (x *SaveUserRequest) GetLocation() string {
-	if x != nil {
-		return x.Location
-	}
-	return ""
-}
-
-func (x *SaveUserRequest) GetWebsite() string {
-	if x != nil {
-		return x.Website
 	}
 	return ""
 }
@@ -785,17 +665,12 @@ var File_user_service_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_service_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1auser/service/v1/user.proto\x12\x0fuser.service.v1\x1a\x1bbuf/validate/validate.proto\x1a\x13errors/errors.proto\x1a\x1epagination/v1/pagination.proto\"\xce\x01\n" +
+	"\x1auser/service/v1/user.proto\x12\x0fuser.service.v1\x1a\x1bbuf/validate/validate.proto\x1a\x13errors/errors.proto\x1a\x1epagination/v1/pagination.proto\"X\n" +
 	"\bUserInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x14\n" +
-	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
-	"\x06avatar\x18\x05 \x01(\tR\x06avatar\x12\x10\n" +
-	"\x03bio\x18\x06 \x01(\tR\x03bio\x12\x1a\n" +
-	"\blocation\x18\a \x01(\tR\blocation\x12\x18\n" +
-	"\awebsite\x18\b \x01(\tR\awebsite\x12\x12\n" +
-	"\x04role\x18\t \x01(\tR\x04role\"\x18\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\"\x18\n" +
 	"\x16CurrentUserInfoRequest\"Q\n" +
 	"\x17CurrentUserInfoResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
@@ -813,32 +688,23 @@ const file_user_service_v1_user_proto_rawDesc = "" +
 	"\x11DeleteUserRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\".\n" +
 	"\x12DeleteUserResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xf3\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xc2\x01\n" +
 	"\x11UpdateUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x04 \x01(\tR\bpassword\x12\x14\n" +
-	"\x05phone\x18\x05 \x01(\tR\x05phone\x12\x16\n" +
-	"\x06avatar\x18\x06 \x01(\tR\x06avatar\x12\x10\n" +
-	"\x03bio\x18\a \x01(\tR\x03bio\x12\x1a\n" +
-	"\blocation\x18\b \x01(\tR\blocation\x12\x18\n" +
-	"\awebsite\x18\t \x01(\tR\awebsite\x12\x12\n" +
+	"\bpassword\x18\x04 \x01(\tR\bpassword\x12\x12\n" +
 	"\x04role\x18\n" +
-	" \x01(\tR\x04role\".\n" +
+	" \x01(\tR\x04roleJ\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\a\x10\bJ\x04\b\b\x10\tJ\x04\b\t\x10\n" +
+	"R\x05phoneR\x06avatarR\x03bioR\blocationR\awebsite\".\n" +
 	"\x12UpdateUserResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\tR\asuccess\"\xfe\x01\n" +
+	"\asuccess\x18\x01 \x01(\tR\asuccess\"\xcd\x01\n" +
 	"\x0fSaveUserRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x05R\x04name\x12\x1d\n" +
 	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12%\n" +
 	"\bpassword\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x05\x18\n" +
-	"R\bpassword\x12\x14\n" +
-	"\x05phone\x18\x04 \x01(\tR\x05phone\x12\x16\n" +
-	"\x06avatar\x18\x05 \x01(\tR\x06avatar\x12\x10\n" +
-	"\x03bio\x18\x06 \x01(\tR\x03bio\x12\x1a\n" +
-	"\blocation\x18\a \x01(\tR\blocation\x12\x18\n" +
-	"\awebsite\x18\b \x01(\tR\awebsite\x12\x12\n" +
-	"\x04role\x18\t \x01(\tR\x04role\"\"\n" +
+	"R\bpassword\x12\x12\n" +
+	"\x04role\x18\t \x01(\tR\x04roleJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\a\x10\bJ\x04\b\b\x10\tR\x05phoneR\x06avatarR\x03bioR\blocationR\awebsite\"\"\n" +
 	"\x10SaveUserResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id*\x85\x01\n" +
 	"\vErrorReason\x12\x18\n" +

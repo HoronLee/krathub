@@ -44,15 +44,10 @@ func (s *UserService) ListUsers(ctx context.Context, req *userpb.ListUsersReques
 	respUsers := make([]*userpb.UserInfo, 0, len(users))
 	for _, user := range users {
 		respUsers = append(respUsers, &userpb.UserInfo{
-			Id:       user.ID,
-			Name:     user.Name,
-			Email:    user.Email,
-			Phone:    safeString(user.Phone),
-			Avatar:   safeString(user.Avatar),
-			Bio:      safeString(user.Bio),
-			Location: safeString(user.Location),
-			Website:  safeString(user.Website),
-			Role:     user.Role,
+			Id:    user.ID,
+			Name:  user.Name,
+			Email: user.Email,
+			Role:  user.Role,
 		})
 	}
 
@@ -68,13 +63,6 @@ func (s *UserService) ListUsers(ctx context.Context, req *userpb.ListUsersReques
 		Users:      respUsers,
 		Pagination: pagination,
 	}, nil
-}
-
-func safeString(v *string) string {
-	if v == nil {
-		return ""
-	}
-	return *v
 }
 
 // UpdateUser 更新用户信息
@@ -107,11 +95,6 @@ func (s *UserService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequ
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
-		Phone:    &req.Phone,
-		Avatar:   &req.Avatar,
-		Bio:      &req.Bio,
-		Location: &req.Location,
-		Website:  &req.Website,
 		Role:     req.Role,
 	}
 	_, err = s.uc.UpdateUser(ctx, user)
@@ -129,11 +112,6 @@ func (s *UserService) SaveUser(ctx context.Context, req *userpb.SaveUserRequest)
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
-		Phone:    &req.Phone,
-		Avatar:   &req.Avatar,
-		Bio:      &req.Bio,
-		Location: &req.Location,
-		Website:  &req.Website,
 		Role:     req.Role,
 	}
 	user, err := s.uc.SaveUser(ctx, user)

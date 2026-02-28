@@ -19,16 +19,6 @@ const (
 	FieldEmail = "email"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
-	// FieldPhone holds the string denoting the phone field in the database.
-	FieldPhone = "phone"
-	// FieldAvatar holds the string denoting the avatar field in the database.
-	FieldAvatar = "avatar"
-	// FieldBio holds the string denoting the bio field in the database.
-	FieldBio = "bio"
-	// FieldLocation holds the string denoting the location field in the database.
-	FieldLocation = "location"
-	// FieldWebsite holds the string denoting the website field in the database.
-	FieldWebsite = "website"
 	// FieldRole holds the string denoting the role field in the database.
 	FieldRole = "role"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
@@ -45,11 +35,6 @@ var Columns = []string{
 	FieldName,
 	FieldEmail,
 	FieldPassword,
-	FieldPhone,
-	FieldAvatar,
-	FieldBio,
-	FieldLocation,
-	FieldWebsite,
 	FieldRole,
 	FieldCreatedAt,
 	FieldUpdatedAt,
@@ -72,16 +57,6 @@ var (
 	EmailValidator func(string) error
 	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	PasswordValidator func(string) error
-	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	PhoneValidator func(string) error
-	// AvatarValidator is a validator for the "avatar" field. It is called by the builders before save.
-	AvatarValidator func(string) error
-	// BioValidator is a validator for the "bio" field. It is called by the builders before save.
-	BioValidator func(string) error
-	// LocationValidator is a validator for the "location" field. It is called by the builders before save.
-	LocationValidator func(string) error
-	// WebsiteValidator is a validator for the "website" field. It is called by the builders before save.
-	WebsiteValidator func(string) error
 	// DefaultRole holds the default value on creation for the "role" field.
 	DefaultRole string
 	// RoleValidator is a validator for the "role" field. It is called by the builders before save.
@@ -115,31 +90,6 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 // ByPassword orders the results by the password field.
 func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPassword, opts...).ToFunc()
-}
-
-// ByPhone orders the results by the phone field.
-func ByPhone(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPhone, opts...).ToFunc()
-}
-
-// ByAvatar orders the results by the avatar field.
-func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
-}
-
-// ByBio orders the results by the bio field.
-func ByBio(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBio, opts...).ToFunc()
-}
-
-// ByLocation orders the results by the location field.
-func ByLocation(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldLocation, opts...).ToFunc()
-}
-
-// ByWebsite orders the results by the website field.
-func ByWebsite(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWebsite, opts...).ToFunc()
 }
 
 // ByRole orders the results by the role field.

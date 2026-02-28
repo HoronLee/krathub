@@ -3,11 +3,6 @@ CREATE TABLE IF NOT EXISTS users (
     "name" VARCHAR(64) NOT NULL UNIQUE, -- 用户名
     "email" VARCHAR(128) NOT NULL UNIQUE, -- 用户邮箱，唯一
     "password" VARCHAR(255) NOT NULL, -- 用户密码（加密存储）
-    "phone" VARCHAR(20) DEFAULT NULL, -- 用户手机号
-    "avatar" VARCHAR(255) DEFAULT NULL, -- 用户头像URL
-    "bio" VARCHAR(255) DEFAULT NULL, -- 用户简介
-    "location" VARCHAR(128) DEFAULT NULL, -- 用户所在位置
-    "website" VARCHAR(255) DEFAULT NULL, -- 用户个人网站
     "role" VARCHAR(32) NOT NULL DEFAULT 'user', -- 用户权限角色
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 创建时间（带时区）
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP -- 更新时间（带时区）

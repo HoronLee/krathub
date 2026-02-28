@@ -37,12 +37,7 @@ message UserInfo {
   int64 id = 1;
   string name = 2;
   string email = 3;
-  string phone = 4;
-  string avatar = 5;
-  string bio = 6;
-  string location = 7;
-  string website = 8;
-  string role = 9;
+  string role = 4;
 }
 
 message CurrentUserInfoRequest {}
@@ -75,11 +70,8 @@ message UpdateUserRequest {
   string name = 2;
   string email = 3;
   string password = 4;
-  string phone = 5;
-  string avatar = 6;
-  string bio = 7;
-  string location = 8;
-  string website = 9;
+  reserved 5, 6, 7, 8, 9;
+  reserved "phone", "avatar", "bio", "location", "website";
   string role = 10;
 }
 
@@ -94,11 +86,8 @@ message SaveUserRequest {
     min_len: 5
     max_len: 10
   }];
-  string phone = 4;
-  string avatar = 5;
-  string bio = 6;
-  string location = 7;
-  string website = 8;
+  reserved 4, 5, 6, 7, 8;
+  reserved "phone", "avatar", "bio", "location", "website";
   string role = 9;
 }
 message SaveUserResponse {

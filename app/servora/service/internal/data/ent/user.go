@@ -23,16 +23,6 @@ type User struct {
 	Email string `json:"email,omitempty"`
 	// Password holds the value of the "password" field.
 	Password string `json:"password,omitempty"`
-	// Phone holds the value of the "phone" field.
-	Phone *string `json:"phone,omitempty"`
-	// Avatar holds the value of the "avatar" field.
-	Avatar *string `json:"avatar,omitempty"`
-	// Bio holds the value of the "bio" field.
-	Bio *string `json:"bio,omitempty"`
-	// Location holds the value of the "location" field.
-	Location *string `json:"location,omitempty"`
-	// Website holds the value of the "website" field.
-	Website *string `json:"website,omitempty"`
 	// Role holds the value of the "role" field.
 	Role string `json:"role,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
@@ -49,7 +39,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldName, user.FieldEmail, user.FieldPassword, user.FieldPhone, user.FieldAvatar, user.FieldBio, user.FieldLocation, user.FieldWebsite, user.FieldRole:
+		case user.FieldName, user.FieldEmail, user.FieldPassword, user.FieldRole:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -91,41 +81,6 @@ func (_m *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field password", values[i])
 			} else if value.Valid {
 				_m.Password = value.String
-			}
-		case user.FieldPhone:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field phone", values[i])
-			} else if value.Valid {
-				_m.Phone = new(string)
-				*_m.Phone = value.String
-			}
-		case user.FieldAvatar:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field avatar", values[i])
-			} else if value.Valid {
-				_m.Avatar = new(string)
-				*_m.Avatar = value.String
-			}
-		case user.FieldBio:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bio", values[i])
-			} else if value.Valid {
-				_m.Bio = new(string)
-				*_m.Bio = value.String
-			}
-		case user.FieldLocation:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field location", values[i])
-			} else if value.Valid {
-				_m.Location = new(string)
-				*_m.Location = value.String
-			}
-		case user.FieldWebsite:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field website", values[i])
-			} else if value.Valid {
-				_m.Website = new(string)
-				*_m.Website = value.String
 			}
 		case user.FieldRole:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -189,31 +144,6 @@ func (_m *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("password=")
 	builder.WriteString(_m.Password)
-	builder.WriteString(", ")
-	if v := _m.Phone; v != nil {
-		builder.WriteString("phone=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := _m.Avatar; v != nil {
-		builder.WriteString("avatar=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := _m.Bio; v != nil {
-		builder.WriteString("bio=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := _m.Location; v != nil {
-		builder.WriteString("location=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := _m.Website; v != nil {
-		builder.WriteString("website=")
-		builder.WriteString(*v)
-	}
 	builder.WriteString(", ")
 	builder.WriteString("role=")
 	builder.WriteString(_m.Role)

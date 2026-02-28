@@ -63,16 +63,6 @@ func (m *UserInfo) validate(all bool) error {
 
 	// no validation rules for Email
 
-	// no validation rules for Phone
-
-	// no validation rules for Avatar
-
-	// no validation rules for Bio
-
-	// no validation rules for Location
-
-	// no validation rules for Website
-
 	// no validation rules for Role
 
 	if len(errors) > 0 {
@@ -894,16 +884,6 @@ func (m *UpdateUserRequest) validate(all bool) error {
 
 	// no validation rules for Password
 
-	// no validation rules for Phone
-
-	// no validation rules for Avatar
-
-	// no validation rules for Bio
-
-	// no validation rules for Location
-
-	// no validation rules for Website
-
 	// no validation rules for Role
 
 	if len(errors) > 0 {
@@ -1117,16 +1097,6 @@ func (m *SaveUserRequest) validate(all bool) error {
 	// no validation rules for Email
 
 	// no validation rules for Password
-
-	// no validation rules for Phone
-
-	// no validation rules for Avatar
-
-	// no validation rules for Bio
-
-	// no validation rules for Location
-
-	// no validation rules for Website
 
 	// no validation rules for Role
 

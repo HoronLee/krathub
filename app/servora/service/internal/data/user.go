@@ -41,11 +41,6 @@ func (r *userRepo) SaveUser(ctx context.Context, user *entity.User) (*entity.Use
 		SetName(entUser.Name).
 		SetEmail(entUser.Email).
 		SetPassword(entUser.Password).
-		SetNillablePhone(entUser.Phone).
-		SetNillableAvatar(entUser.Avatar).
-		SetNillableBio(entUser.Bio).
-		SetNillableLocation(entUser.Location).
-		SetNillableWebsite(entUser.Website).
 		SetRole(entUser.Role)
 
 	if entUser.ID > 0 {
@@ -89,11 +84,6 @@ func (r *userRepo) UpdateUser(ctx context.Context, user *entity.User) (*entity.U
 		SetName(entUser.Name).
 		SetEmail(entUser.Email).
 		SetPassword(entUser.Password).
-		SetNillablePhone(entUser.Phone).
-		SetNillableAvatar(entUser.Avatar).
-		SetNillableBio(entUser.Bio).
-		SetNillableLocation(entUser.Location).
-		SetNillableWebsite(entUser.Website).
 		SetRole(entUser.Role).
 		Save(ctx)
 	if err != nil {
