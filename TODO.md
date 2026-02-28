@@ -15,3 +15,7 @@
 - [ ] **Collector 未纳入健康依赖链** - 已配置 health extension，但服务依赖仍是 `service_started`
 - [ ] **sayhello metrics 可观测性闭环不完整** - 已接入 middleware，Prometheus 当前仅抓取 `servora`
 - [ ] **Prometheus 抓取范围偏窄** - 建议补充 otel/loki/jaeger/grafana 的组件级采集
+
+## devops相关
+
+- [ ] make compose.logs会显示所有日志，但是compose.dev.logs会排除掉所有基础设施的日志只显示微服务日志

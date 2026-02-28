@@ -58,51 +58,27 @@ servora 是一个基于 **Go Kratos v2** 的微服务快开框架，采用 **DDD
 - Make
 - Docker / Docker Compose
 
-> 首次初始化工具链（buf、wire、lint 等）：
-
-```bash
-make init
-```
-
-### 2) 克隆与基础配置
+### 2) 克隆仓库
 
 ```bash
 git clone https://github.com/horonlee/servora.git
 cd servora
-
-# 复制示例配置（主服务）
-cp api/protos/conf/v1/config-example.yaml app/servora/service/configs/config.yaml
 ```
 
 按需修改 `app/servora/service/configs/config.yaml` 中的数据库、Redis、注册中心等配置。
 
-### 3) 生成代码
+### 3) 安装工具并且生成代码
 
 ```bash
+make init
 make gen
 ```
 
-该命令会统一执行代码生成流程：`wire + api + openapi + ent`。
+该命令会统一执行代码生成流程：`api + wire + openapi + ent`。
 
-### 4) 本地运行（两种方式）
-
-**方式 A：直接运行主服务**
+### 4) 容器化开发
 
 ```bash
-cd app/servora/service
-make run
-```
-
-默认示例端口：
-
-- HTTP: `0.0.0.0:8000`
-- gRPC: `0.0.0.0:8001`
-
-**方式 B：Compose + Air（推荐开发）**
-
-```bash
-# 在仓库根目录
-make gen
 make compose.dev
 ```
 
