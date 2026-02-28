@@ -15,19 +15,18 @@ import (
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/server"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/server/middleware"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"
+	"github.com/horonlee/micro-forge/pkg/bootstrap"
 	"github.com/horonlee/micro-forge/pkg/governance/registry"
 	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
 	"github.com/horonlee/micro-forge/pkg/transport/client"
-)
 
-import (
 	_ "go.uber.org/automaxprocs"
 )
 
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, discovery *conf.Discovery, confRegistry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, logger log.Logger) (*kratos.App, func(), error) {
+func wireApp(confServer *conf.Server, discovery *conf.Discovery, confRegistry *conf.Registry, confData *conf.Data, app *conf.App, trace *conf.Trace, metrics *conf.Metrics, serviceIdentity bootstrap.SvcIdentity, logger log.Logger) (*kratos.App, func(), error) {
 	registrar := registry.NewRegistrar(confRegistry)
 	telemetryMetrics, err := telemetry.NewMetrics(metrics, app, logger)
 	if err != nil {
@@ -69,7 +68,7 @@ func wireApp(confServer *conf.Server, discovery *conf.Discovery, confRegistry *c
 	testUsecase := biz.NewTestUsecase(testRepo, logger)
 	testService := service.NewTestService(testUsecase)
 	httpServer := server.NewHTTPServer(confServer, httpMiddleware, telemetryMetrics, logger, authService, userService, testService)
-	kratosApp := newApp(logger, registrar, grpcServer, httpServer)
+	kratosApp := newApp(serviceIdentity, logger, registrar, grpcServer, httpServer)
 	return kratosApp, func() {
 		cleanup2()
 		cleanup()

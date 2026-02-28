@@ -7,12 +7,13 @@ import (
 	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
 	"github.com/horonlee/micro-forge/app/sayhello/service/internal/server"
 	"github.com/horonlee/micro-forge/app/sayhello/service/internal/service"
+	"github.com/horonlee/micro-forge/pkg/bootstrap"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 )
 
-func wireApp(*conf.Server, *conf.Registry, *conf.App, *conf.Trace, *conf.Metrics, log.Logger) (*kratos.App, func(), error) {
+func wireApp(*conf.Server, *conf.Registry, *conf.App, *conf.Trace, *conf.Metrics, bootstrap.ServiceIdentity, log.Logger) (*kratos.App, func(), error) {
 	panic(wire.Build(server.ProviderSet, service.ProviderSet, newApp))
 }

@@ -16,8 +16,6 @@ data:
     db: 0
 
 app:
-  name: "micro-forge.service"
-  version: "v1.0.0"
   env: "dev"
   jwt:
     access_secret: "micro-forge_access_secret_change_me"

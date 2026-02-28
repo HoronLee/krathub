@@ -11,6 +11,7 @@ import (
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/data"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/server"
 	"github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"
+	"github.com/horonlee/micro-forge/pkg/bootstrap"
 	"github.com/horonlee/micro-forge/pkg/transport/client"
 
 	"github.com/go-kratos/kratos/v2"
@@ -19,6 +20,6 @@ import (
 )
 
 // wireApp init kratos application.
-func wireApp(*conf.Server, *conf.Discovery, *conf.Registry, *conf.Data, *conf.App, *conf.Trace, *conf.Metrics, log.Logger) (*kratos.App, func(), error) {
+func wireApp(*conf.Server, *conf.Discovery, *conf.Registry, *conf.Data, *conf.App, *conf.Trace, *conf.Metrics, bootstrap.ServiceIdentity, log.Logger) (*kratos.App, func(), error) {
 	panic(wire.Build(server.ProviderSet, data.ProviderSet, biz.ProviderSet, service.ProviderSet, client.ProviderSet, newApp))
 }

@@ -4,8 +4,6 @@ server:
     timeout: 10s
 
 app:
-  name: "sayhello.service"
-  version: "v1.0.0"
   env: "dev"
   log:
     level: 0
