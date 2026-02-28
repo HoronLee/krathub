@@ -111,6 +111,7 @@ make compose.dev.up
 
 ```bash
 make compose.dev.logs
+make compose.dev.restart
 make compose.dev.down
 ```
 
@@ -157,6 +158,7 @@ make compose.down
 # Compose（开发 Air）
 make compose.dev.build
 make compose.dev.up
+make compose.dev.restart
 make compose.dev.ps
 make compose.dev.logs
 make compose.dev.down

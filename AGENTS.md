@@ -165,6 +165,7 @@ make compose.logs       # 查看生产 compose 日志
 make compose.down       # 停止生产 compose 全栈
 make compose.dev.build  # 构建 Air 开发镜像（根 compose 分层）
 make compose.dev.up     # 启动 Air 热重载开发容器（micro-forge + sayhello）
+make compose.dev.restart # 重启 Air 开发容器（强制触发启动时重编译）
 make compose.dev.ps     # 查看 Air 开发容器状态
 make compose.dev.logs   # 查看 Air 开发容器日志
 make compose.dev.down   # 停止 Air 开发容器

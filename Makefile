@@ -65,7 +65,7 @@ INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 .PHONY: help env init plugin cli dep vendor test cover vet lint
 .PHONY: wire ent gen api api-go api-ts openapi build build_only all clean
 .PHONY: compose.build compose.up compose.rebuild compose.down compose.ps compose.logs
-.PHONY: compose.dev.build compose.dev.up compose.dev.ps compose.dev.down compose.dev.logs
+.PHONY: compose.dev.build compose.dev.up compose.dev.restart compose.dev.ps compose.dev.down compose.dev.logs
 
 # show environment variables
 env:
@@ -263,6 +263,12 @@ compose.dev.up:
 	@echo "$(CYAN)Compose dev up (Air): $(MICROSERVICES)$(RESET)"
 	@$(COMPOSE) $(COMPOSE_DEV_FILES) up -d $(MICROSERVICES)
 	@echo "$(GREEN)✓ Compose dev services started$(RESET)"
+
+# restart Air-based development containers to force fresh startup build
+compose.dev.restart:
+	@echo "$(CYAN)Compose dev restart (Air): $(MICROSERVICES)$(RESET)"
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) restart $(MICROSERVICES)
+	@echo "$(GREEN)✓ Compose dev services restarted$(RESET)"
 
 # tail logs for Air-based development containers
 compose.dev.logs:
