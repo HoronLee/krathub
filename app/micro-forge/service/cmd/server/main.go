@@ -79,10 +79,6 @@ func main() {
 	id = fmt.Sprintf("%s-%s", Name, hostname)
 
 	// 初始化日志
-	// 如果未配置日志文件名，则使用默认值
-	if bc.App.Log.Filename == "" {
-		bc.App.Log.Filename = fmt.Sprintf("./logs/%s.log", Name)
-	}
 	appLogger := logger.NewLogger(&logger.Config{
 		Env:        bc.App.Env,
 		Level:      bc.App.Log.Level,

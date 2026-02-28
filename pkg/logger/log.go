@@ -34,6 +34,10 @@ type Config struct {
 
 // NewLogger 配置zap日志,将zap日志库引入
 func NewLogger(c *Config) log.Logger {
+	if c != nil && c.Filename == "" {
+		c.Filename = "./logs/app.log"
+	}
+
 	// 设置日志级别，只支持 Kratos 定义的 5 个等级
 	level := zap.NewAtomicLevelAt(zapcore.InfoLevel)
 	if c != nil {
