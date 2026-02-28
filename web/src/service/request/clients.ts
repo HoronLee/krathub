@@ -3,21 +3,21 @@ import {
   createUserServiceClient,
   type AuthService,
   type UserService,
-} from "../gen/microforge/service/v1";
+} from "../gen/servora/service/v1";
 
 import {
   createRequestHandler,
   type RequestHandlerOptions,
 } from "./requestHandler";
 
-export type microforgeClients = {
+export type servoraClients = {
   auth: AuthService;
   user: UserService;
 };
 
-export function createmicroforgeClients(
+export function createservoraClients(
   options: RequestHandlerOptions = {},
-): microforgeClients {
+): servoraClients {
   const handler = createRequestHandler(options);
   return {
     auth: createAuthServiceClient(handler),
@@ -25,4 +25,4 @@ export function createmicroforgeClients(
   };
 }
 
-export * from "../gen/microforge/service/v1";
+export * from "../gen/servora/service/v1";

@@ -5,7 +5,7 @@
 
 ## 目录概述
 
-`pkg/` 是 micro-forge 项目的共享库层，提供跨服务的通用基础设施组件和工具函数。所有 `app/` 下的微服务都可以通过 `github.com/horonlee/micro-forge/pkg/{module}` 导入这些模块。
+`pkg/` 是 servora 项目的共享库层，提供跨服务的通用基础设施组件和工具函数。所有 `app/` 下的微服务都可以通过 `github.com/horonlee/servora/pkg/{module}` 导入这些模块。
 
 **设计原则**：
 - **无状态**：pkg 模块应该是纯工具库，不依赖特定服务的业务逻辑
@@ -61,7 +61,7 @@ claims, _ := jwtService.ParseToken(token)
 
 **依赖**：
 - `github.com/redis/go-redis/v9`
-- `github.com/horonlee/micro-forge/api/gen/go/conf/v1` (配置 Proto)
+- `github.com/horonlee/servora/api/gen/go/conf/v1` (配置 Proto)
 
 ### `logger/` - 日志封装
 基于 Zap 的日志库封装，适配 Kratos 日志接口，支持多环境配置和日志切割。
@@ -113,7 +113,7 @@ httpSrv := http.NewServer(
 ```
 
 **依赖**：
-- `github.com/horonlee/micro-forge/api/gen/go/conf/v1`
+- `github.com/horonlee/servora/api/gen/go/conf/v1`
 
 ### `governance/` - 服务治理
 服务注册发现和配置中心的抽象和实现，支持多种服务治理组件。
@@ -311,7 +311,7 @@ import (
     "github.com/go-kratos/kratos/v2/log"  // 2. 第三方库
     "github.com/redis/go-redis/v9"
 
-    conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"  // 3. 项目内
+    conf "github.com/horonlee/servora/api/gen/go/conf/v1"  // 3. 项目内
 )
 ```
 
@@ -411,7 +411,7 @@ var dataSet = wire.NewSet(
 
 ### 项目内部依赖
 所有 pkg 模块可能依赖：
-- `github.com/horonlee/micro-forge/api/gen/go/conf/v1` - 配置 Protobuf 定义（生成的代码）
+- `github.com/horonlee/servora/api/gen/go/conf/v1` - 配置 Protobuf 定义（生成的代码）
 
 **依赖方向**：
 - `app/` → `pkg/` (微服务依赖共享库)
@@ -496,9 +496,9 @@ go tool cover -html=coverage.out
 **在服务中导入 pkg 模块**：
 ```go
 import (
-    "github.com/horonlee/micro-forge/pkg/jwt"
-    "github.com/horonlee/micro-forge/pkg/redis"
-    "github.com/horonlee/micro-forge/pkg/logger"
+    "github.com/horonlee/servora/pkg/jwt"
+    "github.com/horonlee/servora/pkg/redis"
+    "github.com/horonlee/servora/pkg/logger"
 )
 ```
 

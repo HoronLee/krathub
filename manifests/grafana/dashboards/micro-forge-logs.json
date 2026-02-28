@@ -98,10 +98,7 @@
   "refresh": "10s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": [
-    "micro-forge",
-    "logs"
-  ],
+  "tags": ["servora", "logs"],
   "templating": {
     "list": []
   },
@@ -111,8 +108,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "micro-forge Logs",
-  "uid": "micro-forge-logs",
+  "title": "servora Logs",
+  "uid": "servora-logs",
   "version": 1,
   "weekStart": ""
 }

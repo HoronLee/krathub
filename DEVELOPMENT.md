@@ -1,23 +1,23 @@
-# micro-forge Development Guide
+# servora Development Guide
 
 This project follows the [go-wind-admin](https://github.com/tx7do/go-wind-admin) project structure and best practices.
 
 ## Project Structure
 
 ```
-micro-forge/
+servora/
 ├── api/                                    # API definitions
 │   ├── protos/                            # Protocol buffer definitions
-│   │   ├── micro-forge/service/v1/           # micro-forge HTTP services (i_*.proto)
+│   │   ├── servora/service/v1/           # servora HTTP services (i_*.proto)
 │   │   ├── auth/service/v1/              # Auth gRPC service
 │   │   ├── user/service/v1/              # User gRPC service
 │   │   ├── test/service/v1/              # Test gRPC service
 │   │   └── sayhello/service/v1/          # SayHello gRPC service
 │   ├── gen/go/                           # Generated Go code
 │   ├── buf.gen.yaml                      # Buf code generation config
-│   └── buf.micro-forge.openapi.gen.yaml     # micro-forge OpenAPI generation config
+│   └── buf.servora.openapi.gen.yaml     # servora OpenAPI generation config
 ├── app/                                   # Application services
-│   └── micro-forge/service/                  # micro-forge service
+│   └── servora/service/                  # servora service
 │       ├── cmd/                          # Command line entry points
 │       ├── internal/                     # Internal code
 │       ├── configs/                      # Configuration files
@@ -72,8 +72,8 @@ make all
 ### 4. Run Service
 
 ```bash
-# Run micro-forge service
-cd app/micro-forge/service
+# Run servora service
+cd app/servora/service
 make run
 
 # Or build and run
@@ -100,7 +100,7 @@ echo "include ../../../app.mk" > app/{service-name}/service/Makefile
 1. Create OpenAPI config for the service:
 
 ```bash
-cp api/buf.micro-forge.openapi.gen.yaml api/buf.{service-name}.openapi.gen.yaml
+cp api/buf.servora.openapi.gen.yaml api/buf.{service-name}.openapi.gen.yaml
 # Edit the config to point to your service's proto files
 ```
 
@@ -126,10 +126,10 @@ Example:
 
 ```
 api/protos/
-├── micro-forge/service/v1/
-│   ├── i_auth.proto      # HTTP: package micro-forge.service.v1
-│   ├── i_user.proto      # HTTP: package micro-forge.service.v1
-│   └── i_test.proto      # HTTP: package micro-forge.service.v1
+├── servora/service/v1/
+│   ├── i_auth.proto      # HTTP: package servora.service.v1
+│   ├── i_user.proto      # HTTP: package servora.service.v1
+│   └── i_test.proto      # HTTP: package servora.service.v1
 ├── auth/service/v1/
 │   └── auth.proto        # gRPC: package auth.service.v1
 ├── user/service/v1/
@@ -190,18 +190,18 @@ cd api && buf generate
 
 Each service has its own OpenAPI config file:
 
-- `api/buf.micro-forge.openapi.gen.yaml` - micro-forge service
+- `api/buf.servora.openapi.gen.yaml` - servora service
 
 OpenAPI files are generated to each service directory:
 
-- `app/micro-forge/service/openapi.yaml`
+- `app/servora/service/openapi.yaml`
 
 ```bash
 # Generate OpenAPI for all services
 make openapi
 
 # Generate for specific service
-cd app/micro-forge/service && make openapi
+cd app/servora/service && make openapi
 ```
 
 ### Wire Generation
@@ -211,7 +211,7 @@ cd app/micro-forge/service && make openapi
 make wire
 
 # Generate for specific service
-cd app/micro-forge/service && make wire
+cd app/servora/service && make wire
 ```
 
 ## Environment Variables
@@ -224,7 +224,7 @@ cp .env.example .env
 
 Variables:
 
-- `PROJECT_NAME`: Project name (default: micro-forge)
+- `PROJECT_NAME`: Project name (default: servora)
 - `SERVICE_APP_VERSION`: Service version (default: 0.0.1)
 - `VERSION`: Build version (overridden by git tags)
 

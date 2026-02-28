@@ -1,8 +1,8 @@
-# micro-forge
+# servora
 
 简体中文
 
-micro-forge 是一个基于 **Go Kratos v2** 的微服务示例项目，采用 **DDD 分层** 与 **契约优先（Proto First）** 的开发方式，覆盖从 API 定义、代码生成、服务开发到可观测性与容器化部署的完整链路。
+servora 是一个基于 **Go Kratos v2** 的微服务快开框架，采用 **DDD 分层** 与 **契约优先（Proto First）** 的开发方式，覆盖从 API 定义、代码生成、服务开发到可观测性与容器化部署的完整链路。
 
 ## ✨ 核心能力
 
@@ -38,7 +38,7 @@ micro-forge 是一个基于 **Go Kratos v2** 的微服务示例项目，采用 *
 │   ├── buf.*.typescript.gen.yaml
 │   └── buf.*.openapi.gen.yaml
 ├── app/
-│   ├── micro-forge/service/         # 主服务（DDD 分层）
+│   ├── servora/service/         # 主服务（DDD 分层）
 │   └── sayhello/service/        # 独立示例服务
 ├── pkg/                         # 项目共享库
 ├── web/                         # Vue 3 前端项目（根目录）
@@ -67,14 +67,14 @@ make init
 ### 2) 克隆与基础配置
 
 ```bash
-git clone https://github.com/horonlee/micro-forge.git
-cd micro-forge
+git clone https://github.com/horonlee/servora.git
+cd servora
 
 # 复制示例配置（主服务）
-cp api/protos/conf/v1/config-example.yaml app/micro-forge/service/configs/config.yaml
+cp api/protos/conf/v1/config-example.yaml app/servora/service/configs/config.yaml
 ```
 
-按需修改 `app/micro-forge/service/configs/config.yaml` 中的数据库、Redis、注册中心等配置。
+按需修改 `app/servora/service/configs/config.yaml` 中的数据库、Redis、注册中心等配置。
 
 ### 3) 生成代码
 
@@ -89,7 +89,7 @@ make gen
 **方式 A：直接运行主服务**
 
 ```bash
-cd app/micro-forge/service
+cd app/servora/service
 make run
 ```
 
@@ -168,7 +168,7 @@ make compose.dev.down
 - Go 代码生成自动扫描 `api/buf.*.go.gen.yaml` 并逐个执行；若未找到则回退到 `api/buf.gen.yaml`
 - TypeScript 代码生成自动扫描 `api/buf.*.typescript.gen.yaml` 并逐个执行；若未找到则跳过 TS 生成
 
-### 服务级命令（示例：`app/micro-forge/service/`）
+### 服务级命令（示例：`app/servora/service/`）
 
 ```bash
 make run
@@ -195,7 +195,7 @@ bun lint
 
 ## 📦 配置说明
 
-- 主服务配置：`app/micro-forge/service/configs/config.yaml`
+- 主服务配置：`app/servora/service/configs/config.yaml`
 - 示例配置：`api/protos/conf/v1/config-example.yaml`
 - 支持环境变量覆盖默认值（详见示例配置中的 `${VAR:default}` 写法）
 

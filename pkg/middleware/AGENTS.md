@@ -14,7 +14,7 @@
 
 ### CORS 中间件集成 (HTTP)
 ```go
-import "github.com/horonlee/micro-forge/pkg/middleware/cors"
+import "github.com/horonlee/servora/pkg/middleware/cors"
 
 httpSrv := http.NewServer(
     http.Middleware(

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: micro-forge
+  name: servora
   labels:
-    app.kubernetes.io/name: micro-forge
-    app.kubernetes.io/part-of: micro-forge
+    app.kubernetes.io/name: servora
+    app.kubernetes.io/part-of: servora

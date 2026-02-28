@@ -1,5 +1,5 @@
 # ============================================================================
-# Makefile for micro-forge Project
+# Makefile for servora Project
 # ============================================================================
 # Based on go-wind-admin project structure
 # ============================================================================
@@ -55,7 +55,7 @@ RESET := \033[0m
 COMPOSE := docker compose
 COMPOSE_FILES := -f docker-compose.yaml
 COMPOSE_DEV_FILES := -f docker-compose.yaml -f docker-compose.dev.yaml
-MICROSERVICES := micro-forge sayhello
+MICROSERVICES := servora sayhello
 INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 
 # ============================================================================
@@ -224,8 +224,8 @@ all:
 # build production images for microservices
 compose.build:
 	@echo "$(CYAN)Build production images: $(MICROSERVICES)$(RESET)"
-	@docker build -f app/micro-forge/service/Dockerfile -t micro-forge-micro/micro-forge-service:latest .
-	@docker build -f app/sayhello/service/Dockerfile -t micro-forge-micro/sayhello-service:latest .
+	@docker build -f app/servora/service/Dockerfile -t servora-micro/servora-service:latest .
+	@docker build -f app/sayhello/service/Dockerfile -t servora-micro/sayhello-service:latest .
 	@echo "$(GREEN)✓ Production images built$(RESET)"
 
 # start production compose stack (infra + microservices)
@@ -301,7 +301,7 @@ clean:
 # show help
 help:
 	@echo ""
-	@echo "$(CYAN)micro-forge Development Environment$(RESET)"
+	@echo "$(CYAN)servora Development Environment$(RESET)"
 	@echo "$(CYAN)=================================$(RESET)"
 	@echo ""
 	@echo "Usage:"

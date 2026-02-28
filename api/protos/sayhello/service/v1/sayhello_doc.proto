@@ -11,12 +11,12 @@ option (gnostic.openapi.v3.document) = {
     version: "1.0"
     description: "SayHello 微服务 API 文档 - 一个简单的问候服务示例"
     contact: {
-      name: "micro-forge Team"
-      url: "https://github.com/horonlee/micro-forge"
+      name: "servora Team"
+      url: "https://github.com/horonlee/servora"
     }
     license: {
       name: "MIT License"
-      url: "https://github.com/horonlee/micro-forge/blob/main/LICENSE"
+      url: "https://github.com/horonlee/servora/blob/main/LICENSE"
     }
   }
 

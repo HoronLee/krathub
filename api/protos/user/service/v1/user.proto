@@ -8,7 +8,7 @@ import "pagination/v1/pagination.proto";
 
 option java_multiple_files = true;
 option java_outer_classname = "UserProtoV1";
-option java_package = "dev.micro-forge.api.user.v1";
+option java_package = "dev.servora.api.user.v1";
 
 // 错误码定义
 enum ErrorReason {

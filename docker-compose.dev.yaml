@@ -1,17 +1,17 @@
 services:
-  micro-forge:
+  servora:
     build:
       context: .
       dockerfile: Dockerfile.air
-    working_dir: /workspace/app/micro-forge/service
+    working_dir: /workspace/app/servora/service
     command: ["air", "-c", ".air.toml"]
     environment:
       GOMODCACHE: /go/pkg/mod
       GOCACHE: /go/cache
     volumes:
       - ./:/workspace
-      - micro-forge_go_mod_cache:/go/pkg/mod
-      - micro-forge_go_build_cache:/go/cache
+      - servora_go_mod_cache:/go/pkg/mod
+      - servora_go_build_cache:/go/cache
 
   sayhello:
     build:
@@ -24,9 +24,9 @@ services:
       GOCACHE: /go/cache
     volumes:
       - ./:/workspace
-      - micro-forge_go_mod_cache:/go/pkg/mod
-      - micro-forge_go_build_cache:/go/cache
+      - servora_go_mod_cache:/go/pkg/mod
+      - servora_go_build_cache:/go/cache
 
 volumes:
-  micro-forge_go_mod_cache:
-  micro-forge_go_build_cache:
+  servora_go_mod_cache:
+  servora_go_build_cache:

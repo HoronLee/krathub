@@ -14,10 +14,10 @@ spec:
       labels:
         app: sayhello
     spec:
-      serviceAccountName: micro-forge-service-account
+      serviceAccountName: servora-service-account
       containers:
         - name: sayhello
-          image: micro-forge/sayhello-service:latest
+          image: servora/sayhello-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: grpc

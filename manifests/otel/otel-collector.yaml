@@ -5,15 +5,15 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
-  filelog/micro-forge:
+  filelog/servora:
     include:
-      - /var/log/micro-forge/micro-forge.service.log
+      - /var/log/servora/servora.service.log
     start_at: end
     include_file_path: true
     operators:
       - type: json_parser
     resource:
-      service.name: micro-forge.service
+      service.name: servora.service
   filelog/sayhello:
     include:
       - /var/log/sayhello/sayhello.service.log
@@ -54,6 +54,6 @@ service:
       processors: [batch]
       exporters: [otlp/jaeger, debug]
     logs:
-      receivers: [filelog/micro-forge, filelog/sayhello]
+      receivers: [filelog/servora, filelog/sayhello]
       processors: [attributes/log_hints, batch]
       exporters: [otlphttp/loki, debug]

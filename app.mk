@@ -1,4 +1,4 @@
-# Makefile for building micro-forge micro service application
+# Makefile for building servora micro service application
 # This is a common Makefile template for all services in app/ directory
 
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))

@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: micro-forge-observability
+  - name: servora-observability
     orgId: 1
-    folder: micro-forge
+    folder: servora
     type: file
     disableDeletion: false
     editable: true

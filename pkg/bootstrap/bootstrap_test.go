@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"testing"
 
-	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	conf "github.com/horonlee/servora/api/gen/go/conf/v1"
 )
 
 func TestResolveServiceIdentity_UseConfigValues(t *testing.T) {

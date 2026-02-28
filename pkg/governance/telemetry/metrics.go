@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
-	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
-	"github.com/horonlee/micro-forge/pkg/logger"
+	"github.com/horonlee/servora/api/gen/go/conf/v1"
+	"github.com/horonlee/servora/pkg/logger"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/otel/exporters/prometheus"
 	"go.opentelemetry.io/otel/metric"

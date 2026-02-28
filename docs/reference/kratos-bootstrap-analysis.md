@@ -1,4 +1,4 @@
-# kratos-bootstrap 项目分析（面向 micro-forge）
+# kratos-bootstrap 项目分析（面向 servora）
 
 ## 1. 项目定位与价值
 
@@ -84,11 +84,11 @@
 
 ---
 
-## 3. 对 micro-forge 的可迁移建议（优先级）
+## 3. 对 servora 的可迁移建议（优先级）
 
 ## P0：形成统一 Runtime 启动骨架
 
-当前 micro-forge 已有 `pkg/bootstrap`（`/Users/horonlee/projects/go/micro-forge/pkg/bootstrap/bootstrap.go`），建议继续收敛为固定阶段：
+当前 servora 已有 `pkg/bootstrap`（`/Users/horonlee/projects/go/servora/pkg/bootstrap/bootstrap.go`），建议继续收敛为固定阶段：
 
 1. 配置加载
 2. 日志初始化
@@ -130,7 +130,7 @@
 - Wire 做显式初始化，避免全局变量
 - 中间件顺序敏感（recovery/tracing/logging）
 
-建议 micro-forge 在后续文档中明确“生产配置不打包镜像”的约束，并把 Runtime 初始化阶段作为模板固化。
+建议 servora 在后续文档中明确“生产配置不打包镜像”的约束，并把 Runtime 初始化阶段作为模板固化。
 
 参考：
 
@@ -142,6 +142,6 @@
 
 ## 5. 风险与注意事项
 
-- `kratos-bootstrap` 本身集成面较大，micro-forge 建议先迁移“模式”而非一次性搬全部组件。
+- `kratos-bootstrap` 本身集成面较大，servora 建议先迁移“模式”而非一次性搬全部组件。
 - 工厂注册表需要避免重复注册 panic 对启动稳定性的影响（建议启动期统一检查并输出已注册列表）。
 - 命名规范化要兼顾历史服务名兼容策略，避免注册名突变引发流量切换问题。

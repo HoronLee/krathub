@@ -5,7 +5,7 @@
 
 ## 目的
 
-`api/` 目录是 micro-forge 项目的 API 定义中心，负责管理所有 Protobuf 定义文件和生成的代码。该目录使用 Buf 工具链进行现代化的 Protobuf 管理，支持双协议（gRPC + HTTP）和自动 OpenAPI 文档生成。
+`api/` 目录是 servora 项目的 API 定义中心，负责管理所有 Protobuf 定义文件和生成的代码。该目录使用 Buf 工具链进行现代化的 Protobuf 管理，支持双协议（gRPC + HTTP）和自动 OpenAPI 文档生成。
 
 **核心职责**：
 - 定义所有微服务的 API 契约（gRPC 和 HTTP）
@@ -37,9 +37,9 @@
   - 定义 workspace 目录列表
   - 当前只包含 `protos/` 目录
 
-- **buf.micro-forge.openapi.gen.yaml** - micro-forge 服务 OpenAPI 生成配置
-  - 生成 `app/micro-forge/service/openapi.yaml`
-  - 仅包含 `micro-forge/service/v1/i_*.proto`（HTTP 接口）
+- **buf.servora.openapi.gen.yaml** - servora 服务 OpenAPI 生成配置
+  - 生成 `app/servora/service/openapi.yaml`
+  - 仅包含 `servora/service/v1/i_*.proto`（HTTP 接口）
 
 - **buf.sayhello.openapi.gen.yaml** - SayHello 服务 OpenAPI 生成配置
   - 生成 `app/sayhello/service/openapi.yaml`
@@ -78,11 +78,11 @@ protos/
 │   ├── config-example.yaml             # 配置示例文件
 │   └── config-*.yaml                   # 各环境配置文件
 │
-├── micro-forge/service/v1/                 # micro-forge HTTP 接口
+├── servora/service/v1/                 # servora HTTP 接口
 │   ├── i_auth.proto                    # 认证 HTTP API（登录、注册、登出）
 │   ├── i_user.proto                    # 用户 HTTP API（用户 CRUD）
 │   ├── i_test.proto                    # 测试 HTTP API
-│   └── micro-forge_doc.proto               # OpenAPI 文档元数据
+│   └── servora_doc.proto               # OpenAPI 文档元数据
 │
 ├── auth/service/v1/                    # Auth gRPC 服务
 │   └── auth.proto                      # 认证 gRPC 接口（VerifyToken 等）
@@ -101,8 +101,8 @@ protos/
 **Proto 文件组织规范**：
 
 1. **HTTP 接口**（统一包名）
-   - 路径：`micro-forge/service/v1/i_*.proto`
-   - 包名：`micro-forge.service.v1`
+   - 路径：`servora/service/v1/i_*.proto`
+   - 包名：`servora.service.v1`
    - 命名：以 `i_` 前缀标识 HTTP 接口
    - 用途：生成 Kratos HTTP 路由（使用 `google.api.http` 注解）
 
@@ -139,7 +139,7 @@ gen/go/
 │   ├── user_grpc.pb.go
 │   └── user_errors.pb.go
 │
-├── micro-forge/service/v1/        # micro-forge HTTP 接口生成代码
+├── servora/service/v1/        # servora HTTP 接口生成代码
 │   ├── i_auth.pb.go
 │   ├── i_auth_http.pb.go      # HTTP 路由和客户端
 │   ├── i_user.pb.go
@@ -168,25 +168,25 @@ gen/go/
 
 #### 1. 添加 HTTP 接口（推荐）
 
-**场景**：为 micro-forge 主服务添加新的 HTTP 接口
+**场景**：为 servora 主服务添加新的 HTTP 接口
 
 **步骤**：
 
 ```bash
-# 1. 在 protos/micro-forge/service/v1/ 创建新文件
+# 1. 在 protos/servora/service/v1/ 创建新文件
 # 文件名格式：i_{feature}.proto
 ```
 
 ```protobuf
-// 示例：protos/micro-forge/service/v1/i_article.proto
+// 示例：protos/servora/service/v1/i_article.proto
 syntax = "proto3";
 
-package micro-forge.service.v1;
+package servora.service.v1;
 
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1;micro-forgepb";
+option go_package = "github.com/horonlee/servora/api/gen/go/servora/service/v1;servorapb";
 
 // 文章服务 HTTP 接口
 service Article {
@@ -234,18 +234,18 @@ message Article {
 
 ```bash
 # 2. 生成代码
-cd /Users/horonlee/projects/go/micro-forge
+cd /Users/horonlee/projects/go/servora
 make gen
 
 # 3. 验证生成结果
-ls api/gen/go/micro-forge/service/v1/i_article*
+ls api/gen/go/servora/service/v1/i_article*
 # 应该看到：
 # - i_article.pb.go
 # - i_article_http.pb.go
 # - i_article.pb.validate.go
 
 # 4. 在服务中实现接口
-# 编辑 app/micro-forge/service/internal/service/article.go
+# 编辑 app/servora/service/internal/service/article.go
 ```
 
 #### 2. 添加 gRPC 服务
@@ -267,7 +267,7 @@ package article.service.v1;
 
 import "validate/validate.proto";
 
-option go_package = "github.com/horonlee/micro-forge/api/gen/go/article/service/v1;articlepb";
+option go_package = "github.com/horonlee/servora/api/gen/go/article/service/v1;articlepb";
 
 // 文章服务 gRPC 接口
 service ArticleService {
@@ -310,7 +310,7 @@ message Article {
 ```yaml
 - file_option: go_package
   path: article/service/v1
-  value: github.com/horonlee/micro-forge/api/gen/go/article/service/v1;articlepb
+  value: github.com/horonlee/servora/api/gen/go/article/service/v1;articlepb
 ```
 
 ```bash
@@ -330,7 +330,7 @@ ls api/gen/go/article/service/v1/
 **在现有 proto 文件中添加错误定义**：
 
 ```protobuf
-// 在 protos/micro-forge/service/v1/i_article.proto 中添加
+// 在 protos/servora/service/v1/i_article.proto 中添加
 
 import "errors/errors.proto";
 
@@ -345,22 +345,22 @@ enum ErrorReason {
 
 生成后可在代码中使用：
 ```go
-import micro-forgepb "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1"
+import servorapb "github.com/horonlee/servora/api/gen/go/servora/service/v1"
 
-return micro-forgepb.ErrorArticleNotFound("article id=%d not found", id)
+return servorapb.ErrorArticleNotFound("article id=%d not found", id)
 ```
 
 ### 修改现有 API
 
 ```bash
 # 1. 编辑对应的 .proto 文件
-# 例如：api/protos/micro-forge/service/v1/i_user.proto
+# 例如：api/protos/servora/service/v1/i_user.proto
 
 # 2. 重新生成代码
 make gen
 
 # 3. 更新服务实现代码
-# 例如：app/micro-forge/service/internal/service/user.go
+# 例如：app/servora/service/internal/service/user.go
 
 # 4. 运行测试验证
 make test
@@ -378,7 +378,7 @@ make test
 
 ```bash
 # 1. 复制现有配置
-cp api/buf.micro-forge.openapi.gen.yaml api/buf.newservice.openapi.gen.yaml
+cp api/buf.servora.openapi.gen.yaml api/buf.newservice.openapi.gen.yaml
 ```
 
 ```yaml
@@ -444,17 +444,17 @@ make gen
 该命令会依次执行：
 1. 自动扫描并执行 `api/buf.*.go.gen.yaml`（若无匹配则回退 `api/buf.gen.yaml`）- 生成 Go 代码
 2. 自动扫描并执行 `api/buf.*.typescript.gen.yaml`（若无匹配则跳过）- 生成 TypeScript 代码
-3. `buf generate --template api/buf.micro-forge.openapi.gen.yaml api/protos` - 生成 micro-forge OpenAPI
+3. `buf generate --template api/buf.servora.openapi.gen.yaml api/protos` - 生成 servora OpenAPI
 4. `buf generate --template api/buf.sayhello.openapi.gen.yaml api/protos` - 生成 SayHello OpenAPI
 
 **仅生成特定服务的代码**：
 
 ```bash
 # 仅生成 Go 代码（推荐使用具名模板）
-buf generate --template api/buf.micro-forge.go.gen.yaml api/protos
+buf generate --template api/buf.servora.go.gen.yaml api/protos
 
-# 仅生成 micro-forge OpenAPI
-buf generate --template api/buf.micro-forge.openapi.gen.yaml api/protos
+# 仅生成 servora OpenAPI
+buf generate --template api/buf.servora.openapi.gen.yaml api/protos
 ```
 
 ### 常见问题排查
@@ -500,7 +500,7 @@ make gen
 override:
   - file_option: go_package
     path: newservice/service/v1
-    value: github.com/horonlee/micro-forge/api/gen/go/newservice/service/v1;newservicepb
+    value: github.com/horonlee/servora/api/gen/go/newservice/service/v1;newservicepb
 ```
 
 #### 问题 4：Breaking Change 警告
@@ -554,7 +554,7 @@ buf format -w  # -w 表示写入文件
 git checkout -b feature/add-article-api
 
 # 2. 定义 API（编辑 proto 文件）
-vim api/protos/micro-forge/service/v1/i_article.proto
+vim api/protos/servora/service/v1/i_article.proto
 
 # 3. Lint 检查
 cd api/protos && buf lint && cd ../..
@@ -563,12 +563,12 @@ cd api/protos && buf lint && cd ../..
 make gen
 
 # 5. 实现服务
-# 编辑 app/micro-forge/service/internal/service/article.go
-# 编辑 app/micro-forge/service/internal/biz/article.go
-# 编辑 app/micro-forge/service/internal/data/article.go
+# 编辑 app/servora/service/internal/service/article.go
+# 编辑 app/servora/service/internal/biz/article.go
+# 编辑 app/servora/service/internal/data/article.go
 
 # 6. 更新依赖注入
-cd app/micro-forge/service
+cd app/servora/service
 make wire
 
 # 7. 运行测试
@@ -621,8 +621,8 @@ git push origin feature/add-article-api
 
 生成的代码被以下模块使用：
 
-- **app/micro-forge/service/** - micro-forge 主服务
-  - 导入 `micro-forge/service/v1`（HTTP 接口）
+- **app/servora/service/** - servora 主服务
+  - 导入 `servora/service/v1`（HTTP 接口）
   - 导入 `auth/service/v1`（Auth gRPC）
   - 导入 `user/service/v1`（User gRPC）
   - 导入 `test/service/v1`（Test gRPC）
@@ -636,9 +636,9 @@ git push origin feature/add-article-api
 **导入示例**：
 ```go
 import (
-    micro-forgepb "github.com/horonlee/micro-forge/api/gen/go/microforge/service/v1"
-    authpb "github.com/horonlee/micro-forge/api/gen/go/auth/service/v1"
-    userpb "github.com/horonlee/micro-forge/api/gen/go/user/service/v1"
+servorapb "github.com/horonlee/servora/api/gen/go/servora/service/v1"
+    authpb "github.com/horonlee/servora/api/gen/go/auth/service/v1"
+    userpb "github.com/horonlee/servora/api/gen/go/user/service/v1"
 )
 ```
 
@@ -708,7 +708,7 @@ import "google/api/annotations.proto";
 import "validate/validate.proto";
 import "errors/errors.proto";
 
-option go_package = "github.com/horonlee/micro-forge/api/gen/go/{service}/service/v1;{service}pb";
+option go_package = "github.com/horonlee/servora/api/gen/go/{service}/service/v1;{service}pb";
 
 // 服务定义
 service {Service} {

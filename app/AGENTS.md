@@ -5,7 +5,7 @@
 
 ## 目录概述
 
-`app/` 是 micro-forge 项目的微服务实现层，包含所有微服务的业务逻辑和运行时代码。每个微服务都采用 DDD（领域驱动设计）分层架构，通过 Wire 进行依赖注入，遵循清晰的职责分离原则。
+`app/` 是 servora 项目的微服务实现层，包含所有微服务的业务逻辑和运行时代码。每个微服务都采用 DDD（领域驱动设计）分层架构，通过 Wire 进行依赖注入，遵循清晰的职责分离原则。
 
 **核心价值**：
 - 统一的微服务架构模板（DDD 分层 + Wire DI）
@@ -15,7 +15,7 @@
 
 ## 子目录结构
 
-### `micro-forge/service/` - 主服务（单体微服务）
+### `servora/service/` - 主服务（单体微服务）
 主业务服务，包含多个业务模块（auth, user, test 等），采用模块化单体架构。
 
 **特点**：
@@ -25,7 +25,7 @@
 
 **目录结构**：
 ```
-micro-forge/service/
+servora/service/
 ├── cmd/server/           # 服务入口
 │   ├── main.go          # 主函数（启动 HTTP/gRPC 服务器）
 │   ├── wire.go          # Wire 依赖注入配置
@@ -45,7 +45,7 @@ micro-forge/service/
 │   ├── service/        # 服务层（API 接口实现）
 │   │   ├── auth.go     # Auth gRPC 服务实现
 │   │   ├── user.go     # User gRPC 服务实现
-│   │   └── micro-forge.go  # micro-forge HTTP 接口实现
+│   │   └── servora.go  # servora HTTP 接口实现
 │   ├── server/         # 服务器配置
 │   │   ├── grpc.go     # gRPC 服务器配置
 │   │   └── http.go     # HTTP 服务器配置
@@ -93,7 +93,7 @@ sayhello/service/
 
 ## DDD 分层架构详解
 
-micro-forge 采用经典的 DDD 分层架构，各层职责明确，依赖方向单向。
+servora 采用经典的 DDD 分层架构，各层职责明确，依赖方向单向。
 
 ### 架构图
 
@@ -242,8 +242,8 @@ func (uc *AuthUsecase) Login(ctx context.Context, username, password string) (st
 package data
 
 import (
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/biz"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/data/gorm/po"
+    "github.com/horonlee/servora/app/servora/service/internal/biz"
+    "github.com/horonlee/servora/app/servora/service/internal/data/gorm/po"
 )
 
 // Repository 实现
@@ -294,7 +294,7 @@ package data
 import (
     "github.com/google/wire"
     "gorm.io/gorm"
-    "github.com/horonlee/micro-forge/pkg/redis"
+    "github.com/horonlee/servora/pkg/redis"
 )
 
 // ProviderSet 是 data 层的 Wire Provider
@@ -364,10 +364,10 @@ package main
 
 import (
     "github.com/google/wire"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/biz"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/data"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/server"
+    "github.com/horonlee/servora/app/servora/service/internal/biz"
+    "github.com/horonlee/servora/app/servora/service/internal/data"
+    "github.com/horonlee/servora/app/servora/service/internal/service"
+    "github.com/horonlee/servora/app/servora/service/internal/server"
 )
 
 func wireApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
@@ -430,11 +430,11 @@ import (
     "github.com/go-kratos/kratos/v2/log"
     "github.com/google/wire"
 
-    "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/biz"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/data"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/server"
-    "github.com/horonlee/micro-forge/app/micro-forge/service/internal/service"
+    "github.com/horonlee/servora/api/gen/go/conf/v1"
+    "github.com/horonlee/servora/app/servora/service/internal/biz"
+    "github.com/horonlee/servora/app/servora/service/internal/data"
+    "github.com/horonlee/servora/app/servora/service/internal/server"
+    "github.com/horonlee/servora/app/servora/service/internal/service"
 )
 
 // wireApp 构建应用依赖图
@@ -628,7 +628,7 @@ mkdir -p api/protos/newservice/service/v1
 3. **配置代码生成**
 ```bash
 # 复制并修改 OpenAPI 生成配置
-cp api/buf.micro-forge.openapi.gen.yaml api/buf.newservice.openapi.gen.yaml
+cp api/buf.servora.openapi.gen.yaml api/buf.newservice.openapi.gen.yaml
 # 修改 out 路径为 app/newservice/service/openapi.yaml
 ```
 
@@ -674,7 +674,7 @@ make test
 
 ### 添加新业务模块（在现有服务内）
 
-**场景**：在 `micro-forge` 服务中添加新模块（如 `product`）
+**场景**：在 `servora` 服务中添加新模块（如 `product`）
 
 **步骤**：
 
@@ -688,7 +688,7 @@ package product.service.v1;
 import "google/api/annotations.proto";
 import "errors/errors.proto";
 
-option go_package = "github.com/horonlee/micro-forge/api/gen/go/product/service/v1;v1";
+option go_package = "github.com/horonlee/servora/api/gen/go/product/service/v1;v1";
 
 service Product {
   rpc CreateProduct(CreateProductRequest) returns (CreateProductReply);
@@ -831,7 +831,7 @@ func NewGRPCServer(
 
 8. **重新生成 Wire 代码**
 ```bash
-cd app/micro-forge/service
+cd app/servora/service
 make wire
 ```
 
@@ -916,7 +916,7 @@ func main() {
     })
 
     // 连接数据库
-    db, _ := gorm.Open(mysql.Open("root:password@tcp(localhost:3306)/micro-forge"))
+    db, _ := gorm.Open(mysql.Open("root:password@tcp(localhost:3306)/servora"))
     g.UseDB(db)
 
     // 生成所有表
@@ -934,7 +934,7 @@ func main() {
 
 2. **运行生成**
 ```bash
-cd app/micro-forge/service
+cd app/servora/service
 make gen.dao  # 或 go run ./cmd/genDao -conf ./configs
 make gen.ent  # 生成 Ent 代码（schema -> ent）
 ```
@@ -942,7 +942,7 @@ make gen.ent  # 生成 Ent 代码（schema -> ent）
 3. **使用生成的 DAO**
 ```go
 // internal/data/data.go
-    import "github.com/horonlee/micro-forge/app/micro-forge/service/internal/data/gorm/po"
+    import "github.com/horonlee/servora/app/servora/service/internal/data/gorm/po"
 
 type Data struct {
     DB      *gorm.DB
@@ -1058,8 +1058,8 @@ func TestUserRepo_Create(t *testing.T) {
 
 **Compose 镜像构建**：
 ```bash
-cd /Users/horonlee/projects/go/micro-forge
-make compose.build  # 构建生产镜像（micro-forge + sayhello）
+cd /Users/horonlee/projects/go/servora
+make compose.build  # 构建生产镜像（servora + sayhello）
 ```
 
 **Kubernetes 部署**：
@@ -1068,8 +1068,8 @@ make compose.build  # 构建生产镜像（micro-forge + sayhello）
 kubectl apply -f deployment/kubernetes/
 
 # 查看状态
-kubectl get pods -l app=micro-forge
-kubectl logs -f deployment/micro-forge
+kubectl get pods -l app=servora
+kubectl logs -f deployment/servora
 ```
 
 ## 常见任务速查
@@ -1083,10 +1083,10 @@ vim api/protos/auth/service/v1/auth.proto
 make gen
 
 # 3. 修改 Wire 配置（如有必要）
-vim app/micro-forge/service/cmd/server/wire.go
+vim app/servora/service/cmd/server/wire.go
 
 # 4. 重新生成 Wire
-cd app/micro-forge/service && make wire
+cd app/servora/service && make wire
 
 # 5. 运行服务
 make run
@@ -1098,10 +1098,10 @@ make test
 ### 调试技巧
 ```bash
 # 查看生成的 Wire 代码
-cat app/micro-forge/service/cmd/server/wire_gen.go
+cat app/servora/service/cmd/server/wire_gen.go
 
 # 检查 Wire 依赖图
-cd app/micro-forge/service/cmd/server
+cd app/servora/service/cmd/server
 wire show
 
 # 验证 gRPC 接口
@@ -1109,7 +1109,7 @@ grpcurl -plaintext localhost:9000 list
 grpcurl -plaintext localhost:9000 auth.service.v1.Auth/Login
 
 # 查看 OpenAPI 文档
-cat app/micro-forge/service/openapi.yaml
+cat app/servora/service/openapi.yaml
 ```
 
 ### 性能优化
@@ -1121,7 +1121,7 @@ cat app/micro-forge/service/openapi.yaml
 ### 错误处理最佳实践
 ```go
 // 使用 Kratos 错误类型
-import userv1 "github.com/horonlee/micro-forge/api/gen/go/user/service/v1"
+import userv1 "github.com/horonlee/servora/api/gen/go/user/service/v1"
 
 // 标准错误
 return userv1.ErrorUserNotFound("user %d not found", id)
@@ -1181,9 +1181,9 @@ if err != nil {
 
 ## 快速参考
 
-**启动 micro-forge 服务**：
+**启动 servora 服务**：
 ```bash
-cd app/micro-forge/service
+cd app/servora/service
 cp ../../../api/protos/conf/v1/config-example.yaml configs/config.yaml
 # 编辑 configs/config.yaml（配置数据库和 Redis）
 make run

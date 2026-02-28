@@ -6,10 +6,10 @@ import (
 	"os"
 	"time"
 
-	conf "github.com/horonlee/micro-forge/api/gen/go/conf/v1"
-	"github.com/horonlee/micro-forge/pkg/config"
-	"github.com/horonlee/micro-forge/pkg/governance/telemetry"
-	"github.com/horonlee/micro-forge/pkg/logger"
+	conf "github.com/horonlee/servora/api/gen/go/conf/v1"
+	"github.com/horonlee/servora/pkg/config"
+	"github.com/horonlee/servora/pkg/governance/telemetry"
+	"github.com/horonlee/servora/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

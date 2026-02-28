@@ -1,7 +1,7 @@
 services:
   consul:
     image: consul:1.15.4
-    container_name: micro-forge_consul
+    container_name: servora_consul
     restart: unless-stopped
     command:
       - agent
@@ -20,20 +20,20 @@ services:
       - "8500:8500"
       - "8600:8600/udp"
     volumes:
-      - micro-forge-consul-data:/consul/data
+      - servora-consul-data:/consul/data
     networks:
-      - micro-forge-network
+      - servora-network
 
-  micro-forge:
-    image: micro-forge/micro-forge-service:latest
-    container_name: micro-forge
+  servora:
+    image: servora/servora-service:latest
+    container_name: servora
     restart: unless-stopped
-    command: ["/app/micro-forge", "-conf", "/app/configs/config-docker.yaml"]
+    command: ["/app/servora", "-conf", "/app/configs/config-docker.yaml"]
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - ./app/micro-forge/service/configs/config-docker.yaml:/app/configs/config-docker.yaml:ro
-      - micro-forge-logs:/app/logs
+      - ./app/servora/service/configs/config-docker.yaml:/app/configs/config-docker.yaml:ro
+      - servora-logs:/app/logs
     ports:
       - "8000:8000"
       - "8001:8001"
@@ -47,10 +47,10 @@ services:
       otel-collector:
         condition: service_started
     networks:
-      - micro-forge-network
+      - servora-network
 
   sayhello:
-    image: micro-forge/sayhello-service:latest
+    image: servora/sayhello-service:latest
     container_name: sayhello
     restart: unless-stopped
     command: ["/app/sayhello", "-conf", "/app/configs/config-docker.yaml"]
@@ -65,11 +65,11 @@ services:
       otel-collector:
         condition: service_started
     networks:
-      - micro-forge-network
+      - servora-network
 
   jaeger:
     image: jaegertracing/all-in-one:latest
-    container_name: micro-forge_jaeger
+    container_name: servora_jaeger
     restart: unless-stopped
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
@@ -77,17 +77,17 @@ services:
       - "16686:16686"
       - "14269:14269"
     networks:
-      - micro-forge-network
+      - servora-network
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
-    container_name: micro-forge_otel_collector
+    container_name: servora_otel_collector
     user: "0:0"
     restart: unless-stopped
     command: ["--config=/etc/otelcol/config.yaml"]
     volumes:
       - ./manifests/otel/otel-collector.yaml:/etc/otelcol/config.yaml:ro
-      - micro-forge-logs:/var/log/micro-forge:ro
+      - servora-logs:/var/log/servora:ro
       - sayhello-logs:/var/log/sayhello:ro
     ports:
       - "4317:4317"
@@ -96,24 +96,24 @@ services:
       - jaeger
       - loki
     networks:
-      - micro-forge-network
+      - servora-network
 
   loki:
     image: grafana/loki:latest
-    container_name: micro-forge_loki
+    container_name: servora_loki
     restart: unless-stopped
     command: ["-config.file=/etc/loki/config.yaml"]
     ports:
       - "3100:3100"
     volumes:
       - ./manifests/loki/loki.yaml:/etc/loki/config.yaml:ro
-      - micro-forge-loki-data:/loki
+      - servora-loki-data:/loki
     networks:
-      - micro-forge-network
+      - servora-network
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: micro-forge_prometheus
+    container_name: servora_prometheus
     restart: unless-stopped
     command:
       - --config.file=/etc/prometheus/prometheus.yml
@@ -122,13 +122,13 @@ services:
       - "9090:9090"
     volumes:
       - ./manifests/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - micro-forge-prometheus-data:/prometheus
+      - servora-prometheus-data:/prometheus
     networks:
-      - micro-forge-network
+      - servora-network
 
   grafana:
     image: grafana/grafana:latest
-    container_name: micro-forge_grafana
+    container_name: servora_grafana
     restart: unless-stopped
     environment:
       GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:-admin}"
@@ -139,62 +139,62 @@ services:
     volumes:
       - ./manifests/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./manifests/grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - micro-forge-grafana-data:/var/lib/grafana
+      - servora-grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
       - loki
       - jaeger
     networks:
-      - micro-forge-network
+      - servora-network
 
   db:
     image: postgres:18-alpine
-    container_name: micro-forge_db
+    container_name: servora_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: micro-forge
-      POSTGRES_USER: micro-forge
-      POSTGRES_PASSWORD: micro-forge
+      POSTGRES_DB: servora
+      POSTGRES_USER: servora
+      POSTGRES_PASSWORD: servora
       TZ: Asia/Shanghai
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U micro-forge -d micro-forge"]
+      test: ["CMD-SHELL", "pg_isready -U servora -d servora"]
       interval: 10s
       timeout: 5s
       retries: 5
     ports:
       - "5432:5432"
     volumes:
-      - micro-forge-db-data:/var/lib/postgresql/data
-      - ./app/micro-forge/service/manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - servora-db-data:/var/lib/postgresql/data
+      - ./app/servora/service/manifests/SQL/model_pgsql.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
-      - micro-forge-network
+      - servora-network
 
   redis:
     image: redis:7-alpine
-    container_name: micro-forge_redis
+    container_name: servora_redis
     restart: unless-stopped
-    command: redis-server --requirepass micro-forge_redis_pwd --appendonly yes
+    command: redis-server --requirepass servora_redis_pwd --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "micro-forge_redis_pwd", "ping"]
+      test: ["CMD", "redis-cli", "-a", "servora_redis_pwd", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
     ports:
       - "6379:6379"
     volumes:
-      - micro-forge-redis-data:/data
+      - servora-redis-data:/data
     networks:
-      - micro-forge-network
+      - servora-network
 
 volumes:
-  micro-forge-consul-data:
-  micro-forge-db-data:
-  micro-forge-redis-data:
-  micro-forge-loki-data:
-  micro-forge-prometheus-data:
-  micro-forge-grafana-data:
-  micro-forge-logs:
+  servora-consul-data:
+  servora-db-data:
+  servora-redis-data:
+  servora-loki-data:
+  servora-prometheus-data:
+  servora-grafana-data:
+  servora-logs:
   sayhello-logs:
 
 networks:
-  micro-forge-network:
+  servora-network:

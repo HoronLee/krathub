@@ -14,7 +14,7 @@
 
 ### 1. 初始化 Logger
 ```go
-import "github.com/horonlee/micro-forge/pkg/logger"
+import "github.com/horonlee/servora/pkg/logger"
 
 l := logger.NewLogger(&logger.Config{
     Env:      "dev",

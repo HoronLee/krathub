@@ -1,4 +1,4 @@
-# micro-forge TODO
+# servora TODO
 
 ## Kubernetes 增强功能
 
@@ -13,5 +13,5 @@
 - [ ] **Tracing 明文传输 + 全采样** - `pkg/governance/telemetry/tracing.go` 使用 `WithInsecure()` 且采样率 `1.0`
 - [ ] **Collector debug exporter 在生产链路** - `manifests/otel/otel-collector.yaml` 的 traces/logs pipeline 包含 `debug`
 - [ ] **Collector 未纳入健康依赖链** - 已配置 health extension，但服务依赖仍是 `service_started`
-- [ ] **sayhello metrics 可观测性闭环不完整** - 已接入 middleware，Prometheus 当前仅抓取 `micro-forge`
+- [ ] **sayhello metrics 可观测性闭环不完整** - 已接入 middleware，Prometheus 当前仅抓取 `servora`
 - [ ] **Prometheus 抓取范围偏窄** - 建议补充 otel/loki/jaeger/grafana 的组件级采集

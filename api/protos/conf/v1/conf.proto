@@ -3,7 +3,7 @@ package conf.v1;
 
 import "google/protobuf/duration.proto";
 
-option go_package = "github.com/horonlee/micro-forge/api/gen/go/conf/v1;conf";
+option go_package = "github.com/horonlee/servora/api/gen/go/conf/v1;conf";
 
 // =============================================================================
 // Bootstrap 配置

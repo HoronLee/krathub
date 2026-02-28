@@ -1,10 +1,10 @@
-# AGENTS.md - micro-forge 项目根目录
+# AGENTS.md - servora 项目根目录
 
 <!-- Generated: 2026-02-09 | Updated: 2026-02-27 -->
 
 ## 项目概述
 
-micro-forge 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了现代化微服务架构的最佳实践。项目采用 DDD（领域驱动设计）分层架构，使用 Buf 进行 Protobuf 管理，支持多服务独立开发和部署。
+servora 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了现代化微服务架构的最佳实践。项目采用 DDD（领域驱动设计）分层架构，使用 Buf 进行 Protobuf 管理，支持多服务独立开发和部署。
 
 **核心价值**：
 - 提供完整的微服务开发模板和最佳实践参考
@@ -62,7 +62,7 @@ Protobuf API 定义的中心目录，包含所有 proto 文件和生成的代码
 - `protos/` - Proto 源文件
   - `buf.yaml` - Proto 依赖配置（BSR 远程依赖）
   - `conf/v1/` - 配置定义（proto）与示例配置文件
-  - `micro-forge/service/v1/` - micro-forge HTTP 接口（`i_*.proto` 文件）
+  - `servora/service/v1/` - servora HTTP 接口（`i_*.proto` 文件）
   - `auth/service/v1/` - Auth gRPC 服务
   - `user/service/v1/` - User gRPC 服务
   - `test/service/v1/` - Test gRPC 服务
@@ -70,7 +70,7 @@ Protobuf API 定义的中心目录，包含所有 proto 文件和生成的代码
 - `gen/go/` - 生成的 Go protobuf 代码（自动生成，不提交）
 
 **Proto 组织规范**：
-1. **HTTP 接口**：`micro-forge/service/v1/i_*.proto`（统一包名 `micro-forge.service.v1`）
+1. **HTTP 接口**：`servora/service/v1/i_*.proto`（统一包名 `servora.service.v1`）
 2. **gRPC 服务**：`{service}/service/v1/{service}.proto`（独立包名）
 3. **独立微服务**：完全独立的服务，可包含 HTTP 注解
 
@@ -94,7 +94,7 @@ Protobuf API 定义的中心目录，包含所有 proto 文件和生成的代码
 - `Makefile` - 服务级构建文件（include app.mk）
 
 **当前服务**：
-- `micro-forge/service/` - 主服务（包含 auth, user, test 等模块）
+- `servora/service/` - 主服务（包含 auth, user, test 等模块）
 - `sayhello/service/` - 独立微服务示例
 - `web/` - 根目录前端应用（Vue 3 + Vite + TypeScript）
 
@@ -157,14 +157,14 @@ make build         # 构建所有服务
 make test          # 运行所有测试
 make lint          # 代码检查（golangci-lint）
 make clean         # 清理构建产物
-make compose.build      # 构建生产镜像（micro-forge + sayhello）
+make compose.build      # 构建生产镜像（servora + sayhello）
 make compose.up         # 启动生产 compose 全栈（consul + db + redis + observability + services）
 make compose.rebuild    # 重建生产镜像并启动生产 compose 全栈
 make compose.ps         # 查看生产 compose 状态
 make compose.logs       # 查看生产 compose 日志
 make compose.down       # 停止生产 compose 全栈
 make compose.dev.build  # 构建 Air 开发镜像（根 compose 分层）
-make compose.dev.up     # 启动 Air 热重载开发容器（micro-forge + sayhello）
+make compose.dev.up     # 启动 Air 热重载开发容器（servora + sayhello）
 make compose.dev.restart # 重启 Air 开发容器（强制触发启动时重编译）
 make compose.dev.ps     # 查看 Air 开发容器状态
 make compose.dev.logs   # 查看 Air 开发容器日志
@@ -213,7 +213,7 @@ import (
 
     "github.com/go-kratos/kratos/v2/log"  // 2. 第三方库
 
-    authv1 "github.com/horonlee/micro-forge/api/gen/go/auth/service/v1"  // 3. 项目内
+    authv1 "github.com/horonlee/servora/api/gen/go/auth/service/v1"  // 3. 项目内
 )
 ```
 
@@ -274,7 +274,7 @@ if err != nil {
 3. 创建 OpenAPI 配置：复制并修改 `api/buf.{service}.openapi.gen.yaml`
 4. 定义 proto 文件：`api/protos/newservice/service/v1/`
 5. 生成代码：`make gen`
-6. 实现服务代码（参考 `app/micro-forge/service/` 结构）
+6. 实现服务代码（参考 `app/servora/service/` 结构）
 
 **修改 API**：
 1. 编辑 `api/protos/` 中的 `.proto` 文件
@@ -284,7 +284,7 @@ if err != nil {
 
 **添加共享工具**：
 1. 在 `pkg/` 下创建新模块
-2. 在服务中通过 `github.com/horonlee/micro-forge/pkg/{module}` 导入
+2. 在服务中通过 `github.com/horonlee/servora/pkg/{module}` 导入
 3. 编写单元测试
 
 **更新依赖注入**：
@@ -355,12 +355,12 @@ if err != nil {
 
 **初次使用**：
 ```bash
-git clone https://github.com/horonlee/micro-forge.git
-cd micro-forge
+git clone https://github.com/horonlee/servora.git
+cd servora
 make init                                      # 安装工具
 cp .env.example .env                           # 配置环境变量
 make gen                                       # 生成代码
-cd app/micro-forge/service
+cd app/servora/service
 cp ../../../api/protos/conf/v1/config-example.yaml configs/config.yaml
 # 编辑 config.yaml，配置数据库和 Redis
 make run                                       # 启动服务
@@ -372,7 +372,7 @@ make run                                       # 启动服务
 make gen
 
 # 修改 Wire 配置后
-cd app/micro-forge/service && make wire
+cd app/servora/service && make wire
 
 # 运行测试
 make test
@@ -391,5 +391,5 @@ make compose.build
 
 # K8s 部署
 kubectl apply -f manifests/
-kubectl apply -f app/micro-forge/service/deployment/kubernetes/
+kubectl apply -f app/servora/service/deployment/kubernetes/
 ```

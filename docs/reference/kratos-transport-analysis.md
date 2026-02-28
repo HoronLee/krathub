@@ -1,4 +1,4 @@
-# kratos-transport 项目分析（面向 micro-forge）
+# kratos-transport 项目分析（面向 servora）
 
 ## 1. 项目定位与价值
 
@@ -84,11 +84,11 @@
 
 ---
 
-## 3. 对 micro-forge 的可迁移建议（优先级）
+## 3. 对 servora 的可迁移建议（优先级）
 
 ## P0：定义统一的扩展传输接口层
 
-在 micro-forge 内建议抽象一个 `pkg/transport/serverext`（命名可调整），明确：
+在 servora 内建议抽象一个 `pkg/transport/serverext`（命名可调整），明确：
 
 - 必须实现 Start/Stop/Endpoint
 - 必须支持 Option 注入
@@ -98,7 +98,7 @@
 
 ## P0：引入 keepalive 模式用于 MQ Worker
 
-如果未来 micro-forge 引入异步消费服务（Kafka/NSQ/RabbitMQ Worker），建议同步引入 keepalive 旁路探活，确保注册中心健康状态可信。
+如果未来 servora 引入异步消费服务（Kafka/NSQ/RabbitMQ Worker），建议同步引入 keepalive 旁路探活，确保注册中心健康状态可信。
 
 ## P1：沉淀“transport 选项规范”
 
@@ -119,7 +119,7 @@
 
 ## P2：MQ 抽象可分阶段引入
 
-`kratos-transport` 的 MQ 生态很全，但 micro-forge 建议分阶段：
+`kratos-transport` 的 MQ 生态很全，但 servora 建议分阶段：
 
 1. 先统一 broker 接口与 tracing/coding 选项
 2. 首批接入 1~2 个队列（如 Kafka + Redis stream）
@@ -127,12 +127,12 @@
 
 ---
 
-## 4. 与 micro-forge 现状的对照
+## 4. 与 servora 现状的对照
 
-micro-forge 已具备：
+servora 已具备：
 
-- 统一 bootstrap runtime：`/Users/horonlee/projects/go/micro-forge/pkg/bootstrap/bootstrap.go`
-- HTTP/gRPC 中间件链：`/Users/horonlee/projects/go/micro-forge/app/micro-forge/service/internal/server/http.go`、`/Users/horonlee/projects/go/micro-forge/app/micro-forge/service/internal/server/grpc.go`
+- 统一 bootstrap runtime：`/Users/horonlee/projects/go/servora/pkg/bootstrap/bootstrap.go`
+- HTTP/gRPC 中间件链：`/Users/horonlee/projects/go/servora/app/servora/service/internal/server/http.go`、`/Users/horonlee/projects/go/servora/app/servora/service/internal/server/grpc.go`
 
 下一步差距主要在：
 
@@ -160,10 +160,10 @@ micro-forge 已具备：
 
 ## 6. 落地路线建议（可执行）
 
-1. 在 micro-forge 建立 `transport extension RFC`（接口、Option、日志、endpoint 规范）
+1. 在 servora 建立 `transport extension RFC`（接口、Option、日志、endpoint 规范）
 2. 落地 `sse` 与 `websocket` 两个示范实现
 3. 为异步 worker 增加 keepalive server 并接入 registry
 4. 把 tracing/metrics/error mapping 模板化，沉淀到 `pkg/transport`
 5. 补齐单元测试 + 集成测试（至少覆盖 Start/Stop 幂等、endpoint 正确性）
 
-如果按此路线推进，可以在不破坏现有 gRPC/HTTP 主链路的情况下，逐步把 micro-forge 升级为“多传输协议统一治理”的框架。
+如果按此路线推进，可以在不破坏现有 gRPC/HTTP 主链路的情况下，逐步把 servora 升级为“多传输协议统一治理”的框架。

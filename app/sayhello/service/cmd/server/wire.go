@@ -4,10 +4,10 @@
 package main
 
 import (
-	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
-	"github.com/horonlee/micro-forge/app/sayhello/service/internal/server"
-	"github.com/horonlee/micro-forge/app/sayhello/service/internal/service"
-	"github.com/horonlee/micro-forge/pkg/bootstrap"
+	"github.com/horonlee/servora/api/gen/go/conf/v1"
+	"github.com/horonlee/servora/app/sayhello/service/internal/server"
+	"github.com/horonlee/servora/app/sayhello/service/internal/service"
+	"github.com/horonlee/servora/pkg/bootstrap"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

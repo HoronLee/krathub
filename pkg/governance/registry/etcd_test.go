@@ -9,7 +9,7 @@ import (
 	clientv3 "go.etcd.io/etcd/client/v3"
 
 	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	"github.com/horonlee/servora/api/gen/go/conf/v1"
 )
 
 func shouldRunEtcdIntegration() bool {
@@ -35,7 +35,7 @@ func TestEtcdRegistryAndDiscovery(t *testing.T) {
 
 	// 创建注册中心实例
 	reg := New(client,
-		Namespace("/test-micro-forge"),
+		Namespace("/test-servora"),
 		RegisterTTL(10*time.Second),
 		MaxRetry(3),
 	)
@@ -142,7 +142,7 @@ func TestEtcdConfigConversion(t *testing.T) {
 
 	// 测试注册中心创建
 	registrar, err := NewEtcdRegistry(cfg,
-		Namespace("/test-micro-forge"),
+		Namespace("/test-servora"),
 		RegisterTTL(15*time.Second),
 		MaxRetry(5),
 	)
@@ -158,7 +158,7 @@ func TestEtcdConfigConversion(t *testing.T) {
 
 	// 测试服务发现创建
 	discovery, err := NewEtcdDiscovery(cfg,
-		Namespace("/test-micro-forge"),
+		Namespace("/test-servora"),
 		RegisterTTL(15*time.Second),
 		MaxRetry(5),
 	)
@@ -191,7 +191,7 @@ func BenchmarkEtcdServiceDiscovery(b *testing.B) {
 	}
 	defer client.Close()
 
-	reg := New(client, Namespace("/bench-micro-forge"))
+	reg := New(client, Namespace("/bench-servora"))
 
 	// 注册测试服务
 	serviceInstance := &registry.ServiceInstance{

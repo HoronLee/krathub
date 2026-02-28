@@ -52,7 +52,7 @@ data:
       #   timeout: ${CLIENT_GRPC_TIMEOUT:5s}
 
 app:
-  name: micro-forge
+  name: servora
   version: v1.0.0
   env: "${ENV:dev}" # dev, test, prod
   metadata:
@@ -86,8 +86,8 @@ registry:
     # 为服务自定义标签，可用于服务网格、负载均衡等
     tags:
       - "traefik.enable=true" # 启用 Traefik 路由
-      - "traefik.http.routers.${APP_NAME:micro-forge}-router.rule=Host(`${DOMAIN:micro-forge.r430.com}`)" # 路由规则
-      - "traefik.http.services.${APP_NAME:micro-forge}-svc.loadbalancer.server.port=${SERVER_HTTP_PORT:8000}" # 服务端口
+      - "traefik.http.routers.${APP_NAME:servora}-router.rule=Host(`${DOMAIN:servora.r430.com}`)" # 路由规则
+      - "traefik.http.services.${APP_NAME:servora}-svc.loadbalancer.server.port=${SERVER_HTTP_PORT:8000}" # 服务端口
 
   # 或者使用 etcd 作为注册中心
   # etcd:
@@ -101,8 +101,8 @@ registry:
   #   password: "${REGISTRY_ETCD_PASSWORD:}"
   #   # 连接超时时间
   #   timeout: "${REGISTRY_ETCD_TIMEOUT:5s}"
-  #   # 命名空间（可选，默认为 /micro-forge）
-  #   namespace: "${REGISTRY_ETCD_NAMESPACE:/micro-forge}"
+  #   # 命名空间（可选，默认为 /servora）
+  #   namespace: "${REGISTRY_ETCD_NAMESPACE:/servora}"
 
   # 或者使用 Nacos 作为注册中心
   # nacos:
@@ -139,8 +139,8 @@ discovery:
   #   password: "${DISCOVERY_ETCD_PASSWORD:}"
   #   # 连接超时时间
   #   timeout: "${DISCOVERY_ETCD_TIMEOUT:5s}"
-  #   # 命名空间（可选，默认为 /micro-forge，通常与注册中心保持一致）
-  #   namespace: "${DISCOVERY_ETCD_NAMESPACE:/micro-forge}"
+  #   # 命名空间（可选，默认为 /servora，通常与注册中心保持一致）
+  #   namespace: "${DISCOVERY_ETCD_NAMESPACE:/servora}"
 
   # nacos:
   #   addr: "${NACOSD_ADDR:127.0.0.1}"
@@ -186,9 +186,9 @@ config:
   #   password: "${CONFIG_ETCD_PASSWORD:}"
   #   timeout: "${CONFIG_ETCD_TIMEOUT:5s}"
   #   # 配置路径 (推荐)
-  #   key: "${CONFIG_ETCD_KEY:/micro-forge/config.yaml}"
+  #   key: "${CONFIG_ETCD_KEY:/servora/config.yaml}"
   #   # 或者使用 namespace (自动拼接为 {namespace}/config.yaml)
-  #   # namespace: "${CONFIG_ETCD_NAMESPACE:/micro-forge}"
+  #   # namespace: "${CONFIG_ETCD_NAMESPACE:/servora}"
 
 # 链路追踪配置
 trace:

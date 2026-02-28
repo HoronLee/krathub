@@ -1,4 +1,4 @@
-module github.com/horonlee/micro-forge
+module github.com/horonlee/servora
 
 go 1.26.0
 

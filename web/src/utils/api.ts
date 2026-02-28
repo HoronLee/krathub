@@ -1,11 +1,11 @@
 import {
-  createmicroforgeClients,
+  createservoraClients,
   type authservicev1_LoginByEmailPasswordResponse,
   type authservicev1_SignupByEmailResponse,
   type userservicev1_CurrentUserInfoResponse,
 } from "@/service/request/clients";
 
-const publicClients = createmicroforgeClients();
+const publicClients = createservoraClients();
 
 export const api = {
   login(
@@ -32,7 +32,7 @@ export const api = {
   getCurrentUser(
     token: string,
   ): Promise<userservicev1_CurrentUserInfoResponse> {
-    const clients = createmicroforgeClients({ getAccessToken: () => token });
+    const clients = createservoraClients({ getAccessToken: () => token });
     return clients.user.CurrentUserInfo({});
   },
 };

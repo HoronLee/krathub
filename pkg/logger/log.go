@@ -192,7 +192,7 @@ type Option func(keyvals *[]any)
 
 // WithModule 返回一个添加 module 字段的 Option
 // module命名规范: "[组件]/[层]/[服务名]"
-// 例如: "redis/data/micro-forge-service", "auth/biz/micro-forge-service"
+// 例如: "redis/data/servora-service", "auth/biz/servora-service"
 func WithModule(module string) Option {
 	return func(keyvals *[]any) {
 		*keyvals = append(*keyvals, "module", module)

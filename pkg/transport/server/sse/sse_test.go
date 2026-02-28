@@ -29,7 +29,7 @@ func TestWriteEvent(t *testing.T) {
 }
 
 func TestNewStaticHandler(t *testing.T) {
-	h := NewStaticHandler(Event{Event: "ready", Data: "micro-forge"})
+	h := NewStaticHandler(Event{Event: "ready", Data: "servora"})
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodGet, "/sse/events", nil)
 	h(rec, req)

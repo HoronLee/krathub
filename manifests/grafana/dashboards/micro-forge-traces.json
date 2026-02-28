@@ -113,10 +113,7 @@
   "refresh": "10s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": [
-    "micro-forge",
-    "traces"
-  ],
+  "tags": ["servora", "traces"],
   "templating": {
     "list": [
       {
@@ -172,8 +169,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "micro-forge Traces",
-  "uid": "micro-forge-traces",
+  "title": "servora Traces",
+  "uid": "servora-traces",
   "version": 1,
   "weekStart": ""
 }

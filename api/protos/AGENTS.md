@@ -5,7 +5,7 @@
 
 ## 目录概述
 
-此目录包含 micro-forge 项目中所有服务的 Protobuf 定义文件。我们使用 [Buf](https://buf.build/) 作为 Protobuf 构建工具链。
+此目录包含 servora 项目中所有服务的 Protobuf 定义文件。我们使用 [Buf](https://buf.build/) 作为 Protobuf 构建工具链。
 
 ### 服务子目录说明
 
@@ -13,7 +13,7 @@
 | :--- | :--- | :--- |
 | `auth/` | 身份验证服务协议定义 | `auth.proto` (gRPC) |
 | `user/` | 用户管理服务协议定义 | `user.proto` (gRPC) |
-| `micro-forge/` | 主服务入口，主要包含 HTTP API 定义 | `i_*.proto` (HTTP) |
+| `servora/` | 主服务入口，主要包含 HTTP API 定义 | `i_*.proto` (HTTP) |
 | `sayhello/` | 独立微服务示例协议定义 | `sayhello.proto` |
 | `test/` | 测试与演示服务协议定义 | `test.proto` (gRPC) |
 | `conf/` | 服务内部配置结构定义 | `conf.proto` |
@@ -23,7 +23,7 @@
 为了保持代码生成的一致性和 API 的清晰度，请遵循以下规范：
 
 ### 1. 协议分类与命名
-- **HTTP API (BFF/Gateway)**: 文件名必须以 `i_` 开头（如 `i_auth.proto`），生成 HTTP 路由代码。统一使用包名 `micro-forge.service.v1`。
+- **HTTP API (BFF/Gateway)**: 文件名必须以 `i_` 开头（如 `i_auth.proto`），生成 HTTP 路由代码。统一使用包名 `servora.service.v1`。
 - **gRPC 服务**: 位于 `{service}/service/v1/` 目录下，文件名为 `{service}.proto`。每个服务拥有独立的 package 空间。
 - **配置定义**: 位于 `conf/v1/`，用于定义 `config.yaml` 映射的 Go 结构体。
 

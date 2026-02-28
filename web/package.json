@@ -1,5 +1,5 @@
 {
-  "name": "micro-forge-vue",
+  "name": "servora-vue",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "gen:proto": "cd ../api && buf generate --template buf.micro-forge.typescript.gen.yaml",
+    "gen:proto": "cd ../api && buf generate --template buf.servora.typescript.gen.yaml",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",

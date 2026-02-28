@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/horonlee/micro-forge/api/gen/go/conf/v1"
+	"github.com/horonlee/servora/api/gen/go/conf/v1"
 
 	"github.com/go-kratos/kratos/v2/registry"
 )

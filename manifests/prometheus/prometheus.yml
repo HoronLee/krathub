@@ -3,9 +3,9 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: micro-forge-service
+  - job_name: servora-service
     metrics_path: /metrics
     static_configs:
-      - targets: ["micro-forge:8000"]
+      - targets: ["servora:8000"]
         labels:
-          service: micro-forge.service
+          service: servora.service

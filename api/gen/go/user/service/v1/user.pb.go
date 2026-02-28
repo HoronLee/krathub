@@ -9,7 +9,7 @@ package userpb
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/go-kratos/kratos/v2/errors"
-	v1 "github.com/horonlee/micro-forge/api/gen/go/pagination/v1"
+	v1 "github.com/horonlee/servora/api/gen/go/pagination/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -853,8 +853,8 @@ const file_user_service_v1_user_proto_rawDesc = "" +
 	"UpdateUser\x12\".user.service.v1.UpdateUserRequest\x1a#.user.service.v1.UpdateUserResponse\x12O\n" +
 	"\bSaveUser\x12 .user.service.v1.SaveUserRequest\x1a!.user.service.v1.SaveUserResponse\x12U\n" +
 	"\n" +
-	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a#.user.service.v1.DeleteUserResponseB\xc1\x01\n" +
-	"\x13com.user.service.v1B\tUserProtoP\x01ZAgithub.com/horonlee/micro-forge/api/gen/go/user/service/v1;userpb\xa2\x02\x03USX\xaa\x02\x0fUser.Service.V1\xca\x02\x0fUser\\Service\\V1\xe2\x02\x1bUser\\Service\\V1\\GPBMetadata\xea\x02\x11User::Service::V1b\x06proto3"
+	"DeleteUser\x12\".user.service.v1.DeleteUserRequest\x1a#.user.service.v1.DeleteUserResponseB\xbd\x01\n" +
+	"\x13com.user.service.v1B\tUserProtoP\x01Z=github.com/horonlee/servora/api/gen/go/user/service/v1;userpb\xa2\x02\x03USX\xaa\x02\x0fUser.Service.V1\xca\x02\x0fUser\\Service\\V1\xe2\x02\x1bUser\\Service\\V1\\GPBMetadata\xea\x02\x11User::Service::V1b\x06proto3"
 
 var (
 	file_user_service_v1_user_proto_rawDescOnce sync.Once
