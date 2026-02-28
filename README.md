@@ -103,8 +103,7 @@ make run
 ```bash
 # 在仓库根目录
 make gen
-make compose.dev.build
-make compose.dev.up
+make compose.dev
 ```
 
 查看日志与停止：
@@ -156,6 +155,7 @@ make compose.logs
 make compose.down
 
 # Compose（开发 Air）
+make compose.dev
 make compose.dev.build
 make compose.dev.up
 make compose.dev.restart

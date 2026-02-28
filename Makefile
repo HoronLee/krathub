@@ -65,7 +65,7 @@ INFRA_SERVICES := consul db redis otel-collector jaeger loki prometheus grafana
 .PHONY: help env init plugin cli dep vendor test cover vet lint
 .PHONY: wire ent gen api api-go api-ts openapi build build_only all clean
 .PHONY: compose.build compose.up compose.rebuild compose.down compose.ps compose.logs
-.PHONY: compose.dev.build compose.dev.up compose.dev.restart compose.dev.ps compose.dev.down compose.dev.logs
+.PHONY: compose.dev compose.dev.build compose.dev.up compose.dev.restart compose.dev.ps compose.dev.down compose.dev.logs
 
 # show environment variables
 env:
@@ -257,6 +257,13 @@ compose.dev.build:
 		@echo "$(CYAN)Compose dev build: $(MICROSERVICES)$(RESET)"
 		@$(COMPOSE) $(COMPOSE_DEV_FILES) build $(MICROSERVICES)
 		@echo "$(GREEN)✓ Compose dev images built$(RESET)"
+
+# start full development compose stack (infra + Air microservices) and tail logs
+compose.dev:
+	@echo "$(CYAN)Compose dev start: $(INFRA_SERVICES) $(MICROSERVICES)$(RESET)"
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) up -d $(INFRA_SERVICES) $(MICROSERVICES)
+	@echo "$(GREEN)✓ Compose dev full stack started, tailing logs...$(RESET)"
+	@$(COMPOSE) $(COMPOSE_DEV_FILES) logs -f $(INFRA_SERVICES) $(MICROSERVICES)
 
 # start Air-based development containers in background
 compose.dev.up:
