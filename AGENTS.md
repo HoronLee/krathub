@@ -32,7 +32,7 @@ servora 是一个基于 Go Kratos v2 框架的微服务项目示例，展示了�
   - `make test` - 运行所有测试
   - `make lint` - 代码检查
 - **app.mk** - 服务级通用 Makefile，被所有微服务共享
-  - 定义了服务级的 `run`, `build`, `wire`, `gen.dao`, `gen.ent` 等命令
+  - 定义了服务级的 `run`, `build`, `wire`, `gen.gorm`, `gen.ent` 等命令
   - 所有服务通过 `include ../../../app.mk` 复用构建逻辑
 
 ### Go 项目配置
@@ -180,7 +180,7 @@ make compose.dev.down   # 停止 Air 开发容器
 make run           # 运行服务（含代码生成）
 make build         # 构建服务
 make wire          # 生成 Wire 代码
-make gen.dao       # 生成 GORM GEN PO/DAO
+make gen.gorm      # 生成 GORM GEN PO/DAO
 make gen.ent       # 生成 Ent 代码
 make test          # 运行测试
 ```

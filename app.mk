@@ -78,7 +78,7 @@ OPENAPI_CONFIG := buf.$(SERVICE_NAME).openapi.gen.yaml
 CONF ?= ./configs/config.yaml
 RUN_DEPS ?= api openapi
 
-.PHONY: build clean gen wire api openapi run app help env gen.dao gen.ent
+.PHONY: build clean gen wire api openapi run app help env gen.gorm gen.ent
 
 # show environment variables
 env:
@@ -129,7 +129,7 @@ clean:
 gen: wire api openapi gen.ent
 
 # generate GORM GEN PO and DAO code, if genDao cmd exist
-gen.dao:
+gen.gorm:
 ifneq ("$(wildcard ./cmd/genDao)","")
 	@go run ./cmd/genDao -conf ./configs
 endif

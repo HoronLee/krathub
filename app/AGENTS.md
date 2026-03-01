@@ -935,7 +935,7 @@ func main() {
 2. **运行生成**
 ```bash
 cd app/servora/service
-make gen.dao  # 或 go run ./cmd/genDao -conf ./configs
+make gen.gorm  # 或 go run ./cmd/genDao -conf ./configs
 make gen.ent  # 生成 Ent 代码（schema -> ent）
 ```
 

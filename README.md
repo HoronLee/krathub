@@ -154,7 +154,7 @@ make app
 make gen
 make wire
 make gen.ent
-make gen.dao
+make gen.gorm
 make openapi
 ```
 

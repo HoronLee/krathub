@@ -794,7 +794,7 @@ func main() {
 2. **运行生成**
 ```bash
 cd /Users/horonlee/projects/go/servora/app/servora/service
-make gen.dao
+make gen.gorm
 ```
 
 3. **使用生成的 DAO**

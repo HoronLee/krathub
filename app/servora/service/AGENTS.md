@@ -939,7 +939,7 @@ func main() {
 **运行生成**：
 ```bash
 cd /Users/horonlee/projects/go/servora/app/servora/service
-make gen.dao
+make gen.gorm
 make gen.ent
 ```
 

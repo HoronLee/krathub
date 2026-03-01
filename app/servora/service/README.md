@@ -33,7 +33,7 @@ servora 是本项目的主示例微服务，展示了基于 Kratos 框架的完�
 
 ```shell
 # 生成 GORM GEN 的 PO 和 DAO 代码
-make gen.dao
+make gen.gorm
 
 # 生成 Ent 代码
 make gen.ent
@@ -51,7 +51,7 @@ make build
 ## ORM 使用说明
 
 - 默认运行时 ORM 为 **Ent**：在 `internal/data/schema/` 定义 Schema，执行 `make gen.ent` 生成到 `internal/data/ent/`。
-- **GORM GEN** 作为并行工具链保留：执行 `make gen.dao` 生成 `internal/data/gorm/po/` 与 `internal/data/gorm/dao/`。
+- **GORM GEN** 作为并行工具链保留：执行 `make gen.gorm` 生成 `internal/data/gorm/po/` 与 `internal/data/gorm/dao/`。
 - 推荐日常使用 `make gen`，会统一执行 `wire + protobuf + openapi + ent` 生成流程。
 
 ## 配置
